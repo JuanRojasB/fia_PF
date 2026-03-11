@@ -1,0 +1,9 @@
+﻿node : ÔØî Error conectando a la base de datos: Access denied for user ''@'localhost' (using password: NO)
+En línea: 1 Carácter: 1
++ node src/scripts/scanDatabase.js 2>&1 | Out-File -FilePath scan_compl ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ÔØî Error conec...g password: NO):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ÔØî Error: Access denied for user ''@'localhost' (using password: NO)
+Ô£à Conexi├│n a la base de datos cerrada

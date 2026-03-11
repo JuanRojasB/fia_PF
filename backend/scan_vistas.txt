@@ -1,0 +1,296 @@
+﻿
+­ƒöì ESCANEANDO TODAS LAS VISTAS
+
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+
+­ƒôè Total de vistas: 9
+
+
+­ƒôï Vista: vista_aud_variacion_devoluciones_25_vs_24
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - indicador                                varchar(17)         
+  - pct_2025                                 decimal(5,2)        
+  - pct_2024                                 decimal(5,2)        
+  - variacion_puntos_porcentuales            decimal(6,2)        
+  - estado_auditoria                         varchar(18)         
+
+­ƒôè Registros: 1
+
+­ƒöì Muestra de datos:
+[
+  {
+    "indicador": "Promedio Compa├▒├¡a",
+    "pct_2025": "2.26",
+    "pct_2024": "2.54",
+    "variacion_puntos_porcentuales": "-0.28",
+    "estado_auditoria": "Mejora (Reducci├│n)"
+  }
+]
+
+­ƒôï Vista: vista_com_analisis_ventas
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - anio                                     int(11)             
+  - nombre_categoria                         varchar(50)         
+  - kilos_vendidos                           decimal(15,2)       
+  - participacion_kilos_pct                  decimal(21,2)       
+  - ingresos_pesos                           decimal(20,2)       
+  - participacion_ingresos_pct               decimal(26,2)       
+
+­ƒôè Registros: 4
+
+­ƒöì Muestra de datos:
+[
+  {
+    "anio": 2025,
+    "nombre_categoria": "Pollo en pie",
+    "kilos_vendidos": "28879638.00",
+    "participacion_kilos_pct": "51.24",
+    "ingresos_pesos": "170397059122.00",
+    "participacion_ingresos_pct": "41.20"
+  },
+  {
+    "anio": 2025,
+    "nombre_categoria": "Pollo en canal",
+    "kilos_vendidos": "27476870.00",
+    "participacion_kilos_pct": "48.76",
+    "ingresos_pesos": "243191026074.00",
+    "participacion_ingresos_pct": "58.80"
+  }
+]
+
+­ƒôï Vista: vista_com_huevo_comparativo_multianual
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - periodo_comparado                        varchar(31)         
+  - variacion_unidades                       bigint(21)          
+  - variacion_unidades_pct                   decimal(26,2)       
+  - variacion_precio                         decimal(11,2)       
+  - variacion_precio_pct                     decimal(17,2)       
+
+­ƒôè Registros: 3
+
+­ƒöì Muestra de datos:
+[
+  {
+    "periodo_comparado": "2024 vs 2023",
+    "variacion_unidades": 343601,
+    "variacion_unidades_pct": "1.00",
+    "variacion_precio": "-77.00",
+    "variacion_precio_pct": "-15.04"
+  },
+  {
+    "periodo_comparado": "2025 vs 2024",
+    "variacion_unidades": -269778,
+    "variacion_unidades_pct": "-0.78",
+    "variacion_precio": "-32.00",
+    "variacion_precio_pct": "-7.36"
+  }
+]
+
+­ƒôï Vista: vista_com_kpi_pollo_entero
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - anio                                     int(11)             
+  - pollo_entero_planta                      bigint(20)          
+  - venta_unidad_linea_asadero               bigint(20)          
+  - participacion_lograda_pct                decimal(25,2)       
+  - meta_objetivo_pct                        decimal(4,2)        
+  - puntos_faltantes                         decimal(26,2)       
+
+­ƒôè Registros: 3
+
+­ƒöì Muestra de datos:
+[
+  {
+    "anio": 2023,
+    "pollo_entero_planta": 16684117,
+    "venta_unidad_linea_asadero": 7643906,
+    "participacion_lograda_pct": "45.82",
+    "meta_objetivo_pct": "50.00",
+    "puntos_faltantes": "4.18"
+  },
+  {
+    "anio": 2024,
+    "pollo_entero_planta": 15303087,
+    "venta_unidad_linea_asadero": 7300167,
+    "participacion_lograda_pct": "47.70",
+    "meta_objetivo_pct": "50.00",
+    "puntos_faltantes": "2.30"
+  }
+]
+
+­ƒôï Vista: vista_com_pdv_participacion_zona_2024
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - zona_asignacion                          varchar(50)         
+  - nombre_pdv                               varchar(100)        
+  - pdv_kilos_pollo                          decimal(15,2)       
+  - zona_total_kilos                         decimal(15,2)       
+  - participacion_pollo_pct                  decimal(21,2)       
+  - pdv_unidades_huevo                       bigint(20)          
+  - zona_total_huevos                        bigint(20)          
+  - participacion_huevo_pct                  decimal(25,2)       
+
+­ƒôè Registros: 4
+
+­ƒöì Muestra de datos:
+[
+  {
+    "zona_asignacion": "Zona Sur",
+    "nombre_pdv": "20 de Julio",
+    "pdv_kilos_pollo": "156623.00",
+    "zona_total_kilos": "423306.00",
+    "participacion_pollo_pct": "37.00",
+    "pdv_unidades_huevo": 516629,
+    "zona_total_huevos": 4244706,
+    "participacion_huevo_pct": "12.17"
+  },
+  {
+    "zona_asignacion": "Zona Sur",
+    "nombre_pdv": "Planta Principal",
+    "pdv_kilos_pollo": "0.00",
+    "zona_total_kilos": "423306.00",
+    "participacion_pollo_pct": "0.00",
+    "pdv_unidades_huevo": 1061176,
+    "zona_total_huevos": 4244706,
+    "participacion_huevo_pct": "25.00"
+  }
+]
+
+­ƒôï Vista: vista_com_unidades_procesadas
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - centro_operacion                         varchar(100)        
+  - anio                                     int(11)             
+  - unidades                                 bigint(20)          
+  - participacion_porcentaje                 decimal(25,2)       
+
+­ƒôè Registros: 12
+
+­ƒöì Muestra de datos:
+[
+  {
+    "centro_operacion": "Sede U03",
+    "anio": 2025,
+    "unidades": 14091282,
+    "participacion_porcentaje": "47.49"
+  },
+  {
+    "centro_operacion": "Mayorista",
+    "anio": 2025,
+    "unidades": 13071884,
+    "participacion_porcentaje": "44.05"
+  }
+]
+
+­ƒôï Vista: vista_fin_exposicion_cartera_25_vs_24
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - mes_num                                  int(11)             
+  - t2025                                    decimal(10,2)       
+  - t2024                                    decimal(10,2)       
+  - diferencia_millones                      decimal(11,2)       
+  - variacion_pct                            decimal(15,0)       
+
+­ƒôè Registros: 12
+
+­ƒöì Muestra de datos:
+[
+  {
+    "mes_num": 1,
+    "t2025": "14413.00",
+    "t2024": "17366.00",
+    "diferencia_millones": "-2953.00",
+    "variacion_pct": "-17"
+  },
+  {
+    "mes_num": 2,
+    "t2025": "15097.00",
+    "t2024": "17668.00",
+    "diferencia_millones": "-2571.00",
+    "variacion_pct": "-15"
+  }
+]
+
+­ƒôï Vista: vista_fin_mix_ventas_2025
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - mes_num                                  int(11)             
+  - ventas_netas_pesos                       decimal(20,2)       
+  - ventas_contado_pesos                     decimal(20,2)       
+  - pct_contado                              decimal(26,2)       
+  - ventas_credito_pesos                     decimal(20,2)       
+  - pct_credito                              decimal(26,2)       
+  - morosidad_vencida_pct                    decimal(5,2)        
+  - dias_rotacion                            decimal(5,2)        
+
+­ƒôè Registros: 12
+
+­ƒöì Muestra de datos:
+[
+  {
+    "mes_num": 1,
+    "ventas_netas_pesos": "33428115870.00",
+    "ventas_contado_pesos": "11987878785.00",
+    "pct_contado": "35.86",
+    "ventas_credito_pesos": "21437479983.00",
+    "pct_credito": "64.13",
+    "morosidad_vencida_pct": "43.00",
+    "dias_rotacion": "19.78"
+  },
+  {
+    "mes_num": 2,
+    "ventas_netas_pesos": "31118341350.00",
+    "ventas_contado_pesos": "10438364907.00",
+    "pct_contado": "33.54",
+    "ventas_credito_pesos": "20679848688.00",
+    "pct_credito": "66.46",
+    "morosidad_vencida_pct": "47.00",
+    "dias_rotacion": "16.59"
+  }
+]
+
+­ƒôï Vista: vista_log_cumplimiento_mermas_2025
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+­ƒôØ Estructura:
+  - sede                                     varchar(50)         
+  - merma_2025                               decimal(5,2)        
+  - meta_establecida                         decimal(5,2)        
+  - brecha_puntos_porcentuales               decimal(6,2)        
+  - estado_evaluacion                        varchar(13)         
+
+­ƒôè Registros: 4
+
+­ƒöì Muestra de datos:
+[
+  {
+    "sede": "General",
+    "merma_2025": "11.70",
+    "meta_establecida": "10.00",
+    "brecha_puntos_porcentuales": "1.70",
+    "estado_evaluacion": "No Cumple"
+  },
+  {
+    "sede": "U01",
+    "merma_2025": "9.49",
+    "meta_establecida": "7.50",
+    "brecha_puntos_porcentuales": "1.99",
+    "estado_evaluacion": "No Cumple"
+  }
+]
+
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+
+Ô£à Escaneo completado
+
