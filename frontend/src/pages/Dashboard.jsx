@@ -10,7 +10,7 @@ import { ROUTES } from '../routes/paths';
 export default function Dashboard() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const sectionFromUrl = searchParams.get('section') || 'fuentes-usos';
+  const sectionFromUrl = searchParams.get('section') || 'bienvenida';
   const [activeSection, setActiveSection] = useState(sectionFromUrl);
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,25 +18,29 @@ export default function Dashboard() {
 
   // Mapeo de secciones a tipos de dashboard
   const sectionToDashboardType = {
+    'bienvenida': 'bienvenida',
     'fuentes-usos': 'fuentes-usos',
     'auditoria': 'auditoria',
     'cartera': 'cartera',
     'comercial': 'comercial',
-    'ventas': 'ventas',
+    'comercial-resumen': 'comercial',
+    'comercial-pdv': 'comercial',
+    'comercial-productos': 'comercial',
+    'comercial-huevo': 'comercial',
     'humana': 'humana',
     'humana-detalle': 'humana',
     'logistica': 'logistica',
     'logistica-detalle': 'logistica',
     'produccion-granjas': 'produccion-granjas',
-    'produccion-historico': 'produccion-historico',
-    'produccion-historico-detalle': 'produccion-historico',
-    'produccion-huevo': 'produccion-huevo',
+    'produccion-encasetado': 'produccion-historico',
+    'produccion-huevos': 'produccion-historico',
+    'produccion-indicadores': 'produccion-historico',
     'sagrilaft': 'sagrilaft',
     'gerencia': 'gerencia'
   };
 
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['produccion-huevo'];
+  const noDataRequired = ['bienvenida'];
 
   // Función para cambiar de sección que actualiza tanto el estado como la URL
   const handleSectionChange = (newSection) => {
@@ -46,7 +50,14 @@ export default function Dashboard() {
 
   // Actualizar sección cuando cambia el parámetro URL
   useEffect(() => {
-    const section = searchParams.get('section') || 'fuentes-usos';
+    let section = searchParams.get('section') || 'bienvenida'
+    
+    // Redirigir 'comercial' al primer sub-dashboard
+    if (section === 'comercial') {
+      section = 'comercial-resumen';
+      setSearchParams({ section });
+    }
+    
     if (section !== activeSection) {
       setActiveSection(section);
     }
@@ -110,6 +121,7 @@ export default function Dashboard() {
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
               {(() => {
                 const sectionNames = {
+                  'bienvenida': 'Bienvenida',
                   'fuentes-usos': 'Balance General',
                   'auditoria': 'Auditoría',
                   'cartera': 'Gestión de Cartera',
@@ -120,7 +132,6 @@ export default function Dashboard() {
                   'produccion': 'Gestión de Producción',
                   'produccion-granjas': 'Capacidad de Granjas',
                   'produccion-historico': 'Histórico de Producción',
-                  'produccion-huevo': 'Producción de Huevo',
                   'sagrilaft': 'Sistema SAGRILAFT',
                   'gerencia': 'Gerencia Estratégica'
                 };
@@ -164,7 +175,7 @@ export default function Dashboard() {
           )}
 
           {!loading && !error && dashboardData && (
-            <DashboardRenderer type={sectionToDashboardType[activeSection]} data={dashboardData} />
+            <DashboardRenderer type={activeSection} data={dashboardData} />
           )}
         </motion.div>
       </div>

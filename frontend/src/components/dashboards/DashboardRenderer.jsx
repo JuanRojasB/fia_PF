@@ -1,3 +1,4 @@
+import BienvenidaDashboard from './BienvenidaDashboard';
 import GerenciaDashboard from './GerenciaDashboard';
 import CarteraDashboard from './CarteraDashboard';
 import FuentesUsosDashboard from './FuentesUsosDashboard';
@@ -7,16 +8,19 @@ import LogisticaDashboard from './LogisticaDashboard';
 import LogisticaDetalleDashboard from './LogisticaDetalleDashboard';
 import SagrilaftDashboard from './SagrilaftDashboard';
 import GranjasDashboard from './GranjasDashboard';
-import ComercialDashboard from './ComercialDashboard';
-import ProduccionDashboard from './ProduccionDashboard';
-import ProduccionDetalleDashboard from './ProduccionDetalleDashboard';
+import ComercialResumenDashboard from './ComercialResumenDashboard';
+import ComercialPDVDashboard from './ComercialPDVDashboard';
+import ComercialProductosDashboard from './ComercialProductosDashboard';
+import ComercialHuevoDashboard from './ComercialHuevoDashboard';
+import ProduccionEncasetadoDashboard from './ProduccionEncasetadoDashboard';
+import ProduccionHuevosDashboard from './ProduccionHuevosDashboard';
+import ProduccionIndicadoresDashboard from './ProduccionIndicadoresDashboard';
 import AuditoriaDashboard from './AuditoriaDashboard';
-import ProduccionHuevoDashboard from './ProduccionHuevoDashboard';
-import VentasDashboard from './VentasDashboard';
+import EnDesarrollo from './EnDesarrollo';
 
 export default function DashboardRenderer({ type, data }) {
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['produccion-huevo'];
+  const noDataRequired = [];
   
   if (!data || (Array.isArray(data) && data.length === 0)) {
     // Si el dashboard no requiere datos, continuar normalmente
@@ -30,16 +34,22 @@ export default function DashboardRenderer({ type, data }) {
   }
 
   switch (type) {
+    case 'bienvenida':
+      return <BienvenidaDashboard />;
     case 'fuentes-usos':
       return <FuentesUsosDashboard data={data} />;
     case 'auditoria':
       return <AuditoriaDashboard data={data} />;
     case 'cartera':
       return <CarteraDashboard data={data} />;
-    case 'comercial':
-      return <ComercialDashboard data={data} />;
-    case 'ventas':
-      return <VentasDashboard data={data} type="equipo-ventas" />;
+    case 'comercial-resumen':
+      return <ComercialResumenDashboard data={data} />;
+    case 'comercial-pdv':
+      return <ComercialPDVDashboard data={data} />;
+    case 'comercial-productos':
+      return <ComercialProductosDashboard data={data} />;
+    case 'comercial-huevo':
+      return <ComercialHuevoDashboard data={data} />;
     case 'humana':
       return <HumanaDashboard data={data} />;
     case 'humana-detalle':
@@ -50,12 +60,20 @@ export default function DashboardRenderer({ type, data }) {
       return <LogisticaDetalleDashboard data={data} />;
     case 'produccion-granjas':
       return <GranjasDashboard data={data} />;
-    case 'produccion-historico':
-      return <ProduccionDashboard data={data} />;
-    case 'produccion-historico-detalle':
-      return <ProduccionDetalleDashboard data={data} />;
+    case 'produccion-encasetado':
+      return <ProduccionEncasetadoDashboard data={data} />;
+    case 'produccion-huevos':
+      return <ProduccionHuevosDashboard data={data} />;
+    case 'produccion-indicadores':
+      return <ProduccionIndicadoresDashboard data={data} />;
     case 'produccion-huevo':
-      return <ProduccionHuevoDashboard />;
+      return (
+        <EnDesarrollo
+          titulo="Producción de Huevo en Desarrollo"
+          descripcion="Este módulo está siendo actualizado para mostrar datos reales de producción de huevo desde la base de datos. Pronto estará disponible con información detallada sobre postura, zootecnia y flujo de producción."
+          modulo="Producción de Huevo"
+        />
+      );
     case 'sagrilaft':
       return <SagrilaftDashboard data={data} />;
     case 'gerencia':

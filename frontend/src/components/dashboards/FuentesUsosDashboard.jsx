@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, X, Info } from 'lucide-react';
+import EnDesarrollo from './EnDesarrollo';
 
 export default function FuentesUsosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -14,8 +15,15 @@ export default function FuentesUsosDashboard({ data }) {
   // Validar que data sea un array
   const financialData = Array.isArray(data) ? data : (data?.items || []);
   
-  if (financialData.length === 0) {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
+  // Mostrar mensaje de desarrollo si no hay datos o hay mensaje del backend
+  if (financialData.length === 0 || data?.mensaje) {
+    return (
+      <EnDesarrollo
+        titulo="Balance General en Desarrollo"
+        descripcion="El módulo de Balance General (Fuentes y Usos) está siendo configurado. Pronto estará disponible con información financiera detallada sobre activos, pasivos, patrimonio y flujos de efectivo."
+        modulo="Balance General / Fuentes y Usos"
+      />
+    );
   }
 
   const formatCurrency = (value) => {

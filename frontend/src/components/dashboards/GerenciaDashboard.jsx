@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Briefcase, Target, CheckCircle, X, Info } from 'lucide-react';
+import EnDesarrollo from './EnDesarrollo';
 
 export default function GerenciaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -14,8 +15,15 @@ export default function GerenciaDashboard({ data }) {
   };
   const gerenciaData = Array.isArray(data) ? data : (data?.items || []);
   
-  if (gerenciaData.length === 0) {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
+  // Mostrar mensaje de desarrollo si no hay datos o hay mensaje del backend
+  if (gerenciaData.length === 0 || data?.mensaje) {
+    return (
+      <EnDesarrollo
+        titulo="Gestión Gerencia en Desarrollo"
+        descripcion="El módulo de Gestión Gerencia está siendo configurado. Pronto estará disponible con indicadores estratégicos, objetivos corporativos y métricas de alto nivel."
+        modulo="Gestión Gerencia Estratégica"
+      />
+    );
   }
 
   // Eliminar duplicados y filtrar registros vacíos o inválidos

@@ -1,294 +1,359 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart } from 'recharts';
-import { TrendingDown, AlertTriangle, Target, CheckCircle, X, Info } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { CheckCircle, AlertTriangle, FileText, TrendingDown } from 'lucide-react';
 
 export default function AuditoriaDashboard({ data }) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  console.log('AuditoriaDashboard - Datos recibidos:', data);
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
-    setModalOpen(true);
-  };
-
-  // Manejar tanto objetos directos como objetos envueltos
-  const auditData = data?.mermaAnual ? data : (data?.items || {});
-  
-  if (!auditData || !auditData.mermaAnual) {
+  if (!data || typeof data !== 'object') {
     return <div className="text-gray-400">No hay datos disponibles</div>;
   }
 
-  const { mermaAnual, devoluciones, narrativas } = auditData;
+  const {
+    auditorias = [],
+    devolucionesMensuales = [],
+    devolucionesResumen = [],
+    variacionDevoluciones = null,
+    devolucionesPorSede = {},
+    hallazgos = [],
+    planesAccion = [],
+    porTipo = {},
+    totales = {}
+  } = data;
 
-  // Agrupar merma por año
-  const merma2023 = mermaAnual.filter(d => d.anio === 2023);
-  const merma2024 = mermaAnual.filter(d => d.anio === 2024);
-  const merma2025 = mermaAnual.filter(d => d.anio === 2025);
-  const merma2026 = mermaAnual.filter(d => d.anio === 2026);
+  const formatNumber = (value) => {
+    if (!value || isNaN(value)) return '0';
+    return new Intl.NumberFormat('es-CO').format(value);
+  };
 
-  // Preparar datos para gráfico comparativo de merma (incluyendo 2026)
-  const mesesNombres = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-  const mesesCompletos = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  const chartDataMerma = mesesNombres.map((mes, idx) => ({
-    mes,
-    mesCompleto: mesesCompletos[idx],
-    '2023': merma2023.find(m => m.mes === idx + 1)?.porcentaje_merma || null,
-    '2024': merma2024.find(m => m.mes === idx + 1)?.porcentaje_merma || null,
-    '2025': merma2025.find(m => m.mes === idx + 1)?.porcentaje_merma || null,
-    '2026': merma2026.find(m => m.mes === idx + 1)?.porcentaje_merma || (idx === 0 ? 12.35 : null), // Enero 2026
+  // Preparar datos de devoluciones mensuales para gráfico
+  const datosDevolucionesMes = devolucionesMensuales.map(d => ({
+    mes: d.mes_nombre,
+    anio: d.anio,
+    'Sede 1': parseFloat(d.sede_1_pct),
+    'Sede 2': parseFloat(d.sede_2_pct),
+    'Sede 3': parseFloat(d.sede_3_pct)
   }));
 
-  // Calcular promedios (filtrar valores válidos)
-  const promedio2023 = merma2023.length > 0 
-    ? merma2023.reduce((sum, d) => sum + (parseFloat(d.porcentaje_merma) || 0), 0) / merma2023.length 
-    : 0;
-  const promedio2024 = merma2024.length > 0 
-    ? merma2024.reduce((sum, d) => sum + (parseFloat(d.porcentaje_merma) || 0), 0) / merma2024.length 
-    : 0;
-  const promedio2025 = merma2025.length > 0 
-    ? merma2025.reduce((sum, d) => sum + (parseFloat(d.porcentaje_merma) || 0), 0) / merma2025.length 
-    : 0;
+  // Preparar datos de resumen anual
+  const datosResumenAnual = devolucionesResumen.map(r => ({
+    anio: r.anio,
+    'Compañía': parseFloat(r.promedio_compania_pct),
+    'Sede 1': r.promedio_sede_1_pct ? parseFloat(r.promedio_sede_1_pct) : null,
+    'Sede 2': r.promedio_sede_2_pct ? parseFloat(r.promedio_sede_2_pct) : null,
+    'Sede 3': r.promedio_sede_3_pct ? parseFloat(r.promedio_sede_3_pct) : null
+  }));
 
-  // Preparar datos de devoluciones - evolución mensual por sede (2024 y 2025 completos)
-  const devolucionesEvolucion = [];
-  
-  // Crear datos para 2024 (12 meses)
-  mesesNombres.forEach((mesNombre, idx) => {
-    const mesNum = idx + 1;
-    const dataPoint = { 
-      mes: `${mesNombre} 2024`,
-      mesCompleto: `${mesesCompletos[idx]} 2024`
-    };
-    
-    // Obtener datos de cada sede para este mes de 2024
-    [1, 2, 3].forEach(sede => {
-      const devolucion = devoluciones.find(d => 
-        d.anio === 2024 && d.mes === mesNum && d.sede === sede
-      );
-      dataPoint[`Sede ${sede}`] = devolucion ? devolucion.devolucion_pct : null;
-    });
-    
-    devolucionesEvolucion.push(dataPoint);
-  });
-  
-  // Crear datos para 2025 (12 meses)
-  mesesNombres.forEach((mesNombre, idx) => {
-    const mesNum = idx + 1;
-    const dataPoint = { 
-      mes: `${mesNombre} 2025`,
-      mesCompleto: `${mesesCompletos[idx]} 2025`
-    };
-    
-    // Obtener datos de cada sede para este mes de 2025
-    [1, 2, 3].forEach(sede => {
-      const devolucion = devoluciones.find(d => 
-        d.anio === 2025 && d.mes === mesNum && d.sede === sede
-      );
-      dataPoint[`Sede ${sede}`] = devolucion ? devolucion.devolucion_pct : null;
-    });
-    
-    devolucionesEvolucion.push(dataPoint);
-  });
-
-  // Obtener narrativas
-  const narrativasTexto = narrativas.filter(n => n.categoria === 'NARRATIVA').map(n => n.comentario);
+  // Preparar datos por tipo de auditoría
+  const datosTipos = Object.entries(porTipo).map(([tipo, data]) => ({
+    tipo,
+    cantidad: data.cantidad,
+    areas: data.areas.length
+  }));
 
   return (
     <div className="space-y-6">
-      {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* KPIs Principales */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-          onClick={() => openModal(
-            'Merma Promedio 2024',
-            'Porcentaje promedio de producto perdido durante el año. La merma incluye producto dañado, vencido o no apto para venta. Un porcentaje menor indica mejor control de calidad y manejo.'
-          )}
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-blue-500/30"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Merma Promedio 2024 (%)</span>
-            <TrendingDown className="w-6 h-6 text-purple-400" />
+            <span className="text-gray-400 text-sm">Total Auditorías</span>
+            <FileText className="w-5 h-5 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">
-            {!isNaN(promedio2024) && promedio2024 > 0 ? promedio2024.toFixed(2) : '0.00'}%
-          </div>
-          <div className="text-xs text-purple-400">Promedio anual</div>
+          <div className="text-3xl font-bold text-white">{totales.totalAuditorias}</div>
+          <div className="text-sm text-gray-400 mt-1">{totales.tiposAuditoria} tipos</div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal(
-            'Merma Promedio 2025',
-            'Porcentaje promedio de merma durante 2025. Meta: 10%. Resultado: 11.70%. Segundo semestre mostró mejora con meses cercanos a 10.2%-10.7%. Centralización logística en Sede 3 permitió reselección y redistribución.'
-          )}
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-green-500/30"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Merma Promedio 2025 (%)</span>
-            <CheckCircle className="w-6 h-6 text-green-400" />
+            <span className="text-gray-400 text-sm">Hallazgos</span>
+            <AlertTriangle className="w-5 h-5 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">
-            {!isNaN(promedio2025) && promedio2025 > 0 ? promedio2025.toFixed(2) : '0.00'}%
-          </div>
-          <div className="text-xs text-green-400">Promedio anual</div>
+          <div className="text-3xl font-bold text-white">{totales.totalHallazgos}</div>
+          <div className="text-sm text-gray-400 mt-1">{totales.totalPlanesAccion} planes de acción</div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
-          onClick={() => openModal(
-            'Meta Merma 2026',
-            'Objetivo de merma para 2026: 10.0%. Histórico: 2023 (12.44%), 2024 (11.49%), 2025 (11.70%). La meta busca reducir pérdidas mediante mejor control de calidad, manejo y logística centralizada.'
-          )}
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-orange-500/30"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Meta Merma 2026 (%)</span>
-            <Target className="w-6 h-6 text-yellow-400" />
+            <span className="text-gray-400 text-sm">Devolución Promedio</span>
+            <TrendingDown className="w-5 h-5 text-orange-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">10.00%</div>
-          <div className="text-xs text-yellow-400">Objetivo 2026</div>
+          <div className="text-3xl font-bold text-white">{totales.promedioDevolucionGeneral}%</div>
+          <div className="text-sm text-gray-400 mt-1">{totales.sedesEvaluadas} sedes</div>
+          {variacionDevoluciones && (
+            <div className={`text-sm mt-2 font-bold ${totales.variacion2025vs2024 < 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {totales.variacion2025vs2024 < 0 ? '↓' : '↑'} {Math.abs(totales.variacion2025vs2024)}pp vs 2024
+            </div>
+          )}
         </motion.div>
-      </div>
 
-      {/* Gráfico comparativo de merma 2023-2026 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 cursor-pointer hover:border-slate-500 transition-all"
-        onClick={() => openModal(
-          'Evolución de Merma 2023-2026',
-          'Tendencia mensual de merma por año. Muestra progreso hacia meta del 10%. Auditorías mensuales a Logística, Producción, Comercial y puntos de venta enfocan controles, inventarios y devoluciones.'
-        )}
-      >
-        <h3 className="text-xl font-bold text-white mb-6">Evolución de Merma 2023-2026</h3>
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={chartDataMerma} margin={{ left: 20, right: 20, bottom: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey="mes" stroke="#9ca3af" style={{ fontSize: '13px' }} height={50} />
-            <YAxis 
-              stroke="#9ca3af" 
-              width={80} 
-              tickFormatter={(value) => `${value}%`}
-            />
-            <Tooltip
-              contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
-              labelFormatter={(label) => {
-                const dataPoint = chartDataMerma.find(d => d.mes === label);
-                return dataPoint ? dataPoint.mesCompleto : label;
-              }}
-              formatter={(value) => {
-                if (!value || isNaN(value)) return 'N/A';
-                return `${parseFloat(value).toFixed(2)}%`;
-              }}
-            />
-            <Legend />
-            <Line type="monotone" dataKey="2023" stroke="#3b82f6" name="2023" strokeWidth={2} dot={{ r: 4 }} connectNulls />
-            <Line type="monotone" dataKey="2024" stroke="#a855f7" name="2024" strokeWidth={2} dot={{ r: 4 }} connectNulls />
-            <Line type="monotone" dataKey="2025" stroke="#10b981" name="2025" strokeWidth={2} dot={{ r: 4 }} connectNulls />
-            <Line type="monotone" dataKey="2026" stroke="#f59e0b" name="2026" strokeWidth={3} dot={{ r: 5 }} connectNulls />
-          </LineChart>
-        </ResponsiveContainer>
-      </motion.div>
-
-      {/* Gráfico de devoluciones - evolución mensual por sede */}
-      {devolucionesEvolucion.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 cursor-pointer hover:border-slate-500 transition-all"
-          onClick={() => openModal(
-            'Evolución de Devoluciones por Sede',
-            'Devoluciones mensuales por sede (2024-2025). Promedio compañía: 2.26% (mejora vs 2024). Por sede: Sede 1 (2.85%), Sede 2 (1.61%), Sede 3 (2.31%). Menor devolución indica mejor calidad y servicio.'
-          )}
+          transition={{ delay: 0.3 }}
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-purple-500/30"
         >
-          <h3 className="text-xl font-bold text-white mb-6">Evolución de Devoluciones por Sede (2024-2025)</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={devolucionesEvolucion} margin={{ left: 20, right: 20, bottom: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis 
-                dataKey="mes" 
-                stroke="#9ca3af" 
-                style={{ fontSize: '11px' }} 
-                height={50}
-              />
-              <YAxis 
-                stroke="#9ca3af" 
-                width={80} 
-                domain={[0, 6]} 
-                tickFormatter={(value) => `${value}%`}
-              />
-              <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
-                labelFormatter={(label) => {
-                  const dataPoint = devolucionesEvolucion.find(d => d.mes === label);
-                  return dataPoint ? dataPoint.mesCompleto : label;
-                }}
-                formatter={(value) => {
-                  if (!value || isNaN(value)) return 'N/A';
-                  return `${parseFloat(value).toFixed(2)}%`;
-                }}
-              />
-              <Legend />
-              <Line type="monotone" dataKey="Sede 1" stroke="#3b82f6" name="Sede 1" strokeWidth={2} dot={{ r: 4 }} connectNulls />
-              <Line type="monotone" dataKey="Sede 2" stroke="#f59e0b" name="Sede 2" strokeWidth={2} dot={{ r: 4 }} connectNulls />
-              <Line type="monotone" dataKey="Sede 3" stroke="#10b981" name="Sede 3" strokeWidth={2} dot={{ r: 4 }} connectNulls />
-            </LineChart>
-          </ResponsiveContainer>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-400 text-sm">Registros Mensuales</span>
+            <CheckCircle className="w-5 h-5 text-purple-400" />
+          </div>
+          <div className="text-3xl font-bold text-white">{totales.totalDevolucionesMensuales}</div>
+          <div className="text-sm text-gray-400 mt-1">Devoluciones registradas</div>
+        </motion.div>
+      </div>
+
+      {/* Gráficos */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Devoluciones Mensuales por Sede */}
+        {datosDevolucionesMes.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          >
+            <h3 className="text-xl font-bold text-white mb-6">Devoluciones Mensuales por Sede (%)</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={datosDevolucionesMes}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis dataKey="mes" stroke="#9ca3af" />
+                <YAxis stroke="#9ca3af" />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
+                  formatter={(value) => value + '%'}
+                />
+                <Legend />
+                <Line type="monotone" dataKey="Sede 1" stroke="#3b82f6" strokeWidth={2} />
+                <Line type="monotone" dataKey="Sede 2" stroke="#10b981" strokeWidth={2} />
+                <Line type="monotone" dataKey="Sede 3" stroke="#f59e0b" strokeWidth={2} />
+              </LineChart>
+            </ResponsiveContainer>
+          </motion.div>
+        )}
+
+        {/* Resumen Anual de Devoluciones */}
+        {datosResumenAnual.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          >
+            <h3 className="text-xl font-bold text-white mb-6">Promedio Anual de Devoluciones</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={datosResumenAnual}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis dataKey="anio" stroke="#9ca3af" />
+                <YAxis stroke="#9ca3af" />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
+                  formatter={(value, name) => {
+                    if (value === null) return ['N/A', name];
+                    return [value + '%', name];
+                  }}
+                />
+                <Legend />
+                <Bar dataKey="Compañía" fill="#8b5cf6" name="Compañía" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="Sede 1" fill="#3b82f6" name="Sede 1" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="Sede 2" fill="#10b981" name="Sede 2" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="Sede 3" fill="#f59e0b" name="Sede 3" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Variación 2025 vs 2024 */}
+      {variacionDevoluciones && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-xl rounded-xl p-6 border border-green-500/30"
+        >
+          <h3 className="text-xl font-bold text-white mb-4">Análisis de Variación 2025 vs 2024</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-slate-700/30 rounded-lg p-4">
+              <div className="text-sm text-gray-400 mb-1">2025</div>
+              <div className="text-2xl font-bold text-white">{variacionDevoluciones.pct_2025}%</div>
+            </div>
+            <div className="bg-slate-700/30 rounded-lg p-4">
+              <div className="text-sm text-gray-400 mb-1">2024</div>
+              <div className="text-2xl font-bold text-white">{variacionDevoluciones.pct_2024}%</div>
+            </div>
+            <div className="bg-slate-700/30 rounded-lg p-4">
+              <div className="text-sm text-gray-400 mb-1">Variación</div>
+              <div className={`text-2xl font-bold ${parseFloat(variacionDevoluciones.variacion_puntos_porcentuales) < 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {variacionDevoluciones.variacion_puntos_porcentuales}pp
+              </div>
+            </div>
+            <div className="bg-slate-700/30 rounded-lg p-4">
+              <div className="text-sm text-gray-400 mb-1">Estado</div>
+              <div className={`text-lg font-bold ${variacionDevoluciones.estado_auditoria.includes('Mejora') ? 'text-green-400' : 'text-red-400'}`}>
+                {variacionDevoluciones.estado_auditoria}
+              </div>
+            </div>
+          </div>
         </motion.div>
       )}
 
-      {/* Modal de Explicación */}
-      <AnimatePresence>
-        {modalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-            onClick={() => setModalOpen(false)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-orange-500 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-purple-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+      {/* Auditorías por Tipo */}
+      {datosTipos.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        >
+          <h3 className="text-xl font-bold text-white mb-4">Auditorías por Tipo</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {datosTipos.map((tipo, idx) => (
+              <div key={idx} className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                <div className="font-bold text-white mb-2">{tipo.tipo}</div>
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Cantidad:</span>
+                    <span className="text-blue-400 font-medium">{tipo.cantidad}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Áreas:</span>
+                    <span className="text-green-400 font-medium">{tipo.areas}</span>
+                  </div>
                 </div>
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
-                {modalContent.description}
-              </div>
-              <div className="mt-6 flex justify-end">
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
-                >
-                  Entendido
-                </button>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Tabla de Auditorías Recientes */}
+      {auditorias.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        >
+          <h3 className="text-xl font-bold text-white mb-4">Auditorías Recientes</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-600">
+                  <th className="text-left py-3 px-4 text-gray-300">Fecha</th>
+                  <th className="text-left py-3 px-4 text-gray-300">Tipo</th>
+                  <th className="text-left py-3 px-4 text-gray-300">Área/Proceso</th>
+                  <th className="text-left py-3 px-4 text-gray-300">Auditor</th>
+                  <th className="text-left py-3 px-4 text-gray-300">Estado</th>
+                  <th className="text-right py-3 px-4 text-gray-300">Días</th>
+                </tr>
+              </thead>
+              <tbody>
+                {auditorias.slice(0, 10).map((aud, idx) => (
+                  <tr key={idx} className="border-b border-slate-700/50 hover:bg-slate-700/30">
+                    <td className="py-3 px-4 text-white">{new Date(aud.fecha_auditoria).toLocaleDateString('es-CO')}</td>
+                    <td className="py-3 px-4 text-blue-400">{aud.tipo_auditoria}</td>
+                    <td className="py-3 px-4 text-gray-400">{aud.area_proceso_auditado}</td>
+                    <td className="py-3 px-4 text-gray-400">{aud.auditor_responsable}</td>
+                    <td className="py-3 px-4">
+                      <span className={`px-2 py-1 rounded text-xs ${
+                        aud.estado === 'Completada' ? 'bg-green-500/20 text-green-400' :
+                        aud.estado === 'En proceso' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-gray-500/20 text-gray-400'
+                      }`}>
+                        {aud.estado}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-right text-gray-400">{aud.dias_desde_auditoria}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Hallazgos y Planes de Acción */}
+      {(hallazgos.length > 0 || planesAccion.length > 0) && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Hallazgos */}
+          {hallazgos.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+            >
+              <h3 className="text-xl font-bold text-white mb-4">Hallazgos Recientes</h3>
+              <div className="space-y-3">
+                {hallazgos.slice(0, 5).map((hall, idx) => (
+                  <div key={idx} className="bg-slate-700/30 rounded-lg p-3 border border-slate-600">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        hall.nivel_riesgo === 'Alto' ? 'bg-red-500/20 text-red-400' :
+                        hall.nivel_riesgo === 'Medio' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-green-500/20 text-green-400'
+                      }`}>
+                        {hall.nivel_riesgo}
+                      </span>
+                      <span className="text-xs text-gray-500">{hall.tipo_auditoria}</span>
+                    </div>
+                    <p className="text-sm text-white mb-1">{hall.descripcion_hallazgo}</p>
+                    <p className="text-xs text-gray-400">{hall.area_proceso_auditado}</p>
+                  </div>
+                ))}
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+
+          {/* Planes de Acción */}
+          {planesAccion.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+              className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+            >
+              <h3 className="text-xl font-bold text-white mb-4">Planes de Acción</h3>
+              <div className="space-y-3">
+                {planesAccion.slice(0, 5).map((plan, idx) => (
+                  <div key={idx} className="bg-slate-700/30 rounded-lg p-3 border border-slate-600">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        plan.estado_plan === 'Completado' ? 'bg-green-500/20 text-green-400' :
+                        plan.dias_para_vencimiento < 0 ? 'bg-red-500/20 text-red-400' :
+                        plan.dias_para_vencimiento < 7 ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-blue-500/20 text-blue-400'
+                      }`}>
+                        {plan.estado_plan}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {plan.dias_para_vencimiento < 0 ? 'Vencido' : `${plan.dias_para_vencimiento} días`}
+                      </span>
+                    </div>
+                    <p className="text-sm text-white mb-1">{plan.accion_correctiva}</p>
+                    <p className="text-xs text-gray-400">{plan.descripcion_hallazgo}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

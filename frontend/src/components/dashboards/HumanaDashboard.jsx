@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, TrendingUp, UserMinus, UserPlus, ArrowUp, X, Info } from 'lucide-react';
+import EnDesarrollo from './EnDesarrollo';
 
 export default function HumanaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -13,8 +14,15 @@ export default function HumanaDashboard({ data }) {
 
   const humanaData = Array.isArray(data) ? data : (data?.items || []);
   
-  if (humanaData.length === 0) {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
+  // Mostrar mensaje de desarrollo si no hay datos o hay mensaje del backend
+  if (humanaData.length === 0 || data?.mensaje) {
+    return (
+      <EnDesarrollo
+        titulo="Gestión Humana en Desarrollo"
+        descripcion="El módulo de Gestión Humana está siendo configurado. Pronto estará disponible con información sobre rotación de personal, causas de retiro, nómina y estructura organizacional."
+        modulo="Gestión Humana"
+      />
+    );
   }
 
   const formatCurrency = (value) => {

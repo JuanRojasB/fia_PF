@@ -13,12 +13,43 @@ export default function GranjasDashboard({ data }) {
     setModalOpen(true);
   };
 
-  // Validar que data sea un array y filtrar las filas de totales
-  const rawData = Array.isArray(data) ? data : (data?.items || []);
-  const granjasData = rawData.filter(d => {
+  // Validar estructura de datos - soportar formato optimizado y antiguo
+  let granjasData = [];
+  
+  console.log('GranjasDashboard - Datos recibidos:', data);
+  
+  if (data && typeof data === 'object') {
+    // Formato optimizado: { granjas: [...], capacidadClima: [...], ... }
+    if (data.granjas && Array.isArray(data.granjas)) {
+      console.log('GranjasDashboard - Formato optimizado detectado');
+      granjasData = data.granjas.map(g => ({
+        granja: g.nombre_granja,
+        tipo: g.zona_climatica || g.linea,
+        metros: parseFloat(g.metros_cuadrados) || 0,
+        aves: parseInt(g.capacidad_aves) || 0
+      }));
+    }
+    // Formato antiguo: { items: [...] } o array directo
+    else if (data.items && Array.isArray(data.items)) {
+      granjasData = data.items;
+    }
+    else if (Array.isArray(data)) {
+      granjasData = data;
+    }
+  } else if (Array.isArray(data)) {
+    granjasData = data;
+  }
+  
+  // Filtrar filas de totales
+  granjasData = granjasData.filter(d => {
     const granja = (d.granja || '').toUpperCase();
     const tipo = (d.tipo || '').toUpperCase();
     return granja !== 'TOTAL' && tipo !== 'TOTAL GENERAL';
+  });
+  
+  console.log('GranjasDashboard - Datos procesados:', {
+    total: granjasData.length,
+    sample: granjasData[0]
   });
   
   if (granjasData.length === 0) {
@@ -28,12 +59,6 @@ export default function GranjasDashboard({ data }) {
   const totalMetros = granjasData.reduce((sum, d) => sum + (parseFloat(d.metros) || 0), 0);
   const totalAves = granjasData.reduce((sum, d) => sum + (parseFloat(d.aves) || 0), 0);
   const totalGranjas = granjasData.length;
-
-  // Cálculos de capacidad - Pollo Fiesta Solo
-  const ciclosAnuales = 6.5; // Promedio de ciclos por año
-  const capacidadAnual = totalAves * ciclosAnuales;
-  const tasaMortalidad = 0.07; // 7%
-  const polloSalido = capacidadAnual * (1 - tasaMortalidad);
 
   const formatNumber = (value) => {
     if (!value || isNaN(value)) return '0';
@@ -53,17 +78,24 @@ export default function GranjasDashboard({ data }) {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
+      const densidad = data.metros > 0 ? Math.round(data.aves / data.metros) : 0;
+      
       return (
         <div className="bg-slate-900 border-2 border-slate-700 rounded-lg p-4 shadow-2xl">
           <p className="text-white font-bold text-lg mb-3">{data.tipo || data.granja}</p>
           {data.aves && (
             <p className="text-blue-400 text-base mb-1">
-              Aves: <span className="font-semibold">{data.aves.toLocaleString('es-ES', { useGrouping: true })}</span>
+              Aves: <span className="font-semibold">{formatNumber(data.aves)}</span>
             </p>
           )}
           {data.metros && (
             <p className="text-green-400 text-base mb-1">
-              Metros²: <span className="font-semibold">{data.metros.toLocaleString('es-ES', { useGrouping: true })}</span>
+              Metros²: <span className="font-semibold">{formatNumber(data.metros)}</span>
+            </p>
+          )}
+          {data.aves && data.metros && (
+            <p className="text-yellow-400 text-base mb-1 font-bold">
+              Aves/m²: <span className="font-semibold">{densidad}</span>
             </p>
           )}
           {data.granjas && (
@@ -125,16 +157,16 @@ export default function GranjasDashboard({ data }) {
           transition={{ delay: 0.1 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Área Total de Producción',
-            `${formatNumber(totalMetros)} m² de galpones en operación. Densidad promedio: ${(totalAves / totalMetros).toFixed(2)} aves/m². La densidad óptima varía según clima: zonas cálidas requieren menor densidad para mejor ventilación, zonas frías permiten mayor densidad. Cumple normativa de bienestar animal.`
+            'Aves por Metro Cuadrado',
+            `La cantidad promedio es de ${Math.round(totalAves / totalMetros)} aves por metro cuadrado. Esto se calcula dividiendo el número total de aves (${formatNumber(totalAves)}) entre el área total (${formatNumber(totalMetros)} m²). La cantidad óptima varía según clima: zonas cálidas requieren menor cantidad (menos aves/m²) para mejor ventilación y evitar estrés térmico, zonas frías permiten mayor cantidad (más aves/m²) porque las aves generan calor corporal. Todas las instalaciones cumplen con la normativa de bienestar animal vigente.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Área Total</span>
+            <span className="text-gray-400 text-sm font-medium">Aves por m²</span>
             <Layers className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">{totalMetros.toLocaleString('es-ES')} m²</div>
-          <div className="text-xs text-green-400">metros cuadrados</div>
+          <div className="text-3xl font-bold text-white mb-1">{Math.round(totalAves / totalMetros)}</div>
+          <div className="text-xs text-green-400">aves por metro cuadrado</div>
         </motion.div>
 
         <motion.div
@@ -144,7 +176,7 @@ export default function GranjasDashboard({ data }) {
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Capacidad Total de Aves',
-            `${formatNumber(totalAves)} aves simultáneas en todas las granjas. Proyección anual: ${formatNumber(totalAves * 6.5 * 0.93)} aves procesadas (6.5 ciclos/año × 93% supervivencia). Cada ciclo dura 45-50 días desde encasetamiento hasta sacrificio. La capacidad real varía según disponibilidad de pollitos, demanda y eventos sanitarios.`
+            `${formatNumber(totalAves)} aves es la capacidad instalada total en todas las granjas activas. Esta capacidad representa el número máximo de aves que pueden alojarse simultáneamente en los galpones. La distribución por zona climática permite optimizar la producción según las condiciones ambientales de cada región.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -163,10 +195,10 @@ export default function GranjasDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 cursor-pointer hover:border-slate-500 transition-all"
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 cursor-pointer hover:border-blue-500 transition-all"
           onClick={() => openModal(
-            'Distribución por Tipo de Clima',
-            `Clasificación: FRÍO (<18°C), CÁLIDO (18-24°C), CALIENTE (>24°C). Distribución: ${tipoData.map(t => `${t.tipo} ${formatNumber(t.aves)} aves (${((t.aves / totalAves) * 100).toFixed(1)}%)`).join(', ')}. Climas fríos requieren calefacción y permiten mayor densidad. Climas calientes necesitan ventilación intensiva y menor densidad. La diversificación optimiza producción según estación.`
+            'Distribución de Aves por Tipo de Clima',
+            `La empresa cuenta con ${totalGranjas} granjas distribuidas en ${tipoData.length} zonas climáticas diferentes. Distribución actual: ${tipoData.map(t => `${t.tipo}: ${formatNumber(t.aves)} aves (${((t.aves / totalAves) * 100).toFixed(1)}%) en ${t.granjas} granjas con densidad de ${(t.metros / t.aves).toFixed(2)} m²/ave`).join(' • ')}. Esta diversificación geográfica reduce riesgos operativos (enfermedades, clima extremo) y optimiza costos de producción según las condiciones ambientales de cada región.`
           )}
         >
           <h3 className="text-xl font-bold text-white mb-6">Distribución de Aves por Tipo de Clima</h3>
@@ -195,27 +227,42 @@ export default function GranjasDashboard({ data }) {
           </ResponsiveContainer>
         </motion.div>
 
-        {/* Comparación por Tipo - Bar Chart */}
+        {/* Comparación de Granjas por Tipo de Clima */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 cursor-pointer hover:border-slate-500 transition-all"
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 cursor-pointer hover:border-green-500 transition-all"
           onClick={() => openModal(
-            'Comparación por Tipo de Clima',
-            `Densidad por clima: ${tipoData.map(t => `${t.tipo} ${(t.aves / t.metros).toFixed(2)} aves/m²`).join(', ')}. Climas fríos permiten mayor densidad (aves generan calor). Climas calientes requieren menor densidad (evitar estrés térmico). Densidades optimizadas para maximizar productividad cumpliendo normativa de bienestar animal.`
+            'Número de Granjas por Zona Climática',
+            `Distribución de las ${totalGranjas} granjas por zona climática: ${tipoData.map(t => {
+              const pct = ((t.granjas / totalGranjas) * 100).toFixed(1);
+              return `Zona ${t.tipo}: ${t.granjas} granjas (${pct}%) con ${formatNumber(t.aves)} aves`;
+            }).join(' • ')}. Esta distribución geográfica permite diversificar riesgos operativos (enfermedades, clima extremo) y optimizar costos según condiciones locales. Cada zona tiene características específicas de manejo según su clima.`
           )}
         >
-          <h3 className="text-xl font-bold text-white mb-6">Comparación por Tipo de Clima (Aves y Área)</h3>
+          <h3 className="text-xl font-bold text-white mb-6">Número de Granjas por Tipo de Clima</h3>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={tipoData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
               <XAxis dataKey="tipo" stroke="#9ca3af" style={{ fontSize: '14px', fontWeight: 'bold' }} />
-              <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
-              <Tooltip content={<CustomTooltip />} />
+              <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} label={{ value: 'Número de Granjas', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569', borderRadius: '8px' }}
+                formatter={(value, name, props) => {
+                  if (name === 'granjas') {
+                    const pct = ((value / totalGranjas) * 100).toFixed(1);
+                    return [`${value} granjas (${pct}%)`, 'Granjas'];
+                  }
+                  return [value, name];
+                }}
+              />
               <Legend wrapperStyle={{ fontSize: '14px' }} />
-              <Bar dataKey="aves" fill="#3b82f6" name="Aves" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="metros" fill="#10b981" name="Metros²" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="granjas" fill="#10b981" name="Granjas" radius={[8, 8, 0, 0]}>
+                {tipoData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[entry.tipo] || '#8b5cf6'} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
@@ -226,7 +273,16 @@ export default function GranjasDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700 cursor-pointer hover:border-purple-500 transition-all"
+        onClick={() => {
+          const top10 = granjasData.sort((a, b) => (parseFloat(b.aves) || 0) - (parseFloat(a.aves) || 0)).slice(0, 10);
+          const totalTop10 = top10.reduce((sum, g) => sum + (parseFloat(g.aves) || 0), 0);
+          const porcentajeTop10 = ((totalTop10 / totalAves) * 100).toFixed(1);
+          openModal(
+            'Top 10 Granjas por Capacidad',
+            `Las 10 granjas con mayor capacidad concentran ${formatNumber(totalTop10)} aves, representando el ${porcentajeTop10}% de la capacidad total instalada. Granja líder: ${top10[0].granja} con ${formatNumber(top10[0].aves)} aves en ${formatNumber(top10[0].metros)} m² (densidad ${(top10[0].metros / top10[0].aves).toFixed(2)} m²/ave), ubicada en zona ${top10[0].tipo}. Esta concentración permite economías de escala en operación, logística y supervisión técnica.`
+          );
+        }}
       >
         <h3 className="text-xl font-bold text-white mb-6">Top 10 Granjas por Número de Aves</h3>
         <ResponsiveContainer width="100%" height={400}>
@@ -250,7 +306,11 @@ export default function GranjasDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700 overflow-x-auto"
+        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700 overflow-x-auto cursor-pointer hover:border-cyan-500 transition-all"
+        onClick={() => openModal(
+          'Detalle Completo de Todas las Granjas',
+          `Inventario completo de las ${totalGranjas} granjas activas: Capacidad total instalada de ${formatNumber(totalAves)} aves en ${formatNumber(totalMetros)} m², con densidad promedio de ${(totalMetros / totalAves).toFixed(2)} m²/ave. Distribución por zona: ${tipoData.map(t => `${t.tipo}: ${t.granjas} granjas (${formatNumber(t.aves)} aves, ${formatNumber(t.metros)} m²)`).join(' • ')}. Cada granja está optimizada según su ubicación geográfica, clima local y capacidad operativa para maximizar eficiencia productiva.`
+        )}
       >
         <h3 className="text-xl font-bold text-white mb-4">Detalle Completo por Granja</h3>
         <table className="w-full text-xs border-collapse">
@@ -324,7 +384,7 @@ export default function GranjasDashboard({ data }) {
               // Al final el total general
               rows.push(
                 <tr key="total-general" className="bg-blue-600/20 border-t-4 border-blue-500 font-bold text-sm">
-                  <td className="py-1.5 px-2 text-blue-200" colSpan="2">TOTAL GENERAL</td>
+                  <td className="py-1.5 px-2 text-blue-200" colSpan="2">TOTAL</td>
                   <td className="py-1.5 px-2 text-right text-blue-200 tabular-nums">{globalMetros.toLocaleString('es-ES')}</td>
                   <td className="py-1.5 px-2 text-right text-blue-200 tabular-nums">{globalAves.toLocaleString('es-ES')}</td>
                 </tr>
@@ -336,40 +396,89 @@ export default function GranjasDashboard({ data }) {
         </table>
       </motion.div>
 
-      {/* Sección de Capacidad - Pollo Fiesta Solo */}
+      {/* Resumen de Capacidad por Zona Climática - DATOS REALES DE BD */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
-        className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-600 cursor-pointer hover:border-slate-400 transition-all"
+        className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl rounded-xl p-6 border-2 border-slate-600 cursor-pointer hover:border-yellow-500 transition-all"
         onClick={() => openModal(
-          'Proyección Anual - Pollo Fiesta Solo',
-          'Cálculo: Capacidad ('+formatNumber(totalAves)+' aves) × 6.5 ciclos/año × 93% supervivencia = '+formatNumber(capacidadAnual * (1 - tasaMortalidad))+' aves/año. Cada ciclo: 45-50 días engorde + 10 días limpieza. Mortalidad 7% es estándar industria. Proyección teórica máxima; producción real depende de disponibilidad de pollitos, demanda y mantenimientos.'
+          'Resumen Estratégico por Zona Climática',
+          `Distribución estratégica de capacidad instalada: ${tipoData.map(t => {
+            const pct = ((t.aves / totalAves) * 100).toFixed(1);
+            const densidad = Math.round(t.aves / t.metros);
+            return `Zona ${t.tipo}: ${t.granjas} granjas con ${formatNumber(t.aves)} aves (${pct}% del total), ${formatNumber(t.metros)} m², ${densidad} aves/m²`;
+          }).join(' • ')}. Esta distribución multi-climática permite: 1) Diversificación de riesgos sanitarios y climáticos, 2) Optimización de costos operativos según condiciones locales, 3) Continuidad operativa ante eventos climáticos extremos, 4) Aprovechamiento de ventajas competitivas regionales (mano de obra, insumos, logística).`
         )}
       >
-        <h2 className="text-2xl font-bold text-white mb-6">Pollo Fiesta Solo</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">Capacidad Instalada por Zona Climática</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Capacidad */}
-          <div className="bg-slate-900/50 rounded-lg p-5 border border-blue-500/30">
-            <div className="text-sm text-gray-400 mb-2">Capacidad × Ciclos anuales</div>
-            <div className="text-4xl font-bold text-blue-400 mb-1">{formatNumber(capacidadAnual)}</div>
-            <div className="text-xs text-gray-500">aves encasetadas/año</div>
-          </div>
-
-          {/* Mortalidad */}
-          <div className="bg-slate-900/50 rounded-lg p-5 border border-red-500/30">
-            <div className="text-sm text-gray-400 mb-2">Mortalidad</div>
-            <div className="text-sm text-gray-500 mb-2">Tasa de pérdida estimada</div>
-            <div className="text-4xl font-bold text-red-400 mb-1">{(tasaMortalidad * 100).toFixed(0)}%</div>
-            <div className="text-xs text-gray-500">promedio anual</div>
-          </div>
-
-          {/* Pollo Salido Total */}
-          <div className="bg-slate-900/50 rounded-lg p-5 border border-yellow-500/30">
-            <div className="text-sm text-gray-400 mb-2">Pollo Salido Total</div>
-            <div className="text-4xl font-bold text-yellow-400 mb-1">{formatNumber(polloSalido)}</div>
-            <div className="text-xs text-gray-500">aves disponibles</div>
-          </div>
+          {tipoData.map((zona, idx) => {
+            const colores = {
+              'FRIO': { 
+                bg: 'border-blue-500/30 hover:border-blue-500', 
+                badge: 'bg-blue-500/20 text-blue-300',
+                text: 'text-blue-400',
+                densidad: 'text-blue-300',
+                temp: '<18°C'
+              },
+              'CALIDO': { 
+                bg: 'border-green-500/30 hover:border-green-500', 
+                badge: 'bg-green-500/20 text-green-300',
+                text: 'text-green-400',
+                densidad: 'text-green-300',
+                temp: '18-24°C'
+              },
+              'CALIENTE': { 
+                bg: 'border-yellow-500/30 hover:border-yellow-500', 
+                badge: 'bg-yellow-500/20 text-yellow-300',
+                text: 'text-yellow-400',
+                densidad: 'text-yellow-300',
+                temp: '>24°C'
+              }
+            };
+            
+            const color = colores[zona.tipo] || colores['FRIO'];
+            const porcentaje = ((zona.aves / totalAves) * 100).toFixed(1);
+            const densidad = Math.round(zona.aves / zona.metros);
+            
+            return (
+              <div key={idx} className={`bg-slate-900/50 rounded-lg p-5 border-2 ${color.bg} transition-all`}>
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`text-lg font-bold ${color.text}`}>ZONA {zona.tipo}</div>
+                  <div className={`text-xs ${color.badge} px-2 py-1 rounded`}>{color.temp}</div>
+                </div>
+                <div className="space-y-2">
+                  <div>
+                    <div className="text-xs text-gray-400">Capacidad Total</div>
+                    <div className="text-3xl font-bold text-white">{formatNumber(zona.aves)}</div>
+                    <div className={`text-xs ${color.text}`}>aves ({porcentaje}%)</div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
+                    <div>
+                      <div className="text-xs text-gray-400">Granjas</div>
+                      <div className="text-lg font-bold text-white">{zona.granjas}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-400">Área</div>
+                      <div className="text-lg font-bold text-white">{formatNumber(zona.metros)} m²</div>
+                    </div>
+                  </div>
+                  <div className="pt-2 border-t border-slate-700">
+                    <div className="text-xs text-gray-400">Aves por m²</div>
+                    <div className={`text-xl font-bold ${color.densidad}`}>{densidad} aves/m²</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        
+        {/* Nota informativa */}
+        <div className="mt-4 bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+          <p className="text-sm text-gray-300">
+            <span className="font-semibold text-white">Distribución estratégica:</span> Las {totalGranjas} granjas están distribuidas estratégicamente en {tipoData.length} zonas climáticas para diversificar riesgos operativos y optimizar costos de producción según las condiciones ambientales de cada región.
+          </p>
         </div>
       </motion.div>
 

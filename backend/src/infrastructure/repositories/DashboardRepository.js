@@ -1,694 +1,838 @@
 const IDashboardRepository = require('../../domain/repositories/IDashboardRepository');
 const { getInstance } = require('../database/connection');
 
+/**
+ * Dashboard Repository - Adaptado a erp_pollo_fiesta
+ * Usa vistas y tablas reales con datos completos
+ */
 class DashboardRepository extends IDashboardRepository {
   
-  // FUENTES Y USOS (Balance General) - Comparativa 2024 vs 2025 CON CÁLCULOS
-  async getFuentesUsos() {
-    const db = getInstance();
-    const pool = db.getPool();
-    const [rows] = await pool.query(`
-      SELECT 
-        category as tipo,
-        subcategory as subcategoria,
-        account_name as categoria,
-        value_2025 as valor_2025,
-        value_2024 as valor_2024,
-        variation as variacion,
-        fuentes,
-        usos
-      FROM financial_data
-      ORDER BY category, subcategory, account_name
-    `);
-    
-    // Calcular totales y variaciones
-    const activos = rows.filter(d => d.tipo === 'ACTIVOS');
-    const pasivos = rows.filter(d => d.tipo === 'PASIVOS');
-    const patrimonio = rows.filter(d => d.tipo === 'PATRIMONIO');
-    
-    const totalActivos2025 = activos.reduce((sum, d) => sum + (parseFloat(d.valor_2025) || 0), 0);
-    const totalActivos2024 = activos.reduce((sum, d) => sum + (parseFloat(d.valor_2024) || 0), 0);
-    
-    const totalPasivos2025 = pasivos.reduce((sum, d) => sum + (parseFloat(d.valor_2025) || 0), 0);
-    const totalPasivos2024 = pasivos.reduce((sum, d) => sum + (parseFloat(d.valor_2024) || 0), 0);
-    
-    const totalPatrimonio2025 = patrimonio.reduce((sum, d) => sum + (parseFloat(d.valor_2025) || 0), 0);
-    const totalPatrimonio2024 = patrimonio.reduce((sum, d) => sum + (parseFloat(d.valor_2024) || 0), 0);
-    
-    const varActivos = totalActivos2024 > 0 ? (((totalActivos2025 - totalActivos2024) / totalActivos2024) * 100).toFixed(1) : 0;
-    const varPasivos = totalPasivos2024 > 0 ? (((totalPasivos2025 - totalPasivos2024) / totalPasivos2024) * 100).toFixed(1) : 0;
-    const varPatrimonio = totalPatrimonio2024 > 0 ? (((totalPatrimonio2025 - totalPatrimonio2024) / totalPatrimonio2024) * 100).toFixed(1) : 0;
-    
-    return {
-      items: rows,
-      totales: {
-        activos: {
-          valor2025: totalActivos2025,
-          valor2024: totalActivos2024,
-          variacion: parseFloat(varActivos)
-        },
-        pasivos: {
-          valor2025: totalPasivos2025,
-          valor2024: totalPasivos2024,
-          variacion: parseFloat(varPasivos)
-        },
-        patrimonio: {
-          valor2025: totalPatrimonio2025,
-          valor2024: totalPatrimonio2024,
-          variacion: parseFloat(varPatrimonio)
-        }
-      }
-    };
-  }
-
-  // GESTIÓN DE CARTERA - Comparativa mensual con datos 2024 y 2025 CON CÁLCULOS
-  async getGestionCartera() {
-    const db = getInstance();
-    const pool = db.getPool();
-    const [rows] = await pool.query(`
-      SELECT 
-        mes,
-        anio,
-        total_cartera,
-        total_vencida as cartera_vencida,
-        indice_morosi as indice_mora,
-        dias_rotacion as rotacion_dias,
-        ventas_contado,
-        ventas_credito,
-        t2025_millones as exp_millones_2025,
-        t2024_millones as exp_millones_2024,
-        var_t_percent as variacion_pct,
-        comentario
-      FROM gestion_cartera
-      WHERE anio = 2025
-      ORDER BY FIELD(mes, 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 
-                     'jul', 'ago', 'sep', 'oct', 'nov', 'dic')
-    `);
-    
-    // Calcular promedios
-    const promedioCartera = rows.reduce((sum, d) => sum + (parseFloat(d.total_cartera) || 0), 0) / rows.length;
-    const promedioMora = rows.reduce((sum, d) => sum + (parseFloat(d.indice_mora) || 0), 0) / rows.length;
-    const promedioRotacion = rows.reduce((sum, d) => sum + (parseFloat(d.rotacion_dias) || 0), 0) / rows.length;
-    
-    return {
-      items: rows,
-      promedios: {
-        cartera: promedioCartera,
-        mora: promedioMora,
-        rotacion: promedioRotacion
-      }
-    };
-  }
-
-  // GESTIÓN COMERCIAL - Ventas Asadero y Sede 3 (2024 vs 2025) CON CÁLCULOS
+  // ==================== COMERCIAL ====================
+  
   async getGestionComercial() {
     const db = getInstance();
     const pool = db.getPool();
     
-    // Obtener datos de productos (REFRIGERADO/CONGELADO)
-    const [productos] = await pool.query(`
-      SELECT 
-        sede,
-        canal as linea,
-        concepto,
-        anio,
-        valor_numerico as kg,
-        porcentaje as participacion_pct
-      FROM gestion_comercial
-      WHERE tipo_dato = 'VENTAS_PRODUCTO'
-      ORDER BY anio DESC, valor_numerico DESC
+    // Vista: Análisis de ventas por categoría (2024 vs 2025)
+    const [analisisVentas] = await pool.query(`
+      SELECT * FROM vista_com_analisis_ventas ORDER BY anio DESC, kilos_vendidos DESC
     `);
     
-    // Obtener datos de asadero
-    const [asadero] = await pool.query(`
+    // Vista: KPIs de pollo entero (2023-2025)
+    const [kpisPollo] = await pool.query(`
+      SELECT * FROM vista_com_kpi_pollo_entero ORDER BY anio DESC
+    `);
+    
+    // Vista: Unidades procesadas por centro
+    const [unidadesProcesadas] = await pool.query(`
+      SELECT * FROM vista_com_unidades_procesadas ORDER BY anio DESC, unidades DESC
+    `);
+    
+    // Vista: Comparativo de huevo multianual
+    const [comparativoHuevo] = await pool.query(`
+      SELECT * FROM vista_com_huevo_comparativo_multianual
+    `);
+    
+    // Vista: Participación PDV por zona 2024 - NUEVA
+    const [pdvParticipacionZona] = await pool.query(`
+      SELECT * FROM vista_com_pdv_participacion_zona_2024 ORDER BY zona_asignacion, participacion_pollo_pct DESC
+    `);
+    
+    // Ventas detalladas Sede 3 (Refrigerado/Congelado)
+    const [ventasSede3] = await pool.query(`
       SELECT 
-        'ASADERO' as sede,
-        categoria,
-        descripcion as linea,
         anio,
-        total_kl as kg,
-        total_part as participacion_pct,
-        total_var as variacion_pct,
+        estado_conservacion,
+        codigo_linea,
+        nombre_linea,
+        kilos_vendidos,
         precio_promedio,
+        (kilos_vendidos * precio_promedio) as ingresos_calculados
+      FROM com_sede3_ventas_detalle
+      ORDER BY anio DESC, kilos_vendidos DESC
+    `);
+    
+    // Ventas de huevo por raza
+    const [ventasHuevo] = await pool.query(`
+      SELECT 
+        anio,
+        raza_produccion,
+        unidades_vendidas,
+        precio_promedio_unidad,
+        ingresos_totales_calculados,
+        utilidad_neta_millones,
+        margen_neto_pct
+      FROM com_ventas_huevo
+      ORDER BY anio DESC, unidades_vendidas DESC
+    `);
+    
+    // Todos los puntos de venta
+    const [puntosVenta] = await pool.query(`
+      SELECT * FROM com_puntos_venta ORDER BY zona, nombre_pdv
+    `);
+    
+    // Agrupaciones comerciales
+    const [agrupaciones] = await pool.query(`
+      SELECT 
+        a.nombre_agrupacion,
+        a.lider_comercial,
+        c.nombre_categoria
+      FROM com_agrupaciones a
+      LEFT JOIN com_categorias c ON a.id_categoria = c.id_categoria
+      ORDER BY c.nombre_categoria, a.nombre_agrupacion
+    `);
+    
+    // Objetivos de pollo entero
+    const [objetivos] = await pool.query(`
+      SELECT * FROM com_objetivo_pollo_entero ORDER BY anio DESC
+    `);
+    
+    // Metas operativas Sede 3 - CON TODOS LOS CAMPOS
+    const [metasSede3] = await pool.query(`
+      SELECT 
+        anio,
+        kilos_recibidos_canal,
+        ventas_kilos_generales,
         ingresos_totales,
-        comentario
-      FROM gestion_comercial_asadero
-      WHERE categoria = 'VENTA_PRODUCTO'
-      ORDER BY anio DESC, total_kl DESC
+        precio_promedio_kilo,
+        dias_rotacion_cartera,
+        fuerza_comercial_asesores,
+        fuerza_comercial_servicio_cliente,
+        fuerza_comercial_mercaderistas,
+        (COALESCE(fuerza_comercial_asesores,0) + COALESCE(fuerza_comercial_servicio_cliente,0) + COALESCE(fuerza_comercial_mercaderistas,0)) as total_fuerza_comercial
+      FROM com_sede3_metas_operativas
+      ORDER BY anio DESC
     `);
     
-    // Obtener datos de sede 3
-    const [sede3] = await pool.query(`
+    // Ventas por categoría (Pie/Canal) - COMPLETO
+    const [ventasPieCanal] = await pool.query(`
       SELECT 
-        'SEDE3' as sede,
-        categoria,
-        descripcion as linea,
+        v.anio,
+        c.nombre_categoria,
+        v.kilos_vendidos,
+        v.ingresos_pesos,
+        (v.ingresos_pesos / v.kilos_vendidos) as precio_promedio_kg
+      FROM com_ventas_pie_canal v
+      LEFT JOIN com_categorias c ON v.id_categoria = c.id_categoria
+      ORDER BY v.anio DESC, v.kilos_vendidos DESC
+    `);
+    
+    // Unidades procesadas por centro - NUEVO
+    const [unidadesPorCentro] = await pool.query(`
+      SELECT 
         anio,
-        total_kl as kg,
-        total_part as participacion_pct,
-        variacion_kl,
-        porcentaje_var as variacion_pct,
-        precio,
-        comentario
-      FROM gestion_comercial_sede3
-      WHERE categoria = 'VENTA_PRODUCTO'
-      ORDER BY anio DESC, total_kl DESC
+        centro_operacion,
+        unidades
+      FROM com_unidades_procesadas
+      ORDER BY anio DESC, unidades DESC
     `);
     
-    const allData = [...productos, ...asadero, ...sede3];
+    // Información de sedes (U01, U02, U03) - NUEVO
+    const [sedesInfo] = await pool.query(`
+      SELECT 
+        u.anio,
+        u.centro_operacion,
+        u.unidades,
+        u.participacion_porcentaje,
+        m.sede,
+        m.merma_2025,
+        m.meta_establecida,
+        m.brecha_puntos_porcentuales,
+        m.estado_evaluacion
+      FROM vista_com_unidades_procesadas u
+      LEFT JOIN vista_log_cumplimiento_mermas_2025 m 
+        ON (
+          (u.centro_operacion = 'Sede U01' AND m.sede = 'U01') OR
+          (u.centro_operacion = 'Sede U02' AND m.sede = 'U02') OR
+          (u.centro_operacion = 'Sede U03' AND m.sede = 'U03')
+        )
+      WHERE u.centro_operacion LIKE 'Sede U%'
+      ORDER BY u.anio DESC, u.unidades DESC
+    `);
     
-    // Calcular totales por categoría y año
-    const getData = (linea, anio) => {
-      const item = allData.find(d => 
-        d.linea && d.linea.includes(linea) && parseInt(d.anio) === anio
-      );
-      return item ? parseFloat(item.kg) || 0 : 0;
-    };
+    // Calcular totales SOLO si no existen en vistas - USAR DATOS DE BD
+    const total2025 = analisisVentas
+      .filter(v => v.anio === 2025)
+      .reduce((sum, v) => sum + parseFloat(v.kilos_vendidos || 0), 0);
     
-    const refrigerado2025 = getData('REFRIGERADO', 2025);
-    const refrigerado2024 = getData('REFRIGERADO', 2024);
-    const congelado2025 = getData('CONGELADO', 2025);
-    const congelado2024 = getData('CONGELADO', 2024);
+    const total2024 = analisisVentas
+      .filter(v => v.anio === 2024)
+      .reduce((sum, v) => sum + parseFloat(v.kilos_vendidos || 0), 0);
     
-    const totalKg2025 = refrigerado2025 + congelado2025;
-    const totalKg2024 = refrigerado2024 + congelado2024;
-    const variacionTotal = totalKg2024 > 0 ? (((totalKg2025 - totalKg2024) / totalKg2024) * 100).toFixed(2) : 0;
+    const ingresos2025 = analisisVentas
+      .filter(v => v.anio === 2025)
+      .reduce((sum, v) => sum + parseFloat(v.ingresos_pesos || 0), 0);
+    
+    const ingresos2024 = analisisVentas
+      .filter(v => v.anio === 2024)
+      .reduce((sum, v) => sum + parseFloat(v.ingresos_pesos || 0), 0);
+    
+    // Variación ya viene calculada en participacion_kilos_pct de la vista
+    const variacionKilos = total2024 > 0 
+      ? (((total2025 - total2024) / total2024) * 100).toFixed(2) 
+      : 0;
+    
+    const variacionIngresos = ingresos2024 > 0 
+      ? (((ingresos2025 - ingresos2024) / ingresos2024) * 100).toFixed(2) 
+      : 0;
     
     return {
-      items: allData,
+      // Vistas principales
+      analisisVentas,
+      kpisPollo,
+      unidadesProcesadas,
+      comparativoHuevo,
+      pdvParticipacionZona,
+      
+      // Ventas detalladas
+      ventasSede3,
+      ventasHuevo,
+      ventasPieCanal,
+      unidadesPorCentro,
+      sedesInfo,
+      
+      // Estructura organizacional
+      puntosVenta,
+      agrupaciones,
+      
+      // Metas y objetivos
+      objetivos,
+      metasSede3,
+      
+      // Totales calculados
       totales: {
-        refrigerado2025,
-        refrigerado2024,
-        congelado2025,
-        congelado2024,
-        totalKg2025,
-        totalKg2024,
-        variacionTotal: parseFloat(variacionTotal)
+        kilos2025: total2025,
+        kilos2024: total2024,
+        variacionKilosPct: parseFloat(variacionKilos),
+        ingresos2025: ingresos2025,
+        ingresos2024: ingresos2024,
+        variacionIngresosPct: parseFloat(variacionIngresos),
+        totalPuntosVenta: puntosVenta.length,
+        totalAgrupaciones: agrupaciones.length
       }
     };
   }
 
-  // GESTIÓN HUMANA - Comparativa 2024 vs 2025 CON CÁLCULOS
-  async getGestionHumana() {
+  // ==================== CARTERA ====================
+  
+  async getGestionCartera() {
     const db = getInstance();
     const pool = db.getPool();
-    const [rows] = await pool.query(`
-      SELECT 
-        categor_a as categoria,
-        descripci_n as concepto,
-        a_o as anio,
-        valor,
-        __variaci_n as variacion_pct,
-        variaci_n_absoluta as variacion_absoluta,
-        narrativa
-      FROM gestion_humana_2025
-      ORDER BY categor_a, a_o
+    
+    // Vista: Exposición de cartera 2025 vs 2024 - NUEVA
+    const [exposicionCartera] = await pool.query(`
+      SELECT * FROM vista_fin_exposicion_cartera_25_vs_24 ORDER BY mes_num
     `);
     
-    // Agrupar por categoría
-    const categorias = {
-      'Planta de Personal': [],
-      'Costo de Nómina': [],
-      'Horas Extras': [],
-      'Rotación de Personal': [],
-      'Causas de Desvinculación 2025': []
-    };
-    
-    const uniqueData = new Map();
-    rows.forEach(d => {
-      const cat = d.categoria || d.categor_a;
-      const key = `${cat}-${d.concepto}-${d.anio}`;
-      if (!uniqueData.has(key)) {
-        uniqueData.set(key, d);
-      }
-    });
-    
-    Array.from(uniqueData.values()).forEach(d => {
-      const cat = d.categoria || d.categor_a;
-      if (cat && cat.includes('Causas de Desvinculaci')) {
-        categorias['Causas de Desvinculación 2025'].push(d);
-      } else if (categorias[cat]) {
-        categorias[cat].push(d);
-      }
-    });
-    
-    // Calcular KPIs
-    const personal2024 = categorias['Planta de Personal'].find(d => (d.anio === '2024' || d.anio === 2024) && d.concepto === 'Total Colaboradores');
-    const personal2025 = categorias['Planta de Personal'].find(d => (d.anio === '2025' || d.anio === 2025) && d.concepto === 'Total Colaboradores');
-    
-    const costoTotal2024 = categorias['Costo de Nómina'].find(d => (d.anio === '2024' || d.anio === 2024) && d.concepto === 'Costo Total');
-    const costoTotal2025 = categorias['Costo de Nómina'].find(d => (d.anio === '2025' || d.anio === 2025) && d.concepto === 'Costo Total');
-    
-    const retiros2024 = categorias['Rotación de Personal'].find(d => (d.anio === '2024' || d.anio === 2024) && d.concepto === 'Retiros');
-    const retiros2025 = categorias['Rotación de Personal'].find(d => (d.anio === '2025' || d.anio === 2025) && d.concepto === 'Retiros');
-    
-    const ingresos2024 = categorias['Rotación de Personal'].find(d => (d.anio === '2024' || d.anio === 2024) && d.concepto === 'Ingresos');
-    const ingresos2025 = categorias['Rotación de Personal'].find(d => (d.anio === '2025' || d.anio === 2025) && d.concepto === 'Ingresos');
-    
-    // Procesar causas de desvinculación
-    const causasMap = new Map();
-    categorias['Causas de Desvinculación 2025'].forEach(row => {
-      const key = row.concepto;
-      if (!causasMap.has(key) || causasMap.get(key).valor < row.valor) {
-        causasMap.set(key, row);
-      }
-    });
-    
-    const causasData = Array.from(causasMap.values())
-      .sort((a, b) => b.valor - a.valor)
-      .map(row => ({
-        name: row.concepto,
-        value: row.valor,
-        percentage: row.variacion_pct
-      }));
-    
-    return {
-      items: rows,
-      categorias,
-      kpis: {
-        personal2024,
-        personal2025,
-        costoTotal2024,
-        costoTotal2025,
-        retiros2024,
-        retiros2025,
-        ingresos2024,
-        ingresos2025
-      },
-      causasDesvinculacion: causasData
-    };
-  }
-
-  // GESTIÓN LOGÍSTICA - Comparativa 2024 vs 2025 CON CÁLCULOS
-  async getGestionLogistica() {
-    const db = getInstance();
-    const pool = db.getPool();
-    const [rows] = await pool.query(`
-      SELECT 
-        categoria,
-        sede,
-        concepto,
-        anio,
-        valor,
-        variacion as variacion_pct,
-        comentario
-      FROM gestion_logistica
-      ORDER BY sede, anio DESC, concepto
+    // Vista: Mix de ventas 2025 (contado/crédito, morosidad, rotación) - NUEVA
+    const [mixVentas] = await pool.query(`
+      SELECT * FROM vista_fin_mix_ventas_2025 ORDER BY mes_num
     `);
     
-    // Filtrar y procesar datos - aceptar SEDE1, SEDE2, SEDE3
-    const conceptosMap = {};
-    rows.forEach(d => {
-      const sedeNormalizada = (d.sede || '').toString().trim().toUpperCase();
-      
-      // Solo aceptar SEDE1, SEDE2, SEDE3 (no CONSOLIDADO ni NULL)
-      if (!sedeNormalizada || sedeNormalizada === 'NULL' || sedeNormalizada === 'CONSOLIDADO') return;
-      
-      const conceptoNormalizado = (d.concepto || '').toString().trim();
-      if (!conceptoNormalizado) return;
-      
-      const conceptoUpper = conceptoNormalizado.toUpperCase();
-      // Filtrar totales
-      if (conceptoUpper.includes('TOTAL') || conceptoUpper.includes('GASTOS LOGISTICOS')) return;
-      
-      const anio = parseInt(d.anio);
-      if (anio !== 2024 && anio !== 2025) return;
-      
-      const key = `${sedeNormalizada}-${conceptoNormalizado}-${anio}`;
-      const valor = parseFloat(d.valor) || 0;
-      
-      conceptosMap[key] = {
-        sede: sedeNormalizada,
-        concepto: conceptoNormalizado,
-        anio: anio,
-        valor: valor
-      };
-    });
-    
-    // Reorganizar por concepto y sede
-    const conceptosPorSede = {};
-    Object.values(conceptosMap).forEach(d => {
-      const key = `${d.sede}-${d.concepto}`;
-      if (!conceptosPorSede[key]) {
-        conceptosPorSede[key] = { sede: d.sede, concepto: d.concepto, valor2024: 0, valor2025: 0 };
-      }
-      if (d.anio === 2024) conceptosPorSede[key].valor2024 = d.valor;
-      else if (d.anio === 2025) conceptosPorSede[key].valor2025 = d.valor;
-    });
-    
-    const conceptosData = Object.values(conceptosPorSede);
-    
-    // Calcular totales
-    const total2025 = conceptosData.reduce((sum, d) => sum + d.valor2025, 0);
-    const total2024 = conceptosData.reduce((sum, d) => sum + d.valor2024, 0);
-    const variacionTotal = total2024 > 0 ? (((total2025 - total2024) / total2024) * 100).toFixed(1) : 0;
-    
-    // Totales por sede
-    const sedesMap = {};
-    conceptosData.forEach(d => {
-      const sedeNormalizada = d.sede;
-      
-      if (!sedesMap[sedeNormalizada]) sedesMap[sedeNormalizada] = { sede: sedeNormalizada, total2024: 0, total2025: 0 };
-      sedesMap[sedeNormalizada].total2024 += d.valor2024;
-      sedesMap[sedeNormalizada].total2025 += d.valor2025;
-    });
-    
-    const sedesData = Object.values(sedesMap);
-    
-    return {
-      items: conceptosData,
-      totales: {
-        total2025,
-        total2024,
-        variacionTotal: parseFloat(variacionTotal)
-      },
-      sedes: sedesData
-    };
-  }
-
-  // PRODUCCIÓN - Capacidad de Granjas CON CÁLCULOS
-  async getProduccionGranjas() {
-    const db = getInstance();
-    const pool = db.getPool();
-    const [rows] = await pool.query(`
+    // Todos los clientes con detalles completos
+    const [clientes] = await pool.query(`
       SELECT 
-        tipo,
-        granja,
-        mts as metros,
-        aves
-      FROM capacidad_granjas
-      ORDER BY tipo, granja
+        id_cliente,
+        nombre_cliente,
+        dias_rotacion_real,
+        saldo_pendiente,
+        asesor_asignado,
+        (saldo_pendiente / 1000000) as saldo_millones
+      FROM com_cartera_clientes
+      ORDER BY saldo_pendiente DESC
     `);
     
-    // Filtrar totales
-    const granjasData = rows.filter(d => {
-      const granja = (d.granja || '').toUpperCase();
-      const tipo = (d.tipo || '').toUpperCase();
-      return granja !== 'TOTAL' && tipo !== 'TOTAL GENERAL';
-    });
+    // Calcular métricas generales
+    const totalCartera = clientes.reduce((sum, c) => sum + (parseFloat(c.saldo_pendiente) || 0), 0);
+    const promedioRotacion = clientes.length > 0
+      ? clientes.reduce((sum, c) => sum + (parseFloat(c.dias_rotacion_real) || 0), 0) / clientes.length
+      : 0;
     
-    // Calcular totales
-    const totalMetros = granjasData.reduce((sum, d) => sum + (parseFloat(d.metros) || 0), 0);
-    const totalAves = granjasData.reduce((sum, d) => sum + (parseFloat(d.aves) || 0), 0);
-    const totalGranjas = granjasData.length;
-    
-    // Cálculos de capacidad
-    const ciclosAnuales = 6.5;
-    const tasaMortalidad = 0.07;
-    const capacidadAnual = totalAves * ciclosAnuales;
-    const polloSalido = capacidadAnual * (1 - tasaMortalidad);
-    
-    // Agrupar por tipo
-    const porTipo = granjasData.reduce((acc, d) => {
-      const tipo = d.tipo || 'Sin tipo';
-      if (!acc[tipo]) {
-        acc[tipo] = { metros: 0, aves: 0, count: 0 };
+    // Agrupar por asesor
+    const porAsesor = clientes.reduce((acc, c) => {
+      const asesor = c.asesor_asignado || 'Sin asignar';
+      if (!acc[asesor]) {
+        acc[asesor] = { 
+          clientes: 0, 
+          cartera: 0, 
+          rotacionTotal: 0,
+          rotacionPromedio: 0,
+          clientesLista: []
+        };
       }
-      acc[tipo].metros += parseFloat(d.metros) || 0;
-      acc[tipo].aves += parseFloat(d.aves) || 0;
-      acc[tipo].count += 1;
+      acc[asesor].clientes += 1;
+      acc[asesor].cartera += parseFloat(c.saldo_pendiente) || 0;
+      acc[asesor].rotacionTotal += parseFloat(c.dias_rotacion_real) || 0;
+      acc[asesor].clientesLista.push({
+        nombre: c.nombre_cliente,
+        saldo: c.saldo_pendiente,
+        rotacion: c.dias_rotacion_real
+      });
       return acc;
     }, {});
     
-    const tipoData = Object.entries(porTipo).map(([tipo, values]) => ({
-      tipo,
-      metros: values.metros,
-      aves: values.aves,
-      granjas: values.count
-    }));
+    // Calcular promedios por asesor
+    Object.keys(porAsesor).forEach(asesor => {
+      const data = porAsesor[asesor];
+      data.rotacionPromedio = (data.rotacionTotal / data.clientes).toFixed(2);
+      data.carteraPorcentaje = totalCartera > 0 ? ((data.cartera / totalCartera) * 100).toFixed(2) : 0;
+    });
+    
+    // Clasificar clientes por rango de rotación
+    const porRangoRotacion = {
+      'Excelente (0-15 días)': clientes.filter(c => c.dias_rotacion_real <= 15).length,
+      'Bueno (16-30 días)': clientes.filter(c => c.dias_rotacion_real > 15 && c.dias_rotacion_real <= 30).length,
+      'Regular (31-45 días)': clientes.filter(c => c.dias_rotacion_real > 30 && c.dias_rotacion_real <= 45).length,
+      'Malo (46-60 días)': clientes.filter(c => c.dias_rotacion_real > 45 && c.dias_rotacion_real <= 60).length,
+      'Crítico (>60 días)': clientes.filter(c => c.dias_rotacion_real > 60).length
+    };
+    
+    // Top 10 clientes por saldo
+    const top10Clientes = clientes.slice(0, 10);
+    
+    // Clientes con rotación crítica (>60 días)
+    const clientesCriticos = clientes.filter(c => c.dias_rotacion_real > 60);
     
     return {
-      items: granjasData,
+      // Vistas nuevas
+      exposicionCartera,
+      mixVentas,
+      
+      // Datos existentes
+      clientes,
+      porAsesor,
+      porRangoRotacion,
+      top10Clientes,
+      clientesCriticos,
       totales: {
-        totalMetros,
-        totalAves,
-        totalGranjas,
-        ciclosAnuales,
-        tasaMortalidad,
-        capacidadAnual,
-        polloSalido
-      },
-      porTipo: tipoData
+        totalCartera,
+        totalCarteraMillones: (totalCartera / 1000000).toFixed(2),
+        promedioRotacion: promedioRotacion.toFixed(2),
+        totalClientes: clientes.length,
+        totalAsesores: Object.keys(porAsesor).length,
+        clientesCriticos: clientesCriticos.length,
+        porcentajeCriticos: ((clientesCriticos.length / clientes.length) * 100).toFixed(2)
+      }
     };
   }
 
-  // PRODUCCIÓN - Histórico de Sacrificio y Encasetado CON CÁLCULOS
+  // ==================== LOGÍSTICA ====================
+  
+  async getGestionLogistica() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    // Control de mermas
+    const [mermas] = await pool.query(`
+      SELECT 
+        anio,
+        sede,
+        porcentaje_merma_real,
+        porcentaje_meta
+      FROM log_control_mermas
+      ORDER BY anio DESC, sede
+    `);
+    
+    // Vista de cumplimiento 2025
+    const [cumplimiento2025] = await pool.query(`
+      SELECT * FROM vista_log_cumplimiento_mermas_2025
+    `);
+    
+    // Calcular promedios por sede
+    const porSede = mermas.reduce((acc, m) => {
+      const sede = m.sede || 'General';
+      if (!acc[sede]) {
+        acc[sede] = { registros: 0, mermaPromedio: 0, metaPromedio: 0 };
+      }
+      acc[sede].registros += 1;
+      acc[sede].mermaPromedio += parseFloat(m.porcentaje_merma_real) || 0;
+      acc[sede].metaPromedio += parseFloat(m.porcentaje_meta) || 0;
+      return acc;
+    }, {});
+    
+    Object.keys(porSede).forEach(sede => {
+      const data = porSede[sede];
+      data.mermaPromedio = (data.mermaPromedio / data.registros).toFixed(2);
+      data.metaPromedio = (data.metaPromedio / data.registros).toFixed(2);
+      data.cumple = parseFloat(data.mermaPromedio) <= parseFloat(data.metaPromedio);
+    });
+    
+    return {
+      mermas,
+      cumplimiento2025,
+      porSede,
+      totales: {
+        totalRegistros: mermas.length,
+        sedesEvaluadas: Object.keys(porSede).length
+      }
+    };
+  }
+
+  // ==================== PRODUCCIÓN ====================
+  
+  async getProduccionGranjas() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    // Todas las granjas con detalles completos
+    const [granjas] = await pool.query(`
+      SELECT 
+        nombre_granja,
+        linea,
+        zona_climatica,
+        metros_cuadrados,
+        capacidad_aves,
+        (capacidad_aves / metros_cuadrados) as densidad_aves_m2
+      FROM prod_granjas
+      ORDER BY linea, capacidad_aves DESC
+    `);
+    
+    // Capacidad y clima por zona
+    const [capacidadClima] = await pool.query(`
+      SELECT * FROM prod_capacidad_clima ORDER BY anio DESC, pct_participacion_calculado DESC
+    `);
+    
+    // Equipo de producción
+    const [equipoProduccion] = await pool.query(`
+      SELECT * FROM prod_equipo_produccion ORDER BY anio DESC
+    `);
+    
+    // Calcular totales
+    const totalAves = granjas.reduce((sum, g) => sum + (parseInt(g.capacidad_aves) || 0), 0);
+    const totalMetros = granjas.reduce((sum, g) => sum + (parseFloat(g.metros_cuadrados) || 0), 0);
+    const densidadPromedio = totalMetros > 0 ? (totalAves / totalMetros).toFixed(2) : 0;
+    
+    // Agrupar por línea
+    const porLinea = granjas.reduce((acc, g) => {
+      const linea = g.linea || 'Sin línea';
+      if (!acc[linea]) {
+        acc[linea] = { granjas: 0, aves: 0, metros: 0, densidad: 0 };
+      }
+      acc[linea].granjas += 1;
+      acc[linea].aves += parseInt(g.capacidad_aves) || 0;
+      acc[linea].metros += parseFloat(g.metros_cuadrados) || 0;
+      return acc;
+    }, {});
+    
+    // Calcular densidad por línea
+    Object.keys(porLinea).forEach(linea => {
+      const data = porLinea[linea];
+      data.densidad = data.metros > 0 ? (data.aves / data.metros).toFixed(2) : 0;
+    });
+    
+    // Agrupar por zona climática
+    const porZona = granjas.reduce((acc, g) => {
+      const zona = g.zona_climatica || 'Sin zona';
+      if (!acc[zona]) {
+        acc[zona] = { granjas: 0, aves: 0, metros: 0 };
+      }
+      acc[zona].granjas += 1;
+      acc[zona].aves += parseInt(g.capacidad_aves) || 0;
+      acc[zona].metros += parseFloat(g.metros_cuadrados) || 0;
+      return acc;
+    }, {});
+    
+    return {
+      granjas,
+      capacidadClima,
+      equipoProduccion,
+      porLinea,
+      porZona,
+      totales: {
+        totalGranjas: granjas.length,
+        totalAves,
+        totalMetros: totalMetros.toFixed(2),
+        densidadPromedio: parseFloat(densidadPromedio),
+        totalPersonal: equipoProduccion.reduce((sum, e) => sum + (parseInt(e.total_personas) || 0), 0)
+      }
+    };
+  }
+
   async getProduccionHistorico() {
     const db = getInstance();
     const pool = db.getPool();
     
-    // Obtener datos de pollo sacrificado
-    const [sacrificio] = await pool.query(`
+    // Encasetamiento mensual (2024-2025)
+    const [encasetamiento] = await pool.query(`
       SELECT 
-        'SACRIFICIO' as tipo,
-        ano as anio,
+        anio,
         mes,
-        prog as programado,
-        valor_real as \`real\`,
-        comprado,
-        total,
-        maximalim,
-        progr_fiesta,
-        entre_real_pf
-      FROM pollo_sacrificado
-      ORDER BY ano, FIELD(mes, 'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO',
-                     'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE')
+        valor_programado,
+        valor_real,
+        (valor_real - valor_programado) as diferencia,
+        (valor_real / valor_programado * 100) as porcentaje_cumplimiento
+      FROM prod_encasetamiento
+      ORDER BY anio DESC, mes
     `);
     
-    // Obtener datos de encasetado
-    const [encasetado] = await pool.query(`
-      SELECT 
-        'ENCASETADO' as tipo,
-        ano as anio,
-        mes,
-        prog as programado,
-        valor_real as \`real\`
-      FROM encasetado
-      ORDER BY ano, FIELD(mes, 'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO',
-                     'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE')
+    // Encasetamiento anual con comparativas
+    const [encasetamientoAnual] = await pool.query(`
+      SELECT * FROM prod_encasetamiento_anual ORDER BY anio DESC
     `);
     
-    // Procesar datos de sacrificio por mes
-    const ordenMeses = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 
-                        'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+    // Pollo entregado anual (histórico 2018-2024)
+    const [polloEntregado] = await pool.query(`
+      SELECT * FROM prod_pollo_entregado_anual ORDER BY anio DESC
+    `);
     
-    const sacrificioMap = {};
-    ordenMeses.forEach(mes => {
-      sacrificioMap[mes] = { 
-        mes,
-        prog2024: 0, real2024: 0, comprado2024: 0, total2024: 0,
-        maximalim2024: 0, progr_fiesta2024: 0, entre_real_pf2024: 0,
-        prog2025: 0, real2025: 0, comprado2025: 0, total2025: 0,
-        maximalim2025: 0, progr_fiesta2025: 0, entre_real_pf2025: 0
-      };
-    });
+    // Zootecnia pollo (indicadores técnicos)
+    const [zootecniaPollo] = await pool.query(`
+      SELECT * FROM prod_zootecnia_pollo ORDER BY anio DESC
+    `);
     
-    sacrificio.forEach(d => {
-      const mes = d.mes || 'N/A';
-      if (sacrificioMap[mes]) {
-        const prog = parseFloat(d.programado) || 0;
-        const real = parseFloat(d.real) || 0;
-        const comprado = parseFloat(d.comprado) || 0;
-        const total = parseFloat(d.total) || 0;
-        const maximalim = parseFloat(d.maximalim) || 0;
-        const progrFiesta = parseFloat(d.progr_fiesta) || 0;
-        const entreRealPf = parseFloat(d.entre_real_pf) || 0;
-        
-        if (d.anio === 2024) {
-          sacrificioMap[mes].prog2024 += prog;
-          sacrificioMap[mes].real2024 += real;
-          sacrificioMap[mes].comprado2024 += comprado;
-          sacrificioMap[mes].total2024 += total;
-          sacrificioMap[mes].maximalim2024 += maximalim;
-          sacrificioMap[mes].progr_fiesta2024 += progrFiesta;
-          sacrificioMap[mes].entre_real_pf2024 += entreRealPf;
-        } else if (d.anio === 2025) {
-          sacrificioMap[mes].prog2025 += prog;
-          sacrificioMap[mes].real2025 += real;
-          sacrificioMap[mes].comprado2025 += comprado;
-          sacrificioMap[mes].total2025 += total;
-          sacrificioMap[mes].maximalim2025 += maximalim;
-          sacrificioMap[mes].progr_fiesta2025 += progrFiesta;
-          sacrificioMap[mes].entre_real_pf2025 += entreRealPf;
-        }
+    // Zootecnia huevo (indicadores técnicos) - ACTUALIZADO
+    const [zootecniaHuevo] = await pool.query(`
+      SELECT 
+        anio,
+        saldo_inicial_aves,
+        mortalidad_aves,
+        mortalidad_aves_tabla_pct,
+        mortalidad_aves_real_pct,
+        venta_seleccion_aves,
+        huevos_producidos,
+        huevos_enviados_bodega,
+        inventario_final_huevo,
+        huevos_producidos_tabla_x_ave_mes,
+        huevos_producidos_real_x_ave_mes,
+        consumo_alimento_x_ave_kg_tabla,
+        consumo_alimento_x_ave_kg_real,
+        consumo_alimento_balanceado_kl,
+        variacion_absoluta,
+        variacion_relativa_pct
+      FROM prod_zootecnia_huevo 
+      ORDER BY anio DESC
+    `);
+    
+    // Postura - flujo y resumen - ACTUALIZADO
+    const [posturaFlujo] = await pool.query(`
+      SELECT 
+        anio,
+        municipio_levante,
+        granja_levante,
+        semana_salida_productiva,
+        granjas_destino_produccion,
+        notas
+      FROM prod_postura_flujo 
+      ORDER BY anio DESC
+    `);
+    
+    const [posturaResumen] = await pool.query(`
+      SELECT 
+        anio,
+        aves_en_produccion_cierre,
+        huevos_producidos,
+        var_pct_vs_2024_reportado,
+        huevos_tabla_x_gallina,
+        huevos_real_x_gallina_reportado,
+        mejora_vs_estandar_reportado,
+        huevos_real_x_gallina_calculado,
+        mejora_vs_estandar_calculado,
+        notas
+      FROM prod_postura_resumen_anual 
+      ORDER BY anio DESC
+    `);
+    
+    // Calcular totales y promedios
+    const totalProgramado = encasetamiento.reduce((sum, e) => sum + (parseInt(e.valor_programado) || 0), 0);
+    const totalReal = encasetamiento.reduce((sum, e) => sum + (parseInt(e.valor_real) || 0), 0);
+    const cumplimientoPromedio = totalProgramado > 0 ? ((totalReal / totalProgramado) * 100).toFixed(2) : 0;
+    
+    // Totales por año
+    const totalesPorAnio = encasetamiento.reduce((acc, e) => {
+      if (!acc[e.anio]) {
+        acc[e.anio] = { programado: 0, real: 0, meses: 0 };
       }
-    });
-    
-    const sacrificioMeses = ordenMeses.map(mes => sacrificioMap[mes]);
-    
-    // Procesar datos de encasetado por mes
-    const encasetadoMap = {};
-    ordenMeses.forEach(mes => {
-      encasetadoMap[mes] = { 
-        mes,
-        prog2024: 0, real2024: 0,
-        prog2025: 0, real2025: 0
-      };
-    });
-    
-    encasetado.forEach(d => {
-      const mes = d.mes || 'N/A';
-      if (encasetadoMap[mes]) {
-        const prog = parseFloat(d.programado) || 0;
-        const real = parseFloat(d.real) || 0;
-        
-        if (d.ano === 2024) {
-          encasetadoMap[mes].prog2024 += prog;
-          encasetadoMap[mes].real2024 += real;
-        } else if (d.ano === 2025) {
-          encasetadoMap[mes].prog2025 += prog;
-          encasetadoMap[mes].real2025 += real;
-        }
-      }
-    });
-    
-    const encasetadoMeses = ordenMeses.map(mes => encasetadoMap[mes]);
-    
-    // Calcular totales
-    const totalSacrificio2024 = sacrificioMeses.reduce((sum, d) => sum + (d.real2024 || 0), 0);
-    const totalSacrificio2025 = sacrificioMeses.reduce((sum, d) => sum + (d.real2025 || 0), 0);
-    const totalEncasetado2024 = encasetadoMeses.reduce((sum, d) => sum + (d.real2024 || 0), 0);
-    const totalEncasetado2025 = encasetadoMeses.reduce((sum, d) => sum + (d.real2025 || 0), 0);
+      acc[e.anio].programado += parseInt(e.valor_programado) || 0;
+      acc[e.anio].real += parseInt(e.valor_real) || 0;
+      acc[e.anio].meses += 1;
+      return acc;
+    }, {});
     
     return {
-      sacrificio: sacrificioMeses,
-      encasetado: encasetadoMeses,
+      encasetamiento,
+      encasetamientoAnual,
+      polloEntregado,
+      zootecniaPollo,
+      zootecniaHuevo,
+      posturaFlujo,
+      posturaResumen,
+      totalesPorAnio,
       totales: {
-        sacrificio2024: totalSacrificio2024,
-        sacrificio2025: totalSacrificio2025,
-        encasetado2024: totalEncasetado2024,
-        encasetado2025: totalEncasetado2025
+        totalEncasetamiento: encasetamiento.length,
+        totalPolloEntregado: polloEntregado.length,
+        totalProgramado,
+        totalReal,
+        diferencia: totalReal - totalProgramado,
+        cumplimientoPromedio: parseFloat(cumplimientoPromedio),
+        totalHuevosProducidos: zootecniaHuevo.reduce((sum, h) => sum + (parseInt(h.huevos_producidos) || 0), 0),
+        totalAvesPostura: posturaResumen.reduce((sum, p) => sum + (parseInt(p.aves_en_produccion_cierre) || 0), 0)
       }
     };
   }
 
-  // SISTEMA SAGRILAFT
-  async getSistemaSagrilaft() {
-    const db = getInstance();
-    const pool = db.getPool();
-    
-    // Obtener datos de stakeholders
-    const [stakeholders] = await pool.query(`
-      SELECT 
-        contraparte,
-        rechazados,
-        la_pct,
-        ft_pct,
-        documentacion_pct,
-        antecedentes_pct,
-        peps_pct
-      FROM sagrilaft_stakeholders
-      ORDER BY rechazados DESC
-    `);
-    
-    // Obtener totales
-    const [totales] = await pool.query(`
-      SELECT total_validados FROM sagrilaft_totales LIMIT 1
-    `);
-    
-    // Obtener análisis detallado
-    const [analisis] = await pool.query(`
-      SELECT 
-        categor_a as categoria,
-        elemento,
-        dato_principal,
-        detalle_1,
-        detalle_2,
-        narrativa
-      FROM analisis_sagrilaft_2025_2026
-      ORDER BY categor_a, elemento
-    `);
-    
-    return {
-      stakeholders,
-      totales: totales[0] || { total_validados: 0 },
-      analisis
-    };
-  }
-
-  // GESTIÓN GERENCIA ESTRATÉGICA
-  async getGestionGerencia() {
-    const db = getInstance();
-    const pool = db.getPool();
-    const [rows] = await pool.query(`
-      SELECT 
-        secci_n as seccion,
-        proceso,
-        tema,
-        descripci_n as descripcion,
-        narrativa
-      FROM gestion_gerencia_estrategica_2025
-      ORDER BY secci_n, proceso, tema
-    `);
-    return rows;
-  }
-
-  // GESTIÓN AUDITORÍA - Merma y Devoluciones (2023-2025) CON CÁLCULOS
+  // ==================== AUDITORÍA ====================
+  
   async getGestionAuditoria() {
     const db = getInstance();
     const pool = db.getPool();
     
-    // Obtener datos de merma anual
-    const [mermaAnual] = await pool.query(`
+    // Auditorías ejecutadas con detalles completos
+    const [auditorias] = await pool.query(`
       SELECT 
-        ano as anio,
-        mes,
-        valor as porcentaje_merma
-      FROM merma_anual
-      WHERE ano IN (2023, 2024, 2025, 2026)
-      ORDER BY ano, mes
+        id_auditoria,
+        fecha_auditoria,
+        mes_evaluado,
+        anio_evaluado,
+        tipo_auditoria,
+        area_proceso_auditado,
+        id_pdv,
+        auditor_responsable,
+        estado,
+        DATEDIFF(CURDATE(), fecha_auditoria) as dias_desde_auditoria
+      FROM aud_auditorias_ejecutadas
+      ORDER BY fecha_auditoria DESC
     `);
     
-    // Obtener datos de devoluciones
-    const [devoluciones] = await pool.query(`
+    // Devoluciones mensuales por sede - ACTUALIZADO
+    const [devolucionesMensuales] = await pool.query(`
       SELECT 
-        ano as anio,
-        mes,
-        sede,
-        devolucion_pct
-      FROM auditoria_devoluciones
-      WHERE ano IN (2024, 2025)
-      ORDER BY ano, mes, sede
-    `);
-    
-    // Obtener narrativas y comentarios
-    const [narrativas] = await pool.query(`
-      SELECT 
-        categoria,
         anio,
-        mes,
-        sede,
-        valor,
-        comentario
-      FROM gestion_auditoria
-      WHERE categoria IN ('NARRATIVA', 'MERMA_PROMEDIO', 'DEVOLUCIONES_PROMEDIO')
-      ORDER BY categoria, anio
+        mes_num,
+        mes_nombre,
+        sede_1_pct,
+        sede_2_pct,
+        sede_3_pct
+      FROM aud_devoluciones_mensuales
+      ORDER BY anio DESC, mes_num
     `);
     
-    // Calcular promedios de merma
-    const merma2023 = mermaAnual.filter(d => d.anio === 2023);
-    const merma2024 = mermaAnual.filter(d => d.anio === 2024);
-    const merma2025 = mermaAnual.filter(d => d.anio === 2025);
+    // Resumen anual de devoluciones - NUEVO
+    const [devolucionesResumen] = await pool.query(`
+      SELECT 
+        anio,
+        promedio_compania_pct,
+        promedio_sede_1_pct,
+        promedio_sede_2_pct,
+        promedio_sede_3_pct
+      FROM aud_devoluciones_resumen_anual
+      ORDER BY anio DESC
+    `);
     
-    const promedio2023 = merma2023.length > 0 
-      ? merma2023.reduce((sum, d) => sum + (parseFloat(d.porcentaje_merma) || 0), 0) / merma2023.length 
-      : 0;
-    const promedio2024 = merma2024.length > 0 
-      ? merma2024.reduce((sum, d) => sum + (parseFloat(d.porcentaje_merma) || 0), 0) / merma2024.length 
-      : 0;
-    const promedio2025 = merma2025.length > 0 
-      ? merma2025.reduce((sum, d) => sum + (parseFloat(d.porcentaje_merma) || 0), 0) / merma2025.length 
+    // Vista de variación 2025 vs 2024 - NUEVO
+    const [variacionDevoluciones] = await pool.query(`
+      SELECT * FROM vista_aud_variacion_devoluciones_25_vs_24
+    `);
+    
+    // Hallazgos (si existen)
+    const [hallazgos] = await pool.query(`
+      SELECT 
+        h.id_hallazgo,
+        h.id_auditoria,
+        h.descripcion_hallazgo,
+        h.nivel_riesgo,
+        h.requiere_plan_accion,
+        a.tipo_auditoria,
+        a.area_proceso_auditado,
+        a.fecha_auditoria
+      FROM aud_hallazgos h
+      LEFT JOIN aud_auditorias_ejecutadas a ON h.id_auditoria = a.id_auditoria
+      ORDER BY h.nivel_riesgo DESC, a.fecha_auditoria DESC
+    `);
+    
+    // Planes de acción (si existen)
+    const [planesAccion] = await pool.query(`
+      SELECT 
+        p.id_plan_accion,
+        p.id_hallazgo,
+        p.accion_correctiva,
+        p.fecha_limite,
+        p.estado_plan,
+        h.descripcion_hallazgo,
+        h.nivel_riesgo,
+        DATEDIFF(p.fecha_limite, CURDATE()) as dias_para_vencimiento
+      FROM aud_planes_accion p
+      LEFT JOIN aud_hallazgos h ON p.id_hallazgo = h.id_hallazgo
+      ORDER BY p.fecha_limite
+    `);
+    
+    // Agrupar por tipo de auditoría
+    const porTipo = auditorias.reduce((acc, a) => {
+      const tipo = a.tipo_auditoria || 'Sin tipo';
+      if (!acc[tipo]) {
+        acc[tipo] = { cantidad: 0, areas: new Set() };
+      }
+      acc[tipo].cantidad += 1;
+      if (a.area_proceso_auditado) {
+        acc[tipo].areas.add(a.area_proceso_auditado);
+      }
+      return acc;
+    }, {});
+    
+    // Convertir Sets a arrays
+    Object.keys(porTipo).forEach(tipo => {
+      porTipo[tipo].areas = Array.from(porTipo[tipo].areas);
+    });
+    
+    // Procesar devoluciones mensuales por sede
+    const devolucionesPorSede = {
+      'Sede 1': [],
+      'Sede 2': [],
+      'Sede 3': []
+    };
+    
+    devolucionesMensuales.forEach(d => {
+      devolucionesPorSede['Sede 1'].push({
+        anio: d.anio,
+        mes: d.mes_nombre,
+        mes_num: d.mes_num,
+        porcentaje: parseFloat(d.sede_1_pct)
+      });
+      devolucionesPorSede['Sede 2'].push({
+        anio: d.anio,
+        mes: d.mes_nombre,
+        mes_num: d.mes_num,
+        porcentaje: parseFloat(d.sede_2_pct)
+      });
+      devolucionesPorSede['Sede 3'].push({
+        anio: d.anio,
+        mes: d.mes_nombre,
+        mes_num: d.mes_num,
+        porcentaje: parseFloat(d.sede_3_pct)
+      });
+    });
+    
+    // Calcular promedio general de devoluciones
+    const promedioDevolucionGeneral = devolucionesResumen.length > 0
+      ? parseFloat(devolucionesResumen[0].promedio_compania_pct)
       : 0;
     
     return {
-      mermaAnual,
-      devoluciones,
-      narrativas,
-      promedios: {
-        merma2023: promedio2023,
-        merma2024: promedio2024,
-        merma2025: promedio2025
+      auditorias,
+      devolucionesMensuales,
+      devolucionesResumen,
+      variacionDevoluciones: variacionDevoluciones[0] || null,
+      devolucionesPorSede,
+      hallazgos,
+      planesAccion,
+      porTipo,
+      totales: {
+        totalAuditorias: auditorias.length,
+        totalDevolucionesMensuales: devolucionesMensuales.length,
+        totalHallazgos: hallazgos.length,
+        totalPlanesAccion: planesAccion.length,
+        tiposAuditoria: Object.keys(porTipo).length,
+        sedesEvaluadas: 3,
+        promedioDevolucionGeneral: promedioDevolucionGeneral,
+        variacion2025vs2024: variacionDevoluciones[0] ? parseFloat(variacionDevoluciones[0].variacion_puntos_porcentuales) : 0
       }
+    };
+  }
+
+  // ==================== GESTIÓN HUMANA ====================
+  
+  async getGestionHumana() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    // Causas de retiro
+    const [causasRetiro] = await pool.query(`
+      SELECT 
+        motivo_retiro,
+        cantidad_empleados
+      FROM gh_causas_retiro
+      ORDER BY cantidad_empleados DESC
+    `);
+    
+    // Rotación de personal
+    const [rotacion] = await pool.query(`
+      SELECT 
+        anio,
+        mes,
+        total_ingresos,
+        total_retiros
+      FROM gh_rotacion_personal
+      ORDER BY anio DESC, mes
+    `);
+    
+    return {
+      causasRetiro,
+      rotacion,
+      totales: {
+        totalCausas: causasRetiro.length,
+        totalRegistros: rotacion.length
+      },
+      mensaje: causasRetiro.length === 0 ? 'Módulo pendiente de datos' : null
+    };
+  }
+
+  // ==================== SAGRILAFT ====================
+  
+  async getSistemaSagrilaft() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    // Evaluaciones de terceros
+    const [evaluaciones] = await pool.query(`
+      SELECT 
+        fecha_evaluacion,
+        tipo_contraparte,
+        nombre_razon_social,
+        estado_aprobacion,
+        es_pep
+      FROM cumpl_evaluaciones_terceros
+      ORDER BY fecha_evaluacion DESC
+    `);
+    
+    // Causales de rechazo
+    const [causales] = await pool.query(`
+      SELECT 
+        c.motivo_rechazo,
+        e.nombre_razon_social,
+        e.tipo_contraparte
+      FROM cumpl_causales_rechazo c
+      LEFT JOIN cumpl_evaluaciones_terceros e ON c.id_evaluacion = e.id_evaluacion
+      ORDER BY c.id_rechazo DESC
+    `);
+    
+    return {
+      evaluaciones,
+      causales,
+      totales: {
+        totalEvaluaciones: evaluaciones.length,
+        totalCausales: causales.length
+      },
+      mensaje: evaluaciones.length === 0 ? 'Módulo pendiente de datos' : null
+    };
+  }
+
+  // ==================== BALANCE GENERAL / FUENTES Y USOS ====================
+  
+  async getFuentesUsos() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    const [datos] = await pool.query(`
+      SELECT * FROM fin_macroeconomia ORDER BY anio DESC
+    `);
+    
+    return {
+      items: datos,
+      totales: {
+        registros: datos.length
+      },
+      mensaje: datos.length === 0 ? 'Módulo financiero pendiente de configuración' : null
+    };
+  }
+
+  // ==================== GERENCIA ESTRATÉGICA ====================
+  
+  async getGestionGerencia() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    return {
+      items: [],
+      mensaje: 'Módulo de gerencia estratégica pendiente de configuración'
     };
   }
 }

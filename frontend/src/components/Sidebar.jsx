@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, User, Home, ChevronDown, ChevronRight, ArrowLeftRight, Briefcase, DollarSign, Factory, Users, Shield, TrendingUp, UserCheck, Truck, Package, Menu, X } from 'lucide-react';
+import { LogOut, User, Home, ChevronDown, ChevronRight, ArrowLeftRight, Briefcase, DollarSign, Factory, Users, Shield, TrendingUp, UserCheck, Truck, Package, Menu, X, Store } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
@@ -21,29 +21,41 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
 
   const menuItems = [
     { 
+      id: 'bienvenida', 
+      label: 'Bienvenida', 
+      icon: Home,
+      type: 'single',
+      dashboardType: 'bienvenida'
+    },
+    { 
       id: 'produccion', 
       label: 'Gestión de Producción', 
       icon: Factory,
       type: 'expandable',
       subitems: [
         { id: 'produccion-granjas', label: 'Capacidad Granjas', dashboardType: 'produccion-granjas' },
-        { id: 'produccion-historico', label: 'Histórico Sacrificio', dashboardType: 'produccion-historico' },
-        { id: 'produccion-huevo', label: 'Producción de Huevo', dashboardType: 'produccion-huevo' }
+        { id: 'produccion-encasetado', label: 'Encasetamiento', dashboardType: 'produccion-encasetado' },
+        { id: 'produccion-huevos', label: 'Zootecnia Granjas Huevo', dashboardType: 'produccion-huevos' },
+        { id: 'produccion-indicadores', label: 'Zootecnia Granjas Aves', dashboardType: 'produccion-indicadores' }
       ]
     },
     { 
       id: 'comercial', 
       label: 'Gestión Comercial', 
       icon: TrendingUp,
-      type: 'single',
-      dashboardType: 'comercial'
+      type: 'expandable',
+      subitems: [
+        { id: 'comercial-resumen', label: 'Resumen General', dashboardType: 'comercial-resumen' },
+        { id: 'comercial-productos', label: 'Análisis de Productos', dashboardType: 'comercial-productos' },
+        { id: 'comercial-huevo', label: 'Ventas de Huevo', dashboardType: 'comercial-huevo' }
+      ]
     },
     { 
-      id: 'ventas', 
-      label: 'Equipo de Ventas', 
-      icon: Users,
+      id: 'comercial-pdv', 
+      label: 'Puntos de Venta', 
+      icon: Store,
       type: 'single',
-      dashboardType: 'ventas'
+      dashboardType: 'comercial-pdv'
     },
     { 
       id: 'auditoria', 

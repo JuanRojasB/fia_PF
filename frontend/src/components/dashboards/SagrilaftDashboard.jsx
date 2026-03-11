@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Shield, AlertTriangle, CheckCircle, X, Info } from 'lucide-react';
+import EnDesarrollo from './EnDesarrollo';
 
 export default function SagrilaftDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -28,8 +29,15 @@ export default function SagrilaftDashboard({ data }) {
   // Manejar tanto objetos directos como objetos envueltos
   const sagrilaftData = data?.stakeholders ? data : (data?.items || {});
   
-  if (!sagrilaftData || typeof sagrilaftData !== 'object') {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
+  // Mostrar mensaje de desarrollo si no hay datos o hay mensaje del backend
+  if (!sagrilaftData || typeof sagrilaftData !== 'object' || data?.mensaje) {
+    return (
+      <EnDesarrollo
+        titulo="SAGRILAFT en Desarrollo"
+        descripcion="El módulo de SAGRILAFT (Sistema de Autocontrol y Gestión del Riesgo Integral de LA/FT) está siendo configurado. Pronto estará disponible con evaluaciones de terceros, análisis de riesgos y cumplimiento normativo."
+        modulo="Sistema SAGRILAFT"
+      />
+    );
   }
 
   const stakeholders = Array.isArray(sagrilaftData.stakeholders) ? sagrilaftData.stakeholders : [];
@@ -37,7 +45,13 @@ export default function SagrilaftDashboard({ data }) {
   const analisis = Array.isArray(sagrilaftData.analisis) ? sagrilaftData.analisis : [];
 
   if (stakeholders.length === 0) {
-    return <div className="text-gray-400">No hay datos de stakeholders disponibles</div>;
+    return (
+      <EnDesarrollo
+        titulo="SAGRILAFT en Desarrollo"
+        descripcion="El módulo de SAGRILAFT está siendo configurado. Pronto estará disponible con evaluaciones de terceros, análisis de riesgos y cumplimiento normativo."
+        modulo="Sistema SAGRILAFT"
+      />
+    );
   }
 
   const formatNumber = (value) => {

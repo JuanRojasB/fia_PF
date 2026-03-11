@@ -4,13 +4,14 @@
  */
 
 class User {
-  constructor({ id, username, password, full_name, role, is_active, created_at }) {
+  constructor({ id, username, password, full_name, role, is_active, active, created_at }) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.fullName = full_name;
     this.role = role;
-    this.isActive = is_active;
+    // Soportar tanto 'active' como 'is_active' para compatibilidad
+    this.isActive = is_active !== undefined ? is_active : active;
     this.createdAt = created_at;
   }
 
