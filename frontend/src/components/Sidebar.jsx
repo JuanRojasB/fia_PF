@@ -45,7 +45,7 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       icon: TrendingUp,
       type: 'expandable',
       subitems: [
-        { id: 'comercial-resumen', label: 'Resumen General', dashboardType: 'comercial-resumen' },
+        { id: 'comercial-resumen', label: 'Equipo Comercial', dashboardType: 'comercial-resumen' },
         { id: 'comercial-productos', label: 'Análisis de Productos', dashboardType: 'comercial-productos' },
         { id: 'comercial-huevo', label: 'Ventas de Huevo', dashboardType: 'comercial-huevo' }
       ]

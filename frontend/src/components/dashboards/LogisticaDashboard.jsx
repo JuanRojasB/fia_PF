@@ -115,7 +115,7 @@ export default function LogisticaDashboard({ data }) {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal('Gastos Logísticos', '3M kg/mes, 12 muelles, 197 colaboradores.')}
+          onClick={() => showModal('Gastos Logísticos', '3M kg/mes, 12 muelles, 197 colaboradores.')}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-400 text-sm font-medium">Total Gastos 2025 ($)</span>
@@ -128,7 +128,7 @@ export default function LogisticaDashboard({ data }) {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          onClick={() => openModal('Variación Anual', 'Diferencia en gastos 2025 vs 2024.')}
+          onClick={() => showModal('Variación Anual', 'Diferencia en gastos 2025 vs 2024.')}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-400 text-sm font-medium">Variación Anual ($)</span>
@@ -141,7 +141,7 @@ export default function LogisticaDashboard({ data }) {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          onClick={() => openModal('Sedes Activas', 'Centros de distribución operativos.')}
+          onClick={() => showModal('Sedes Activas', 'Centros de distribución operativos.')}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-400 text-sm font-medium">Sedes</span>
@@ -154,7 +154,7 @@ export default function LogisticaDashboard({ data }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          onClick={() => openModal('Gastos por Sede', 'Comparación de costos operativos.')}
+          onClick={() => showModal('Gastos por Sede', 'Comparación de costos operativos.')}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-blue-500 transition-all cursor-pointer">
           <h3 className="text-xl font-bold text-white mb-6">Gastos Logísticos por Sede (2024 vs 2025)</h3>
           <ResponsiveContainer width="100%" height={350}>

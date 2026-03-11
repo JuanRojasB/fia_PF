@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart, Area, Cell } from 'recharts';
-import { Factory, TrendingUp, Calendar, X, Info, Target, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Factory, TrendingUp, Calendar, Target, AlertCircle, CheckCircle2 } from 'lucide-react';
+import InfoModal from '../InfoModal';
 
 export default function ProduccionEncasetadoDashboard({ data }) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalInfo, setModalInfo] = useState(null);
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
-    setModalOpen(true);
+  const showModal = (title, content) => {
+    setModalInfo({ title, content });
+  };
+
+  const closeModal = () => {
+    setModalInfo(null);
   };
 
   console.log('ProduccionEncasetadoDashboard - Datos recibidos:', data);
@@ -95,7 +98,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-          onClick={() => openModal(
+          onClick={() => showModal(
             'Total Pollitos Encasetados 2025',
             `Se encasetaron ${formatNumber(totalEncasetado2025)} pollitos durante el año 2025. Este valor es la suma de todos los pollitos encasetados mes a mes durante el año. El encasetamiento es el proceso de colocar pollitos de un día de edad en los galpones de crianza, marcando el inicio del ciclo productivo de engorde que dura aproximadamente 42-45 días hasta el procesamiento. El valor programado fue de ${formatNumber(totalProgramado2025)} pollitos.`
           )}
@@ -117,7 +120,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.1 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal(
+          onClick={() => showModal(
             '% Cumplimiento del Programa 2025',
             `El cumplimiento del programa de encasetamiento en 2025 fue del ${cumplimiento2025}%. Un cumplimiento cercano al 100% indica que la planificación de producción se está ejecutando correctamente. La diferencia de ${totalEncasetado2025 >= totalProgramado2025 ? '+' : ''}${formatNumber(totalEncasetado2025 - totalProgramado2025)} pollitos significa que se encasetaron ${totalEncasetado2025 >= totalProgramado2025 ? 'más' : 'menos'} pollitos de los programados (Real: ${formatNumber(totalEncasetado2025)} vs Programado: ${formatNumber(totalProgramado2025)}). Desviaciones pueden deberse a disponibilidad de pollitos BB, capacidad de granjas o ajustes por demanda.`
           )}
@@ -141,7 +144,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.2 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-          onClick={() => openModal(
+          onClick={() => showModal(
             '% Variación Anual 2025 vs 2024',
             `La variación de ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}% se calcula comparando el total encasetado en 2025 (${formatNumber(totalEncasetado2025)} pollitos) contra 2024 (${formatNumber(totalEncasetado2024)} pollitos). Fórmula: ((2025 - 2024) / 2024) × 100 = ${variacionEncasetado}%. La diferencia absoluta es de ${formatNumber(Math.abs(totalEncasetado2025 - totalEncasetado2024))} pollitos ${variacionEncasetado > 0 ? 'más' : 'menos'}. Esta variación refleja ${variacionEncasetado > 0 ? 'un crecimiento' : 'una reducción'} en la capacidad productiva debido a factores como demanda del mercado, disponibilidad de granjas, precio de pollitos BB, y estrategia comercial.`
           )}
@@ -163,7 +166,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.3 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
-          onClick={() => openModal(
+          onClick={() => showModal(
             'Promedio Mensual de Encasetamiento 2025',
             `El promedio mensual es de ${formatNumber(promedioMensual2025)} pollitos. Se calcula dividiendo el total anual (${formatNumber(totalEncasetado2025)} pollitos) entre los ${totalesPorAnio[2025]?.meses || 12} meses con datos. Fórmula: ${formatNumber(totalEncasetado2025)} ÷ ${totalesPorAnio[2025]?.meses || 12} = ${formatNumber(promedioMensual2025)} pollitos/mes. Este indicador permite evaluar la consistencia de la operación y planificar recursos (alimento, personal, logística). En 2024 el promedio fue de ${formatNumber(promedioMensual2024)} pollitos/mes.`
           )}
@@ -250,7 +253,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
         animate={{ opacity: 1, y: 0 }} 
         transition={{ delay: 0.4 }}
         className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-blue-500 transition-all cursor-pointer"
-        onClick={() => openModal(
+        onClick={() => showModal(
           'Cumplimiento Mensual del Programa',
           `Comparación mes a mes entre el encasetamiento programado y el real. Las barras azules muestran lo programado y las verdes lo ejecutado. Un cumplimiento consistente cercano al 100% indica buena planificación y ejecución.`
         )}
@@ -279,7 +282,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
         animate={{ opacity: 1, y: 0 }} 
         transition={{ delay: 0.5 }}
         className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-purple-500 transition-all cursor-pointer"
-        onClick={() => openModal(
+        onClick={() => showModal(
           'Comparación Anual 2024 vs 2025',
           `Comparación del encasetamiento real entre 2024 y 2025 mes a mes. Permite identificar patrones estacionales y crecimiento de la operación.`
         )}
@@ -304,50 +307,13 @@ export default function ProduccionEncasetadoDashboard({ data }) {
 
 
 
-      {/* Modal de Explicación */}
-      <AnimatePresence>
-        {modalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-            onClick={() => setModalOpen(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-blue-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
-                </div>
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-              <div className="text-gray-300 leading-relaxed">
-                {modalContent.description}
-              </div>
-              <div className="mt-6 flex justify-end">
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                >
-                  Entendido
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Modal Reutilizable */}
+      <InfoModal
+        isOpen={!!modalInfo}
+        onClose={closeModal}
+        title={modalInfo?.title || ''}
+        content={modalInfo?.content || ''}
+      />
     </div>
   );
 }

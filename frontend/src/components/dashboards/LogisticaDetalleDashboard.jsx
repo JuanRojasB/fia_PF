@@ -68,7 +68,7 @@ export default function LogisticaDetalleDashboard({ data }) {
                 GASTOS OPERACIONALES LOGÍSTICOS {sede} AÑO 2024 VS 2025
               </h3>
               <button
-                onClick={() => openModal(`Gastos ${sede}`, `Detalle de gastos operacionales logísticos para ${sede}.`)}
+                onClick={() => showModal(`Gastos ${sede}`, `Detalle de gastos operacionales logísticos para ${sede}.`)}
                 className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
               >
                 <Info className="w-5 h-5 text-gray-400" />

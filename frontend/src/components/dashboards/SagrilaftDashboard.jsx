@@ -96,7 +96,7 @@ export default function SagrilaftDashboard({ data }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal('Rechazados', '314 rechazados de 5,732 evaluados (5.47%).')}
+          onClick={() => showModal('Rechazados', '314 rechazados de 5,732 evaluados (5.47%).')}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -111,7 +111,7 @@ export default function SagrilaftDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          onClick={() => openModal('LA/FT', 'Lavado de Activos / Financiación del Terrorismo.')}
+          onClick={() => showModal('LA/FT', 'Lavado de Activos / Financiación del Terrorismo.')}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -126,7 +126,7 @@ export default function SagrilaftDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          onClick={() => openModal('Total Validados', 'Stakeholders aprobados. Sistema: DATALAFT / Risk Consulting.')}
+          onClick={() => showModal('Total Validados', 'Stakeholders aprobados. Sistema: DATALAFT / Risk Consulting.')}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">

@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, Area } from 'recharts';
-import { Egg, TrendingUp, X, Info, Target, Award, Activity } from 'lucide-react';
+import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart } from 'recharts';
+import { Egg, TrendingUp, Target, Award, Activity } from 'lucide-react';
+import InfoModal from '../InfoModal';
 
 export default function ProduccionHuevosDashboard({ data }) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalInfo, setModalInfo] = useState(null);
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
-    setModalOpen(true);
+  const showModal = (title, content) => {
+    setModalInfo({ title, content });
+  };
+
+  const closeModal = () => {
+    setModalInfo(null);
   };
 
   console.log('ProduccionHuevosDashboard - Datos recibidos:', data);
@@ -94,7 +97,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
-          onClick={() => openModal(
+          onClick={() => showModal(
             'Producción Total de Huevos 2025',
             `Se produjeron ${formatNumber(totalHuevos2025)} huevos durante el año 2025 con ${formatNumber(aves2025)} aves en producción. La producción de huevos es el resultado de la eficiencia reproductiva de las gallinas ponedoras, influenciada por genética, nutrición, manejo, bioseguridad y condiciones ambientales. En 2024 se produjeron ${formatNumber(totalHuevos2024)} huevos.`
           )}
@@ -116,7 +119,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.1 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-          onClick={() => openModal(
+          onClick={() => showModal(
             'Productividad Real por Gallina',
             `La productividad real es de ${formatDecimal(productividadReal2025)} huevos por gallina al mes. El estándar de la industria es de ${formatDecimal(productividadTabla2025)} huevos por gallina al mes. Este indicador mide la eficiencia reproductiva de las aves y es clave para evaluar el retorno de inversión en la operación de postura.`
           )}
@@ -138,7 +141,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.2 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal(
+          onClick={() => showModal(
             'Diferencia vs Estándar Industria',
             `La productividad real es de ${formatDecimal(productividadReal2025)} huevos/gallina/mes, comparado con el estándar de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes. La diferencia absoluta es de ${formatDecimal(productividadReal2025 - productividadTabla2025)} huevos más por gallina al mes. ${productividadReal2025 > productividadTabla2025 ? 'Esta mejora indica excelencia en genética, nutrición, manejo y bioseguridad, traduciéndose en mayor rentabilidad por ave.' : 'Hay oportunidad de mejora para alcanzar el estándar de la industria.'}`
           )}
@@ -160,7 +163,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.3 }}
           className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-          onClick={() => openModal(
+          onClick={() => showModal(
             '% Variación Anual 2025 vs 2024',
             `La producción de huevos ${variacionHuevos > 0 ? 'creció' : 'disminuyó'} un ${Math.abs(variacionHuevos)}% respecto a 2024. Cálculo: ((2025 - 2024) / 2024) × 100 = ((${formatNumber(totalHuevos2025)} - ${formatNumber(totalHuevos2024)}) / ${formatNumber(totalHuevos2024)}) × 100 = ${variacionHuevos}%. La diferencia absoluta es de ${formatNumber(Math.abs(totalHuevos2025 - totalHuevos2024))} huevos ${variacionHuevos > 0 ? 'más' : 'menos'}. Esta variación refleja cambios en el tamaño del lote de aves, mejoras en productividad, o ajustes en la estrategia productiva.`
           )}
@@ -379,7 +382,7 @@ export default function ProduccionHuevosDashboard({ data }) {
         animate={{ opacity: 1, y: 0 }} 
         transition={{ delay: 0.5 }}
         className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-blue-500 transition-all cursor-pointer"
-        onClick={() => openModal(
+        onClick={() => showModal(
           'Productividad Real vs Estándar de la Industria',
           `Comparación de la productividad real (huevos/gallina/mes) contra el estándar de la industria. Las barras verdes muestran el desempeño real y las azules el estándar. Superar el estándar demuestra excelencia operativa y genética superior.`
         )}
@@ -408,7 +411,7 @@ export default function ProduccionHuevosDashboard({ data }) {
         animate={{ opacity: 1, y: 0 }} 
         transition={{ delay: 0.6 }}
         className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-red-500 transition-all cursor-pointer"
-        onClick={() => openModal(
+        onClick={() => showModal(
           'Mortalidad vs Consumo de Alimento',
           `Análisis de la relación entre mortalidad y consumo de alimento. La mortalidad real vs tabla indica la calidad del manejo sanitario. El consumo de alimento por ave muestra la eficiencia alimenticia. Una mortalidad baja con consumo controlado indica excelente manejo integral.`
         )}
@@ -442,7 +445,7 @@ export default function ProduccionHuevosDashboard({ data }) {
         animate={{ opacity: 1, y: 0 }} 
         transition={{ delay: 0.7 }}
         className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-purple-500 transition-all cursor-pointer"
-        onClick={() => openModal(
+        onClick={() => showModal(
           'Población de Aves vs Productividad por Ave',
           `Comparación entre el número de aves en producción (barras azules) y la productividad por ave (línea verde). Esta gráfica muestra si el aumento o reducción de aves afecta la productividad individual. Idealmente, se busca mantener alta productividad independientemente del tamaño del lote.`
         )}
@@ -469,50 +472,13 @@ export default function ProduccionHuevosDashboard({ data }) {
         </ResponsiveContainer>
       </motion.div>
 
-      {/* Modal de Explicación */}
-      <AnimatePresence>
-        {modalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-            onClick={() => setModalOpen(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-yellow-500 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-yellow-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
-                </div>
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-              <div className="text-gray-300 leading-relaxed">
-                {modalContent.description}
-              </div>
-              <div className="mt-6 flex justify-end">
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors"
-                >
-                  Entendido
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Modal Reutilizable */}
+      <InfoModal
+        isOpen={!!modalInfo}
+        onClose={closeModal}
+        title={modalInfo?.title || ''}
+        content={modalInfo?.content || ''}
+      />
     </div>
   );
 }
