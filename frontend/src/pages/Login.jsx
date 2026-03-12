@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
 import { User, Lock, LogIn } from 'lucide-react';
@@ -11,6 +11,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [showAgendaModal, setShowAgendaModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export default function Login() {
 
     try {
       await authService.login(username, password);
-      navigate(ROUTES.HOME);
+      setShowWelcomeModal(true); // Mostrar primer modal en lugar de navegar
     } catch (err) {
       setError(err.response?.data?.message || 'Error al iniciar sesión');
     } finally {
@@ -39,6 +41,109 @@ export default function Login() {
       background: 'radial-gradient(circle at top, #020617 0, #020617 35%, #020617 40%, #020617 100%)'
     }}>
       
+      {/* Modal 1: Consideraciones */}
+      <AnimatePresence>
+        {showWelcomeModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-lg shadow-2xl max-w-4xl w-full p-12 text-center"
+            >
+              <p className="text-xl text-gray-800 mb-3">Bogotá, D.C. República de Colombia.</p>
+              <p className="text-xl text-gray-800 mb-8">Miércoles 19 de Marzo de 2.025</p>
+              <h1 className="text-4xl font-bold text-gray-900 mb-8">POLLO FIESTA S.A.</h1>
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">INFORME DE GESTIÓN AÑO 2024</h2>
+              <p className="text-xl font-bold text-gray-900 mb-6">A LA HONORABLE ASAMBLEA GENERAL DE ACCIONISTAS</p>
+              <div className="w-32 h-1 bg-gray-300 mx-auto mb-6"></div>
+              <p className="text-2xl font-bold text-gray-900 mb-6">Consideraciones</p>
+              <div className="text-left space-y-4 mb-8 text-gray-700 max-w-3xl mx-auto">
+                <p className="text-lg text-justify">
+                  En cumplimiento con las disposiciones estatutarias de la sociedad Pollo Fiesta S.A. y de conformidad con lo 
+                  previsto en los artículos 38, 45, 46 y 47 de la ley 222 de 1995; art. 1 de la ley 603 de 2000, y demás normas 
+                  concordantes contempladas en la legislación vigente sobre la materia.
+                </p>
+                <p className="text-lg text-justify">
+                  A continuación, se presenta el informe anual por la gestión desarrollada durante el ejercicio económico del 
+                  año 2.024, el cual contiene una exposición fiel sobre la evolución del negocio, la situación jurídica, la situación 
+                  económica y la situación administrativa de la sociedad en cumplimiento con el ordenamiento legal.
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowWelcomeModal(false);
+                  setShowAgendaModal(true);
+                }}
+                className="px-12 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg transition-colors"
+              >
+                Continuar
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal 2: Orden del Día */}
+      <AnimatePresence>
+        {showAgendaModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-lg shadow-2xl max-w-4xl w-full my-8"
+            >
+              <div className="bg-blue-600 px-8 py-5">
+                <h2 className="text-3xl font-bold text-white text-center">Orden del Día</h2>
+              </div>
+              <div className="p-8">
+                <div className="text-center mb-6">
+                  <p className="text-base font-bold text-gray-900 mb-1">BOGOTÁ, D.C. REPÚBLICA DE COLOMBIA.</p>
+                  <p className="text-base font-bold text-gray-900 mb-1">MIÉRCOLES 19 DE MARZO DE 2025</p>
+                  <p className="text-base font-bold text-gray-900 mb-3">POLLO FIESTA S.A.</p>
+                  <div className="w-24 h-0.5 bg-gray-300 mx-auto mb-3"></div>
+                  <p className="text-lg font-bold text-gray-900 mb-1">INFORME DE GESTIÓN AÑO 2024</p>
+                  <p className="text-base font-semibold text-blue-600">Orden del día</p>
+                </div>
+                <div className="space-y-2 mb-6 max-w-3xl mx-auto">
+                  {[
+                    'Verificación del Quorum',
+                    'Nombramiento del presidente y secretario de la Asamblea',
+                    'Nombramiento de la Comisión verificadora del Acta',
+                    'Lectura del Acta anterior',
+                    'Informe de Gestión de los Administradores',
+                    'Informe del Revisor Fiscal',
+                    'Estudio y aprobación de los Estados Financieros a 31 de diciembre de 2024',
+                    'Proyecto de Distribución de Utilidades',
+                    'Elección de Junta Directiva',
+                    'Elección del Revisor Fiscal y asignación de Honorarios',
+                    'Proposiciones y varios',
+                    'Aprobación y firma del Acta de sesión'
+                  ].map((item, index) => (
+                    <div key={index} className="flex gap-3 py-1">
+                      <span className="font-bold text-gray-900 text-base flex-shrink-0">{index + 1}.</span>
+                      <p className="text-gray-800 text-base">{item}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-center">
+                  <button
+                    onClick={() => {
+                      setShowAgendaModal(false);
+                      navigate(ROUTES.HOME);
+                    }}
+                    className="px-10 py-3 bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold rounded-lg transition-colors"
+                  >
+                    Ingresar al Dashboard
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Orb Container - Estilo IA */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}

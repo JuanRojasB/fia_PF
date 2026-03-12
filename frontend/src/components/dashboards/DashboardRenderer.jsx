@@ -1,4 +1,8 @@
 import BienvenidaDashboard from './BienvenidaDashboard';
+import ContextoMundialDashboard from './ContextoMundialDashboard';
+import EntornoSocioeconomicoDashboard from './EntornoSocioeconomicoDashboard';
+import EncasetamientoColombiaDashboard from './EncasetamientoColombiaDashboard';
+import NegocioMarchaDashboard from './NegocioMarchaDashboard';
 import GerenciaDashboard from './GerenciaDashboard';
 import CarteraDashboard from './CarteraDashboard';
 import FuentesUsosDashboard from './FuentesUsosDashboard';
@@ -35,7 +39,16 @@ export default function DashboardRenderer({ type, data }) {
 
   switch (type) {
     case 'bienvenida':
+    case 'bienvenida-inicio':
       return <BienvenidaDashboard />;
+    case 'contexto-mundial':
+      return <ContextoMundialDashboard />;
+    case 'entorno-socioeconomico':
+      return <EntornoSocioeconomicoDashboard />;
+    case 'encasetamiento-colombia':
+      return <EncasetamientoColombiaDashboard />;
+    case 'negocio-marcha':
+      return <NegocioMarchaDashboard />;
     case 'fuentes-usos':
       return <FuentesUsosDashboard data={data} />;
     case 'auditoria':

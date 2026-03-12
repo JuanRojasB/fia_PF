@@ -41,11 +41,141 @@ export default function BienvenidaDashboard() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
       </motion.div>
 
-      {/* Consideraciones Section */}
+      {/* Puntos Importantes de las Subsecciones */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
+        className="bg-gradient-to-br from-indigo-900/30 to-purple-900/30 backdrop-blur-xl rounded-xl p-8 border-2 border-indigo-500/30"
+      >
+        <div className="flex items-center gap-3 mb-6">
+          <Target className="w-8 h-8 text-indigo-400" />
+          <h2 className="text-2xl font-bold text-white">Puntos Destacados 2024-2025</h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Contexto Mundial */}
+          <div className="p-5 rounded-xl bg-slate-800/50 border border-slate-700">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+              <h3 className="text-lg font-bold text-blue-300">Contexto Mundial</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-1">•</span>
+                <span>Crecimiento global proyectado: <span className="font-semibold text-white">2.6%</span></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-1">•</span>
+                <span>Sector avícola mundial: <span className="font-semibold text-white">+2.5%</span> en producción</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-1">•</span>
+                <span>Estabilización de costos de alimentación (soya y maíz)</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Entorno Socioeconómico */}
+          <div className="p-5 rounded-xl bg-slate-800/50 border border-slate-700">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-2 h-2 rounded-full bg-cyan-400"></div>
+              <h3 className="text-lg font-bold text-cyan-300">Entorno Socioeconómico Nacional</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-1">•</span>
+                <span>PIB Colombia 2025: Crecimiento del <span className="font-semibold text-white">2.3%</span></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-1">•</span>
+                <span>IPC: Estabilización en <span className="font-semibold text-white">5.1%</span></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-1">•</span>
+                <span>TRM: Desaceleración del dólar <span className="font-semibold text-white">-9.21%</span></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-1">•</span>
+                <span>Desempleo: Reducción a <span className="font-semibold text-white">10.9%</span></span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Encasetamiento en Colombia */}
+          <div className="p-5 rounded-xl bg-slate-800/50 border border-slate-700">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-2 h-2 rounded-full bg-violet-400"></div>
+              <h3 className="text-lg font-bold text-violet-300">Encasetamiento en Colombia</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li className="flex items-start gap-2">
+                <span className="text-violet-400 mt-1">•</span>
+                <span>Total 2025: <span className="font-semibold text-white">963.3 millones</span> de aves</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-violet-400 mt-1">•</span>
+                <span>Crecimiento: <span className="font-semibold text-green-400">+5.6%</span> vs 2024</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-violet-400 mt-1">•</span>
+                <span>Incremento: <span className="font-semibold text-white">+51 millones</span> de aves</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-violet-400 mt-1">•</span>
+                <span>Pollo Fiesta: <span className="font-semibold text-white">3.3%</span> participación nacional</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Negocio en Marcha */}
+          <div className="p-5 rounded-xl bg-slate-800/50 border border-slate-700">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+              <h3 className="text-lg font-bold text-emerald-300">Negocio en Marcha</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-400 mt-1">•</span>
+                <span>Rentabilidad neta: <span className="font-semibold text-green-400">2.84%</span></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-400 mt-1">•</span>
+                <span>Calificación INVIMA: <span className="font-semibold text-white">97.55%</span> (+0.86%)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-400 mt-1">•</span>
+                <span>Mejoras en planta de beneficio y red de frío</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-400 mt-1">•</span>
+                <span>Campañas publicitarias 360° exitosas</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Resumen General */}
+        <div className="mt-6 p-5 rounded-xl bg-gradient-to-r from-green-900/30 to-emerald-900/30 border border-green-500/30">
+          <div className="flex items-center gap-2 mb-3">
+            <Award className="w-6 h-6 text-green-400" />
+            <h3 className="text-lg font-bold text-green-300">Resumen Ejecutivo</h3>
+          </div>
+          <p className="text-sm text-gray-300 leading-relaxed">
+            El año 2024-2025 se caracterizó por un <span className="font-semibold text-green-400">crecimiento sostenido</span> del sector avícola colombiano, 
+            con mejoras significativas en rentabilidad, calidad y participación de mercado. Pollo Fiesta S.A. logró mantener 
+            márgenes positivos a pesar de la reducción del 4% en producción, gracias a la <span className="font-semibold text-white">optimización de procesos</span> y 
+            el <span className="font-semibold text-white">fortalecimiento de la red comercial</span>. El contexto macroeconómico favorable, con estabilización 
+            de materias primas y mejora en indicadores nacionales, contribuyó al desempeño positivo de la compañía.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Consideraciones Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
         className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-8 border-2 border-slate-700"
       >
         <div className="flex items-center gap-3 mb-6">

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, User, Home, ChevronDown, ChevronRight, ArrowLeftRight, Briefcase, DollarSign, Factory, Users, Shield, TrendingUp, UserCheck, Truck, Package, Menu, X, Store } from 'lucide-react';
+import { LogOut, User, Home, ChevronDown, ChevronRight, ArrowLeftRight, Briefcase, DollarSign, Factory, Users, Shield, TrendingUp, UserCheck, Truck, Package, Menu, X, Store, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
@@ -24,8 +24,14 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       id: 'bienvenida', 
       label: 'Bienvenida', 
       icon: Home,
-      type: 'single',
-      dashboardType: 'bienvenida'
+      type: 'expandable',
+      subitems: [
+        { id: 'bienvenida-inicio', label: 'Inicio', dashboardType: 'bienvenida' },
+        { id: 'contexto-mundial', label: 'Contexto Mundial', dashboardType: 'contexto-mundial' },
+        { id: 'entorno-socioeconomico', label: 'Entorno Socio Económico Nacional', dashboardType: 'entorno-socioeconomico' },
+        { id: 'encasetamiento-colombia', label: 'Encasetamiento en Colombia', dashboardType: 'encasetamiento-colombia' },
+        { id: 'negocio-marcha', label: 'Negocio en Marcha', dashboardType: 'negocio-marcha' }
+      ]
     },
     { 
       id: 'produccion', 
