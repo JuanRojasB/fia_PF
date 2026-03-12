@@ -6,7 +6,6 @@ import fiaLogo from '../assets/pollo_fiesta_FIA.png';
 export default function SplashScreen({ onComplete }) {
   const [progress, setProgress] = useState(0);
   const [started, setStarted] = useState(false);
-  const [audioContext, setAudioContext] = useState(null);
   const [logoPhase, setLogoPhase] = useState('orb'); // 'orb', 'exploding', 'fia'
   const [showButton, setShowButton] = useState(false);
 
@@ -26,12 +25,12 @@ export default function SplashScreen({ onComplete }) {
   useEffect(() => {
     if (!started) return;
 
-    // Reproducir sonido al iniciar
+    // Reproducir sonido
     playSound();
 
     const progressInterval = setInterval(() => {
       setProgress(prev => {
-        const next = prev + 3.33;
+        const next = prev + 2; // Más suave - incrementos más pequeños
         if (next >= 100) {
           clearInterval(progressInterval);
           setTimeout(() => onComplete(), 300);
@@ -39,135 +38,22 @@ export default function SplashScreen({ onComplete }) {
         }
         return next;
       });
-    }, 100);
+    }, 60); // Más frecuente - actualiza cada 60ms
 
     return () => {
       clearInterval(progressInterval);
-      if (audioContext) {
-        audioContext.close();
-      }
     };
   }, [started, onComplete]);
 
-  const playSound = async () => {
-    try {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioContextClass();
-      setAudioContext(ctx);
-      
-      if (ctx.state === 'suspended') {
-        await ctx.resume();
-      }
-      
-      const now = ctx.currentTime;
-      
-      // WHOOSH INICIAL - Sonido de apertura futurista
-      const whoosh = ctx.createOscillator();
-      const whooshGain = ctx.createGain();
-      const whooshFilter = ctx.createBiquadFilter();
-      
-      whoosh.type = 'sawtooth';
-      whoosh.frequency.setValueAtTime(200, now);
-      whoosh.frequency.exponentialRampToValueAtTime(2000, now + 0.3);
-      
-      whooshFilter.type = 'highpass';
-      whooshFilter.frequency.setValueAtTime(500, now);
-      whooshFilter.frequency.exponentialRampToValueAtTime(3000, now + 0.3);
-      whooshFilter.Q.value = 1;
-      
-      whooshGain.gain.setValueAtTime(0.3, now);
-      whooshGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-      
-      whoosh.connect(whooshFilter);
-      whooshFilter.connect(whooshGain);
-      whooshGain.connect(ctx.destination);
-      whoosh.start(now);
-      whoosh.stop(now + 0.3);
-      
-      // CLICK DIGITAL - Sonido de activación
-      const click = ctx.createOscillator();
-      const clickGain = ctx.createGain();
-      
-      click.type = 'sine';
-      click.frequency.value = 1200;
-      
-      clickGain.gain.setValueAtTime(0.4, now + 0.05);
-      clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-      
-      click.connect(clickGain);
-      clickGain.connect(ctx.destination);
-      click.start(now + 0.05);
-      click.stop(now + 0.1);
-      
-      // ACORDE BRILLANTE - Notas ascendentes futuristas
-      const notes = [
-        { freq: 523.25, time: 0.15 },  // C5
-        { freq: 659.25, time: 0.25 },  // E5
-        { freq: 783.99, time: 0.35 }   // G5
-      ];
-      
-      notes.forEach(({ freq, time }) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        
-        osc.type = 'sine';
-        osc.frequency.value = freq;
-        
-        gain.gain.setValueAtTime(0, now + time);
-        gain.gain.linearRampToValueAtTime(0.25, now + time + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + time + 0.4);
-        
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now + time);
-        osc.stop(now + time + 0.4);
-      });
-      
-      // SHIMMER - Brillo futurista
-      const shimmer = ctx.createOscillator();
-      const shimmerGain = ctx.createGain();
-      const shimmerFilter = ctx.createBiquadFilter();
-      
-      shimmer.type = 'sine';
-      shimmer.frequency.setValueAtTime(2093, now + 0.4);
-      shimmer.frequency.linearRampToValueAtTime(3136, now + 1);
-      
-      shimmerFilter.type = 'highpass';
-      shimmerFilter.frequency.value = 1500;
-      shimmerFilter.Q.value = 0.5;
-      
-      shimmerGain.gain.setValueAtTime(0, now + 0.4);
-      shimmerGain.gain.linearRampToValueAtTime(0.15, now + 0.5);
-      shimmerGain.gain.setValueAtTime(0.15, now + 0.8);
-      shimmerGain.gain.exponentialRampToValueAtTime(0.001, now + 1);
-      
-      shimmer.connect(shimmerFilter);
-      shimmerFilter.connect(shimmerGain);
-      shimmerGain.connect(ctx.destination);
-      shimmer.start(now + 0.4);
-      shimmer.stop(now + 1);
-      
-      // SUB-BASS SUAVE - Fundación sutil
-      const bass = ctx.createOscillator();
-      const bassGain = ctx.createGain();
-      
-      bass.type = 'sine';
-      bass.frequency.value = 65.41;
-      
-      bassGain.gain.setValueAtTime(0, now + 0.2);
-      bassGain.gain.linearRampToValueAtTime(0.2, now + 0.3);
-      bassGain.gain.setValueAtTime(0.2, now + 0.7);
-      bassGain.gain.exponentialRampToValueAtTime(0.001, now + 1);
-      
-      bass.connect(bassGain);
-      bassGain.connect(ctx.destination);
-      bass.start(now + 0.2);
-      bass.stop(now + 1);
-      
-    } catch (error) {
-      console.error('Error al reproducir sonido:', error);
-    }
+  const playSound = () => {
+    // DEEP SLAM - Más rápido y menos grave, estilo inicio de Windows
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
+    audio.volume = 1.0;
+    audio.playbackRate = 0.7; // Más rápido, menos grave
+    audio.preservesPitch = true; // Mantiene el tono original
+    audio.play().catch(err => console.log('Audio blocked:', err));
   };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
@@ -857,6 +743,34 @@ export default function SplashScreen({ onComplete }) {
                   background: 'linear-gradient(90deg, #3b82f6, #1d4ed8)',
                   boxShadow: '0 0 15px rgba(59, 130, 246, 0.4)',
                   width: `${progress}%`
+                }}
+                animate={{
+                  boxShadow: [
+                    '0 0 15px rgba(56, 189, 248, 0.6)',
+                    '0 0 25px rgba(56, 189, 248, 0.9)',
+                    '0 0 15px rgba(56, 189, 248, 0.6)'
+                  ]
+                }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              {/* Efecto de brillo que se mueve */}
+              <motion.div
+                className="absolute inset-y-0 left-0 w-20 rounded-full"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                  width: '100px'
+                }}
+                animate={{
+                  x: ['-100px', '400px']
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "linear"
                 }}
               />
             </div>
