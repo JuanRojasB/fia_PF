@@ -33,6 +33,18 @@ class GetDashboardDataUseCase {
         case 'logistica':
           data = await this.dashboardRepository.getGestionLogistica();
           break;
+        case 'logistica-sede1':
+          data = await this.dashboardRepository.getGestionLogistica();
+          break;
+        case 'logistica-sede2':
+          data = await this.dashboardRepository.getGestionLogistica();
+          break;
+        case 'logistica-sede3':
+          data = await this.dashboardRepository.getGestionLogistica();
+          break;
+        case 'gestion-logistica':
+          data = await this.dashboardRepository.getGestionLogistica();
+          break;
         case 'produccion-granjas':
           data = await this.dashboardRepository.getProduccionGranjas();
           break;

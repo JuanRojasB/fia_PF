@@ -322,6 +322,42 @@ class DashboardRepository extends IDashboardRepository {
     const db = getInstance();
     const pool = db.getPool();
     
+    // Gastos logísticos por sede, año y concepto
+    const [gastosLogisticos] = await pool.query(`
+      SELECT 
+        sede,
+        anio,
+        concepto,
+        total_2024 as valor_2024,
+        total_2025 as valor_2025,
+        variacion_porcentaje
+      FROM gestion_logistica
+      ORDER BY sede, anio DESC, concepto
+    `);
+    
+    // Transformar datos para el formato esperado por el frontend
+    const items = [];
+    gastosLogisticos.forEach(g => {
+      // Agregar registro para 2024
+      if (g.valor_2024 && g.valor_2024 > 0) {
+        items.push({
+          sede: g.sede,
+          anio: 2024,
+          concepto: g.concepto,
+          valor: parseFloat(g.valor_2024)
+        });
+      }
+      // Agregar registro para 2025
+      if (g.valor_2025 && g.valor_2025 > 0) {
+        items.push({
+          sede: g.sede,
+          anio: 2025,
+          concepto: g.concepto,
+          valor: parseFloat(g.valor_2025)
+        });
+      }
+    });
+    
     // Control de mermas
     const [mermas] = await pool.query(`
       SELECT 
@@ -358,11 +394,12 @@ class DashboardRepository extends IDashboardRepository {
     });
     
     return {
+      items,
       mermas,
       cumplimiento2025,
       porSede,
       totales: {
-        totalRegistros: mermas.length,
+        totalRegistros: items.length,
         sedesEvaluadas: Object.keys(porSede).length
       }
     };
@@ -576,84 +613,120 @@ class DashboardRepository extends IDashboardRepository {
     const db = getInstance();
     const pool = db.getPool();
     
-    // Auditorías ejecutadas con detalles completos
-    const [auditorias] = await pool.query(`
-      SELECT 
-        id_auditoria,
-        fecha_auditoria,
-        mes_evaluado,
-        anio_evaluado,
-        tipo_auditoria,
-        area_proceso_auditado,
-        id_pdv,
-        auditor_responsable,
-        estado,
-        DATEDIFF(CURDATE(), fecha_auditoria) as dias_desde_auditoria
-      FROM aud_auditorias_ejecutadas
-      ORDER BY fecha_auditoria DESC
-    `);
+    // Auditorías ejecutadas con detalles completos - con manejo de errores
+    let auditorias = [];
+    try {
+      const [result] = await pool.query(`
+        SELECT 
+          id_auditoria,
+          fecha_auditoria,
+          mes_evaluado,
+          anio_evaluado,
+          tipo_auditoria,
+          area_proceso_auditado,
+          id_pdv,
+          auditor_responsable,
+          estado,
+          DATEDIFF(CURDATE(), fecha_auditoria) as dias_desde_auditoria
+        FROM aud_auditorias_ejecutadas
+        ORDER BY fecha_auditoria DESC
+      `);
+      auditorias = result;
+    } catch (error) {
+      console.log('Tabla aud_auditorias_ejecutadas no existe, continuando sin auditorías');
+    }
     
-    // Devoluciones mensuales por sede - ACTUALIZADO
-    const [devolucionesMensuales] = await pool.query(`
-      SELECT 
-        anio,
-        mes_num,
-        mes_nombre,
-        sede_1_pct,
-        sede_2_pct,
-        sede_3_pct
-      FROM aud_devoluciones_mensuales
-      ORDER BY anio DESC, mes_num
-    `);
+    // Devoluciones mensuales por sede - con manejo de errores
+    let devolucionesMensuales = [];
+    try {
+      const [result] = await pool.query(`
+        SELECT 
+          anio,
+          mes_num,
+          mes_nombre,
+          sede_1_pct,
+          sede_2_pct,
+          sede_3_pct
+        FROM aud_devoluciones_mensuales
+        ORDER BY anio DESC, mes_num
+      `);
+      devolucionesMensuales = result;
+    } catch (error) {
+      console.log('Tabla aud_devoluciones_mensuales no existe, continuando sin devoluciones mensuales');
+    }
     
-    // Resumen anual de devoluciones - NUEVO
-    const [devolucionesResumen] = await pool.query(`
-      SELECT 
-        anio,
-        promedio_compania_pct,
-        promedio_sede_1_pct,
-        promedio_sede_2_pct,
-        promedio_sede_3_pct
-      FROM aud_devoluciones_resumen_anual
-      ORDER BY anio DESC
-    `);
+    // Resumen anual de devoluciones - con manejo de errores
+    let devolucionesResumen = [];
+    try {
+      const [result] = await pool.query(`
+        SELECT 
+          anio,
+          promedio_compania_pct,
+          promedio_sede_1_pct,
+          promedio_sede_2_pct,
+          promedio_sede_3_pct
+        FROM aud_devoluciones_resumen_anual
+        ORDER BY anio DESC
+      `);
+      devolucionesResumen = result;
+    } catch (error) {
+      console.log('Tabla aud_devoluciones_resumen_anual no existe, continuando sin resumen de devoluciones');
+    }
     
-    // Vista de variación 2025 vs 2024 - NUEVO
-    const [variacionDevoluciones] = await pool.query(`
-      SELECT * FROM vista_aud_variacion_devoluciones_25_vs_24
-    `);
+    // Vista de variación 2025 vs 2024 - con manejo de errores
+    let variacionDevoluciones = [];
+    try {
+      const [result] = await pool.query(`
+        SELECT * FROM vista_aud_variacion_devoluciones_25_vs_24
+      `);
+      variacionDevoluciones = result;
+    } catch (error) {
+      console.log('Vista vista_aud_variacion_devoluciones_25_vs_24 no existe, continuando sin variación');
+    }
     
-    // Hallazgos (si existen)
-    const [hallazgos] = await pool.query(`
-      SELECT 
-        h.id_hallazgo,
-        h.id_auditoria,
-        h.descripcion_hallazgo,
-        h.nivel_riesgo,
-        h.requiere_plan_accion,
-        a.tipo_auditoria,
-        a.area_proceso_auditado,
-        a.fecha_auditoria
-      FROM aud_hallazgos h
-      LEFT JOIN aud_auditorias_ejecutadas a ON h.id_auditoria = a.id_auditoria
-      ORDER BY h.nivel_riesgo DESC, a.fecha_auditoria DESC
-    `);
+    // Hallazgos (si existen) - con manejo de errores
+    let hallazgos = [];
+    try {
+      const [result] = await pool.query(`
+        SELECT 
+          h.id_hallazgo,
+          h.id_auditoria,
+          h.descripcion_hallazgo,
+          h.nivel_riesgo,
+          h.requiere_plan_accion,
+          a.tipo_auditoria,
+          a.area_proceso_auditado,
+          a.fecha_auditoria
+        FROM aud_hallazgos h
+        LEFT JOIN aud_auditorias_ejecutadas a ON h.id_auditoria = a.id_auditoria
+        ORDER BY h.nivel_riesgo DESC, a.fecha_auditoria DESC
+      `);
+      hallazgos = result;
+    } catch (error) {
+      console.log('Tabla aud_hallazgos no existe, continuando sin hallazgos');
+    }
     
-    // Planes de acción (si existen)
-    const [planesAccion] = await pool.query(`
-      SELECT 
-        p.id_plan_accion,
-        p.id_hallazgo,
-        p.accion_correctiva,
-        p.fecha_limite,
-        p.estado_plan,
-        h.descripcion_hallazgo,
-        h.nivel_riesgo,
-        DATEDIFF(p.fecha_limite, CURDATE()) as dias_para_vencimiento
-      FROM aud_planes_accion p
-      LEFT JOIN aud_hallazgos h ON p.id_hallazgo = h.id_hallazgo
-      ORDER BY p.fecha_limite
-    `);
+    // Planes de acción (si existen) - con manejo de errores
+    let planesAccion = [];
+    try {
+      const [result] = await pool.query(`
+        SELECT 
+          p.id_plan_accion,
+          p.id_hallazgo,
+          p.accion_correctiva,
+          p.fecha_limite,
+          p.estado_plan,
+          h.descripcion_hallazgo,
+          h.nivel_riesgo,
+          DATEDIFF(p.fecha_limite, CURDATE()) as dias_para_vencimiento
+        FROM aud_planes_accion p
+        LEFT JOIN aud_hallazgos h ON p.id_hallazgo = h.id_hallazgo
+        ORDER BY p.fecha_limite
+      `);
+      planesAccion = result;
+    } catch (error) {
+      console.log('Tabla aud_planes_accion no existe, continuando sin planes de acción');
+    }
     
     // Agrupar por tipo de auditoría
     const porTipo = auditorias.reduce((acc, a) => {
@@ -710,7 +783,7 @@ class DashboardRepository extends IDashboardRepository {
       auditorias,
       devolucionesMensuales,
       devolucionesResumen,
-      variacionDevoluciones: variacionDevoluciones[0] || null,
+      variacionDevoluciones: variacionDevoluciones.length > 0 ? variacionDevoluciones[0] : null,
       devolucionesPorSede,
       hallazgos,
       planesAccion,
@@ -723,7 +796,7 @@ class DashboardRepository extends IDashboardRepository {
         tiposAuditoria: Object.keys(porTipo).length,
         sedesEvaluadas: 3,
         promedioDevolucionGeneral: promedioDevolucionGeneral,
-        variacion2025vs2024: variacionDevoluciones[0] ? parseFloat(variacionDevoluciones[0].variacion_puntos_porcentuales) : 0
+        variacion2025vs2024: variacionDevoluciones.length > 0 && variacionDevoluciones[0] ? parseFloat(variacionDevoluciones[0].variacion_puntos_porcentuales) : 0
       }
     };
   }
