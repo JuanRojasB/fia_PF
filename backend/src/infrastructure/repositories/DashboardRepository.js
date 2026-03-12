@@ -796,80 +796,503 @@ class DashboardRepository extends IDashboardRepository {
     };
   }
 
+  // ==================== ASEGURAMIENTO DE CALIDAD ====================
+  
+  async getGestionCalidad() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    try {
+      // Indicadores de gestión
+      let indicadores = [];
+      try {
+        const [result] = await pool.query(`SELECT * FROM cal_indicadores_gestion ORDER BY anio DESC LIMIT 20`);
+        indicadores = result;
+      } catch (e) {
+        console.log('⚠️ Tabla cal_indicadores_gestion no disponible');
+      }
+      
+      // Métricas de calidad
+      let metricas = [];
+      try {
+        const [result] = await pool.query(`SELECT * FROM cal_metricas_calidad ORDER BY anio DESC, mes DESC LIMIT 50`);
+        metricas = result;
+      } catch (e) {
+        console.log('⚠️ Tabla cal_metricas_calidad no disponible');
+      }
+      
+      // Líneas de acción
+      let lineasAccion = [];
+      try {
+        const [result] = await pool.query(`SELECT * FROM cal_lineas_accion ORDER BY id_linea LIMIT 20`);
+        lineasAccion = result;
+      } catch (e) {
+        console.log('⚠️ Tabla cal_lineas_accion no disponible');
+      }
+      
+      // Acciones por proceso
+      let accionesProceso = [];
+      try {
+        const [result] = await pool.query(`SELECT * FROM cal_acciones_proceso ORDER BY id_proceso LIMIT 50`);
+        accionesProceso = result;
+      } catch (e) {
+        console.log('⚠️ Tabla cal_acciones_proceso no disponible');
+      }
+      
+      // Hitos de sistemas
+      let hitosSistemas = [];
+      try {
+        const [result] = await pool.query(`SELECT * FROM cal_hitos_sistemas ORDER BY fecha_implementacion DESC LIMIT 20`);
+        hitosSistemas = result;
+      } catch (e) {
+        console.log('⚠️ Tabla cal_hitos_sistemas no disponible');
+      }
+      
+      // Calcular totales y promedios
+      const totalIndicadores = indicadores.length;
+      const totalMetricas = metricas.length;
+      const totalLineas = lineasAccion.length;
+      const totalAcciones = accionesProceso.length;
+      const totalHitos = hitosSistemas.length;
+      
+      // Agrupar métricas por año
+      const metricasPorAnio = metricas.reduce((acc, m) => {
+        const anio = m.anio || 2025;
+        if (!acc[anio]) {
+          acc[anio] = [];
+        }
+        acc[anio].push(m);
+        return acc;
+      }, {});
+      
+      // Agrupar acciones por proceso
+      const accionesPorProceso = accionesProceso.reduce((acc, a) => {
+        const proceso = a.proceso || 'General';
+        if (!acc[proceso]) {
+          acc[proceso] = [];
+        }
+        acc[proceso].push(a);
+        return acc;
+      }, {});
+      
+      return {
+        indicadores,
+        metricas,
+        lineasAccion,
+        accionesProceso,
+        hitosSistemas,
+        metricasPorAnio,
+        accionesPorProceso,
+        totales: {
+          totalIndicadores,
+          totalMetricas,
+          totalLineas,
+          totalAcciones,
+          totalHitos,
+          procesosEvaluados: Object.keys(accionesPorProceso).length,
+          aniosRegistrados: Object.keys(metricasPorAnio).length
+        }
+      };
+    } catch (error) {
+      console.error('❌ Error en getGestionCalidad:', error);
+      // Retornar estructura vacía pero válida
+      return {
+        indicadores: [],
+        metricas: [],
+        lineasAccion: [],
+        accionesProceso: [],
+        hitosSistemas: [],
+        metricasPorAnio: {},
+        accionesPorProceso: {},
+        totales: {
+          totalIndicadores: 0,
+          totalMetricas: 0,
+          totalLineas: 0,
+          totalAcciones: 0,
+          totalHitos: 0,
+          procesosEvaluados: 0,
+          aniosRegistrados: 0
+        }
+      };
+    }
+  }
+
   // ==================== GESTIÓN HUMANA ====================
   
   async getGestionHumana() {
     const db = getInstance();
     const pool = db.getPool();
     
-    // Causas de retiro
-    const [causasRetiro] = await pool.query(`
+    // Planta de Personal
+    const [personal] = await pool.query(`
       SELECT 
-        motivo_retiro,
-        cantidad_empleados
-      FROM gh_causas_retiro
-      ORDER BY cantidad_empleados DESC
+        anio,
+        mes_corte as mes,
+        numero_personas
+      FROM rh_planta_personal
+      ORDER BY anio DESC
     `);
     
-    // Rotación de personal
+    // Costos de Nómina
+    const [costos] = await pool.query(`
+      SELECT 
+        anio,
+        costo_nomina_total_pesos,
+        horas_extras_cantidad,
+        costo_horas_extras_pesos,
+        costo_promedio_hora_extra
+      FROM rh_costos_nomina
+      ORDER BY anio DESC
+    `);
+    
+    // Rotación de Personal
     const [rotacion] = await pool.query(`
       SELECT 
         anio,
-        mes,
-        total_ingresos,
-        total_retiros
-      FROM gh_rotacion_personal
-      ORDER BY anio DESC, mes
+        ingresos_personas,
+        retiros_personas,
+        crecimiento_neto
+      FROM rh_rotacion_personal
+      ORDER BY anio DESC
     `);
     
+    // Motivos de Retiro 2025
+    const [motivos] = await pool.query(`
+      SELECT 
+        motivo,
+        cantidad
+      FROM gh_motivos_retiro
+      WHERE anio = 2025
+      ORDER BY cantidad DESC
+    `);
+    
+    // Vistas de análisis
+    const [analisisCostos] = await pool.query(`
+      SELECT * FROM vista_rh_analisis_costos_25_vs_24
+    `);
+    
+    const [movimientoPlanta] = await pool.query(`
+      SELECT * FROM vista_rh_movimiento_planta_25_vs_24 ORDER BY anio DESC
+    `);
+    
+    // Calcular KPIs
+    const personal2024 = personal.find(p => p.anio === 2024);
+    const personal2025 = personal.find(p => p.anio === 2025);
+    const variacionPersonal = personal2024 && personal2025 
+      ? (((personal2025.numero_personas - personal2024.numero_personas) / personal2024.numero_personas) * 100).toFixed(2)
+      : 0;
+    
+    const costos2024 = costos.find(c => c.anio === 2024);
+    const costos2025 = costos.find(c => c.anio === 2025);
+    const variacionNomina = costos2024 && costos2025
+      ? (((parseFloat(costos2025.costo_nomina_total_pesos) - parseFloat(costos2024.costo_nomina_total_pesos)) / parseFloat(costos2024.costo_nomina_total_pesos)) * 100).toFixed(2)
+      : 0;
+    
+    const rotacion2024 = rotacion.find(r => r.anio === 2024);
+    const rotacion2025 = rotacion.find(r => r.anio === 2025);
+    const variacionRetiros = rotacion2024 && rotacion2025
+      ? (((rotacion2025.retiros_personas - rotacion2024.retiros_personas) / rotacion2024.retiros_personas) * 100).toFixed(2)
+      : 0;
+    const variacionIngresos = rotacion2024 && rotacion2025
+      ? (((rotacion2025.ingresos_personas - rotacion2024.ingresos_personas) / rotacion2024.ingresos_personas) * 100).toFixed(2)
+      : 0;
+    
+    const variacionHoras = costos2024 && costos2025
+      ? (((costos2025.horas_extras_cantidad - costos2024.horas_extras_cantidad) / costos2024.horas_extras_cantidad) * 100).toFixed(2)
+      : 0;
+    const variacionValorHoras = costos2024 && costos2025
+      ? (((parseFloat(costos2025.costo_horas_extras_pesos) - parseFloat(costos2024.costo_horas_extras_pesos)) / parseFloat(costos2024.costo_horas_extras_pesos)) * 100).toFixed(2)
+      : 0;
+    
+    const totalRetiros2025 = motivos.reduce((sum, m) => sum + (parseInt(m.cantidad) || 0), 0);
+    
+    // Calcular porcentajes de motivos
+    const motivosConPorcentaje = motivos.map(m => ({
+      ...m,
+      porcentaje: totalRetiros2025 > 0 ? ((m.cantidad / totalRetiros2025) * 100).toFixed(0) : 0
+    }));
+    
     return {
-      causasRetiro,
+      personal,
+      costos,
       rotacion,
-      totales: {
-        totalCausas: causasRetiro.length,
-        totalRegistros: rotacion.length
+      motivos: motivosConPorcentaje,
+      analisisCostos,
+      movimientoPlanta,
+      kpis: {
+        personal2024: personal2024?.numero_personas || 0,
+        personal2025: personal2025?.numero_personas || 0,
+        variacionPersonal: parseFloat(variacionPersonal),
+        nomina2024: costos2024?.costo_nomina_total_pesos || 0,
+        nomina2025: costos2025?.costo_nomina_total_pesos || 0,
+        variacionNomina: parseFloat(variacionNomina),
+        retiros2024: rotacion2024?.retiros_personas || 0,
+        retiros2025: rotacion2025?.retiros_personas || 0,
+        variacionRetiros: parseFloat(variacionRetiros),
+        ingresos2024: rotacion2024?.ingresos_personas || 0,
+        ingresos2025: rotacion2025?.ingresos_personas || 0,
+        variacionIngresos: parseFloat(variacionIngresos),
+        horas2024: costos2024?.horas_extras_cantidad || 0,
+        horas2025: costos2025?.horas_extras_cantidad || 0,
+        variacionHoras: parseFloat(variacionHoras),
+        valorHoras2024: costos2024?.costo_horas_extras_pesos || 0,
+        valorHoras2025: costos2025?.costo_horas_extras_pesos || 0,
+        variacionValorHoras: parseFloat(variacionValorHoras),
+        totalRetiros2025: totalRetiros2025
       },
-      mensaje: causasRetiro.length === 0 ? 'Módulo pendiente de datos' : null
+      totales: {
+        totalPersonal: personal.length,
+        totalCostos: costos.length,
+        totalRotacion: rotacion.length,
+        totalMotivos: motivos.length
+      }
     };
+  }
+
+  // ==================== MARKETING ====================
+  
+  async getGestionMarketing() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    try {
+      // Verificar si existen las tablas y obtener datos
+      let indicadores = [];
+      let campanas = [];
+      let hitos = [];
+      let iniciativas = [];
+      
+      // Intentar obtener indicadores estratégicos
+      try {
+        const [result] = await pool.query(`SELECT * FROM mkt_indicadores_estrategicos LIMIT 10`);
+        indicadores = result;
+      } catch (e) {
+        console.log('⚠️ Tabla mkt_indicadores_estrategicos no disponible');
+      }
+      
+      // Intentar obtener campañas
+      try {
+        const [result] = await pool.query(`SELECT * FROM mkt_campanas_publicidad ORDER BY anio DESC LIMIT 50`);
+        campanas = result;
+      } catch (e) {
+        console.log('⚠️ Tabla mkt_campanas_publicidad no disponible');
+      }
+      
+      // Intentar obtener hitos
+      try {
+        const [result] = await pool.query(`SELECT * FROM mkt_hitos_infraestructura ORDER BY anio DESC LIMIT 20`);
+        hitos = result;
+      } catch (e) {
+        console.log('⚠️ Tabla mkt_hitos_infraestructura no disponible');
+      }
+      
+      // Intentar obtener iniciativas
+      try {
+        const [result] = await pool.query(`SELECT * FROM mkt_iniciativas_comerciales ORDER BY anio DESC LIMIT 20`);
+        iniciativas = result;
+      } catch (e) {
+        console.log('⚠️ Tabla mkt_iniciativas_comerciales no disponible');
+      }
+      
+      // Calcular totales si hay datos de campañas
+      const totalInversion = campanas.reduce((sum, c) => sum + (parseFloat(c.inversion_pesos) || 0), 0);
+      const roiPromedio = campanas.length > 0
+        ? campanas.reduce((sum, c) => sum + (parseFloat(c.roi_porcentaje) || 0), 0) / campanas.length
+        : 0;
+      
+      // Agrupar campañas por canal si existe la columna
+      const porCanal = campanas.reduce((acc, c) => {
+        const canal = c.canal || 'General';
+        if (!acc[canal]) {
+          acc[canal] = { campanas: 0, inversion: 0, roiTotal: 0 };
+        }
+        acc[canal].campanas += 1;
+        acc[canal].inversion += parseFloat(c.inversion_pesos) || 0;
+        acc[canal].roiTotal += parseFloat(c.roi_porcentaje) || 0;
+        return acc;
+      }, {});
+      
+      // Calcular ROI promedio por canal
+      Object.keys(porCanal).forEach(canal => {
+        const data = porCanal[canal];
+        data.roiPromedio = data.campanas > 0 ? (data.roiTotal / data.campanas).toFixed(2) : 0;
+      });
+      
+      return {
+        indicadores,
+        campanas,
+        hitos,
+        iniciativas,
+        porCanal,
+        totales: {
+          totalCampanas: campanas.length,
+          totalHitos: hitos.length,
+          totalIniciativas: iniciativas.length,
+          totalInversion: totalInversion,
+          roiPromedio: roiPromedio.toFixed(2),
+          canalesActivos: Object.keys(porCanal).length
+        }
+      };
+    } catch (error) {
+      console.error('❌ Error en getGestionMarketing:', error);
+      // Retornar estructura vacía pero válida
+      return {
+        indicadores: [],
+        campanas: [],
+        hitos: [],
+        iniciativas: [],
+        porCanal: {},
+        totales: {
+          totalCampanas: 0,
+          totalHitos: 0,
+          totalIniciativas: 0,
+          totalInversion: 0,
+          roiPromedio: 0,
+          canalesActivos: 0
+        },
+        error: error.message
+      };
+    }
   }
 
   // ==================== SAGRILAFT ====================
   
   async getSistemaSagrilaft() {
-    const db = getInstance();
-    const pool = db.getPool();
+    // Datos hardcodeados del informe SAGRILAFT 2022-2025
+    // Tabla No. 1: Análisis de datos de Stakeholders no conformes más representativos por SAGRILAFT DEL 2022 al 2025
     
-    // Evaluaciones de terceros
-    const [evaluaciones] = await pool.query(`
-      SELECT 
-        fecha_evaluacion,
-        tipo_contraparte,
-        nombre_razon_social,
-        estado_aprobacion,
-        es_pep
-      FROM cumpl_evaluaciones_terceros
-      ORDER BY fecha_evaluacion DESC
-    `);
-    
-    // Causales de rechazo
-    const [causales] = await pool.query(`
-      SELECT 
-        c.motivo_rechazo,
-        e.nombre_razon_social,
-        e.tipo_contraparte
-      FROM cumpl_causales_rechazo c
-      LEFT JOIN cumpl_evaluaciones_terceros e ON c.id_evaluacion = e.id_evaluacion
-      ORDER BY c.id_rechazo DESC
-    `);
-    
-    return {
-      evaluaciones,
-      causales,
-      totales: {
-        totalEvaluaciones: evaluaciones.length,
-        totalCausales: causales.length
+    // Datos de stakeholders no conformes por contraparte (EXACTOS DE LA TABLA)
+    const stakeholdersNoConformes = [
+      {
+        contraparte: 'EMPLEADOS',
+        rechazados: 168,
+        la_pct: 1,
+        ft_pct: 20,
+        documentacion_pct: 6,
+        antecedentes_pct: 27,
+        peps_pct: 3
       },
-      mensaje: evaluaciones.length === 0 ? 'Módulo pendiente de datos' : null
+      {
+        contraparte: 'CLIENTES',
+        rechazados: 128,
+        la_pct: 6,
+        ft_pct: 16,
+        documentacion_pct: 47,
+        antecedentes_pct: 12,
+        peps_pct: 3
+      },
+      {
+        contraparte: 'PROVEEDORES',
+        rechazados: 6,
+        la_pct: 17,
+        ft_pct: 50,
+        documentacion_pct: 0,
+        antecedentes_pct: 0,
+        peps_pct: 0
+      },
+      {
+        contraparte: 'TRANSPORTADORES',
+        rechazados: 12,
+        la_pct: 0,
+        ft_pct: 0,
+        documentacion_pct: 42,
+        antecedentes_pct: 8,
+        peps_pct: 0
+      }
+    ];
+
+    // Total no conformes (última fila de la tabla)
+    const totalNoConformes = {
+      contraparte: 'TOTAL NO CONFORMES',
+      rechazados: 314,
+      la_pct: 3,
+      ft_pct: 18,
+      documentacion_pct: 24,
+      antecedentes_pct: 20,
+      peps_pct: 3
+    };
+
+    // Hallazgos y acciones por área (DEL TEXTO DEL INFORME)
+    const hallazgosPorArea = [
+      {
+        area: 'Gestión Humana',
+        hallazgo: '27% candidatos no conformes por antecedentes',
+        porcentaje: 27,
+        accion: 'Revisión procedimiento PGH-04, nuevos filtros y responsables incluyendo área de granjas',
+        fecha_reunion: '14 de enero',
+        responsable: 'Oficial de Cumplimiento + Gestión Humana'
+      },
+      {
+        area: 'Logística',
+        hallazgo: '47% transportadores no conformes por documentación inadecuada',
+        porcentaje: 47,
+        accion: 'Actualización completa PGH-06, formatos FCO-05 y FCO-03, modificación lista de chequeo',
+        fecha_reunion: '23 de enero',
+        responsable: 'Oficial de Cumplimiento + Logística'
+      },
+      {
+        area: 'Logística',
+        hallazgo: '8% transportadores no aptos por antecedentes',
+        porcentaje: 8,
+        accion: 'Inclusión SAGRILAFT en lista de inducción a transportadores nuevos',
+        fecha_reunion: '23 de enero',
+        responsable: 'Oficial de Cumplimiento + Logística'
+      },
+      {
+        area: 'Compras',
+        hallazgo: '50% no conformidad - 3 proveedores con novedades por FT',
+        porcentaje: 50,
+        cantidad: 3,
+        accion: 'Mejora de comunicación y filtros de proveedores',
+        fecha_reunion: null,
+        responsable: 'Oficial de Cumplimiento + Compras'
+      },
+      {
+        area: 'Comercial',
+        hallazgo: '47% incumplimiento en manejo documental',
+        porcentaje: 47,
+        accion: 'Divulgaciones individuales a vendedores para reducir o eliminar riesgo',
+        fecha_reunion: null,
+        responsable: 'Oficial de Cumplimiento + Comercial'
+      }
+    ];
+
+    // Resumen general
+    const resumenGeneral = {
+      total_validados: 5732,
+      total_rechazados: 314,
+      porcentaje_rechazo: 5.47,
+      periodo: '2022-2025',
+      plataforma: 'DATALAFT / Risk Consulting',
+      normatividad: [
+        'Circular 100-00005 de 2017',
+        'Circular 100-000016 de 2020',
+        'Circular 100-000015 de 2021'
+      ]
+    };
+
+    // Meta de mejora
+    const metasMejora = [
+      {
+        indicador: 'Documentación inadecuada',
+        valor_actual: 24,
+        meta: 10,
+        plazo_meses: 6,
+        estado: 'En progreso'
+      }
+    ];
+
+    return {
+      stakeholders: stakeholdersNoConformes,
+      totalNoConformes: totalNoConformes,
+      hallazgos: hallazgosPorArea,
+      resumen: resumenGeneral,
+      metas: metasMejora,
+      totales: {
+        total_validados: 5732,
+        total_rechazados: 314,
+        porcentaje_rechazo: 5.47
+      }
     };
   }
 
@@ -892,15 +1315,639 @@ class DashboardRepository extends IDashboardRepository {
     };
   }
 
-  // ==================== GERENCIA ESTRATÉGICA ====================
+  // ==================== GERENCIA ESTRATÉGICA / PRESUPUESTO 2025 ====================
   
   async getGestionGerencia() {
-    const db = getInstance();
-    const pool = db.getPool();
+    // Datos hardcodeados del informe de Presupuesto 2025
+    
+    // Variables macroeconómicas
+    const variablesMacro = {
+      inflacion_2024: 5.2,
+      inflacion_2025: 5.1,
+      crecimiento: 5.4,
+      mortalidad_2024: 10.05,
+      mortalidad_2025: 9.03,
+      reduccion_mortalidad: 1.02
+    };
+
+    // Presupuesto de caja
+    const presupuestoCaja = {
+      efectivo_2024: 48627, // Millones
+      efectivo_2025: 77491, // Millones
+      incremento_absoluto: 28864, // Millones
+      incremento_porcentual: 59
+    };
+
+    // Ejecución trimestral - TOTAL PF (en miles) con variaciones por trimestre
+    const totalPF = [
+      { 
+        trimestre: 'I Q', 
+        real_2025: 7315860, 
+        ppto_2025: 7623210, 
+        real_2024: 6734448, 
+        real_2023: 6971748, 
+        real_2022: 7181036,
+        var_25_ppto_vs_real: -4.2,
+        var_25_vs_24: 7.9,
+        var_24_vs_23: -3.5
+      },
+      { 
+        trimestre: 'II Q', 
+        real_2025: 7207680, 
+        ppto_2025: 7427250, 
+        real_2024: 7026825, 
+        real_2023: 7073246, 
+        real_2022: 7943886,
+        var_25_ppto_vs_real: -3.0,
+        var_25_vs_24: 2.5,
+        var_24_vs_23: -0.7
+      },
+      { 
+        trimestre: 'III Q', 
+        real_2025: 7338200, 
+        ppto_2025: 7667942, 
+        real_2024: 6881796, 
+        real_2023: 7408003, 
+        real_2022: 7852724,
+        var_25_ppto_vs_real: -4.5,
+        var_25_vs_24: 6.2,
+        var_24_vs_23: -7.6
+      },
+      { 
+        trimestre: 'IV Q', 
+        real_2025: 7940681, 
+        ppto_2025: 7940681, 
+        real_2024: 7560474, 
+        real_2023: 7538868, 
+        real_2022: 7640617,
+        var_25_ppto_vs_real: 0.0,
+        var_25_vs_24: 4.8,
+        var_24_vs_23: 0.3
+      }
+    ];
+
+    // Ejecución trimestral - INTEGRADO MAYORISTA (en miles) con variaciones
+    const integradoMayorista = [
+      { 
+        trimestre: 'I Q', 
+        real_2025: 982097, 
+        ppto_2025: 1040610, 
+        real_2024: 775594, 
+        real_2023: 761923, 
+        real_2022: 797540,
+        var_25_ppto_vs_real: -6.0,
+        var_25_vs_24: 21.0,
+        var_24_vs_23: 1.8
+      },
+      { 
+        trimestre: 'II Q', 
+        real_2025: 917310, 
+        ppto_2025: 1093650, 
+        real_2024: 842638, 
+        real_2023: 685946, 
+        real_2022: 839420,
+        var_25_ppto_vs_real: -19.2,
+        var_25_vs_24: 8.1,
+        var_24_vs_23: 18.6
+      },
+      { 
+        trimestre: 'III Q', 
+        real_2025: 942600, 
+        ppto_2025: 1099214, 
+        real_2024: 803255, 
+        real_2023: 891413, 
+        real_2022: 856721,
+        var_25_ppto_vs_real: -16.6,
+        var_25_vs_24: 14.8,
+        var_24_vs_23: -11.0
+      },
+      { 
+        trimestre: 'IV Q', 
+        real_2025: 1103881, 
+        ppto_2025: 1103881, 
+        real_2024: 932779, 
+        real_2023: 842598, 
+        real_2022: 777651,
+        var_25_ppto_vs_real: 0.0,
+        var_25_vs_24: 15.5,
+        var_24_vs_23: 9.7
+      }
+    ];
+
+    // Ejecución trimestral - POLLO CANAL (en miles) con variaciones
+    const polloCanal = [
+      { 
+        trimestre: 'I Q', 
+        real_2025: 6333763, 
+        ppto_2025: 6582600, 
+        real_2024: 5958854, 
+        real_2023: 6209825, 
+        real_2022: 6383496,
+        var_25_ppto_vs_real: -3.9,
+        var_25_vs_24: 5.9,
+        var_24_vs_23: -4.2
+      },
+      { 
+        trimestre: 'II Q', 
+        real_2025: 6290370, 
+        ppto_2025: 6333600, 
+        real_2024: 6184187, 
+        real_2023: 6387300, 
+        real_2022: 7104466,
+        var_25_ppto_vs_real: -0.7,
+        var_25_vs_24: 1.7,
+        var_24_vs_23: -3.3
+      },
+      { 
+        trimestre: 'III Q', 
+        real_2025: 6395600, 
+        ppto_2025: 6568728, 
+        real_2024: 6078541, 
+        real_2023: 6516590, 
+        real_2022: 6996003,
+        var_25_ppto_vs_real: -2.7,
+        var_25_vs_24: 5.0,
+        var_24_vs_23: -7.2
+      },
+      { 
+        trimestre: 'IV Q', 
+        real_2025: 6836800, 
+        ppto_2025: 6836800, 
+        real_2024: 6627695, 
+        real_2023: 6696270, 
+        real_2022: 6862966,
+        var_25_ppto_vs_real: 0.0,
+        var_25_vs_24: 3.1,
+        var_24_vs_23: -1.0
+      }
+    ];
+
+    // Calcular totales anuales
+    const calcularTotales = (data) => {
+      return {
+        real_2025: data.reduce((sum, t) => sum + t.real_2025, 0),
+        ppto_2025: data.reduce((sum, t) => sum + t.ppto_2025, 0),
+        real_2024: data.reduce((sum, t) => sum + t.real_2024, 0),
+        real_2023: data.reduce((sum, t) => sum + t.real_2023, 0),
+        real_2022: data.reduce((sum, t) => sum + t.real_2022, 0)
+      };
+    };
+
+    const totalesPF = calcularTotales(totalPF);
+    const totalesIntegrado = calcularTotales(integradoMayorista);
+    const totalesCanal = calcularTotales(polloCanal);
+
+    // Variaciones
+    const variacionPF = {
+      var_25_ppto_vs_real: ((totalesPF.real_2025 - totalesPF.ppto_2025) / totalesPF.ppto_2025 * 100).toFixed(1),
+      var_25_vs_24: ((totalesPF.real_2025 - totalesPF.real_2024) / totalesPF.real_2024 * 100).toFixed(1),
+      var_24_vs_23: ((totalesPF.real_2024 - totalesPF.real_2023) / totalesPF.real_2023 * 100).toFixed(1)
+    };
+
+    const variacionIntegrado = {
+      var_25_ppto_vs_real: ((totalesIntegrado.real_2025 - totalesIntegrado.ppto_2025) / totalesIntegrado.ppto_2025 * 100).toFixed(1),
+      var_25_vs_24: ((totalesIntegrado.real_2025 - totalesIntegrado.real_2024) / totalesIntegrado.real_2024 * 100).toFixed(1),
+      var_24_vs_23: ((totalesIntegrado.real_2024 - totalesIntegrado.real_2023) / totalesIntegrado.real_2023 * 100).toFixed(1)
+    };
+
+    const variacionCanal = {
+      var_25_ppto_vs_real: ((totalesCanal.real_2025 - totalesCanal.ppto_2025) / totalesCanal.ppto_2025 * 100).toFixed(1),
+      var_25_vs_24: ((totalesCanal.real_2025 - totalesCanal.real_2024) / totalesCanal.real_2024 * 100).toFixed(1),
+      var_24_vs_23: ((totalesCanal.real_2024 - totalesCanal.real_2023) / totalesCanal.real_2023 * 100).toFixed(1)
+    };
+
+    // Impuestos y tributación
+    const tributacion = {
+      tasa_minima: 15,
+      incremento_tributacion_2025: 36, // % respecto a 2024
+      impuestos_saludables: [
+        { anio: 2023, tasa: 10 },
+        { anio: 2024, tasa: 15 },
+        { anio: 2025, tasa: 20 }
+      ]
+    };
+
+    // Marco legal y tecnológico
+    const marcoLegal = {
+      ley_603_2000: 'Propiedad intelectual y derechos de autor PED',
+      ley_1581_2012: 'Protección de Datos Personales (Habeas Data)',
+      erp_sistema: 'ERP Enterprise - SIESA DIGITAL S.A.S.',
+      proceso_rio_fucha: {
+        estado: 'Recurso de excepción de pérdida de ejecutoriedad',
+        fecha_auto: '20 de enero de 2023',
+        resolucion: 'Resolución #348 del 6 de junio de 2023'
+      }
+    };
+
+    return {
+      variablesMacro,
+      presupuestoCaja,
+      ejecucionTrimestral: {
+        totalPF: {
+          data: totalPF,
+          totales: totalesPF,
+          variaciones: variacionPF
+        },
+        integradoMayorista: {
+          data: integradoMayorista,
+          totales: totalesIntegrado,
+          variaciones: variacionIntegrado
+        },
+        polloCanal: {
+          data: polloCanal,
+          totales: totalesCanal,
+          variaciones: variacionCanal
+        }
+      },
+      tributacion,
+      marcoLegal
+    };
+  }
+
+  // ==================== GESTIÓN EN COMPRAS ====================
+  
+  async getGestionCompras() {
+    // Datos del texto proporcionado
+    const comprasMensuales = [
+      { mes: 'Enero', anio: 2025, compras: 534282848, compras2024: 474432855, compras2023: 560056443, variacion2025vs2024: 12.62, variacion2024vs2023: -21.00 },
+      { mes: 'Febrero', anio: 2025, compras: 509837369, compras2024: 621555555, compras2023: 759316575, variacion2025vs2024: -17.97, variacion2024vs2023: -18.14 },
+      { mes: 'Marzo', anio: 2025, compras: 619736830, compras2024: 550965800, compras2023: 767903778, variacion2025vs2024: 12.48, variacion2024vs2023: -28.25 },
+      { mes: 'Abril', anio: 2025, compras: 648645152, compras2024: 784542984, compras2023: 713190490, variacion2025vs2024: -17.32, variacion2024vs2023: 10.00 },
+      { mes: 'Mayo', anio: 2025, compras: 865707842, compras2024: 753451113, compras2023: 765715840, variacion2025vs2024: 14.90, variacion2024vs2023: -1.60 },
+      { mes: 'Junio', anio: 2025, compras: 715067678, compras2024: 732476001, compras2023: 539106699, variacion2025vs2024: -2.38, variacion2024vs2023: 35.87 },
+      { mes: 'Julio', anio: 2025, compras: 685759378, compras2024: 731561700, compras2023: 554146147, variacion2025vs2024: -6.26, variacion2024vs2023: 32.02 },
+      { mes: 'Agosto', anio: 2025, compras: 750725818, compras2024: 553684110, compras2023: 800416404, variacion2025vs2024: 35.59, variacion2024vs2023: -30.83 },
+      { mes: 'Septiembre', anio: 2025, compras: 1019920685, compras2024: 773445898, compras2023: 716179612, variacion2025vs2024: 31.87, variacion2024vs2023: 8.00 },
+      { mes: 'Octubre', anio: 2025, compras: 963699938, compras2024: 643181922, compras2023: 777703724, variacion2025vs2024: 49.83, variacion2024vs2023: -17.30 },
+      { mes: 'Noviembre', anio: 2025, compras: 718262645, compras2024: 685082844, compras2023: 682133592, variacion2025vs2024: 4.84, variacion2024vs2023: 0.43 },
+      { mes: 'Diciembre', anio: 2025, compras: 896023288, compras2024: 836824477, compras2023: 714183870, variacion2025vs2024: 7.07, variacion2024vs2023: 17.17 }
+    ];
+
+    const totales = {
+      total2025: 8927669471,
+      total2024: 8141205259,
+      total2023: 8390561162,
+      variacion2025vs2024: 9.66,
+      variacion2024vs2023: -2.97
+    };
+
+    // Meses con mayor crecimiento 2025 vs 2024
+    const mesesMayorCrecimiento = [
+      { mes: 'Octubre', variacion: 49.83 },
+      { mes: 'Agosto', variacion: 35.59 },
+      { mes: 'Septiembre', variacion: 31.87 }
+    ];
+
+    // Meses con caídas importantes 2024 vs 2023
+    const mesesCaidas2024 = [
+      { mes: 'Agosto', variacion: -30.83 },
+      { mes: 'Marzo', variacion: -28.25 },
+      { mes: 'Enero', variacion: -21.00 }
+    ];
+
+    return {
+      comprasMensuales,
+      totales,
+      mesesMayorCrecimiento,
+      mesesCaidas2024,
+      analisis: {
+        recuperacion2025: true,
+        crecimientoTotal: 9.66,
+        contraccion2024: -2.97,
+        mesesDestacados: ['Octubre', 'Agosto', 'Septiembre']
+      }
+    };
+  }
+
+  // ==================== OPERACIONES Y MANTENIMIENTO ====================
+  
+  async getGestionOperaciones() {
+    // Datos del texto proporcionado - hardcodeados porque las tablas no tienen inserts
+    
+    // KPIs TPM principales
+    const kpisTpm = [
+      { anio: 2024, disponibilidad_pct: 97, oee_pct: 84.00, mtbf_horas: 13.35, mttr_horas: 0.35 },
+      { anio: 2025, disponibilidad_pct: 95.70, oee_pct: 86.40, mtbf_horas: 10.42, mttr_horas: 0.47 }
+    ];
+    
+    // KPIs TPM detalle mensual 2025
+    const kpisTpmDetalle = [
+      { anio: 2025, mes_num: 1, mes_nombre: 'Enero', disponibilidad_pct: 96.5, oee_pct: 87.2, mttr_horas: 0.28 },
+      { anio: 2025, mes_num: 2, mes_nombre: 'Febrero', disponibilidad_pct: 96.8, oee_pct: 86.9, mttr_horas: 0.25 },
+      { anio: 2025, mes_num: 3, mes_nombre: 'Marzo', disponibilidad_pct: 95.9, oee_pct: 86.5, mttr_horas: 0.32 },
+      { anio: 2025, mes_num: 4, mes_nombre: 'Abril', disponibilidad_pct: 97.2, oee_pct: 88.1, mttr_horas: 0.24 },
+      { anio: 2025, mes_num: 5, mes_nombre: 'Mayo', disponibilidad_pct: 95.3, oee_pct: 85.8, mttr_horas: 0.37 },
+      { anio: 2025, mes_num: 6, mes_nombre: 'Junio', disponibilidad_pct: 96.1, oee_pct: 86.7, mttr_horas: 0.29 },
+      { anio: 2025, mes_num: 7, mes_nombre: 'Julio', disponibilidad_pct: 95.8, oee_pct: 86.3, mttr_horas: 0.31 },
+      { anio: 2025, mes_num: 8, mes_nombre: 'Agosto', disponibilidad_pct: 94.77, oee_pct: 84.9, mttr_horas: 0.42 },
+      { anio: 2025, mes_num: 9, mes_nombre: 'Septiembre', disponibilidad_pct: 98.75, oee_pct: 89.2, mttr_horas: 0.10 },
+      { anio: 2025, mes_num: 10, mes_nombre: 'Octubre', disponibilidad_pct: 95.5, oee_pct: 85.6, mttr_horas: 0.37 },
+      { anio: 2025, mes_num: 11, mes_nombre: 'Noviembre', disponibilidad_pct: 94.71, oee_pct: 80.1, mttr_horas: 0.45 },
+      { anio: 2025, mes_num: 12, mes_nombre: 'Diciembre', disponibilidad_pct: 98.51, oee_pct: 88.9, mttr_horas: 0.11 }
+    ];
+    
+    // Equipos ofensores
+    const equiposOfensores = [
+      { equipo: 'Línea de Descargue', horas_paro: 17.32, numero_novedades: 22, impacto: 'Crítico (17% del tiempo total)' },
+      { equipo: 'Zona de Máquinas y Calderas', horas_paro: 14.15, numero_novedades: 23, impacto: 'Muy Alto (14% del tiempo total)' },
+      { equipo: 'Transferidor', horas_paro: 10.47, numero_novedades: 42, impacto: 'Frecuencia Alarmante (42 eventos)' },
+      { equipo: 'Línea de Selección Linco', horas_paro: 9.70, numero_novedades: 17, impacto: 'Alto (9% del tiempo total)' },
+      { equipo: 'Desplumadora #1 (ITA)', horas_paro: 6.78, numero_novedades: 20, impacto: 'Moderado-Alto (7% del tiempo total)' }
+    ];
+    
+    // Órdenes de trabajo mensual
+    const ordenesTrabajo = [
+      { mes_num: 1, mes_nombre: 'Enero', ot_correctivas: 24, ot_preventivas: 343, total: 367, porcentaje_correctivas: 5.80 },
+      { mes_num: 2, mes_nombre: 'Febrero', ot_correctivas: 26, ot_preventivas: 75, total: 101, porcentaje_correctivas: 25.70 },
+      { mes_num: 3, mes_nombre: 'Marzo', ot_correctivas: 44, ot_preventivas: 142, total: 186, porcentaje_correctivas: 23.70 },
+      { mes_num: 4, mes_nombre: 'Abril', ot_correctivas: 21, ot_preventivas: 195, total: 216, porcentaje_correctivas: 9.70 },
+      { mes_num: 5, mes_nombre: 'Mayo', ot_correctivas: 37, ot_preventivas: 265, total: 302, porcentaje_correctivas: 12.30 },
+      { mes_num: 6, mes_nombre: 'Junio', ot_correctivas: 22, ot_preventivas: 485, total: 507, porcentaje_correctivas: 4.30 },
+      { mes_num: 7, mes_nombre: 'Julio', ot_correctivas: 80, ot_preventivas: 405, total: 485, porcentaje_correctivas: 16.50 },
+      { mes_num: 8, mes_nombre: 'Agosto', ot_correctivas: 61, ot_preventivas: 174, total: 235, porcentaje_correctivas: 26.00 },
+      { mes_num: 9, mes_nombre: 'Septiembre', ot_correctivas: 52, ot_preventivas: 327, total: 379, porcentaje_correctivas: 13.70 },
+      { mes_num: 10, mes_nombre: 'Octubre', ot_correctivas: 20, ot_preventivas: 257, total: 277, porcentaje_correctivas: 7.20 },
+      { mes_num: 11, mes_nombre: 'Noviembre', ot_correctivas: 9, ot_preventivas: 291, total: 300, porcentaje_correctivas: 3.00 },
+      { mes_num: 12, mes_nombre: 'Diciembre', ot_correctivas: 7, ot_preventivas: 339, total: 346, porcentaje_correctivas: 2.00 }
+    ];
+    
+    // Mantenimiento de vehículos
+    const mantenimientoVehiculos = [
+      { anio: 2024, costo_total: 356022963, variacion_pct: null },
+      { anio: 2025, costo_total: 189938418, variacion_pct: -46.65 }
+    ];
+    
+    // Novedades arquitectura
+    const novedadesArquitectura = [
+      { planta: 'PLANTA DE BENEFICIO', abiertas: 42, cerradas: 175, total: 217, ejecucion_pct: 81 },
+      { planta: 'SEDE 1', abiertas: 22, cerradas: 4, total: 26, ejecucion_pct: 15 },
+      { planta: 'SEDE 2', abiertas: 46, cerradas: 29, total: 75, ejecucion_pct: 39 },
+      { planta: 'SEDE 3', abiertas: 58, cerradas: 36, total: 94, ejecucion_pct: 38 },
+      { planta: 'SEDE 4', abiertas: 9, cerradas: 5, total: 14, ejecucion_pct: 36 }
+    ];
+    
+    // Novedades infraestructura (mantenimiento)
+    const novedadesInfraestructura = [
+      { planta: 'PLANTA DE BENEFICIO', abiertas: 13, cerradas: 145, total: 158, ejecucion_pct: 92 },
+      { planta: 'SEDE 1', abiertas: 3, cerradas: 17, total: 20, ejecucion_pct: 85 },
+      { planta: 'SEDE 2', abiertas: 37, cerradas: 70, total: 107, ejecucion_pct: 65 },
+      { planta: 'SEDE 3', abiertas: 5, cerradas: 70, total: 75, ejecucion_pct: 93 },
+      { planta: 'SEDE 4', abiertas: 2, cerradas: 13, total: 15, ejecucion_pct: 87 }
+    ];
+    
+    // Calcular totales
+    const totalHorasParo = equiposOfensores.reduce((sum, e) => sum + parseFloat(e.horas_paro || 0), 0);
+    const totalNovedades = equiposOfensores.reduce((sum, e) => sum + parseInt(e.numero_novedades || 0), 0);
+    
+    const totalOtCorrectivas = ordenesTrabajo.reduce((sum, o) => sum + parseInt(o.ot_correctivas || 0), 0);
+    const totalOtPreventivas = ordenesTrabajo.reduce((sum, o) => sum + parseInt(o.ot_preventivas || 0), 0);
+    const totalOt = totalOtCorrectivas + totalOtPreventivas;
+    const porcentajeCorrectivas = totalOt > 0 ? ((totalOtCorrectivas / totalOt) * 100).toFixed(1) : 0;
+    
+    // Calcular cumplimiento global de novedades
+    const totalAbiertas = [...novedadesArquitectura, ...novedadesInfraestructura]
+      .reduce((sum, n) => sum + parseInt(n.abiertas || 0), 0);
+    const totalCerradas = [...novedadesArquitectura, ...novedadesInfraestructura]
+      .reduce((sum, n) => sum + parseInt(n.cerradas || 0), 0);
+    const totalNovedadesGlobal = totalAbiertas + totalCerradas;
+    const cumplimientoGlobal = totalNovedadesGlobal > 0 
+      ? ((totalCerradas / totalNovedadesGlobal) * 100).toFixed(0) 
+      : 0;
     
     return {
-      items: [],
-      mensaje: 'Módulo de gerencia estratégica pendiente de configuración'
+      kpisTpm,
+      kpisTpmDetalle,
+      equiposOfensores,
+      ordenesTrabajo,
+      mantenimientoVehiculos,
+      novedadesArquitectura,
+      novedadesInfraestructura,
+      totales: {
+        totalHorasParo: totalHorasParo.toFixed(2),
+        totalNovedades,
+        totalOtCorrectivas,
+        totalOtPreventivas,
+        totalOt,
+        porcentajeCorrectivas: parseFloat(porcentajeCorrectivas),
+        porcentajePreventivas: (100 - parseFloat(porcentajeCorrectivas)).toFixed(1),
+        cumplimientoGlobal: parseInt(cumplimientoGlobal),
+        totalAbiertas,
+        totalCerradas
+      }
+    };
+  }
+
+  // ==================== PLANTA DE BENEFICIO ====================
+  
+  async getPlantaBeneficio() {
+    // Datos del texto proporcionado - hardcodeados
+    
+    // Aves procesadas mensual
+    const avesProcessadasMensual = [
+      { mes: 'Enero', mes_num: 1, aves_2025: 1138590, aves_2024: 1381940 },
+      { mes: 'Febrero', mes_num: 2, aves_2025: 987813, aves_2024: 1497420 },
+      { mes: 'Marzo', mes_num: 3, aves_2025: 1503670, aves_2024: 1514470 },
+      { mes: 'Abril', mes_num: 4, aves_2025: 1461700, aves_2024: 1565990 },
+      { mes: 'Mayo', mes_num: 5, aves_2025: 1743130, aves_2024: 1460260 },
+      { mes: 'Junio', mes_num: 6, aves_2025: 1536490, aves_2024: 1474570 },
+      { mes: 'Julio', mes_num: 7, aves_2025: 1455100, aves_2024: 1381820 },
+      { mes: 'Agosto', mes_num: 8, aves_2025: 1587210, aves_2024: 1502890 },
+      { mes: 'Septiembre', mes_num: 9, aves_2025: 1417860, aves_2024: 1398310 },
+      { mes: 'Octubre', mes_num: 10, aves_2025: 1844070, aves_2024: 1736570 },
+      { mes: 'Noviembre', mes_num: 11, aves_2025: 1663280, aves_2024: 1526970 },
+      { mes: 'Diciembre', mes_num: 12, aves_2025: 1405190, aves_2024: 1441070 }
+    ];
+
+    // Promedio de pesos mensual
+    const promedioPesos = [
+      { mes: 'Enero', mes_num: 1, promedio_2025: 1954, promedio_2024: 1981 },
+      { mes: 'Febrero', mes_num: 2, promedio_2025: 2023, promedio_2024: 1973 },
+      { mes: 'Marzo', mes_num: 3, promedio_2025: 2006, promedio_2024: 1994 },
+      { mes: 'Abril', mes_num: 4, promedio_2025: 1991, promedio_2024: 1883 },
+      { mes: 'Mayo', mes_num: 5, promedio_2025: 2013, promedio_2024: 2013 },
+      { mes: 'Junio', mes_num: 6, promedio_2025: 1995, promedio_2024: 2018 },
+      { mes: 'Julio', mes_num: 7, promedio_2025: 1993, promedio_2024: 2021 },
+      { mes: 'Agosto', mes_num: 8, promedio_2025: 1993, promedio_2024: 1981 },
+      { mes: 'Septiembre', mes_num: 9, promedio_2025: 1980, promedio_2024: 1967 },
+      { mes: 'Octubre', mes_num: 10, promedio_2025: 1971, promedio_2024: 2016 },
+      { mes: 'Noviembre', mes_num: 11, promedio_2025: 1966, promedio_2024: 2011 },
+      { mes: 'Diciembre', mes_num: 12, promedio_2025: 1959, promedio_2024: 1937 }
+    ];
+
+    // Participación por rangos
+    const participacionRangos = [
+      { anio: 2024, rango_570_1377: 11.84, rango_1378_1816: 50.95, rango_1817_1928: 36.74 },
+      { anio: 2025, rango_570_1377: 10.16, rango_1378_1816: 49.42, rango_1817_1928: 37.43 }
+    ];
+
+    // Descartes en kilos
+    const descartesKilos = [
+      { categoria: 'AHOGADAS', kilos_2024: 120229.50, kilos_2025: 78087.84, variacion_pct: -35.1 },
+      { categoria: 'AVES DESCARTADAS POR GRANJA', kilos_2024: 116105.33, kilos_2025: 176136.30, variacion_pct: 51.7 },
+      { categoria: 'AVES DESCARTADAS POR PLANTA', kilos_2024: 15307.98, kilos_2025: 48399.12, variacion_pct: 216.3 },
+      { categoria: 'COMIDA EN BUCHE', kilos_2024: 7458.40, kilos_2025: 6391.90, variacion_pct: -14.3 },
+      { categoria: 'HIGADO', kilos_2024: 72579, kilos_2025: 62799, variacion_pct: -13.5 },
+      { categoria: 'PATAS', kilos_2024: 230243, kilos_2025: 284379, variacion_pct: 23.5 },
+      { categoria: 'PIERNA PERNIL', kilos_2024: 2671.35, kilos_2025: 5866.15, variacion_pct: 119.6 },
+      { categoria: 'PIERNAS', kilos_2024: 3025.20, kilos_2025: 2605.95, variacion_pct: -13.9 }
+    ];
+
+    // Participación canal y vísceras
+    const participacionCanal = [
+      { anio: 2021, pct_canal: 80.14, pct_viscera: 12.57, merma_planta: 7.29, en_caliente_seco: 72.00, hidratacion: 8.14, canal_viscera: 92.71 },
+      { anio: 2022, pct_canal: 79.32, pct_viscera: 12.53, merma_planta: 8.15, en_caliente_seco: 72.00, hidratacion: 7.32, canal_viscera: 91.85 },
+      { anio: 2023, pct_canal: 79.91, pct_viscera: 12.27, merma_planta: 7.82, en_caliente_seco: 72.10, hidratacion: 7.77, canal_viscera: 92.18 },
+      { anio: 2024, pct_canal: 81.34, pct_viscera: 12.11, merma_planta: 6.55, en_caliente_seco: 72.50, hidratacion: 8.86, canal_viscera: 93.45 },
+      { anio: 2025, pct_canal: 82.19, pct_viscera: 12.49, merma_planta: 5.38, en_caliente_seco: 71.86, hidratacion: 10.27, canal_viscera: 94.68 }
+    ];
+
+    // Calcular totales
+    const totalAves2025 = avesProcessadasMensual.reduce((sum, m) => sum + m.aves_2025, 0);
+    const totalAves2024 = avesProcessadasMensual.reduce((sum, m) => sum + m.aves_2024, 0);
+    const variacionAves = ((totalAves2025 - totalAves2024) / totalAves2024 * 100).toFixed(2);
+    
+    const promedioPeso2025 = promedioPesos.reduce((sum, m) => sum + m.promedio_2025, 0) / promedioPesos.length;
+    const promedioPeso2024 = promedioPesos.reduce((sum, m) => sum + m.promedio_2024, 0) / promedioPesos.length;
+
+    const totalDescartes2024 = descartesKilos.reduce((sum, d) => sum + d.kilos_2024, 0);
+    const totalDescartes2025 = descartesKilos.reduce((sum, d) => sum + d.kilos_2025, 0);
+
+    return {
+      avesProcessadasMensual,
+      promedioPesos,
+      participacionRangos,
+      descartesKilos,
+      participacionCanal,
+      totales: {
+        totalAves2025,
+        totalAves2024,
+        variacionAves: parseFloat(variacionAves),
+        promedioPeso2025: promedioPeso2025.toFixed(0),
+        promedioPeso2024: promedioPeso2024.toFixed(0),
+        totalDescartes2024: totalDescartes2024.toFixed(2),
+        totalDescartes2025: totalDescartes2025.toFixed(2),
+        variacionDescartes: ((totalDescartes2025 - totalDescartes2024) / totalDescartes2024 * 100).toFixed(2)
+      }
+    };
+  }
+
+  // ==================== TECNOLOGÍAS DE LA INFORMACIÓN ====================
+  
+  async getTecnologiasInformacion() {
+    // Datos hardcodeados basados en el texto proporcionado
+    const proyectos = [
+      {
+        nombre: 'Digitalización',
+        descripcion: 'Digitalización con enfoque a las tablas de retención para la administración de áreas funcionales, la perpetuidad de los archivos laborales (90 años), sobre gestión documental por procesos misionales.',
+        estado: 'Activo',
+        icono: 'FileText'
+      },
+      {
+        nombre: 'CCTV',
+        descripcion: 'Sistemas de Circuito cerrado de televisión – CCTV, sede oficina principal, sedes, plantas de procesos, puntos de venta y granjas avícolas.',
+        estado: 'Activo',
+        icono: 'Video'
+      },
+      {
+        nombre: 'BOT Certificados',
+        descripcion: 'Se cuenta el BOT para certificados de calidad.',
+        estado: 'Activo',
+        icono: 'Bot'
+      },
+      {
+        nombre: 'Microsoft Teams',
+        descripcion: 'Se utiliza la herramienta de Microsoft Teams, Microsoft 365 para toda la organización.',
+        estado: 'Activo',
+        icono: 'Users'
+      },
+      {
+        nombre: 'Redes Estructuradas',
+        descripcion: 'Se realizó el montaje de redes estructuradas con personal propio en la bodega ANGEL BLANCO, antes vanti.',
+        estado: 'Completado',
+        icono: 'Network'
+      },
+      {
+        nombre: 'ERP ENTERPRISE',
+        descripcion: 'El sistema de información con su nube (cloud) navega con el ERP ENTERPRISE, en sus aplicativos de nómina, comercial y finanzas. Se encuentra en proceso de Re-parametrización el área de: Compras, Almacén, inventarios y mantenimiento.',
+        estado: 'En Proceso',
+        icono: 'Database'
+      },
+      {
+        nombre: 'Power Apps',
+        descripcion: 'Powers apps para desarrollo de aplicaciones.',
+        estado: 'Activo',
+        icono: 'Code'
+      },
+      {
+        nombre: 'Backup OneDrive',
+        descripcion: 'Backup en OneDrive (nube) con su copia de respaldo en un servidor propio autónomo para la información de la empresa.',
+        estado: 'Activo',
+        icono: 'Cloud'
+      }
+    ];
+
+    const ecosistema = {
+      sistemaPrincipal: 'Pollo Fiesta',
+      componentes: [
+        {
+          id: 1,
+          nombre: 'Sistemas de videovigilancia empresarial (CCTV)',
+          categoria: 'Seguridad',
+          funcionalidades: [
+            'POS',
+            'PROCESO PROCESADOS DESPACHOS',
+            'EXTERIORES BODEGA ANGEL BLANCO'
+          ],
+          color: '#1e40af'
+        },
+        {
+          id: 2,
+          nombre: 'SIESA',
+          categoria: 'ERP',
+          funcionalidades: [
+            'Atención a cliente final Interno'
+          ],
+          color: '#1e40af'
+        },
+        {
+          id: 3,
+          nombre: 'Microsoft 365',
+          categoria: 'Productividad',
+          funcionalidades: [
+            'Backups equipos One Driver',
+            'Power Apps',
+            'Power Automate'
+          ],
+          color: '#1e40af'
+        },
+        {
+          id: 4,
+          nombre: 'BOT',
+          categoria: 'Automatización',
+          funcionalidades: [
+            'Envía correo con tarjeta de cumpleaños a todos los colaboradores'
+          ],
+          color: '#1e40af'
+        },
+        {
+          id: 5,
+          nombre: 'Aplicaciones',
+          categoria: 'Desarrollo Interno',
+          funcionalidades: [
+            'Manejo de agenda salas de capacitación',
+            'Seguimiento Producto Congelado Sede 2',
+            'Archivo Digital Versión 3.0',
+            'Digiturno Cartera',
+            'Verificador empleados activos e inactivos'
+          ],
+          color: '#1e40af'
+        }
+      ]
+    };
+
+    return {
+      ecosistema,
+      proyectos
     };
   }
 }
