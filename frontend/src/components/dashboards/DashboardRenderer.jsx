@@ -6,6 +6,10 @@ import HumanaDashboard from './HumanaDashboard';
 import HumanaDetalleDashboard from './HumanaDetalleDashboard';
 import LogisticaDashboard from './LogisticaDashboard';
 import LogisticaDetalleDashboard from './LogisticaDetalleDashboard';
+import LogisticaSede1Dashboard from './LogisticaSede1Dashboard';
+import LogisticaSede2Dashboard from './LogisticaSede2Dashboard';
+import LogisticaSede3Dashboard from './LogisticaSede3Dashboard';
+import GestionLogisticaDashboard from './GestionLogisticaDashboard';
 import SagrilaftDashboard from './SagrilaftDashboard';
 import GranjasDashboard from './GranjasDashboard';
 import ComercialResumenDashboard from './ComercialResumenDashboard';
@@ -58,6 +62,16 @@ export default function DashboardRenderer({ type, data }) {
       return <LogisticaDashboard data={data} />;
     case 'logistica-detalle':
       return <LogisticaDetalleDashboard data={data} />;
+    case 'logistica-sede1':
+      return <LogisticaSede1Dashboard data={data} />;
+    case 'logistica-sede2':
+      return <LogisticaSede2Dashboard data={data} />;
+    case 'logistica-sede3':
+      return <LogisticaSede3Dashboard data={data} />;
+    case 'logistica-consolidado':
+      return <GestionLogisticaDashboard data={data} />;
+    case 'gestion-logistica':
+      return <GestionLogisticaDashboard data={data} />;
     case 'produccion-granjas':
       return <GranjasDashboard data={data} />;
     case 'produccion-encasetado':

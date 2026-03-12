@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Truck, TrendingUp, Users, X, Info, DollarSign } from 'lucide-react';
 
-export default function LogisticaSede3Dashboard({ data }) {
+export default function LogisticaSede2Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', description: '', showTable: false });
 
@@ -17,7 +17,7 @@ export default function LogisticaSede3Dashboard({ data }) {
   if (logisticaData.length === 0) {
     return (
       <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-12 border border-slate-700 text-center">
-        <div className="text-gray-400 text-lg">No hay datos disponibles para Sede 3</div>
+        <div className="text-gray-400 text-lg">No hay datos disponibles para Sede 2</div>
       </div>
     );
   }
@@ -30,15 +30,15 @@ export default function LogisticaSede3Dashboard({ data }) {
     }).format(value);
   };
 
-  // Filtrar solo datos de SEDE3
-  const sede3Data = logisticaData.filter(d => {
+  // Filtrar solo datos de SEDE2
+  const sede2Data = logisticaData.filter(d => {
     const sede = (d.sede || '').toString().trim().toUpperCase();
-    return sede === 'SEDE3';
+    return sede === 'SEDE2';
   });
 
   // Agrupar por concepto
   const conceptosMap = {};
-  sede3Data.forEach(d => {
+  sede2Data.forEach(d => {
     const concepto = d.concepto || 'Sin concepto';
     const anio = parseInt(d.anio);
     const valor = parseFloat(d.valor) || 0;
@@ -67,28 +67,28 @@ export default function LogisticaSede3Dashboard({ data }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-purple-500/20 to-violet-600/10 backdrop-blur-xl rounded-xl p-6 border-2 border-purple-500/30"
+        className="bg-gradient-to-r from-green-500/20 to-emerald-600/10 backdrop-blur-xl rounded-xl p-6 border-2 border-green-500/30"
       >
         <div className="flex items-center gap-3 mb-4">
-          <Truck className="w-8 h-8 text-purple-400" />
-          <h2 className="text-3xl font-bold text-white">GESTIÓN LOGÍSTICA - SEDE 3</h2>
+          <Truck className="w-8 h-8 text-green-400" />
+          <h2 className="text-3xl font-bold text-white">GESTIÓN LOGÍSTICA - SEDE 2</h2>
         </div>
         <p className="text-gray-300 leading-relaxed mb-4">
-          La Sede 3 está enfocada en la atención de clientes institucionales, logrando un crecimiento del 0.93% en el periodo 2025 vs 2024, 
-          con una gestión eficiente que logró reducir gastos operacionales mediante la optimización del túnel de congelación.
+          La Sede 2 está encargada del aprovechamiento de los sobrantes de pollo para su transformación en productos congelados en diversas referencias, 
+          presentando un crecimiento en ventas del 31.3% influenciado por el traslado del cliente D1 y la vinculación del cliente ARA.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-600">
             <div className="text-sm text-gray-400 mb-1">Responsable</div>
-            <div className="text-xl font-bold text-purple-400">Angélica Cárdenas</div>
+            <div className="text-xl font-bold text-green-400">Alexis Pérez</div>
           </div>
           <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-600">
             <div className="text-sm text-gray-400 mb-1">Colaboradores</div>
-            <div className="text-3xl font-bold text-purple-400">89</div>
+            <div className="text-3xl font-bold text-green-400">56</div>
           </div>
           <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-600">
             <div className="text-sm text-gray-400 mb-1">Variación Ventas</div>
-            <div className="text-3xl font-bold text-green-400">+0.93%</div>
+            <div className="text-3xl font-bold text-green-400">+31.3%</div>
           </div>
         </div>
       </motion.div>
@@ -100,13 +100,13 @@ export default function LogisticaSede3Dashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
             'Gastos Totales 2025',
-            `Total de gastos operacionales logísticos Sede 3 para 2025: ${formatCurrency(total2025)}. La reducción del ${variacionTotal}% vs 2024 se logró mediante la optimización del túnel de congelación (-71.95%) y una gestión eficiente de recursos manteniendo ventas estables.`
+            `Total de gastos operacionales logísticos Sede 2 para 2025: ${formatCurrency(total2025)}. El incremento del ${variacionTotal}% vs 2024 está directamente relacionado con el crecimiento del 31.3% en ventas, principalmente por mayor capacidad instalada y personal para atender la demanda de D1 y ARA.`
           )}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-400 text-sm font-medium">Total Gastos 2025</span>
-            <DollarSign className="w-6 h-6 text-purple-400" />
+            <DollarSign className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-4xl font-bold text-white mb-1">{formatCurrency(total2025)}</div>
           <div className={`text-xs ${parseFloat(variacionTotal) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
@@ -120,13 +120,13 @@ export default function LogisticaSede3Dashboard({ data }) {
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
             'Variación Anual',
-            `La variación anual de ${formatCurrency(Math.abs(total2025 - total2024))} representa una ${parseFloat(variacionTotal) >= 0 ? 'incremento' : 'reducción'} del ${Math.abs(variacionTotal)}% en los gastos operacionales logísticos. El incremento se debe principalmente a personal de postproceso (+23.43%) por la unificación de operaciones y fletes (+28.17%) por mayor volumen de entregas a clientes institucionales.`
+            `La variación anual de ${formatCurrency(Math.abs(total2025 - total2024))} representa un incremento del ${Math.abs(variacionTotal)}% en los gastos operacionales logísticos. Este aumento está justificado por el crecimiento del 31.3% en ventas, con incrementos en arriendos y congelación (+43.01%) y personal de postproceso (+13.65%).`
           )}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-violet-500/30 hover:border-violet-500 transition-all cursor-pointer"
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-emerald-500/30 hover:border-emerald-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-400 text-sm font-medium">Variación Anual</span>
-            <TrendingUp className="w-6 h-6 text-violet-400" />
+            <TrendingUp className="w-6 h-6 text-emerald-400" />
           </div>
           <div className="text-4xl font-bold text-white mb-1">{formatCurrency(Math.abs(total2025 - total2024))}</div>
           <div className={`text-xs ${parseFloat(variacionTotal) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
@@ -140,13 +140,13 @@ export default function LogisticaSede3Dashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Conceptos de Gasto',
-            `Sede 3 gestiona ${conceptosArray.length} conceptos de gasto operacional logístico, incluyendo fletes, personal de postproceso, túnel de congelación, servicios públicos y otros rubros necesarios para la operación de clientes institucionales. Cada concepto es monitoreado mensualmente para optimizar costos.`
+            `Sede 2 gestiona ${conceptosArray.length} conceptos de gasto operacional logístico, incluyendo arriendos y congelación, fletes, personal de postproceso, servicios públicos y otros rubros necesarios para la operación de productos congelados. Cada concepto es monitoreado mensualmente para optimizar costos.`
           )}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-fuchsia-500/30 hover:border-fuchsia-500 transition-all cursor-pointer"
+          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-teal-500/30 hover:border-teal-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-400 text-sm font-medium">Conceptos de Gasto</span>
-            <Users className="w-6 h-6 text-fuchsia-400" />
+            <Users className="w-6 h-6 text-teal-400" />
           </div>
           <div className="text-4xl font-bold text-white mb-1">{conceptosArray.length}</div>
           <div className="text-xs text-teal-400">Rubros controlados</div>
@@ -159,15 +159,15 @@ export default function LogisticaSede3Dashboard({ data }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         onClick={() => openModal(
-          'Detalle de Gastos Sede 3',
-          `Análisis detallado de gastos operacionales logísticos Sede 3 para 2024 vs 2025. El incremento del ${variacionTotal}% refleja el crecimiento operativo y la consolidación de procesos. Los principales aumentos se deben a personal de postproceso (+23.43%) por la unificación de operaciones, y fletes (+28.17%) por el aumento en volumen de entregas a clientes institucionales.`,
+          'Detalle de Gastos Sede 2',
+          `Análisis detallado de gastos operacionales logísticos Sede 2 para 2024 vs 2025. El incremento del ${variacionTotal}% en gastos totales está directamente relacionado con el crecimiento del 31.3% en ventas. Los principales aumentos se deben a arriendos y congelación (+43.01%) por mayor capacidad instalada, y personal de postproceso (+13.65%) para atender la demanda de D1 y ARA.`,
           true
         )}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700 hover:border-orange-500 transition-all cursor-pointer"
+        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700 hover:border-green-500 transition-all cursor-pointer"
       >
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-bold text-white">Comparativa de Gastos 2024 vs 2025</h3>
-          <Info className="w-5 h-5 text-orange-400 animate-pulse" />
+          <Info className="w-5 h-5 text-green-400 animate-pulse" />
         </div>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={conceptosArray} layout="vertical" margin={{ left: 180, right: 30 }}>
@@ -194,7 +194,7 @@ export default function LogisticaSede3Dashboard({ data }) {
             <Bar dataKey="valor2025" fill="#10b981" name="2025" radius={[0, 8, 8, 0]} />
           </BarChart>
         </ResponsiveContainer>
-        <div className="mt-4 text-center text-sm text-orange-400">
+        <div className="mt-4 text-center text-sm text-green-400">
           Haz clic para ver tabla detallada
         </div>
       </motion.div>
@@ -213,12 +213,12 @@ export default function LogisticaSede3Dashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-6xl w-full border-4 border-orange-500 shadow-2xl max-h-[90vh] overflow-y-auto"
+              className="bg-slate-800 rounded-xl p-6 max-w-6xl w-full border-4 border-green-500 shadow-2xl max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-orange-400" />
+                  <Info className="w-6 h-6 text-green-400" />
                   <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
                 </div>
                 <button
@@ -229,7 +229,7 @@ export default function LogisticaSede3Dashboard({ data }) {
                 </button>
               </div>
               
-              <div className="mb-6 bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
+              <div className="mb-6 bg-green-500/10 border border-green-500/30 rounded-lg p-4">
                 <p className="text-sm text-gray-300 leading-relaxed">
                   {modalContent.description}
                 </p>
@@ -239,11 +239,11 @@ export default function LogisticaSede3Dashboard({ data }) {
               {modalContent.showTable && (
               <div className="overflow-x-auto">
                 <h4 className="text-lg font-bold text-white mb-4">
-                  GASTOS OPERACIONALES LOGÍSTICOS SEDE 3 AÑO 2024 VS 2025
+                  GASTOS OPERACIONALES LOGÍSTICOS SEDE 2 AÑO 2024 VS 2025
                 </h4>
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-purple-700/50 border-b-2 border-slate-600">
+                    <tr className="bg-green-700/50 border-b-2 border-slate-600">
                       <th className="text-left py-3 px-4 text-white font-bold">CONCEPTO</th>
                       <th className="text-right py-3 px-4 text-white font-bold">TOTAL 2024</th>
                       <th className="text-right py-3 px-4 text-white font-bold">TOTAL 2025</th>
@@ -310,7 +310,7 @@ export default function LogisticaSede3Dashboard({ data }) {
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
                 >
                   Cerrar
                 </button>

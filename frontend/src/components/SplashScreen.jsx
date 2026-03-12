@@ -11,10 +11,10 @@ export default function SplashScreen({ onComplete }) {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    // Animación inicial del logo - más tiempo para el logo ORB
-    const logoTimer1 = setTimeout(() => setLogoPhase('exploding'), 2000);
-    const logoTimer2 = setTimeout(() => setLogoPhase('fia'), 2900);
-    const buttonTimer = setTimeout(() => setShowButton(true), 3400);
+    // Animación inicial del logo
+    const logoTimer1 = setTimeout(() => setLogoPhase('exploding'), 1800);
+    const logoTimer2 = setTimeout(() => setLogoPhase('fia'), 2700);
+    const buttonTimer = setTimeout(() => setShowButton(true), 3200);
 
     return () => {
       clearTimeout(logoTimer1);
@@ -26,7 +26,7 @@ export default function SplashScreen({ onComplete }) {
   useEffect(() => {
     if (!started) return;
 
-    // Reproducir sonido después de la interacción del usuario
+    // Reproducir sonido al iniciar
     playSound();
 
     const progressInterval = setInterval(() => {
@@ -61,82 +61,108 @@ export default function SplashScreen({ onComplete }) {
       
       const now = ctx.currentTime;
       
-      // Impacto inicial más suave
-      const impact = ctx.createOscillator();
-      const impactGain = ctx.createGain();
+      // WHOOSH INICIAL - Sonido de apertura futurista
+      const whoosh = ctx.createOscillator();
+      const whooshGain = ctx.createGain();
+      const whooshFilter = ctx.createBiquadFilter();
       
-      impact.type = 'sine';
-      impact.frequency.setValueAtTime(120, now);
-      impact.frequency.exponentialRampToValueAtTime(60, now + 0.12);
+      whoosh.type = 'sawtooth';
+      whoosh.frequency.setValueAtTime(200, now);
+      whoosh.frequency.exponentialRampToValueAtTime(2000, now + 0.3);
       
-      impactGain.gain.setValueAtTime(0.3, now);
-      impactGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+      whooshFilter.type = 'highpass';
+      whooshFilter.frequency.setValueAtTime(500, now);
+      whooshFilter.frequency.exponentialRampToValueAtTime(3000, now + 0.3);
+      whooshFilter.Q.value = 1;
       
-      impact.connect(impactGain);
-      impactGain.connect(ctx.destination);
-      impact.start(now);
-      impact.stop(now + 0.12);
+      whooshGain.gain.setValueAtTime(0.3, now);
+      whooshGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
       
-      // Acorde limpio y balanceado
-      const chord = [
-        { freq: 261.63, gain: 0.2 },   // C4
-        { freq: 329.63, gain: 0.22 },  // E4
-        { freq: 392.00, gain: 0.2 },   // G4
-        { freq: 523.25, gain: 0.18 }   // C5
+      whoosh.connect(whooshFilter);
+      whooshFilter.connect(whooshGain);
+      whooshGain.connect(ctx.destination);
+      whoosh.start(now);
+      whoosh.stop(now + 0.3);
+      
+      // CLICK DIGITAL - Sonido de activación
+      const click = ctx.createOscillator();
+      const clickGain = ctx.createGain();
+      
+      click.type = 'sine';
+      click.frequency.value = 1200;
+      
+      clickGain.gain.setValueAtTime(0.4, now + 0.05);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      
+      click.connect(clickGain);
+      clickGain.connect(ctx.destination);
+      click.start(now + 0.05);
+      click.stop(now + 0.1);
+      
+      // ACORDE BRILLANTE - Notas ascendentes futuristas
+      const notes = [
+        { freq: 523.25, time: 0.15 },  // C5
+        { freq: 659.25, time: 0.25 },  // E5
+        { freq: 783.99, time: 0.35 }   // G5
       ];
       
-      chord.forEach(({ freq, gain: gainValue }) => {
+      notes.forEach(({ freq, time }) => {
         const osc = ctx.createOscillator();
-        const gainNode = ctx.createGain();
+        const gain = ctx.createGain();
         
         osc.type = 'sine';
         osc.frequency.value = freq;
         
-        gainNode.gain.setValueAtTime(0, now + 0.08);
-        gainNode.gain.linearRampToValueAtTime(gainValue, now + 0.15);
-        gainNode.gain.setValueAtTime(gainValue, now + 1);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+        gain.gain.setValueAtTime(0, now + time);
+        gain.gain.linearRampToValueAtTime(0.25, now + time + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + time + 0.4);
         
-        osc.connect(gainNode);
-        gainNode.connect(ctx.destination);
-        osc.start(now + 0.08);
-        osc.stop(now + 1.8);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + time);
+        osc.stop(now + time + 0.4);
       });
       
-      // Sub-bass más controlado
+      // SHIMMER - Brillo futurista
+      const shimmer = ctx.createOscillator();
+      const shimmerGain = ctx.createGain();
+      const shimmerFilter = ctx.createBiquadFilter();
+      
+      shimmer.type = 'sine';
+      shimmer.frequency.setValueAtTime(2093, now + 0.4);
+      shimmer.frequency.linearRampToValueAtTime(3136, now + 1);
+      
+      shimmerFilter.type = 'highpass';
+      shimmerFilter.frequency.value = 1500;
+      shimmerFilter.Q.value = 0.5;
+      
+      shimmerGain.gain.setValueAtTime(0, now + 0.4);
+      shimmerGain.gain.linearRampToValueAtTime(0.15, now + 0.5);
+      shimmerGain.gain.setValueAtTime(0.15, now + 0.8);
+      shimmerGain.gain.exponentialRampToValueAtTime(0.001, now + 1);
+      
+      shimmer.connect(shimmerFilter);
+      shimmerFilter.connect(shimmerGain);
+      shimmerGain.connect(ctx.destination);
+      shimmer.start(now + 0.4);
+      shimmer.stop(now + 1);
+      
+      // SUB-BASS SUAVE - Fundación sutil
       const bass = ctx.createOscillator();
       const bassGain = ctx.createGain();
       
       bass.type = 'sine';
-      bass.frequency.value = 65.41; // C2
+      bass.frequency.value = 65.41;
       
-      bassGain.gain.setValueAtTime(0, now + 0.08);
-      bassGain.gain.linearRampToValueAtTime(0.28, now + 0.2);
-      bassGain.gain.setValueAtTime(0.28, now + 1);
-      bassGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+      bassGain.gain.setValueAtTime(0, now + 0.2);
+      bassGain.gain.linearRampToValueAtTime(0.2, now + 0.3);
+      bassGain.gain.setValueAtTime(0.2, now + 0.7);
+      bassGain.gain.exponentialRampToValueAtTime(0.001, now + 1);
       
       bass.connect(bassGain);
       bassGain.connect(ctx.destination);
-      bass.start(now + 0.08);
-      bass.stop(now + 1.8);
-      
-      // Brillo más suave
-      const shimmer = ctx.createOscillator();
-      const shimmerGain = ctx.createGain();
-      
-      shimmer.type = 'sine';
-      shimmer.frequency.setValueAtTime(1046.50, now + 0.25);
-      shimmer.frequency.exponentialRampToValueAtTime(1568.00, now + 1);
-      
-      shimmerGain.gain.setValueAtTime(0, now + 0.25);
-      shimmerGain.gain.linearRampToValueAtTime(0.15, now + 0.32);
-      shimmerGain.gain.setValueAtTime(0.15, now + 0.8);
-      shimmerGain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
-      
-      shimmer.connect(shimmerGain);
-      shimmerGain.connect(ctx.destination);
-      shimmer.start(now + 0.25);
-      shimmer.stop(now + 1.5);
+      bass.start(now + 0.2);
+      bass.stop(now + 1);
       
     } catch (error) {
       console.error('Error al reproducir sonido:', error);
@@ -175,90 +201,70 @@ export default function SplashScreen({ onComplete }) {
         >
           {/* Logo con animación de transformación */}
           <div className="relative w-64 h-64 flex items-center justify-center">
-            {/* Anillos orbitales que aparecen durante la explosión */}
+            {/* Efecto de pantalla rompiéndose - grietas */}
             <AnimatePresence>
               {logoPhase === 'exploding' && (
                 <>
-                  {[...Array(5)].map((_, i) => (
-                    <motion.div
-                      key={`ring-${i}`}
-                      className="absolute rounded-full"
-                      style={{
-                        width: `${100 + i * 40}px`,
-                        height: `${100 + i * 40}px`,
-                        border: `3px solid rgba(255, 255, 255, ${0.9 - i * 0.15})`,
-                        boxShadow: `0 0 20px rgba(255, 255, 255, ${0.6 - i * 0.1})`
-                      }}
-                      initial={{ 
-                        scale: 0, 
-                        opacity: 0
-                      }}
-                      animate={{ 
-                        scale: [0, 1.3, 1.1],
-                        opacity: [0, 1, 0.7],
-                        borderColor: [
-                          `rgba(255, 255, 255, ${0.9 - i * 0.15})`,
-                          `rgba(56, 189, 248, ${0.9 - i * 0.15})`
-                        ],
-                        boxShadow: [
-                          `0 0 20px rgba(255, 255, 255, ${0.6 - i * 0.1})`,
-                          `0 0 25px rgba(56, 189, 248, ${0.8 - i * 0.1})`
-                        ]
-                      }}
-                      exit={{ opacity: 0, scale: 1.4 }}
-                      transition={{
-                        duration: 0.7,
-                        delay: i * 0.04,
-                        ease: [0.25, 0.46, 0.45, 0.94]
-                      }}
-                    />
-                  ))}
-                </>
-              )}
-            </AnimatePresence>
-
-            {/* Partículas explosivas con transición de color */}
-            <AnimatePresence>
-              {logoPhase === 'exploding' && (
-                <>
-                  {[...Array(28)].map((_, i) => {
-                    const angle = (i * 360) / 28;
-                    const distance = 160 + (i % 2) * 15;
+                  {/* Grietas principales */}
+                  {[...Array(12)].map((_, i) => {
+                    const angle = (i * 360) / 12;
                     return (
                       <motion.div
-                        key={`particle-${i}`}
-                        className="absolute rounded-full"
+                        key={`crack-${i}`}
+                        className="absolute"
                         style={{
-                          width: `${2 + (i % 2)}px`,
-                          height: `${2 + (i % 2)}px`,
+                          width: '3px',
+                          height: '0px',
                           left: '50%',
                           top: '50%',
-                          marginLeft: '-2px',
-                          marginTop: '-2px',
+                          transformOrigin: 'top center',
+                          rotate: `${angle}deg`,
+                          background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3), transparent)',
+                          boxShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 15px rgba(56, 189, 248, 0.6)'
                         }}
-                        initial={{ 
-                          x: 0, 
-                          y: 0, 
-                          opacity: 0, 
-                          scale: 0,
-                          background: 'radial-gradient(circle, rgba(251, 191, 36, 1), rgba(245, 158, 11, 0.5))'
-                        }}
+                        initial={{ height: '0px', opacity: 0 }}
                         animate={{
-                          x: Math.cos(angle * Math.PI / 180) * distance,
-                          y: Math.sin(angle * Math.PI / 180) * distance,
+                          height: ['0px', '180px', '200px'],
                           opacity: [0, 1, 0.7, 0],
-                          scale: [0, 1.8, 1.2, 0],
-                          background: [
-                            'radial-gradient(circle, rgba(251, 191, 36, 1), rgba(245, 158, 11, 0.5))',
-                            'radial-gradient(circle, rgba(147, 197, 253, 1), rgba(96, 165, 250, 0.5))',
-                            'radial-gradient(circle, rgba(56, 189, 248, 1), rgba(29, 78, 216, 0.5))'
-                          ]
+                          width: ['3px', '2px', '1px']
                         }}
-                        exit={{ opacity: 0 }}
                         transition={{
-                          duration: 0.8,
-                          delay: i * 0.008,
-                          ease: [0.25, 0.46, 0.45, 0.94]
+                          duration: 0.6,
+                          delay: i * 0.02,
+                          ease: [0.22, 1, 0.36, 1]
+                        }}
+                      />
+                    );
+                  })}
+                  
+                  {/* Grietas secundarias ramificadas */}
+                  {[...Array(24)].map((_, i) => {
+                    const angle = (i * 360) / 24 + 15;
+                    const length = 80 + (i % 3) * 30;
+                    return (
+                      <motion.div
+                        key={`subcrack-${i}`}
+                        className="absolute"
+                        style={{
+                          width: '2px',
+                          height: '0px',
+                          left: '50%',
+                          top: '50%',
+                          transformOrigin: 'top center',
+                          rotate: `${angle}deg`,
+                          background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(147, 197, 253, 0.4), transparent)',
+                          boxShadow: '0 0 5px rgba(56, 189, 248, 0.5)'
+                        }}
+                        initial={{ height: '0px', opacity: 0 }}
+                        animate={{
+                          height: [`0px`, `${length}px`],
+                          opacity: [0, 0.8, 0.5, 0],
+                          width: ['2px', '1px']
+                        }}
+                        transition={{
+                          duration: 0.5,
+                          delay: 0.1 + i * 0.015,
+                          ease: [0.22, 1, 0.36, 1]
                         }}
                       />
                     );
@@ -267,32 +273,49 @@ export default function SplashScreen({ onComplete }) {
               )}
             </AnimatePresence>
 
-            {/* Ondas expansivas con transición de color */}
+            {/* Anillos orbitales con efecto de fragmentación */}
             <AnimatePresence>
               {logoPhase === 'exploding' && (
                 <>
-                  {[...Array(3)].map((_, i) => (
+                  {[...Array(6)].map((_, i) => (
                     <motion.div
-                      key={`wave-${i}`}
-                      className="absolute rounded-full border-4"
+                      key={`ring-${i}`}
+                      className="absolute rounded-full"
                       style={{
-                        width: '90px',
-                        height: '90px',
+                        width: `${100 + i * 45}px`,
+                        height: `${100 + i * 45}px`,
+                        border: `4px solid rgba(255, 255, 255, ${0.95 - i * 0.12})`,
+                        boxShadow: `0 0 30px rgba(255, 255, 255, ${0.7 - i * 0.1})`,
+                        borderStyle: i % 2 === 0 ? 'solid' : 'dashed',
+                        borderDasharray: i % 2 === 0 ? 'none' : '10 5'
                       }}
                       initial={{ 
                         scale: 0, 
-                        opacity: 1,
-                        borderColor: 'rgba(251, 191, 36, 0.9)'
-                      }}
-                      animate={{
-                        scale: 4,
                         opacity: 0,
-                        borderColor: 'rgba(56, 189, 248, 0.9)'
+                        rotate: 0
                       }}
+                      animate={{ 
+                        scale: [0, 1.4, 1.2, 1.5],
+                        opacity: [0, 1, 0.8, 0],
+                        rotate: i % 2 === 0 ? [0, 180, 360] : [0, -180, -360],
+                        borderColor: [
+                          `rgba(255, 255, 255, ${0.95 - i * 0.12})`,
+                          `rgba(251, 191, 36, ${0.9 - i * 0.12})`,
+                          `rgba(56, 189, 248, ${0.85 - i * 0.12})`,
+                          `rgba(29, 78, 216, ${0.7 - i * 0.12})`
+                        ],
+                        boxShadow: [
+                          `0 0 30px rgba(255, 255, 255, ${0.7 - i * 0.1})`,
+                          `0 0 40px rgba(251, 191, 36, ${0.8 - i * 0.1})`,
+                          `0 0 50px rgba(56, 189, 248, ${0.9 - i * 0.1})`,
+                          `0 0 35px rgba(29, 78, 216, ${0.6 - i * 0.1})`
+                        ]
+                      }}
+                      exit={{ opacity: 0, scale: 2, rotate: i % 2 === 0 ? 720 : -720 }}
                       transition={{
-                        duration: 1,
-                        delay: i * 0.08,
-                        ease: [0.25, 0.46, 0.45, 0.94]
+                        duration: 0.9,
+                        delay: i * 0.03,
+                        ease: [0.22, 1, 0.36, 1]
                       }}
                     />
                   ))}
@@ -300,33 +323,154 @@ export default function SplashScreen({ onComplete }) {
               )}
             </AnimatePresence>
 
-            {/* Rayos de luz sutiles */}
+            {/* Fragmentos explosivos con múltiples formas y trayectorias */}
             <AnimatePresence>
               {logoPhase === 'exploding' && (
                 <>
-                  {[...Array(6)].map((_, i) => (
+                  {/* Fragmentos de vidrio grandes */}
+                  {[...Array(60)].map((_, i) => {
+                    const angle = (i * 360) / 60;
+                    const distance = 140 + (i % 4) * 30;
+                    const isSquare = i % 4 === 0;
+                    const isTriangle = i % 5 === 0;
+                    const size = 4 + (i % 4);
+                    
+                    return (
+                      <motion.div
+                        key={`fragment-${i}`}
+                        className="absolute"
+                        style={{
+                          width: `${size}px`,
+                          height: `${size}px`,
+                          left: '50%',
+                          top: '50%',
+                          marginLeft: `-${size/2}px`,
+                          marginTop: `-${size/2}px`,
+                          borderRadius: isSquare ? '0%' : (isTriangle ? '0%' : '50%'),
+                          clipPath: isTriangle ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : 'none'
+                        }}
+                        initial={{ 
+                          x: 0, 
+                          y: 0, 
+                          opacity: 0, 
+                          scale: 0,
+                          rotate: 0,
+                          background: 'radial-gradient(circle, rgba(255, 255, 255, 1), rgba(251, 191, 36, 0.9))'
+                        }}
+                        animate={{
+                          x: [
+                            0,
+                            Math.cos(angle * Math.PI / 180) * (distance * 0.3),
+                            Math.cos(angle * Math.PI / 180) * distance,
+                            Math.cos((angle + 20) * Math.PI / 180) * (distance * 1.2)
+                          ],
+                          y: [
+                            0,
+                            Math.sin(angle * Math.PI / 180) * (distance * 0.3),
+                            Math.sin(angle * Math.PI / 180) * distance,
+                            Math.sin((angle + 20) * Math.PI / 180) * (distance * 1.2) + 30
+                          ],
+                          opacity: [0, 1, 0.95, 0.7, 0],
+                          scale: [0, 2.5, 1.8, 2, 0],
+                          rotate: [0, 180 * (i % 2 === 0 ? 1 : -1), 360 * (i % 2 === 0 ? 1 : -1), 540 * (i % 2 === 0 ? 1 : -1)],
+                          background: [
+                            'radial-gradient(circle, rgba(255, 255, 255, 1), rgba(251, 191, 36, 0.9))',
+                            'radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(251, 191, 36, 0.8))',
+                            'radial-gradient(circle, rgba(147, 197, 253, 1), rgba(96, 165, 250, 0.8))',
+                            'radial-gradient(circle, rgba(56, 189, 248, 1), rgba(29, 78, 216, 0.7))',
+                            'radial-gradient(circle, rgba(29, 78, 216, 0.8), rgba(30, 58, 138, 0.4))'
+                          ]
+                        }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{
+                          duration: 1.1,
+                          delay: i * 0.005,
+                          ease: [0.22, 1, 0.36, 1]
+                        }}
+                      />
+                    );
+                  })}
+                </>
+              )}
+            </AnimatePresence>
+
+            {/* Ondas expansivas múltiples con distorsión */}
+            <AnimatePresence>
+              {logoPhase === 'exploding' && (
+                <>
+                  {[...Array(5)].map((_, i) => (
+                    <motion.div
+                      key={`wave-${i}`}
+                      className="absolute rounded-full"
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        border: `${6 - i}px solid rgba(251, 191, 36, ${0.9 - i * 0.1})`
+                      }}
+                      initial={{ 
+                        scale: 0, 
+                        opacity: 1,
+                        borderColor: 'rgba(251, 191, 36, 0.95)'
+                      }}
+                      animate={{
+                        scale: [0, 2, 4.5, 5],
+                        opacity: [1, 0.8, 0.3, 0],
+                        borderColor: [
+                          'rgba(251, 191, 36, 0.95)',
+                          'rgba(255, 255, 255, 0.9)',
+                          'rgba(147, 197, 253, 0.8)',
+                          'rgba(56, 189, 248, 0.6)',
+                          'rgba(29, 78, 216, 0.3)'
+                        ],
+                        borderWidth: [`${6 - i}px`, `${4 - i}px`, `${2}px`, '1px']
+                      }}
+                      transition={{
+                        duration: 1.1,
+                        delay: i * 0.06,
+                        ease: [0.22, 1, 0.36, 1]
+                      }}
+                    />
+                  ))}
+                </>
+              )}
+            </AnimatePresence>
+
+            {/* Rayos de luz dinámicos con pulsos */}
+            <AnimatePresence>
+              {logoPhase === 'exploding' && (
+                <>
+                  {[...Array(12)].map((_, i) => (
                     <motion.div
                       key={`ray-${i}`}
-                      className="absolute bg-gradient-to-t from-transparent via-sky-400 to-transparent"
+                      className="absolute"
                       style={{
-                        width: '2px',
-                        height: '100px',
+                        width: i % 2 === 0 ? '3px' : '2px',
+                        height: '120px',
                         transformOrigin: 'center',
                         left: '50%',
                         top: '50%',
-                        marginLeft: '-1px',
-                        marginTop: '-50px',
-                        rotate: `${i * 60}deg`,
+                        marginLeft: '-1.5px',
+                        marginTop: '-60px',
+                        rotate: `${i * 30}deg`,
+                        background: i % 2 === 0 
+                          ? 'linear-gradient(to top, transparent, rgba(251, 191, 36, 0.9), rgba(255, 255, 255, 1), rgba(56, 189, 248, 0.9), transparent)'
+                          : 'linear-gradient(to top, transparent, rgba(56, 189, 248, 0.8), rgba(147, 197, 253, 1), rgba(56, 189, 248, 0.8), transparent)'
                       }}
                       initial={{ opacity: 0, scaleY: 0 }}
                       animate={{
-                        opacity: [0, 0.8, 0],
-                        scaleY: [0, 1.2, 0]
+                        opacity: [0, 1, 0.9, 0],
+                        scaleY: [0, 1.5, 1.3, 0],
+                        filter: [
+                          'blur(0px)',
+                          'blur(1px)',
+                          'blur(2px)',
+                          'blur(3px)'
+                        ]
                       }}
                       transition={{
-                        duration: 0.5,
-                        delay: i * 0.04,
-                        ease: "easeOut"
+                        duration: 0.7,
+                        delay: i * 0.025,
+                        ease: [0.22, 1, 0.36, 1]
                       }}
                     />
                   ))}
@@ -403,41 +547,79 @@ export default function SplashScreen({ onComplete }) {
                   <>
                     {logoPhase === 'exploding' && (
                       <>
+                        {/* Flash central de explosión */}
                         <motion.div
                           key="explosion-flash"
-                          className="absolute w-80 h-80 rounded-full"
+                          className="absolute w-96 h-96 rounded-full"
                           initial={{ 
                             scale: 0, 
                             opacity: 1,
-                            background: 'radial-gradient(circle, rgba(251, 191, 36, 1) 0%, rgba(251, 191, 36, 0.6) 40%, rgba(251, 191, 36, 0) 100%)'
+                            background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(251, 191, 36, 0.9) 30%, rgba(251, 191, 36, 0.4) 60%, rgba(251, 191, 36, 0) 100%)'
                           }}
                           animate={{ 
-                            scale: 1.8, 
-                            opacity: 0,
-                            background: 'radial-gradient(circle, rgba(56, 189, 248, 1) 0%, rgba(56, 189, 248, 0.6) 40%, rgba(56, 189, 248, 0) 100%)'
+                            scale: [0, 0.8, 2.2],
+                            opacity: [1, 1, 0],
+                            background: [
+                              'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(251, 191, 36, 0.9) 30%, rgba(251, 191, 36, 0.4) 60%, rgba(251, 191, 36, 0) 100%)',
+                              'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(147, 197, 253, 0.9) 30%, rgba(56, 189, 248, 0.5) 60%, rgba(56, 189, 248, 0) 100%)',
+                              'radial-gradient(circle, rgba(56, 189, 248, 0.8) 0%, rgba(56, 189, 248, 0.5) 40%, rgba(56, 189, 248, 0) 100%)'
+                            ]
                           }}
                           transition={{ 
-                            duration: 0.7, 
-                            ease: [0.25, 0.46, 0.45, 0.94]
+                            duration: 0.8, 
+                            ease: [0.22, 1, 0.36, 1]
                           }}
                         />
+                        
+                        {/* Anillo de impacto */}
                         <motion.div
                           key="explosion-ring"
-                          className="absolute w-40 h-40 rounded-full border-6"
+                          className="absolute w-32 h-32 rounded-full"
                           style={{
-                            borderColor: 'rgba(255, 255, 255, 0.9)'
+                            border: '8px solid rgba(255, 255, 255, 1)',
+                            boxShadow: '0 0 40px rgba(255, 255, 255, 1), inset 0 0 40px rgba(255, 255, 255, 0.5)'
                           }}
                           initial={{ scale: 1, opacity: 1 }}
                           animate={{ 
-                            scale: 2.5,
-                            opacity: 0,
-                            borderWidth: '2px'
+                            scale: [1, 1.5, 3],
+                            opacity: [1, 0.8, 0],
+                            borderWidth: ['8px', '6px', '2px'],
+                            borderColor: [
+                              'rgba(255, 255, 255, 1)',
+                              'rgba(251, 191, 36, 0.9)',
+                              'rgba(56, 189, 248, 0.6)'
+                            ]
                           }}
                           transition={{ 
-                            duration: 0.6, 
-                            ease: "easeOut"
+                            duration: 0.7, 
+                            ease: [0.22, 1, 0.36, 1]
                           }}
                         />
+
+                        {/* Distorsión espacial */}
+                        {[...Array(4)].map((_, i) => (
+                          <motion.div
+                            key={`distortion-${i}`}
+                            className="absolute rounded-full"
+                            style={{
+                              width: `${60 + i * 30}px`,
+                              height: `${60 + i * 30}px`,
+                              border: `2px solid rgba(255, 255, 255, ${0.6 - i * 0.1})`,
+                              filter: 'blur(2px)'
+                            }}
+                            initial={{ scale: 1, opacity: 0 }}
+                            animate={{
+                              scale: [1, 1.2, 1.8, 2.5],
+                              opacity: [0, 0.8, 0.4, 0],
+                              rotate: i % 2 === 0 ? [0, 90, 180] : [0, -90, -180]
+                            }}
+                            transition={{
+                              duration: 0.6,
+                              delay: i * 0.05,
+                              ease: "easeOut"
+                            }}
+                          />
+                        ))}
                       </>
                     )}
 
@@ -446,19 +628,19 @@ export default function SplashScreen({ onComplete }) {
                       className="absolute flex items-center justify-center"
                       initial={{ 
                         opacity: 0,
-                        scale: 0.7,
-                        filter: 'brightness(3) blur(20px)'
+                        scale: 0.5,
+                        filter: 'brightness(5) blur(30px)'
                       }}
                       animate={{ 
                         opacity: logoPhase === 'fia' ? 1 : 0,
-                        scale: logoPhase === 'fia' ? 1 : 0.7,
+                        scale: logoPhase === 'fia' ? 1 : 0.5,
                         filter: logoPhase === 'fia' 
                           ? 'brightness(1.2) blur(0px) drop-shadow(0 0 40px rgba(56, 189, 248, 0.8))'
-                          : 'brightness(3) blur(20px)'
+                          : 'brightness(5) blur(30px)'
                       }}
                       transition={{
-                        duration: 0.9,
-                        ease: [0.4, 0, 0.2, 1]
+                        duration: 1,
+                        ease: [0.22, 1, 0.36, 1]
                       }}
                     >
                       <motion.img
