@@ -322,50 +322,118 @@ class DashboardRepository extends IDashboardRepository {
     const db = getInstance();
     const pool = db.getPool();
     
-    // Control de mermas
-    const [mermas] = await pool.query(`
-      SELECT 
-        anio,
-        sede,
-        porcentaje_merma_real,
-        porcentaje_meta
-      FROM log_control_mermas
-      ORDER BY anio DESC, sede
-    `);
+    console.log('🔍 getGestionLogistica - Iniciando consulta...');
     
-    // Vista de cumplimiento 2025
-    const [cumplimiento2025] = await pool.query(`
-      SELECT * FROM vista_log_cumplimiento_mermas_2025
-    `);
-    
-    // Calcular promedios por sede
-    const porSede = mermas.reduce((acc, m) => {
-      const sede = m.sede || 'General';
-      if (!acc[sede]) {
-        acc[sede] = { registros: 0, mermaPromedio: 0, metaPromedio: 0 };
+    try {
+      // Gastos logísticos por sede, año y concepto con JOIN
+      const [gastosLogisticos] = await pool.query(`
+        SELECT 
+          s.nombre_sede as sede,
+          g.anio,
+          g.concepto_gasto as concepto,
+          g.valor_pesos as valor
+        FROM log_gastos_operacionales g
+        INNER JOIN log_sedes_operacion s ON g.id_sede = s.id_sede
+        ORDER BY s.nombre_sede, g.anio DESC, g.concepto_gasto
+      `);
+      
+      console.log('📊 gastosLogisticos obtenidos:', gastosLogisticos.length, 'registros');
+      if (gastosLogisticos.length > 0) {
+        console.log('📋 Primer registro:', gastosLogisticos[0]);
       }
-      acc[sede].registros += 1;
-      acc[sede].mermaPromedio += parseFloat(m.porcentaje_merma_real) || 0;
-      acc[sede].metaPromedio += parseFloat(m.porcentaje_meta) || 0;
-      return acc;
-    }, {});
-    
-    Object.keys(porSede).forEach(sede => {
-      const data = porSede[sede];
-      data.mermaPromedio = (data.mermaPromedio / data.registros).toFixed(2);
-      data.metaPromedio = (data.metaPromedio / data.registros).toFixed(2);
-      data.cumple = parseFloat(data.mermaPromedio) <= parseFloat(data.metaPromedio);
-    });
-    
-    return {
-      mermas,
-      cumplimiento2025,
-      porSede,
-      totales: {
-        totalRegistros: mermas.length,
+      
+      // Los datos ya vienen en el formato correcto
+      const items = gastosLogisticos.map(g => ({
+        sede: g.sede.toUpperCase().replace(' ', ''), // "Sede 1" -> "SEDE1"
+        anio: parseInt(g.anio),
+        concepto: g.concepto,
+        valor: parseFloat(g.valor) / 1000 // Convertir de pesos a miles
+      }));
+      
+      console.log('✅ items transformados:', items.length, 'registros');
+      if (items.length > 0) {
+        console.log('📋 Primeros 3 items:', items.slice(0, 3));
+      }
+      
+      // Control de mermas - con manejo de errores
+      let mermas = [];
+      try {
+        const [result] = await pool.query(`
+          SELECT 
+            anio,
+            sede,
+            porcentaje_merma_real,
+            porcentaje_meta
+          FROM log_control_mermas
+          ORDER BY anio DESC, sede
+        `);
+        mermas = result;
+      } catch (error) {
+        console.log('⚠️ Tabla log_control_mermas no existe, continuando sin mermas');
+      }
+      
+      // Vista de cumplimiento 2025 - con manejo de errores
+      let cumplimiento2025 = [];
+      try {
+        const [result] = await pool.query(`
+          SELECT * FROM vista_log_cumplimiento_mermas_2025
+        `);
+        cumplimiento2025 = result;
+      } catch (error) {
+        console.log('⚠️ Vista vista_log_cumplimiento_mermas_2025 no existe, continuando sin cumplimiento');
+      }
+      
+      // Calcular promedios por sede
+      const porSede = mermas.reduce((acc, m) => {
+        const sede = m.sede || 'General';
+        if (!acc[sede]) {
+          acc[sede] = { registros: 0, mermaPromedio: 0, metaPromedio: 0 };
+        }
+        acc[sede].registros += 1;
+        acc[sede].mermaPromedio += parseFloat(m.porcentaje_merma_real) || 0;
+        acc[sede].metaPromedio += parseFloat(m.porcentaje_meta) || 0;
+        return acc;
+      }, {});
+      
+      Object.keys(porSede).forEach(sede => {
+        const data = porSede[sede];
+        data.mermaPromedio = (data.mermaPromedio / data.registros).toFixed(2);
+        data.metaPromedio = (data.metaPromedio / data.registros).toFixed(2);
+        data.cumple = parseFloat(data.mermaPromedio) <= parseFloat(data.metaPromedio);
+      });
+      
+      console.log('📦 Retornando datos:', {
+        itemsCount: items.length,
+        mermasCount: mermas.length,
+        cumplimiento2025Count: cumplimiento2025.length,
         sedesEvaluadas: Object.keys(porSede).length
-      }
-    };
+      });
+      
+      return {
+        items,
+        mermas,
+        cumplimiento2025,
+        porSede,
+        totales: {
+          totalRegistros: items.length,
+          sedesEvaluadas: Object.keys(porSede).length
+        }
+      };
+    } catch (error) {
+      console.error('❌ Error en getGestionLogistica:', error);
+      // Retornar estructura vacía pero válida
+      return {
+        items: [],
+        mermas: [],
+        cumplimiento2025: [],
+        porSede: {},
+        totales: {
+          totalRegistros: 0,
+          sedesEvaluadas: 0
+        },
+        error: error.message
+      };
+    }
   }
 
   // ==================== PRODUCCIÓN ====================

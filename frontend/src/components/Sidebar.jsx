@@ -68,8 +68,13 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       id: 'logistica', 
       label: 'Gestión Logística', 
       icon: Truck,
-      type: 'single',
-      dashboardType: 'logistica'
+      type: 'expandable',
+      subitems: [
+        { id: 'logistica-consolidado', label: 'Análisis Consolidado', dashboardType: 'gestion-logistica' },
+        { id: 'logistica-sede1', label: 'Sede 1 - Pollo Asadero', dashboardType: 'logistica-sede1' },
+        { id: 'logistica-sede2', label: 'Sede 2 - Productos Congelados', dashboardType: 'logistica-sede2' },
+        { id: 'logistica-sede3', label: 'Sede 3 - Clientes Institucionales', dashboardType: 'logistica-sede3' }
+      ]
     },
     { 
       id: 'cartera', 
