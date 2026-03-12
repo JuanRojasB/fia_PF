@@ -1,5 +1,6 @@
+// Sidebar Component - Updated with TI Dashboard
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, User, Home, ChevronDown, ChevronRight, ArrowLeftRight, Briefcase, DollarSign, Factory, Users, Shield, TrendingUp, UserCheck, Truck, Package, Menu, X, Store } from 'lucide-react';
+import { LogOut, User, Home, ChevronDown, ChevronRight, ArrowLeftRight, Briefcase, DollarSign, Factory, Users, Shield, TrendingUp, UserCheck, Truck, Package, Menu, X, Store, ShoppingCart, Wrench, Monitor } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
@@ -65,6 +66,41 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       dashboardType: 'auditoria'
     },
     { 
+      id: 'calidad', 
+      label: 'Aseguramiento de Calidad', 
+      icon: Shield,
+      type: 'single',
+      dashboardType: 'calidad'
+    },
+    { 
+      id: 'compras', 
+      label: 'Gestión en Compras', 
+      icon: ShoppingCart,
+      type: 'single',
+      dashboardType: 'compras'
+    },
+    { 
+      id: 'operaciones', 
+      label: 'Operaciones y Mantenimiento', 
+      icon: Wrench,
+      type: 'single',
+      dashboardType: 'operaciones'
+    },
+    { 
+      id: 'planta-beneficio', 
+      label: 'Planta de Beneficio', 
+      icon: Factory,
+      type: 'single',
+      dashboardType: 'planta-beneficio'
+    },
+    { 
+      id: 'tecnologias-informacion', 
+      label: 'Tecnologías de la Información', 
+      icon: Monitor,
+      type: 'single',
+      dashboardType: 'tecnologias-informacion'
+    },
+    { 
       id: 'logistica', 
       label: 'Gestión Logística', 
       icon: Truck,
@@ -85,7 +121,7 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
     },
     { 
       id: 'gerencia', 
-      label: 'Gestión Gerencia', 
+      label: 'Presupuesto 2025', 
       icon: Briefcase,
       type: 'single',
       dashboardType: 'gerencia'
@@ -94,8 +130,18 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       id: 'humana', 
       label: 'Gestión Humana', 
       icon: UserCheck,
+      type: 'expandable',
+      subitems: [
+        { id: 'humana-general', label: 'Nómina y Rotación', dashboardType: 'humana-general' },
+        { id: 'humana-causas', label: 'Causas de Desvinculación', dashboardType: 'humana-causas' }
+      ]
+    },
+    { 
+      id: 'marketing', 
+      label: 'Gestión de Publicidad y Mercadeo', 
+      icon: TrendingUp,
       type: 'single',
-      dashboardType: 'humana'
+      dashboardType: 'marketing-general'
     },
     { 
       id: 'sagrilaft', 
@@ -239,7 +285,7 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
                       toggleSection(item.id);
                     }
                   }}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300"
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-300 text-sm"
                   style={{
                     background: isActive ? 'rgba(30, 64, 175, 0.3)' : 'transparent',
                     border: isActive ? '1px solid rgba(59, 130, 246, 0.6)' : '1px solid transparent',
@@ -247,8 +293,8 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
                   }}
                 >
                   <div className="flex items-center space-x-3">
-                    <Icon className="w-5 h-5" />
-                    <span className="font-medium">{item.label}</span>
+                    <Icon className="w-4 h-4" />
+                    <span className="font-medium text-sm">{item.label}</span>
                   </div>
                   {item.type === 'expandable' && (
                     isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />

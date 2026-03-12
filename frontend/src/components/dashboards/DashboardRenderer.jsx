@@ -1,9 +1,10 @@
 import BienvenidaDashboard from './BienvenidaDashboard';
-import GerenciaDashboard from './GerenciaDashboard';
+import GerenciaDashboard from './Presupuesto2025Dashboard';
 import CarteraDashboard from './CarteraDashboard';
 import FuentesUsosDashboard from './FuentesUsosDashboard';
 import HumanaDashboard from './HumanaDashboard';
-import HumanaDetalleDashboard from './HumanaDetalleDashboard';
+import HumanaCausasDashboard from './HumanaCausasDashboard';
+import MarketingDashboard from './MarketingDashboard';
 import LogisticaDashboard from './LogisticaDashboard';
 import LogisticaDetalleDashboard from './LogisticaDetalleDashboard';
 import LogisticaSede1Dashboard from './LogisticaSede1Dashboard';
@@ -20,6 +21,11 @@ import ProduccionEncasetadoDashboard from './ProduccionEncasetadoDashboard';
 import ProduccionHuevosDashboard from './ProduccionHuevosDashboard';
 import ProduccionIndicadoresDashboard from './ProduccionIndicadoresDashboard';
 import AuditoriaDashboard from './AuditoriaDashboard';
+import CalidadDashboard from './CalidadDashboard';
+import ComprasDashboard from './ComprasDashboard';
+import OperacionesDashboard from './OperacionesDashboard';
+import PlantaBeneficioDashboard from './PlantaBeneficioDashboard';
+import TecnologiasInformacionDashboard from './TecnologiasInformacionDashboard';
 import EnDesarrollo from './EnDesarrollo';
 
 export default function DashboardRenderer({ type, data }) {
@@ -44,6 +50,16 @@ export default function DashboardRenderer({ type, data }) {
       return <FuentesUsosDashboard data={data} />;
     case 'auditoria':
       return <AuditoriaDashboard data={data} />;
+    case 'calidad':
+      return <CalidadDashboard data={data} />;
+    case 'compras':
+      return <ComprasDashboard data={data} />;
+    case 'operaciones':
+      return <OperacionesDashboard data={data} />;
+    case 'planta-beneficio':
+      return <PlantaBeneficioDashboard data={data} />;
+    case 'tecnologias-informacion':
+      return <TecnologiasInformacionDashboard data={data} />;
     case 'cartera':
       return <CarteraDashboard data={data} />;
     case 'comercial-resumen':
@@ -54,10 +70,13 @@ export default function DashboardRenderer({ type, data }) {
       return <ComercialProductosDashboard data={data} />;
     case 'comercial-huevo':
       return <ComercialHuevoDashboard data={data} />;
-    case 'humana':
+    case 'humana-general':
       return <HumanaDashboard data={data} />;
-    case 'humana-detalle':
-      return <HumanaDetalleDashboard data={data} />;
+    case 'humana-causas':
+      return <HumanaCausasDashboard data={data} />;
+    case 'marketing':
+    case 'marketing-general':
+      return <MarketingDashboard data={data} />;
     case 'logistica':
       return <LogisticaDashboard data={data} />;
     case 'logistica-detalle':

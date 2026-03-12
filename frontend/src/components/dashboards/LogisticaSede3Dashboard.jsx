@@ -194,9 +194,6 @@ export default function LogisticaSede3Dashboard({ data }) {
             <Bar dataKey="valor2025" fill="#10b981" name="2025" radius={[0, 8, 8, 0]} />
           </BarChart>
         </ResponsiveContainer>
-        <div className="mt-4 text-center text-sm text-orange-400">
-          Haz clic para ver tabla detallada
-        </div>
       </motion.div>
 
       {/* Modal con Tabla */}

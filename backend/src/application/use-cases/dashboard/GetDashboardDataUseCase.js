@@ -18,6 +18,9 @@ class GetDashboardDataUseCase {
         case 'auditoria':
           data = await this.dashboardRepository.getGestionAuditoria();
           break;
+        case 'calidad':
+          data = await this.dashboardRepository.getGestionCalidad();
+          break;
         case 'cartera':
           data = await this.dashboardRepository.getGestionCartera();
           break;
@@ -28,7 +31,13 @@ class GetDashboardDataUseCase {
           data = await this.dashboardRepository.getGestionComercial();
           break;
         case 'humana':
+        case 'humana-general':
+        case 'humana-causas':
           data = await this.dashboardRepository.getGestionHumana();
+          break;
+        case 'marketing':
+        case 'marketing-general':
+          data = await this.dashboardRepository.getGestionMarketing();
           break;
         case 'logistica':
           data = await this.dashboardRepository.getGestionLogistica();
@@ -59,6 +68,18 @@ class GetDashboardDataUseCase {
           break;
         case 'gerencia':
           data = await this.dashboardRepository.getGestionGerencia();
+          break;
+        case 'compras':
+          data = await this.dashboardRepository.getGestionCompras();
+          break;
+        case 'operaciones':
+          data = await this.dashboardRepository.getGestionOperaciones();
+          break;
+        case 'planta-beneficio':
+          data = await this.dashboardRepository.getPlantaBeneficio();
+          break;
+        case 'tecnologias-informacion':
+          data = await this.dashboardRepository.getTecnologiasInformacion();
           break;
         default:
           throw new Error(`Dashboard type '${dashboardType}' no encontrado`);
