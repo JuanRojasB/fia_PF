@@ -66,14 +66,14 @@ export default function FuentesUsosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal('Activos', 'Recursos controlados por la empresa.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-xs sm:text-sm font-medium">Total Activos 2025</span>
+            <span className="text-gray-600 text-xs sm:text-sm font-medium">Total Activos 2025</span>
             <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 text-blue-400" />
           </div>
-          <div className="text-xl sm:text-3xl font-bold text-white mb-1 break-all">${formatCurrency(totalActivos2025)}</div>
-          <div className="text-xs sm:text-sm text-gray-400 break-all">2024: ${formatCurrency(totalActivos2024)}</div>
+          <div className="text-xl sm:text-3xl font-bold text-gray-900 mb-1 break-all">${formatCurrency(totalActivos2025)}</div>
+          <div className="text-xs sm:text-sm text-gray-600 break-all">2024: ${formatCurrency(totalActivos2024)}</div>
           <div className={`text-xs sm:text-sm mt-1 ${varActivos >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {varActivos > 0 ? '+' : ''}{varActivos}% vs 2024
           </div>
@@ -84,14 +84,14 @@ export default function FuentesUsosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal('Pasivos', 'Obligaciones y deudas de la empresa.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-xs sm:text-sm font-medium">Total Pasivos 2025</span>
+            <span className="text-gray-600 text-xs sm:text-sm font-medium">Total Pasivos 2025</span>
             <TrendingDown className="w-4 h-4 sm:w-6 sm:h-6 text-red-400" />
           </div>
-          <div className="text-xl sm:text-3xl font-bold text-white mb-1 break-all">${formatCurrency(totalPasivos2025)}</div>
-          <div className="text-xs sm:text-sm text-gray-400 break-all">2024: ${formatCurrency(totalPasivos2024)}</div>
+          <div className="text-xl sm:text-3xl font-bold text-gray-900 mb-1 break-all">${formatCurrency(totalPasivos2025)}</div>
+          <div className="text-xs sm:text-sm text-gray-600 break-all">2024: ${formatCurrency(totalPasivos2024)}</div>
           <div className={`text-xs sm:text-sm mt-1 ${varPasivos >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {varPasivos > 0 ? '+' : ''}{varPasivos}% vs 2024
           </div>
@@ -102,14 +102,14 @@ export default function FuentesUsosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal('Patrimonio', 'Valor neto: Activos - Pasivos.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-xs sm:text-sm font-medium">Patrimonio 2025</span>
+            <span className="text-gray-600 text-xs sm:text-sm font-medium">Patrimonio 2025</span>
             <DollarSign className="w-4 h-4 sm:w-6 sm:h-6 text-green-400" />
           </div>
-          <div className="text-xl sm:text-3xl font-bold text-white mb-1 break-all">${formatCurrency(totalPatrimonio2025)}</div>
-          <div className="text-xs sm:text-sm text-gray-400 break-all">2024: ${formatCurrency(totalPatrimonio2024)}</div>
+          <div className="text-xl sm:text-3xl font-bold text-gray-900 mb-1 break-all">${formatCurrency(totalPatrimonio2025)}</div>
+          <div className="text-xs sm:text-sm text-gray-600 break-all">2024: ${formatCurrency(totalPatrimonio2024)}</div>
           <div className={`text-xs sm:text-sm mt-1 ${varPatrimonio >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {varPatrimonio > 0 ? '+' : ''}{varPatrimonio}% vs 2024
           </div>
@@ -123,9 +123,9 @@ export default function FuentesUsosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border border-gray-200"
         >
-          <h3 className="text-base sm:text-xl font-bold text-white mb-3 sm:mb-6">Balance General 2024 vs 2025</h3>
+          <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-3 sm:mb-6">Balance General 2024 vs 2025</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={[
               { name: 'Activos', '2024': totalActivos2024, '2025': totalActivos2025 },
@@ -151,9 +151,9 @@ export default function FuentesUsosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border border-gray-200"
         >
-          <h3 className="text-base sm:text-xl font-bold text-white mb-3 sm:mb-6">Principales Activos 2025 vs 2024</h3>
+          <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-3 sm:mb-6">Principales Activos 2025 vs 2024</h3>
           <div className="space-y-2 sm:space-y-3 max-h-[250px] overflow-y-auto">
             {activos.slice(0, 8).map((item, idx) => {
               const valor2025 = parseFloat(item.valor_2025) || 0;
@@ -163,10 +163,10 @@ export default function FuentesUsosDashboard({ data }) {
               return (
                 <div 
                   key={idx}
-                  className="bg-slate-700/30 rounded-lg p-3 border border-slate-600"
+                  className="bg-gray-100/30 rounded-lg p-3 border border-gray-300"
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs text-gray-300 font-medium">{item.categoria}</span>
+                    <span className="text-xs text-gray-700 font-medium">{item.categoria}</span>
                     <span className={`text-xs px-2 py-1 rounded ${variacion >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                       {variacion > 0 ? '+' : ''}{variacion}%
                     </span>
@@ -193,9 +193,9 @@ export default function FuentesUsosDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-700 overflow-x-auto"
+        className="bg-white/95 backdrop-blur-xl rounded-lg sm:rounded-xl p-4 sm:p-6 border border-gray-200 overflow-x-auto"
       >
-        <h3 className="text-base sm:text-xl font-bold text-white mb-3 sm:mb-6">Balance General Detallado 2024 vs 2025</h3>
+        <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-3 sm:mb-6">Balance General Detallado 2024 vs 2025</h3>
         <div className="space-y-4 sm:space-y-6">
           {['ACTIVOS', 'PASIVOS', 'PATRIMONIO'].map((tipo) => {
             const items = financialData.filter(d => d.tipo === tipo);
@@ -206,12 +206,12 @@ export default function FuentesUsosDashboard({ data }) {
                 <h4 className="text-sm sm:text-md font-semibold text-blue-400 mb-2">{tipo}</h4>
                 <table className="w-full text-xs sm:text-sm">
                   <thead>
-                    <tr className="border-b border-slate-700">
-                      <th className="text-left py-2 px-2 sm:px-4 text-gray-400">Categoría</th>
-                      <th className="text-right py-2 px-2 sm:px-4 text-gray-400 hidden sm:table-cell">2024</th>
-                      <th className="text-right py-2 px-2 sm:px-4 text-gray-400">2025</th>
-                      <th className="text-right py-2 px-2 sm:px-4 text-gray-400 hidden md:table-cell">Variación</th>
-                      <th className="text-right py-2 px-2 sm:px-4 text-gray-400">%</th>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-2 px-2 sm:px-4 text-gray-600">Categoría</th>
+                      <th className="text-right py-2 px-2 sm:px-4 text-gray-600 hidden sm:table-cell">2024</th>
+                      <th className="text-right py-2 px-2 sm:px-4 text-gray-600">2025</th>
+                      <th className="text-right py-2 px-2 sm:px-4 text-gray-600 hidden md:table-cell">Variación</th>
+                      <th className="text-right py-2 px-2 sm:px-4 text-gray-600">%</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -222,8 +222,8 @@ export default function FuentesUsosDashboard({ data }) {
                       const variacionPct = val2024 > 0 ? ((variacion / val2024) * 100).toFixed(1) : 0;
                       
                       return (
-                        <tr key={idx} className="border-b border-slate-700/50 hover:bg-slate-700/30">
-                          <td className="py-2 px-2 sm:px-4 text-white break-words">{row.categoria}</td>
+                        <tr key={idx} className="border-b border-gray-200/50 hover:bg-gray-100/30">
+                          <td className="py-2 px-2 sm:px-4 text-gray-900 break-words">{row.categoria}</td>
                           <td className="py-2 px-2 sm:px-4 text-right text-blue-400 hidden sm:table-cell">{formatCurrency(val2024)}</td>
                           <td className="py-2 px-2 sm:px-4 text-right text-green-400">{formatCurrency(val2025)}</td>
                           <td className={`py-2 px-2 sm:px-4 text-right hidden md:table-cell ${variacion >= 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -257,28 +257,28 @@ export default function FuentesUsosDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-green-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-green-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-green-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed">
                 {modalContent.description}
               </div>
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-gray-900 rounded-lg transition-colors"
                 >
                   Entendido
                 </button>
@@ -290,3 +290,4 @@ export default function FuentesUsosDashboard({ data }) {
     </div>
   );
 }
+

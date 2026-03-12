@@ -183,9 +183,12 @@ export default function SplashScreen({ onComplete }) {
         transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
       />
       
-      {/* Fondo azul que aparece gradualmente */}
+      {/* Fondo blanco que aparece gradualmente */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-black"
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)'
+        }}
         initial={{ opacity: 0 }}
         animate={{
           opacity: logoPhase === 'fia' ? 1 : 0
@@ -676,7 +679,7 @@ export default function SplashScreen({ onComplete }) {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-6xl font-black"
                 style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #1d4ed8 100%)',
+                  background: 'linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1d4ed8 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -720,7 +723,7 @@ export default function SplashScreen({ onComplete }) {
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-gray-400 text-sm font-mono"
+                className="text-gray-600 text-sm font-mono"
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
                 Presiona para comenzar
@@ -822,7 +825,7 @@ export default function SplashScreen({ onComplete }) {
             <h1
               className="text-7xl font-black mb-3"
               style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #1d4ed8 100%)',
+                background: 'linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1d4ed8 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -832,7 +835,7 @@ export default function SplashScreen({ onComplete }) {
             </h1>
             
             <p
-              className="text-sm text-gray-300 font-light uppercase tracking-widest"
+              className="text-sm text-gray-600 font-light uppercase tracking-widest"
               style={{
                 letterSpacing: '0.3em',
               }}
@@ -847,17 +850,17 @@ export default function SplashScreen({ onComplete }) {
             transition={{ delay: 0.5 }}
             className="w-full max-w-md"
           >
-            <div className="relative h-2 bg-slate-800/50 rounded-full overflow-hidden">
+            <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
               <motion.div
                 className="absolute inset-y-0 left-0 rounded-full"
                 style={{
-                  background: 'linear-gradient(90deg, #38bdf8, #1d4ed8)',
-                  boxShadow: '0 0 15px rgba(56, 189, 248, 0.6)',
+                  background: 'linear-gradient(90deg, #3b82f6, #1d4ed8)',
+                  boxShadow: '0 0 15px rgba(59, 130, 246, 0.4)',
                   width: `${progress}%`
                 }}
               />
             </div>
-            <div className="flex justify-between mt-2 text-xs text-gray-400 font-mono">
+            <div className="flex justify-between mt-2 text-xs text-gray-600 font-mono">
               <span>CARGANDO</span>
               <span>{Math.round(progress)}%</span>
             </div>

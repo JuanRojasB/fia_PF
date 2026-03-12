@@ -38,6 +38,16 @@ class DashboardRepository extends IDashboardRepository {
       SELECT * FROM vista_com_pdv_participacion_zona_2024 ORDER BY zona_asignacion, participacion_pollo_pct DESC
     `);
     
+    // Ventas zonales comparativas (2024 vs 2023)
+    const [ventasZonales] = await pool.query(`
+      SELECT * FROM com_pdv_ventas_zonales ORDER BY anio DESC, zona_geografica
+    `);
+    
+    // Top desempeño PDV
+    const [topDesempeno] = await pool.query(`
+      SELECT * FROM com_pdv_top_desempeno WHERE anio = 2024 ORDER BY kilos_pollo DESC
+    `);
+    
     // Ventas detalladas Sede 3 (Refrigerado/Congelado)
     const [ventasSede3] = await pool.query(`
       SELECT 
@@ -50,6 +60,54 @@ class DashboardRepository extends IDashboardRepository {
         (kilos_vendidos * precio_promedio) as ingresos_calculados
       FROM com_sede3_ventas_detalle
       ORDER BY anio DESC, kilos_vendidos DESC
+    `);
+    
+    // Ventas Sede 3 agrupadas por temperatura (para dashboard Institucional/Moderno)
+    const [ventasSede3Temperatura] = await pool.query(`
+      SELECT 
+        estado_conservacion as temperatura,
+        codigo_linea,
+        nombre_linea,
+        SUM(CASE WHEN anio = 2025 THEN kilos_vendidos ELSE 0 END) as kilos_2025,
+        SUM(CASE WHEN anio = 2024 THEN kilos_vendidos ELSE 0 END) as kilos_2024,
+        AVG(CASE WHEN anio = 2025 THEN precio_promedio ELSE NULL END) as precio_2025,
+        AVG(CASE WHEN anio = 2024 THEN precio_promedio ELSE NULL END) as precio_2024
+      FROM com_sede3_ventas_detalle
+      GROUP BY estado_conservacion, codigo_linea, nombre_linea
+      ORDER BY estado_conservacion, kilos_2025 DESC
+    `);
+    
+    // Ventas Sede 1 agrupadas por temperatura (para dashboard Asadero)
+    const [ventasSede1Temperatura] = await pool.query(`
+      SELECT 
+        estado_conservacion as temperatura,
+        codigo_linea,
+        nombre_linea,
+        SUM(CASE WHEN anio = 2025 THEN kilos_vendidos ELSE 0 END) as kilos_2025,
+        SUM(CASE WHEN anio = 2024 THEN kilos_vendidos ELSE 0 END) as kilos_2024,
+        AVG(CASE WHEN anio = 2025 THEN precio_promedio ELSE NULL END) as precio_2025,
+        AVG(CASE WHEN anio = 2024 THEN precio_promedio ELSE NULL END) as precio_2024
+      FROM com_sede1_ventas_detalle
+      GROUP BY estado_conservacion, codigo_linea, nombre_linea
+      ORDER BY estado_conservacion, kilos_2025 DESC
+    `);
+    
+    // Resumen de ventas por línea de producto (COMPLETO con Mayorista) - NUEVO
+    const [ventasResumenLinea] = await pool.query(`
+      SELECT 
+        codigo_linea,
+        nombre_linea,
+        kilos_2025,
+        kilos_2024,
+        participacion_pct_2025,
+        variacion_kilos,
+        variacion_kilos_pct,
+        precio_promedio_2025,
+        precio_promedio_2024,
+        variacion_precio_pct
+      FROM ventas_resumen_linea
+      WHERE codigo_linea != 999
+      ORDER BY kilos_2025 DESC
     `);
     
     // Ventas de huevo por raza
@@ -68,7 +126,7 @@ class DashboardRepository extends IDashboardRepository {
     
     // Todos los puntos de venta
     const [puntosVenta] = await pool.query(`
-      SELECT * FROM com_puntos_venta ORDER BY zona, nombre_pdv
+      SELECT * FROM com_pdv_maestro ORDER BY zona_geografica, nombre_pdv
     `);
     
     // Agrupaciones comerciales
@@ -127,27 +185,28 @@ class DashboardRepository extends IDashboardRepository {
       ORDER BY anio DESC, unidades DESC
     `);
     
-    // Información de sedes (U01, U02, U03) - NUEVO
-    const [sedesInfo] = await pool.query(`
+    // Rendimiento de líneas de producto - NUEVO
+    const [rendimientoLineas] = await pool.query(`
       SELECT 
-        u.anio,
-        u.centro_operacion,
-        u.unidades,
-        u.participacion_porcentaje,
-        m.sede,
-        m.merma_2025,
-        m.meta_establecida,
-        m.brecha_puntos_porcentuales,
-        m.estado_evaluacion
-      FROM vista_com_unidades_procesadas u
-      LEFT JOIN vista_log_cumplimiento_mermas_2025 m 
-        ON (
-          (u.centro_operacion = 'Sede U01' AND m.sede = 'U01') OR
-          (u.centro_operacion = 'Sede U02' AND m.sede = 'U02') OR
-          (u.centro_operacion = 'Sede U03' AND m.sede = 'U03')
-        )
-      WHERE u.centro_operacion LIKE 'Sede U%'
-      ORDER BY u.anio DESC, u.unidades DESC
+        anio,
+        nombre_linea,
+        clasificacion,
+        variacion_kilos,
+        variacion_volumen_pct,
+        variacion_precio_pct,
+        observaciones
+      FROM com_rendimiento_lineas
+      ORDER BY anio DESC, variacion_kilos DESC
+    `);
+    
+    // Asignación mayorista (para ComercialResumenDashboard)
+    const [asignacionMayorista] = await pool.query(`
+      SELECT 
+        anio,
+        centro_operacion,
+        unidades
+      FROM com_unidades_procesadas
+      ORDER BY anio DESC, centro_operacion
     `);
     
     // Calcular totales SOLO si no existen en vistas - USAR DATOS DE BD
@@ -183,13 +242,21 @@ class DashboardRepository extends IDashboardRepository {
       unidadesProcesadas,
       comparativoHuevo,
       pdvParticipacionZona,
+      ventasZonales,
+      topDesempeno,
       
       // Ventas detalladas
       ventasSede3,
+      ventasSede3Temperatura,
+      ventasSede1Temperatura,
+      ventasResumenLinea,
       ventasHuevo,
       ventasPieCanal,
       unidadesPorCentro,
-      sedesInfo,
+      rendimientoLineas,
+      
+      // Asignación mayorista
+      asignacionMayorista,
       
       // Estructura organizacional
       puntosVenta,
@@ -219,15 +286,28 @@ class DashboardRepository extends IDashboardRepository {
     const db = getInstance();
     const pool = db.getPool();
     
-    // Vista: Exposición de cartera 2025 vs 2024 - NUEVA
-    const [exposicionCartera] = await pool.query(`
-      SELECT * FROM vista_fin_exposicion_cartera_25_vs_24 ORDER BY mes_num
-    `);
+    let exposicionCartera = [];
+    let mixVentas = [];
     
-    // Vista: Mix de ventas 2025 (contado/crédito, morosidad, rotación) - NUEVA
-    const [mixVentas] = await pool.query(`
-      SELECT * FROM vista_fin_mix_ventas_2025 ORDER BY mes_num
-    `);
+    // Vista: Exposición de cartera 2025 vs 2024 - NUEVA (opcional)
+    try {
+      const [result] = await pool.query(`
+        SELECT * FROM vista_fin_exposicion_cartera_25_vs_24 ORDER BY mes_num
+      `);
+      exposicionCartera = result;
+    } catch (error) {
+      console.log('⚠️ Vista vista_fin_exposicion_cartera_25_vs_24 no existe, continuando sin exposición');
+    }
+    
+    // Vista: Mix de ventas 2025 (contado/crédito, morosidad, rotación) - NUEVA (opcional)
+    try {
+      const [result] = await pool.query(`
+        SELECT * FROM vista_fin_mix_ventas_2025 ORDER BY mes_num
+      `);
+      mixVentas = result;
+    } catch (error) {
+      console.log('⚠️ Vista vista_fin_mix_ventas_2025 no existe, continuando sin mix de ventas');
+    }
     
     // Todos los clientes con detalles completos
     const [clientes] = await pool.query(`
@@ -691,37 +771,50 @@ class DashboardRepository extends IDashboardRepository {
       SELECT * FROM vista_aud_variacion_devoluciones_25_vs_24
     `);
     
-    // Hallazgos (si existen)
-    const [hallazgos] = await pool.query(`
-      SELECT 
-        h.id_hallazgo,
-        h.id_auditoria,
-        h.descripcion_hallazgo,
-        h.nivel_riesgo,
-        h.requiere_plan_accion,
-        a.tipo_auditoria,
-        a.area_proceso_auditado,
-        a.fecha_auditoria
-      FROM aud_hallazgos h
-      LEFT JOIN aud_auditorias_ejecutadas a ON h.id_auditoria = a.id_auditoria
-      ORDER BY h.nivel_riesgo DESC, a.fecha_auditoria DESC
-    `);
+    let hallazgos = [];
+    let planesAccion = [];
     
-    // Planes de acción (si existen)
-    const [planesAccion] = await pool.query(`
-      SELECT 
-        p.id_plan_accion,
-        p.id_hallazgo,
-        p.accion_correctiva,
-        p.fecha_limite,
-        p.estado_plan,
-        h.descripcion_hallazgo,
-        h.nivel_riesgo,
-        DATEDIFF(p.fecha_limite, CURDATE()) as dias_para_vencimiento
-      FROM aud_planes_accion p
-      LEFT JOIN aud_hallazgos h ON p.id_hallazgo = h.id_hallazgo
-      ORDER BY p.fecha_limite
-    `);
+    // Hallazgos (si existen - opcional)
+    try {
+      const [result] = await pool.query(`
+        SELECT 
+          h.id_hallazgo,
+          h.id_auditoria,
+          h.descripcion_hallazgo,
+          h.nivel_riesgo,
+          h.requiere_plan_accion,
+          a.tipo_auditoria,
+          a.area_proceso_auditado,
+          a.fecha_auditoria
+        FROM aud_hallazgos h
+        LEFT JOIN aud_auditorias_ejecutadas a ON h.id_auditoria = a.id_auditoria
+        ORDER BY h.nivel_riesgo DESC, a.fecha_auditoria DESC
+      `);
+      hallazgos = result;
+    } catch (error) {
+      console.log('⚠️ Tabla aud_hallazgos no existe, continuando sin hallazgos');
+    }
+    
+    // Planes de acción (si existen - opcional)
+    try {
+      const [result] = await pool.query(`
+        SELECT 
+          p.id_plan_accion,
+          p.id_hallazgo,
+          p.accion_correctiva,
+          p.fecha_limite,
+          p.estado_plan,
+          h.descripcion_hallazgo,
+          h.nivel_riesgo,
+          DATEDIFF(p.fecha_limite, CURDATE()) as dias_para_vencimiento
+        FROM aud_planes_accion p
+        LEFT JOIN aud_hallazgos h ON p.id_hallazgo = h.id_hallazgo
+        ORDER BY p.fecha_limite
+      `);
+      planesAccion = result;
+    } catch (error) {
+      console.log('⚠️ Tabla aud_planes_accion no existe, continuando sin planes de acción');
+    }
     
     // Agrupar por tipo de auditoría
     const porTipo = auditorias.reduce((acc, a) => {

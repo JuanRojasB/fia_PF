@@ -36,10 +36,10 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{
-      background: 'radial-gradient(circle at top, #020617 0, #020617 35%, #020617 40%, #020617 100%)'
+      background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)'
     }}>
       
-      {/* Orb Container - Estilo IA */}
+      {/* Orb Container */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -54,7 +54,7 @@ export default function Login() {
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],
-                opacity: [0.3, 0.6, 0.3]
+                opacity: [0.2, 0.4, 0.2]
               }}
               transition={{
                 duration: 3,
@@ -63,7 +63,7 @@ export default function Login() {
               }}
               className="absolute w-72 h-72 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 70%)'
+                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.25), transparent 70%)'
               }}
             />
 
@@ -73,8 +73,8 @@ export default function Login() {
               transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
               className="absolute w-52 h-52 rounded-full"
               style={{
-                border: '1px solid rgba(191, 219, 254, 0.4)',
-                boxShadow: '0 0 18px rgba(56, 189, 248, 0.6)'
+                border: '1px solid rgba(59, 130, 246, 0.3)',
+                boxShadow: '0 0 18px rgba(59, 130, 246, 0.4)'
               }}
             />
             
@@ -83,8 +83,8 @@ export default function Login() {
               transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
               className="absolute w-44 h-44 rounded-full"
               style={{
-                border: '1px solid rgba(129, 140, 248, 0.6)',
-                boxShadow: '0 0 18px rgba(56, 189, 248, 0.6)'
+                border: '1px solid rgba(99, 102, 241, 0.4)',
+                boxShadow: '0 0 18px rgba(99, 102, 241, 0.4)'
               }}
             />
 
@@ -100,15 +100,15 @@ export default function Login() {
               }}
               className="relative w-40 h-40 rounded-full flex items-center justify-center"
               style={{
-                background: 'radial-gradient(circle at 30% 30%, #1f2937, #020617 70%)',
-                boxShadow: '0 0 32px rgba(56, 189, 248, 0.45), 0 0 80px rgba(37, 99, 235, 0.35)'
+                background: 'radial-gradient(circle at 30% 30%, #ffffff, #e0e7ff 70%)',
+                boxShadow: '0 0 32px rgba(59, 130, 246, 0.35), 0 0 80px rgba(59, 130, 246, 0.25)'
               }}
             >
               <div 
                 className="w-32 h-32 rounded-full flex items-center justify-center overflow-hidden"
                 style={{
-                  background: 'radial-gradient(circle at 25% 25%, #ffffff, #e5e7eb 55%, #cbd5f5 80%)',
-                  boxShadow: '0 0 24px rgba(148, 163, 184, 0.7), 0 0 40px rgba(148, 163, 184, 0.6)'
+                  background: 'radial-gradient(circle at 25% 25%, #ffffff, #f1f5f9 55%, #e0e7ff 80%)',
+                  boxShadow: '0 0 24px rgba(148, 163, 184, 0.5), 0 0 40px rgba(148, 163, 184, 0.4)'
                 }}
               >
                 <img 
@@ -134,12 +134,12 @@ export default function Login() {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-8xl font-black tracking-wider"
             style={{
-              background: 'linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #1d4ed8 100%)',
+              background: 'linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1d4ed8 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 0 40px rgba(56, 189, 248, 0.6), 0 0 80px rgba(29, 78, 216, 0.4)',
-              filter: 'drop-shadow(0 0 20px rgba(56, 189, 248, 0.5))'
+              textShadow: '0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(29, 78, 216, 0.3)',
+              filter: 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.3))'
             }}
           >
             FIA
@@ -151,12 +151,12 @@ export default function Login() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-center text-gray-300 text-lg font-light tracking-wide"
+          className="text-center text-gray-600 text-lg font-light tracking-wide"
           style={{
-            textShadow: '0 0 18px rgba(56, 189, 248, 0.5), 0 0 32px rgba(37, 99, 235, 0.4)'
+            textShadow: '0 0 18px rgba(59, 130, 246, 0.3), 0 0 32px rgba(59, 130, 246, 0.2)'
           }}
         >
-          Fiesta Intelligence Asistant
+          Fiesta Intelligence Assistant
         </motion.p>
       </motion.div>
 
@@ -167,15 +167,15 @@ export default function Login() {
         transition={{ delay: 0.3 }}
         className="w-full max-w-md backdrop-blur-xl rounded-2xl shadow-2xl p-8"
         style={{
-          background: 'rgba(15, 23, 42, 0.9)',
-          border: '1px solid rgba(148, 163, 184, 0.3)',
-          boxShadow: '0 20px 25px -5px rgba(15, 23, 42, 0.4), 0 8px 10px -6px rgba(15, 23, 42, 0.4)'
+          background: 'rgba(255, 255, 255, 0.95)',
+          border: '1px solid rgba(203, 213, 225, 0.5)',
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
         }}
       >
         {/* Title */}
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-white mb-2">Acceso al Sistema</h1>
-          <p className="text-sm text-gray-400">Ingresa tus credenciales</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Acceso al Sistema</h1>
+          <p className="text-sm text-gray-600">Ingresa tus credenciales</p>
         </div>
 
         {/* Form */}
@@ -183,12 +183,12 @@ export default function Login() {
           
           {/* Username */}
           <div className="space-y-2">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-300">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
               Usuario
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <User className="h-5 w-5 text-gray-500" />
+                <User className="h-5 w-5 text-gray-400" />
               </div>
               <input 
                 type="text" 
@@ -196,10 +196,10 @@ export default function Login() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl text-white placeholder-gray-500 focus:outline-none transition"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 style={{
-                  background: 'rgba(15, 23, 42, 0.9)',
-                  border: '1px solid rgba(148, 163, 184, 0.7)'
+                  background: 'rgba(248, 250, 252, 0.9)',
+                  border: '1px solid rgba(203, 213, 225, 0.8)'
                 }}
                 placeholder="Ingresa tu usuario"
               />
@@ -208,12 +208,12 @@ export default function Login() {
 
           {/* Password */}
           <div className="space-y-2">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Contraseña
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-gray-500" />
+                <Lock className="h-5 w-5 text-gray-400" />
               </div>
               <input 
                 type="password" 
@@ -221,10 +221,10 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl text-white placeholder-gray-500 focus:outline-none transition"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 style={{
-                  background: 'rgba(15, 23, 42, 0.9)',
-                  border: '1px solid rgba(148, 163, 184, 0.7)'
+                  background: 'rgba(248, 250, 252, 0.9)',
+                  border: '1px solid rgba(203, 213, 225, 0.8)'
                 }}
                 placeholder="Ingresa tu contraseña"
               />
@@ -238,9 +238,9 @@ export default function Login() {
               animate={{ opacity: 1, y: 0 }}
               className="px-4 py-3 rounded-xl text-sm"
               style={{
-                background: 'rgba(239, 68, 68, 0.12)',
-                border: '1px solid rgba(239, 68, 68, 0.6)',
-                color: '#fecaca'
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.4)',
+                color: '#dc2626'
               }}
             >
               {error}
@@ -251,10 +251,10 @@ export default function Login() {
           <button 
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #1d4ed8, #38bdf8)',
-              boxShadow: '0 10px 15px -3px rgba(30, 64, 175, 0.8), 0 4px 6px -4px rgba(30, 64, 175, 0.7)'
+              background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+              boxShadow: '0 10px 15px -3px rgba(59, 130, 246, 0.4), 0 4px 6px -4px rgba(59, 130, 246, 0.3)'
             }}
           >
             {loading ? (

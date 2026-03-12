@@ -110,15 +110,15 @@ export default function HumanaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal('Colaboradores', '840 colaboradores, +1.20% vs 2024.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Colaboradores</span>
+            <span className="text-gray-600 text-sm font-medium">Colaboradores</span>
             <Users className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-4xl font-bold text-white mb-1">{personal2025?.valor || '0'}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{personal2025?.valor || '0'}</div>
           <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-400">2024: {personal2024?.valor || '0'}</span>
+            <span className="text-gray-600">2024: {personal2024?.valor || '0'}</span>
             {personal2025?.variacion_pct && (
               <span className="text-green-400 flex items-center">
                 <ArrowUp className="w-3 h-3" />
@@ -133,15 +133,15 @@ export default function HumanaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal('Costo Nómina', '$41.979M, +14.70% vs 2024.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Costo Nómina</span>
+            <span className="text-gray-600 text-sm font-medium">Costo Nómina</span>
             <TrendingUp className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-2xl font-bold text-white mb-1">{formatCurrency(costoTotal2025?.valor || 0)}</div>
+          <div className="text-2xl font-bold text-gray-900 mb-1">{formatCurrency(costoTotal2025?.valor || 0)}</div>
           <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-400">2024: {formatCurrency(costoTotal2024?.valor || 0)}</span>
+            <span className="text-gray-600">2024: {formatCurrency(costoTotal2024?.valor || 0)}</span>
             {costoTotal2025?.variacion_pct && (
               <span className="text-orange-400 flex items-center">
                 <ArrowUp className="w-3 h-3" />
@@ -156,15 +156,15 @@ export default function HumanaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal('Retiros', '562 retiros, 84% voluntarios.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Retiros</span>
+            <span className="text-gray-600 text-sm font-medium">Retiros</span>
             <UserMinus className="w-6 h-6 text-red-400" />
           </div>
-          <div className="text-4xl font-bold text-white mb-1">{retiros2025?.valor || '0'}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{retiros2025?.valor || '0'}</div>
           <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-400">2024: {retiros2024?.valor || '0'}</span>
+            <span className="text-gray-600">2024: {retiros2024?.valor || '0'}</span>
             {retiros2025?.variacion_pct && (
               <span className="text-red-400 flex items-center">
                 <ArrowUp className="w-3 h-3" />
@@ -179,15 +179,15 @@ export default function HumanaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal('Ingresos', 'Nuevos colaboradores contratados.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Ingresos</span>
+            <span className="text-gray-600 text-sm font-medium">Ingresos</span>
             <UserPlus className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-4xl font-bold text-white mb-1">{ingresos2025?.valor || '0'}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{ingresos2025?.valor || '0'}</div>
           <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-400">2024: {ingresos2024?.valor || '0'}</span>
+            <span className="text-gray-600">2024: {ingresos2024?.valor || '0'}</span>
             {ingresos2025?.variacion_pct && (
               <span className="text-green-400 flex items-center">
                 <ArrowUp className="w-3 h-3" />
@@ -203,20 +203,20 @@ export default function HumanaDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold text-white mb-1">Causas de Desvinculación 2025</h3>
-            <p className="text-gray-400 text-sm">
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">Causas de Desvinculación 2025</h3>
+            <p className="text-gray-600 text-sm">
               Total de retiros: <span className="text-cyan-400 font-bold">{formatNumber(causasData.reduce((sum, row) => sum + row.value, 0))}</span> personas
             </p>
           </div>
           <button
             onClick={() => openModal('Causas de Desvinculación', 'Distribución de motivos de retiro.')}
-            className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <Info className="w-5 h-5 text-gray-400" />
+            <Info className="w-5 h-5 text-gray-600" />
           </button>
         </div>
 
@@ -246,15 +246,15 @@ export default function HumanaDashboard({ data }) {
                 transition={{ duration: 0.4, delay: idx * 0.08, type: "spring", bounce: 0.3 }}
                 className={`relative group cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br ${color.from} ${color.to} p-[2px] hover:scale-105 transition-transform duration-300`}
               >
-                <div className="relative bg-slate-900/95 backdrop-blur-xl rounded-2xl p-5 h-full">
+                <div className="relative bg-gray-50/95 backdrop-blur-xl rounded-2xl p-5 h-full">
                   {/* Número de ranking con efecto glow */}
                   <div className="absolute -top-2 -right-2 w-12 h-12 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30 shadow-lg">
-                    <span className="text-white font-bold text-lg">{idx + 1}</span>
+                    <span className="text-gray-900 font-bold text-lg">{idx + 1}</span>
                   </div>
 
                   {/* Contenido */}
                   <div className="space-y-3">
-                    <div className="text-white font-bold text-base leading-tight min-h-[40px]">
+                    <div className="text-gray-900 font-bold text-base leading-tight min-h-[40px]">
                       {row.name}
                     </div>
 
@@ -264,18 +264,18 @@ export default function HumanaDashboard({ data }) {
                         <div className={`text-4xl font-black bg-gradient-to-r ${color.from} ${color.to} bg-clip-text text-transparent`}>
                           {formatNumber(row.value)}
                         </div>
-                        <div className="text-gray-400 text-xs font-medium mt-1">personas</div>
+                        <div className="text-gray-600 text-xs font-medium mt-1">personas</div>
                       </div>
                       <div className="text-right">
-                        <div className="text-3xl font-black text-white">
+                        <div className="text-3xl font-black text-gray-900">
                           {row.percentage}
                         </div>
-                        <div className="text-gray-400 text-xs font-medium">del total</div>
+                        <div className="text-gray-600 text-xs font-medium">del total</div>
                       </div>
                     </div>
 
                     {/* Barra de progreso con animación */}
-                    <div className="relative h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="relative h-2 bg-white rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${percentage}%` }}
@@ -314,28 +314,28 @@ export default function HumanaDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-cyan-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed">
                 {modalContent.description}
               </div>
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-gray-900 rounded-lg transition-colors"
                 >
                   Entendido
                 </button>
@@ -347,3 +347,4 @@ export default function HumanaDashboard({ data }) {
     </div>
   );
 }
+

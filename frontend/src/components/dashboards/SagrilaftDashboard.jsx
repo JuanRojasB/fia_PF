@@ -97,13 +97,13 @@ export default function SagrilaftDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal('Rechazados', '314 rechazados de 5,732 evaluados (5.47%).')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Total Contrapartes Rechazadas</span>
+            <span className="text-gray-600 text-sm font-medium">Total Contrapartes Rechazadas</span>
             <AlertTriangle className="w-6 h-6 text-red-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">{formatNumber(totalRechazados)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(totalRechazados)}</div>
           <div className="text-xs text-red-400">Contrapartes rechazadas</div>
         </motion.div>
 
@@ -112,13 +112,13 @@ export default function SagrilaftDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal('LA/FT', 'Lavado de Activos / Financiación del Terrorismo.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Promedio LA/FT (%)</span>
+            <span className="text-gray-600 text-sm font-medium">Promedio LA/FT (%)</span>
             <Shield className="w-6 h-6 text-yellow-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">{promedioLaFt.toFixed(1)}%</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{promedioLaFt.toFixed(1)}%</div>
           <div className="text-xs text-yellow-400">Lavado de activos</div>
         </motion.div>
 
@@ -127,13 +127,13 @@ export default function SagrilaftDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal('Total Validados', 'Stakeholders aprobados. Sistema: DATALAFT / Risk Consulting.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Total Validados</span>
+            <span className="text-gray-600 text-sm font-medium">Total Validados</span>
             <CheckCircle className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-4xl font-bold text-white mb-1">{formatNumber(totales.total_validados)}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{formatNumber(totales.total_validados)}</div>
           <div className="text-xs text-green-400">Contrapartes validadas</div>
         </motion.div>
       </div>
@@ -145,9 +145,9 @@ export default function SagrilaftDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
         >
-          <h3 className="text-xl font-bold text-white mb-6">Número de Rechazados por Contraparte</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Número de Rechazados por Contraparte</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={chartData} layout="vertical" margin={{ left: 20, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -167,9 +167,9 @@ export default function SagrilaftDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
         >
-          <h3 className="text-xl font-bold text-white mb-6">Distribución de Motivos de Rechazo en Porcentaje</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Distribución de Motivos de Rechazo en Porcentaje</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie 
@@ -203,25 +203,25 @@ export default function SagrilaftDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700 overflow-x-auto"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
       >
-        <h3 className="text-xl font-bold text-white mb-6">Detalle de Cumplimiento SAGRILAFT</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Detalle de Cumplimiento SAGRILAFT</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b-2 border-slate-600">
-                <th className="text-left py-2 px-2 text-gray-300 font-bold">Contraparte</th>
-                <th className="text-right py-2 px-2 text-gray-300 font-bold">Rechazados</th>
-                <th className="text-right py-2 px-2 text-gray-300 font-bold">% LA/FT</th>
-                <th className="text-right py-2 px-2 text-gray-300 font-bold">% Falla Doc</th>
-                <th className="text-right py-2 px-2 text-gray-300 font-bold">% Antecedentes</th>
-                <th className="text-right py-2 px-2 text-gray-300 font-bold">% PEPs</th>
+              <tr className="border-b-2 border-gray-300">
+                <th className="text-left py-2 px-2 text-gray-700 font-bold">Contraparte</th>
+                <th className="text-right py-2 px-2 text-gray-700 font-bold">Rechazados</th>
+                <th className="text-right py-2 px-2 text-gray-700 font-bold">% LA/FT</th>
+                <th className="text-right py-2 px-2 text-gray-700 font-bold">% Falla Doc</th>
+                <th className="text-right py-2 px-2 text-gray-700 font-bold">% Antecedentes</th>
+                <th className="text-right py-2 px-2 text-gray-700 font-bold">% PEPs</th>
               </tr>
             </thead>
             <tbody>
               {stakeholders.map((row, idx) => (
-                <tr key={idx} className="border-b border-slate-700/20 hover:bg-slate-700/30 transition-colors">
-                  <td className="py-1 px-2 text-white font-medium">{row.contraparte || 'Sin nombre'}</td>
+                <tr key={idx} className="border-b border-gray-200/20 hover:bg-gray-100/30 transition-colors">
+                  <td className="py-1 px-2 text-gray-900 font-medium">{row.contraparte || 'Sin nombre'}</td>
                   <td className="py-1 px-2 text-right text-red-400 tabular-nums">{formatNumber(row.rechazados)}</td>
                   <td className="py-1 px-2 text-right text-yellow-400 tabular-nums">{parseFloat(row.la_pct || 0).toFixed(1)}%</td>
                   <td className="py-1 px-2 text-right text-orange-400 tabular-nums">{parseFloat(row.documentacion_pct || 0).toFixed(1)}%</td>
@@ -242,9 +242,9 @@ export default function SagrilaftDashboard({ data }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
           >
-            <h3 className="text-xl font-bold text-white mb-6">Hallazgos de No Conformidad por Categoría</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Hallazgos de No Conformidad por Categoría</h3>
             <ResponsiveContainer width="100%" height={400}>
               <BarChart 
                 data={[
@@ -290,7 +290,7 @@ export default function SagrilaftDashboard({ data }) {
                 <Bar dataKey="meta" fill="#10b981" name="Meta" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-400">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
               <p>• Doc. Inadecuada: Documentación Inadecuada (Meta: 10% en 6 meses)</p>
               <p>• Candidatos: Candidatos No Conformes por Antecedentes</p>
               <p>• Transport. Doc.: Transportadores No Conformes por Documentación</p>
@@ -305,9 +305,9 @@ export default function SagrilaftDashboard({ data }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
           >
-            <h3 className="text-xl font-bold text-white mb-6">Resumen de Validación 2022-2025</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Resumen de Validación 2022-2025</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Gráfica de Pastel - Validados vs Rechazados */}
               <div>
@@ -337,30 +337,30 @@ export default function SagrilaftDashboard({ data }) {
                     />
                   </PieChart>
                 </ResponsiveContainer>
-                <div className="text-center text-sm text-gray-400 mt-2">
+                <div className="text-center text-sm text-gray-600 mt-2">
                   Total Stakeholders: {formatNumber(5732 + 314)}
                 </div>
               </div>
 
               {/* Acciones por Área */}
               <div className="space-y-3">
-                <h4 className="text-lg font-semibold text-white mb-4">Acciones Implementadas por Área</h4>
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">Acciones Implementadas por Área</h4>
                 <div className="space-y-2">
                   <div className="bg-blue-900/30 rounded-lg p-3 border border-blue-700/50">
                     <div className="text-blue-400 font-semibold text-sm">Gestión Humana</div>
-                    <div className="text-white text-xs mt-1">Actualización PGH-04 • Nuevos filtros</div>
+                    <div className="text-gray-900 text-xs mt-1">Actualización PGH-04 • Nuevos filtros</div>
                   </div>
                   <div className="bg-purple-900/30 rounded-lg p-3 border border-purple-700/50">
                     <div className="text-purple-400 font-semibold text-sm">Logística</div>
-                    <div className="text-white text-xs mt-1">Actualización PGH-06 • FCO-05 y FCO-03</div>
+                    <div className="text-gray-900 text-xs mt-1">Actualización PGH-06 • FCO-05 y FCO-03</div>
                   </div>
                   <div className="bg-orange-900/30 rounded-lg p-3 border border-orange-700/50">
                     <div className="text-orange-400 font-semibold text-sm">Compras</div>
-                    <div className="text-white text-xs mt-1">Mejora filtros proveedores</div>
+                    <div className="text-gray-900 text-xs mt-1">Mejora filtros proveedores</div>
                   </div>
                   <div className="bg-green-900/30 rounded-lg p-3 border border-green-700/50">
                     <div className="text-green-400 font-semibold text-sm">Comercial</div>
-                    <div className="text-white text-xs mt-1">Divulgaciones • Reducción riesgo documental</div>
+                    <div className="text-gray-900 text-xs mt-1">Divulgaciones • Reducción riesgo documental</div>
                   </div>
                 </div>
               </div>
@@ -372,24 +372,24 @@ export default function SagrilaftDashboard({ data }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
           >
-            <h3 className="text-xl font-bold text-white mb-6">Sistema y Cumplimiento Normativo</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Sistema y Cumplimiento Normativo</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gradient-to-br from-cyan-900/40 to-cyan-800/20 rounded-xl p-4 border border-cyan-700/50">
                 <Shield className="w-8 h-8 text-cyan-400 mb-3" />
                 <div className="text-cyan-400 font-semibold mb-2">Plataforma</div>
-                <div className="text-white text-sm">DATALAFT / Risk Consulting</div>
+                <div className="text-gray-900 text-sm">DATALAFT / Risk Consulting</div>
               </div>
               <div className="bg-gradient-to-br from-indigo-900/40 to-indigo-800/20 rounded-xl p-4 border border-indigo-700/50">
                 <CheckCircle className="w-8 h-8 text-indigo-400 mb-3" />
                 <div className="text-indigo-400 font-semibold mb-2">Normatividad</div>
-                <div className="text-white text-sm">Circular 100-00005 de 2017 y 100-000016 de 2020</div>
+                <div className="text-gray-900 text-sm">Circular 100-00005 de 2017 y 100-000016 de 2020</div>
               </div>
               <div className="bg-gradient-to-br from-emerald-900/40 to-emerald-800/20 rounded-xl p-4 border border-emerald-700/50">
                 <AlertTriangle className="w-8 h-8 text-emerald-400 mb-3" />
                 <div className="text-emerald-400 font-semibold mb-2">Enfoque</div>
-                <div className="text-white text-sm">Basado en Riesgos y Debida Diligencia Intensificada</div>
+                <div className="text-gray-900 text-sm">Basado en Riesgos y Debida Diligencia Intensificada</div>
               </div>
             </div>
           </motion.div>
@@ -410,28 +410,28 @@ export default function SagrilaftDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-red-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-red-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-red-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed">
                 {modalContent.description}
               </div>
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-gray-900 rounded-lg transition-colors"
                 >
                   Entendido
                 </button>
@@ -443,3 +443,4 @@ export default function SagrilaftDashboard({ data }) {
     </div>
   );
 }
+

@@ -93,8 +93,8 @@ export default function GerenciaDashboard({ data }) {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-slate-900 border-2 border-slate-700 rounded-lg p-3 shadow-2xl">
-          <p className="text-white font-bold mb-1">{data.seccionFull || data.procesoFull}</p>
+        <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-3 shadow-2xl">
+          <p className="text-gray-900 font-bold mb-1">{data.seccionFull || data.procesoFull}</p>
           <p className="text-blue-400">{payload[0].value} iniciativas</p>
         </div>
       );
@@ -108,34 +108,34 @@ export default function GerenciaDashboard({ data }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal('Secciones Estratégicas', 'Áreas clave del plan: Introducción, Líneas de Acción, Acciones por Proceso, Conclusiones.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Secciones</span>
+            <span className="text-gray-600 text-sm font-medium">Secciones</span>
             <Briefcase className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-4xl font-bold text-white mb-1">{seccionesUnicas.length}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{seccionesUnicas.length}</div>
           <div className="text-xs text-blue-400">secciones estratégicas</div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           onClick={() => openModal('Procesos en Gestión', 'Áreas operativas: Calidad, SST, Ambiental, Compras, Bienestar Animal, etc.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Procesos</span>
+            <span className="text-gray-600 text-sm font-medium">Procesos</span>
             <Target className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-4xl font-bold text-white mb-1">{Object.keys(procesoCount).length}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{Object.keys(procesoCount).length}</div>
           <div className="text-xs text-green-400">en gestión</div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           onClick={() => openModal('Iniciativas 2025', 'Acciones concretas implementadas en cada proceso durante el año.')}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Iniciativas</span>
+            <span className="text-gray-600 text-sm font-medium">Iniciativas</span>
             <CheckCircle className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-4xl font-bold text-white mb-1">{accionesReales}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{accionesReales}</div>
           <div className="text-xs text-purple-400">acciones 2025</div>
         </motion.div>
       </div>
@@ -163,9 +163,9 @@ export default function GerenciaDashboard({ data }) {
                 </h3>
                 <div className="space-y-4">
                   {introduccion.map((item, idx) => (
-                    <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border-l-4 border-blue-500">
-                      <div className="text-base font-bold text-white mb-2">{item.tema}</div>
-                      <p className="text-sm text-gray-300 leading-relaxed">{item.descripcion}</p>
+                    <div key={idx} className="bg-white/95 rounded-lg p-4 border-l-4 border-blue-500">
+                      <div className="text-base font-bold text-gray-900 mb-2">{item.tema}</div>
+                      <p className="text-sm text-gray-700 leading-relaxed">{item.descripcion}</p>
                     </div>
                   ))}
                 </div>
@@ -186,14 +186,14 @@ export default function GerenciaDashboard({ data }) {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {lineasAccion.map((item, idx) => (
-                    <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border-l-4 border-green-500 hover:bg-slate-700/50 transition-all">
+                    <div key={idx} className="bg-white/95 rounded-lg p-4 border-l-4 border-green-500 hover:bg-gray-100/50 transition-all">
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-1">
                           <span className="text-green-400 font-bold text-sm">{idx + 1}</span>
                         </div>
                         <div className="flex-1">
-                          <div className="text-sm font-bold text-white mb-2">{item.tema}</div>
-                          <p className="text-xs text-gray-400 leading-relaxed">{item.descripcion}</p>
+                          <div className="text-sm font-bold text-gray-900 mb-2">{item.tema}</div>
+                          <p className="text-xs text-gray-600 leading-relaxed">{item.descripcion}</p>
                         </div>
                       </div>
                     </div>
@@ -211,9 +211,9 @@ export default function GerenciaDashboard({ data }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
         onClick={() => openModal('Acciones por Proceso', 'Número de iniciativas implementadas en cada área. Identifica procesos con mayor actividad.')}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-blue-500 transition-all cursor-pointer"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer"
       >
-        <h3 className="text-xl font-bold text-white mb-6">Acciones por Proceso</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Acciones por Proceso</h3>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={procesoData} layout="vertical" margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -241,9 +241,9 @@ export default function GerenciaDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
       >
-        <h3 className="text-xl font-bold text-white mb-4">Detalle de Acciones por Proceso</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Detalle de Acciones por Proceso</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {(() => {
             const accionesPorProceso = uniqueData.filter(d => d.seccion === 'Acciones por Proceso');
@@ -261,19 +261,19 @@ export default function GerenciaDashboard({ data }) {
                 const color = getProcesoColor(proceso);
                 const hasColor = procesoColors[proceso];
                 return (
-                  <div key={idx} className="bg-slate-700/30 rounded-lg p-4 border border-slate-600 hover:border-blue-500/50 transition-all">
-                    <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-600">
+                  <div key={idx} className="bg-gray-100/30 rounded-lg p-4 border border-gray-300 hover:border-blue-500/50 transition-all">
+                    <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-300">
                       {hasColor && <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: color }}></div>}
-                      <h4 className={`text-sm font-bold break-words flex-1 ${hasColor ? '' : 'text-gray-400'}`} style={hasColor ? { color } : {}}>{proceso}</h4>
+                      <h4 className={`text-sm font-bold break-words flex-1 ${hasColor ? '' : 'text-gray-600'}`} style={hasColor ? { color } : {}}>{proceso}</h4>
                       <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-semibold flex-shrink-0">
                         {items.length}
                       </span>
                     </div>
                     <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
                       {items.map((item, itemIdx) => (
-                        <div key={itemIdx} className="bg-slate-800/50 rounded p-2.5 border-l-2 border-blue-500/50 hover:border-blue-500 transition-all">
-                          <div className="text-xs font-semibold text-white mb-1 break-words">{item.tema}</div>
-                          <p className="text-xs text-gray-400 leading-relaxed break-words">{item.descripcion}</p>
+                        <div key={itemIdx} className="bg-white/95 rounded p-2.5 border-l-2 border-blue-500/50 hover:border-blue-500 transition-all">
+                          <div className="text-xs font-semibold text-gray-900 mb-1 break-words">{item.tema}</div>
+                          <p className="text-xs text-gray-600 leading-relaxed break-words">{item.descripcion}</p>
                         </div>
                       ))}
                     </div>
@@ -294,17 +294,17 @@ export default function GerenciaDashboard({ data }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
           >
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
               <div className="w-1 h-6 bg-purple-400 rounded"></div>
               Conclusiones
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {conclusiones.map((item, idx) => (
-                <div key={idx} className="bg-slate-700/30 rounded-lg p-4 border-l-2 border-purple-500">
-                  <div className="text-sm font-bold text-white mb-2">{item.tema}</div>
-                  <p className="text-xs text-gray-400 leading-relaxed">{item.descripcion}</p>
+                <div key={idx} className="bg-gray-100/30 rounded-lg p-4 border-l-2 border-purple-500">
+                  <div className="text-sm font-bold text-gray-900 mb-2">{item.tema}</div>
+                  <p className="text-xs text-gray-600 leading-relaxed">{item.descripcion}</p>
                 </div>
               ))}
             </div>
@@ -326,28 +326,28 @@ export default function GerenciaDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-purple-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-purple-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-purple-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed">
                 {modalContent.description}
               </div>
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-gray-900 rounded-lg transition-colors"
                 >
                   Entendido
                 </button>
@@ -359,3 +359,4 @@ export default function GerenciaDashboard({ data }) {
     </div>
   );
 }
+

@@ -26,12 +26,15 @@ export default function Dashboard() {
     'comercial-resumen': 'comercial',
     'comercial-pdv': 'comercial',
     'comercial-productos': 'comercial',
+    'comercial-asadero': 'comercial',
+    'comercial-institucional': 'comercial',
     'comercial-huevo': 'comercial',
     'humana': 'humana',
     'humana-detalle': 'humana',
     'logistica': 'logistica',
     'logistica-detalle': 'logistica',
     'logistica-consolidado': 'gestion-logistica',
+    'logistica-merma': 'gestion-logistica',
     'logistica-sede1': 'logistica-sede1',
     'logistica-sede2': 'logistica-sede2',
     'logistica-sede3': 'logistica-sede3',
@@ -107,7 +110,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' }}>
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)' }}>
       <Sidebar 
         activeSection={activeSection} 
         setActiveSection={handleSectionChange}
@@ -122,7 +125,7 @@ export default function Dashboard() {
         >
           {/* Header */}
           <div className="mb-6 lg:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               {(() => {
                 const sectionNames = {
                   'bienvenida': 'Bienvenida',
@@ -168,7 +171,7 @@ export default function Dashboard() {
           {/* Content */}
           {loading && (
             <div className="flex items-center justify-center h-64">
-              <div className="text-white">Cargando datos...</div>
+              <div className="text-gray-900">Cargando datos...</div>
             </div>
           )}
 

@@ -1,13 +1,21 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { CheckCircle, AlertTriangle, FileText, TrendingDown } from 'lucide-react';
+import { CheckCircle, AlertTriangle, FileText, TrendingDown, X, Info } from 'lucide-react';
 
 export default function AuditoriaDashboard({ data }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+
+  const openModal = (title, description) => {
+    setModalContent({ title, description });
+    setModalOpen(true);
+  };
+
   console.log('AuditoriaDashboard - Datos recibidos:', data);
 
   if (!data || typeof data !== 'object') {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
+    return <div className="text-gray-600">No hay datos disponibles</div>;
   }
 
   const {
@@ -59,124 +67,118 @@ export default function AuditoriaDashboard({ data }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-blue-500/30"
+          onClick={() => openModal(
+            'Total de Auditorías',
+            `Se han ejecutado ${totales.totalAuditorias} auditorías en total, distribuidas en ${totales.tiposAuditoria} tipos diferentes. Las auditorías cubren procesos misionales y puntos de venta, permitiendo evaluar el cumplimiento de estándares de calidad y operación en toda la compañía.`
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm">Total Auditorías</span>
+            <span className="text-gray-600 text-sm">Total Auditorías</span>
             <FileText className="w-5 h-5 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-white">{totales.totalAuditorias}</div>
-          <div className="text-sm text-gray-400 mt-1">{totales.tiposAuditoria} tipos</div>
+          <div className="text-3xl font-bold text-gray-900">{totales.totalAuditorias}</div>
+          <div className="text-sm text-gray-600 mt-1">{totales.tiposAuditoria} tipos</div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-green-500/30"
+          onClick={() => openModal(
+            'Devolución Promedio 2025',
+            `El promedio de devoluciones en 2025 es de ${variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%, evaluado en ${totales.sedesEvaluadas} sedes. Este indicador mide la calidad del producto y la efectividad de los procesos de distribución.`
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm">Hallazgos</span>
-            <AlertTriangle className="w-5 h-5 text-green-400" />
+            <span className="text-gray-600 text-sm">Devolución 2025</span>
+            <TrendingDown className="w-5 h-5 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-white">{totales.totalHallazgos}</div>
-          <div className="text-sm text-gray-400 mt-1">{totales.totalPlanesAccion} planes de acción</div>
+          <div className="text-3xl font-bold text-gray-900">{variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%</div>
+          <div className="text-sm text-gray-600 mt-1">{totales.sedesEvaluadas} sedes evaluadas</div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-orange-500/30"
+          onClick={() => openModal(
+            'Variación vs 2024',
+            `La variación 2025 vs 2024 es de ${totales.variacion2025vs2024} puntos porcentuales, indicando ${totales.variacion2025vs2024 < 0 ? 'una mejora' : 'un deterioro'} en el indicador de devoluciones. ${totales.variacion2025vs2024 < 0 ? 'La reducción en devoluciones refleja mejoras en calidad y procesos.' : 'Se requieren acciones correctivas para reducir las devoluciones.'}`
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm">Devolución Promedio</span>
-            <TrendingDown className="w-5 h-5 text-orange-400" />
+            <span className="text-gray-600 text-sm">Variación vs 2024</span>
+            {totales.variacion2025vs2024 < 0 ? (
+              <TrendingDown className="w-5 h-5 text-green-400" />
+            ) : (
+              <AlertTriangle className="w-5 h-5 text-orange-400" />
+            )}
           </div>
-          <div className="text-3xl font-bold text-white">{totales.promedioDevolucionGeneral}%</div>
-          <div className="text-sm text-gray-400 mt-1">{totales.sedesEvaluadas} sedes</div>
-          {variacionDevoluciones && (
-            <div className={`text-sm mt-2 font-bold ${totales.variacion2025vs2024 < 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {totales.variacion2025vs2024 < 0 ? '↓' : '↑'} {Math.abs(totales.variacion2025vs2024)}pp vs 2024
-            </div>
-          )}
+          <div className={`text-3xl font-bold ${totales.variacion2025vs2024 < 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {totales.variacion2025vs2024 < 0 ? '↓' : '↑'} {Math.abs(totales.variacion2025vs2024)}pp
+          </div>
+          <div className={`text-sm mt-1 font-medium ${totales.variacion2025vs2024 < 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {totales.variacion2025vs2024 < 0 ? 'Mejora' : 'Deterioro'}
+          </div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-purple-500/30"
+          onClick={() => openModal(
+            'Registros Mensuales',
+            `Se han registrado ${totales.totalDevolucionesMensuales} datos mensuales de devoluciones. Este seguimiento mensual permite identificar tendencias, estacionalidad y tomar acciones correctivas oportunas para mejorar la calidad del producto y reducir las devoluciones.`
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm">Registros Mensuales</span>
+            <span className="text-gray-600 text-sm">Registros Mensuales</span>
             <CheckCircle className="w-5 h-5 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-white">{totales.totalDevolucionesMensuales}</div>
-          <div className="text-sm text-gray-400 mt-1">Devoluciones registradas</div>
+          <div className="text-3xl font-bold text-gray-900">{totales.totalDevolucionesMensuales}</div>
+          <div className="text-sm text-gray-600 mt-1">Devoluciones registradas</div>
         </motion.div>
       </div>
 
-      {/* Gráficos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Devoluciones Mensuales por Sede */}
-        {datosDevolucionesMes.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
-          >
-            <h3 className="text-xl font-bold text-white mb-6">Devoluciones Mensuales por Sede (%)</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={datosDevolucionesMes}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="mes" stroke="#9ca3af" />
-                <YAxis stroke="#9ca3af" />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
-                  formatter={(value) => value + '%'}
-                />
-                <Legend />
-                <Line type="monotone" dataKey="Sede 1" stroke="#3b82f6" strokeWidth={2} />
-                <Line type="monotone" dataKey="Sede 2" stroke="#10b981" strokeWidth={2} />
-                <Line type="monotone" dataKey="Sede 3" stroke="#f59e0b" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </motion.div>
-        )}
-
-        {/* Resumen Anual de Devoluciones */}
-        {datosResumenAnual.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
-          >
-            <h3 className="text-xl font-bold text-white mb-6">Promedio Anual de Devoluciones</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={datosResumenAnual}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="anio" stroke="#9ca3af" />
-                <YAxis stroke="#9ca3af" />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
-                  formatter={(value, name) => {
-                    if (value === null) return ['N/A', name];
-                    return [value + '%', name];
-                  }}
-                />
-                <Legend />
-                <Bar dataKey="Compañía" fill="#8b5cf6" name="Compañía" radius={[8, 8, 0, 0]} />
-                <Bar dataKey="Sede 1" fill="#3b82f6" name="Sede 1" radius={[8, 8, 0, 0]} />
-                <Bar dataKey="Sede 2" fill="#10b981" name="Sede 2" radius={[8, 8, 0, 0]} />
-                <Bar dataKey="Sede 3" fill="#f59e0b" name="Sede 3" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </motion.div>
-        )}
-      </div>
+      {/* Gráfico de Devoluciones Mensuales */}
+      {datosDevolucionesMes.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          onClick={() => openModal(
+            'Devoluciones Mensuales por Sede',
+            'Este gráfico muestra la evolución mensual del porcentaje de devoluciones por sede. Permite identificar tendencias, picos estacionales y comparar el desempeño entre sedes. Una tendencia descendente indica mejora en la calidad del producto y procesos de distribución.'
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold text-gray-900">Devoluciones Mensuales por Sede (%)</h3>
+            <Info className="w-5 h-5 text-blue-400 animate-pulse" />
+          </div>
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={datosDevolucionesMes}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis dataKey="mes" stroke="#6b7280" />
+              <YAxis stroke="#6b7280" />
+              <Tooltip 
+                contentStyle={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                labelStyle={{ color: '#111827' }}
+                itemStyle={{ color: '#374151' }}
+                formatter={(value) => value + '%'}
+              />
+              <Legend />
+              <Line type="monotone" dataKey="Sede 1" stroke="#3b82f6" strokeWidth={2} />
+              <Line type="monotone" dataKey="Sede 2" stroke="#10b981" strokeWidth={2} />
+              <Line type="monotone" dataKey="Sede 3" stroke="#f59e0b" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </motion.div>
+      )}
 
       {/* Variación 2025 vs 2024 */}
       {variacionDevoluciones && (
@@ -186,57 +188,28 @@ export default function AuditoriaDashboard({ data }) {
           transition={{ delay: 0.6 }}
           className="bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-xl rounded-xl p-6 border border-green-500/30"
         >
-          <h3 className="text-xl font-bold text-white mb-4">Análisis de Variación 2025 vs 2024</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Análisis de Variación 2025 vs 2024</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-slate-700/30 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">2025</div>
-              <div className="text-2xl font-bold text-white">{variacionDevoluciones.pct_2025}%</div>
+            <div className="bg-gray-100/30 rounded-lg p-4">
+              <div className="text-sm text-gray-600 mb-1">2025</div>
+              <div className="text-2xl font-bold text-gray-900">{variacionDevoluciones.pct_2025}%</div>
             </div>
-            <div className="bg-slate-700/30 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">2024</div>
-              <div className="text-2xl font-bold text-white">{variacionDevoluciones.pct_2024}%</div>
+            <div className="bg-gray-100/30 rounded-lg p-4">
+              <div className="text-sm text-gray-600 mb-1">2024</div>
+              <div className="text-2xl font-bold text-gray-900">{variacionDevoluciones.pct_2024}%</div>
             </div>
-            <div className="bg-slate-700/30 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">Variación</div>
+            <div className="bg-gray-100/30 rounded-lg p-4">
+              <div className="text-sm text-gray-600 mb-1">Variación</div>
               <div className={`text-2xl font-bold ${parseFloat(variacionDevoluciones.variacion_puntos_porcentuales) < 0 ? 'text-green-400' : 'text-red-400'}`}>
                 {variacionDevoluciones.variacion_puntos_porcentuales}pp
               </div>
             </div>
-            <div className="bg-slate-700/30 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">Estado</div>
+            <div className="bg-gray-100/30 rounded-lg p-4">
+              <div className="text-sm text-gray-600 mb-1">Estado</div>
               <div className={`text-lg font-bold ${variacionDevoluciones.estado_auditoria.includes('Mejora') ? 'text-green-400' : 'text-red-400'}`}>
                 {variacionDevoluciones.estado_auditoria}
               </div>
             </div>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Auditorías por Tipo */}
-      {datosTipos.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
-        >
-          <h3 className="text-xl font-bold text-white mb-4">Auditorías por Tipo</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {datosTipos.map((tipo, idx) => (
-              <div key={idx} className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
-                <div className="font-bold text-white mb-2">{tipo.tipo}</div>
-                <div className="space-y-1 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Cantidad:</span>
-                    <span className="text-blue-400 font-medium">{tipo.cantidad}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Áreas:</span>
-                    <span className="text-green-400 font-medium">{tipo.areas}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </motion.div>
       )}
@@ -247,38 +220,38 @@ export default function AuditoriaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
         >
-          <h3 className="text-xl font-bold text-white mb-4">Auditorías Recientes</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Auditorías Recientes</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-600">
-                  <th className="text-left py-3 px-4 text-gray-300">Fecha</th>
-                  <th className="text-left py-3 px-4 text-gray-300">Tipo</th>
-                  <th className="text-left py-3 px-4 text-gray-300">Área/Proceso</th>
-                  <th className="text-left py-3 px-4 text-gray-300">Auditor</th>
-                  <th className="text-left py-3 px-4 text-gray-300">Estado</th>
-                  <th className="text-right py-3 px-4 text-gray-300">Días</th>
+                <tr className="border-b border-gray-300">
+                  <th className="text-left py-3 px-4 text-gray-700">Fecha</th>
+                  <th className="text-left py-3 px-4 text-gray-700">Tipo</th>
+                  <th className="text-left py-3 px-4 text-gray-700">Área/Proceso</th>
+                  <th className="text-left py-3 px-4 text-gray-700">Auditor</th>
+                  <th className="text-left py-3 px-4 text-gray-700">Estado</th>
+                  <th className="text-right py-3 px-4 text-gray-700">Días</th>
                 </tr>
               </thead>
               <tbody>
                 {auditorias.slice(0, 10).map((aud, idx) => (
-                  <tr key={idx} className="border-b border-slate-700/50 hover:bg-slate-700/30">
-                    <td className="py-3 px-4 text-white">{new Date(aud.fecha_auditoria).toLocaleDateString('es-CO')}</td>
+                  <tr key={idx} className="border-b border-gray-200/50 hover:bg-gray-100/30">
+                    <td className="py-3 px-4 text-gray-900">{new Date(aud.fecha_auditoria).toLocaleDateString('es-CO')}</td>
                     <td className="py-3 px-4 text-blue-400">{aud.tipo_auditoria}</td>
-                    <td className="py-3 px-4 text-gray-400">{aud.area_proceso_auditado}</td>
-                    <td className="py-3 px-4 text-gray-400">{aud.auditor_responsable}</td>
+                    <td className="py-3 px-4 text-gray-600">{aud.area_proceso_auditado}</td>
+                    <td className="py-3 px-4 text-gray-600">{aud.auditor_responsable}</td>
                     <td className="py-3 px-4">
                       <span className={`px-2 py-1 rounded text-xs ${
                         aud.estado === 'Completada' ? 'bg-green-500/20 text-green-400' :
                         aud.estado === 'En proceso' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-gray-500/20 text-gray-400'
+                        'bg-gray-500/20 text-gray-600'
                       }`}>
                         {aud.estado}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right text-gray-400">{aud.dias_desde_auditoria}</td>
+                    <td className="py-3 px-4 text-right text-gray-600">{aud.dias_desde_auditoria}</td>
                   </tr>
                 ))}
               </tbody>
@@ -296,12 +269,12 @@ export default function AuditoriaDashboard({ data }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+              className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
             >
-              <h3 className="text-xl font-bold text-white mb-4">Hallazgos Recientes</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Hallazgos Recientes</h3>
               <div className="space-y-3">
                 {hallazgos.slice(0, 5).map((hall, idx) => (
-                  <div key={idx} className="bg-slate-700/30 rounded-lg p-3 border border-slate-600">
+                  <div key={idx} className="bg-gray-100/30 rounded-lg p-3 border border-gray-300">
                     <div className="flex items-start justify-between mb-2">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
                         hall.nivel_riesgo === 'Alto' ? 'bg-red-500/20 text-red-400' :
@@ -312,8 +285,8 @@ export default function AuditoriaDashboard({ data }) {
                       </span>
                       <span className="text-xs text-gray-500">{hall.tipo_auditoria}</span>
                     </div>
-                    <p className="text-sm text-white mb-1">{hall.descripcion_hallazgo}</p>
-                    <p className="text-xs text-gray-400">{hall.area_proceso_auditado}</p>
+                    <p className="text-sm text-gray-900 mb-1">{hall.descripcion_hallazgo}</p>
+                    <p className="text-xs text-gray-600">{hall.area_proceso_auditado}</p>
                   </div>
                 ))}
               </div>
@@ -326,12 +299,12 @@ export default function AuditoriaDashboard({ data }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9 }}
-              className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+              className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
             >
-              <h3 className="text-xl font-bold text-white mb-4">Planes de Acción</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Planes de Acción</h3>
               <div className="space-y-3">
                 {planesAccion.slice(0, 5).map((plan, idx) => (
-                  <div key={idx} className="bg-slate-700/30 rounded-lg p-3 border border-slate-600">
+                  <div key={idx} className="bg-gray-100/30 rounded-lg p-3 border border-gray-300">
                     <div className="flex items-start justify-between mb-2">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
                         plan.estado_plan === 'Completado' ? 'bg-green-500/20 text-green-400' :
@@ -345,8 +318,8 @@ export default function AuditoriaDashboard({ data }) {
                         {plan.dias_para_vencimiento < 0 ? 'Vencido' : `${plan.dias_para_vencimiento} días`}
                       </span>
                     </div>
-                    <p className="text-sm text-white mb-1">{plan.accion_correctiva}</p>
-                    <p className="text-xs text-gray-400">{plan.descripcion_hallazgo}</p>
+                    <p className="text-sm text-gray-900 mb-1">{plan.accion_correctiva}</p>
+                    <p className="text-xs text-gray-600">{plan.descripcion_hallazgo}</p>
                   </div>
                 ))}
               </div>
@@ -354,6 +327,52 @@ export default function AuditoriaDashboard({ data }) {
           )}
         </div>
       )}
+
+      {/* Modal */}
+      <AnimatePresence>
+        {modalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+            onClick={() => setModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Info className="w-6 h-6 text-blue-400" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
+                </div>
+                <button
+                  onClick={() => setModalOpen(false)}
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="text-gray-700 leading-relaxed">
+                {modalContent.description}
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => setModalOpen(false)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                >
+                  Entendido
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+

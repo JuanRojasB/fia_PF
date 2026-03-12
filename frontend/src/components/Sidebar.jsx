@@ -35,8 +35,10 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       subitems: [
         { id: 'produccion-granjas', label: 'Capacidad Granjas', dashboardType: 'produccion-granjas' },
         { id: 'produccion-encasetado', label: 'Encasetamiento', dashboardType: 'produccion-encasetado' },
-        { id: 'produccion-huevos', label: 'Zootecnia Granjas Huevo', dashboardType: 'produccion-huevos' },
-        { id: 'produccion-indicadores', label: 'Zootecnia Granjas Aves', dashboardType: 'produccion-indicadores' }
+        { id: 'produccion-pollo-entregado', label: 'Pollo Entregado', dashboardType: 'produccion-pollo-entregado' },
+        { id: 'produccion-indicadores', label: 'Zootecnia Granjas Aves', dashboardType: 'produccion-indicadores' },
+        { id: 'produccion-huevos', label: 'Zootecnia Granjas Huevo', dashboardType: 'produccion-huevos' }
+      
       ]
     },
     { 
@@ -45,10 +47,23 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       icon: TrendingUp,
       type: 'expandable',
       subitems: [
-        { id: 'comercial-resumen', label: 'Resumen General', dashboardType: 'comercial-resumen' },
+        { id: 'comercial-resumen', label: 'Estructura', dashboardType: 'comercial-resumen' },
+        { id: 'comercial-ventas-compania', label: 'Ventas Total Compañía', dashboardType: 'comercial-ventas-compania' },
+        { id: 'comercial-pollo-entero', label: 'Pollo Entero', dashboardType: 'comercial-pollo-entero' },
         { id: 'comercial-productos', label: 'Análisis de Productos', dashboardType: 'comercial-productos' },
-        { id: 'comercial-huevo', label: 'Ventas de Huevo', dashboardType: 'comercial-huevo' }
+        { id: 'comercial-asadero', label: 'Ventas Asadero (Sede 1)', dashboardType: 'comercial-asadero' },
+        { id: 'comercial-institucional', label: 'Ventas Institucional/Moderno (Sede 3)', dashboardType: 'comercial-institucional' },
+        { id: 'comercial-huevo', label: 'Ventas de Huevo', dashboardType: 'comercial-huevo' },
+        { id: 'logistica-merma', label: 'Control de Mermas', dashboardType: 'logistica-merma' }
       ]
+    },
+    
+    { 
+      id: 'auditoria', 
+      label: 'Auditoría', 
+      icon: Shield,
+      type: 'single',
+      dashboardType: 'auditoria'
     },
     { 
       id: 'comercial-pdv', 
@@ -57,12 +72,12 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       type: 'single',
       dashboardType: 'comercial-pdv'
     },
-    { 
-      id: 'auditoria', 
-      label: 'Auditoría', 
-      icon: Shield,
+       { 
+      id: 'cartera', 
+      label: 'Gestión de Cartera', 
+      icon: Briefcase,
       type: 'single',
-      dashboardType: 'auditoria'
+      dashboardType: 'cartera'
     },
     { 
       id: 'logistica', 
@@ -76,13 +91,7 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
         { id: 'logistica-sede3', label: 'Sede 3 - Clientes Institucionales', dashboardType: 'logistica-sede3' }
       ]
     },
-    { 
-      id: 'cartera', 
-      label: 'Gestión de Cartera', 
-      icon: Briefcase,
-      type: 'single',
-      dashboardType: 'cartera'
-    },
+ 
     { 
       id: 'gerencia', 
       label: 'Gestión Gerencia', 
@@ -120,14 +129,14 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-xl backdrop-blur-xl"
         style={{
-          background: 'rgba(15, 23, 42, 0.9)',
-          border: '1px solid rgba(148, 163, 184, 0.3)'
+          background: 'rgba(255, 255, 255, 0.95)',
+          border: '1px solid rgba(203, 213, 225, 0.5)'
         }}
       >
         {isMobileMenuOpen ? (
-          <X className="w-6 h-6 text-white" />
+          <X className="w-6 h-6 text-gray-900" />
         ) : (
-          <Menu className="w-6 h-6 text-white" />
+          <Menu className="w-6 h-6 text-gray-900" />
         )}
       </button>
 
@@ -139,7 +148,7 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsMobileMenuOpen(false)}
-            className="lg:hidden fixed inset-0 bg-black/50 z-40"
+            className="lg:hidden fixed inset-0 bg-gray-900/30 z-40"
           />
         )}
       </AnimatePresence>
@@ -150,14 +159,14 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
         animate={{ x: isMobileMenuOpen || window.innerWidth >= 1024 ? 0 : -300 }}
         className="fixed inset-y-0 left-0 w-64 backdrop-blur-xl overflow-y-auto z-40 lg:z-auto"
         style={{
-          background: 'rgba(15, 23, 42, 0.9)',
-          borderRight: '1px solid rgba(148, 163, 184, 0.3)'
+          background: 'rgba(255, 255, 255, 0.98)',
+          borderRight: '1px solid rgba(203, 213, 225, 0.5)'
         }}
       >
         <div className="flex flex-col min-h-full">
         
         {/* Logo */}
-        <div className="p-6" style={{ borderBottom: '1px solid rgba(148, 163, 184, 0.3)' }}>
+        <div className="p-6" style={{ borderBottom: '1px solid rgba(203, 213, 225, 0.5)' }}>
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -167,15 +176,15 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
               <motion.div 
                 className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden"
                 style={{
-                  background: 'radial-gradient(circle, rgba(56, 189, 248, 0.3), rgba(0, 0, 0, 0.9))',
-                  border: '2px solid rgba(56, 189, 248, 0.6)',
-                  boxShadow: '0 0 20px rgba(56, 189, 248, 0.5)'
+                  background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2), rgba(255, 255, 255, 0.9))',
+                  border: '2px solid rgba(59, 130, 246, 0.4)',
+                  boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)'
                 }}
                 animate={{
                   boxShadow: [
-                    '0 0 20px rgba(56, 189, 248, 0.5)',
-                    '0 0 30px rgba(56, 189, 248, 0.7)',
-                    '0 0 20px rgba(56, 189, 248, 0.5)',
+                    '0 0 20px rgba(59, 130, 246, 0.3)',
+                    '0 0 30px rgba(59, 130, 246, 0.5)',
+                    '0 0 20px rgba(59, 130, 246, 0.3)',
                   ]
                 }}
                 transition={{
@@ -197,20 +206,20 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
                 />
               </motion.div>
               <div>
-                <h2 className="text-xl font-bold text-white leading-tight">
-                  FIA Intelligence
+                <h2 className="text-xl font-bold text-gray-900 leading-tight">
+                  FIA 
                 </h2>
               </div>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
               <User className="w-4 h-4" />
               <span>{user?.fullName || user?.username}</span>
             </div>
             <div className="mt-2 px-2 py-1 rounded-full inline-block text-xs font-medium"
               style={{
-                background: 'rgba(56, 189, 248, 0.15)',
-                color: '#7dd3fc',
-                border: '1px solid rgba(56, 189, 248, 0.5)'
+                background: 'rgba(59, 130, 246, 0.12)',
+                color: '#1d4ed8',
+                border: '1px solid rgba(59, 130, 246, 0.3)'
               }}
             >
               {user?.role?.toUpperCase()}
@@ -241,9 +250,9 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
                   }}
                   className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300"
                   style={{
-                    background: isActive ? 'rgba(30, 64, 175, 0.3)' : 'transparent',
-                    border: isActive ? '1px solid rgba(59, 130, 246, 0.6)' : '1px solid transparent',
-                    color: isActive ? '#93c5fd' : '#9ca3af'
+                    background: isActive ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
+                    border: isActive ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid transparent',
+                    color: isActive ? '#1d4ed8' : '#64748b'
                   }}
                 >
                   <div className="flex items-center space-x-3">
@@ -277,9 +286,9 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
                               }}
                               className="w-full text-left px-4 py-2 rounded-lg transition-all duration-200 text-sm"
                               style={{
-                                background: isSubActive ? 'rgba(56, 189, 248, 0.15)' : 'transparent',
-                                color: isSubActive ? '#7dd3fc' : '#9ca3af',
-                                borderLeft: isSubActive ? '2px solid #38bdf8' : '2px solid transparent'
+                                background: isSubActive ? 'rgba(59, 130, 246, 0.12)' : 'transparent',
+                                color: isSubActive ? '#1d4ed8' : '#64748b',
+                                borderLeft: isSubActive ? '2px solid #3b82f6' : '2px solid transparent'
                               }}
                             >
                               {subitem.label}
@@ -296,16 +305,16 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
         </nav>
 
         {/* Logout */}
-        <div className="p-4 space-y-2" style={{ borderTop: '1px solid rgba(148, 163, 184, 0.3)' }}>
+        <div className="p-4 space-y-2" style={{ borderTop: '1px solid rgba(203, 213, 225, 0.5)' }}>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => navigate(ROUTES.HOME)}
             className="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-full transition-all duration-300"
             style={{
-              background: 'rgba(56, 189, 248, 0.12)',
-              border: '1px solid rgba(56, 189, 248, 0.6)',
-              color: '#7dd3fc'
+              background: 'rgba(59, 130, 246, 0.1)',
+              border: '1px solid rgba(59, 130, 246, 0.4)',
+              color: '#1d4ed8'
             }}
           >
             <Home className="w-5 h-5" />
@@ -318,9 +327,9 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
             onClick={onLogout}
             className="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-full transition-all duration-300"
             style={{
-              background: 'rgba(239, 68, 68, 0.12)',
-              border: '1px solid rgba(239, 68, 68, 0.6)',
-              color: '#fecaca'
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.4)',
+              color: '#dc2626'
             }}
           >
             <LogOut className="w-5 h-5" />

@@ -10,13 +10,19 @@ import LogisticaSede1Dashboard from './LogisticaSede1Dashboard';
 import LogisticaSede2Dashboard from './LogisticaSede2Dashboard';
 import LogisticaSede3Dashboard from './LogisticaSede3Dashboard';
 import GestionLogisticaDashboard from './GestionLogisticaDashboard';
+import LogisticaMermaDashboard from './LogisticaMermaDashboard';
 import SagrilaftDashboard from './SagrilaftDashboard';
 import GranjasDashboard from './GranjasDashboard';
-import ComercialResumenDashboard from './ComercialResumenDashboard';
+import ComercialEstructuraDashboard from './ComercialEstructuraDashboard';
+import ComercialVentasCompaniaDashboard from './ComercialVentasCompaniaDashboard';
+import ComercialPolloEnteroDashboard from './ComercialPolloEnteroDashboard';
 import ComercialPDVDashboard from './ComercialPDVDashboard';
 import ComercialProductosDashboard from './ComercialProductosDashboard';
+import ComercialAsaderoDashboard from './ComercialAsaderoDashboard';
+import ComercialInstitucionalDashboard from './ComercialInstitucionalDashboard';
 import ComercialHuevoDashboard from './ComercialHuevoDashboard';
 import ProduccionEncasetadoDashboard from './ProduccionEncasetadoDashboard';
+import ProduccionPolloEntregadoDashboard from './ProduccionPolloEntregadoDashboard';
 import ProduccionHuevosDashboard from './ProduccionHuevosDashboard';
 import ProduccionIndicadoresDashboard from './ProduccionIndicadoresDashboard';
 import AuditoriaDashboard from './AuditoriaDashboard';
@@ -47,11 +53,19 @@ export default function DashboardRenderer({ type, data }) {
     case 'cartera':
       return <CarteraDashboard data={data} />;
     case 'comercial-resumen':
-      return <ComercialResumenDashboard data={data} />;
+      return <ComercialEstructuraDashboard data={data} />;
+    case 'comercial-ventas-compania':
+      return <ComercialVentasCompaniaDashboard data={data} />;
+    case 'comercial-pollo-entero':
+      return <ComercialPolloEnteroDashboard data={data} />;
     case 'comercial-pdv':
       return <ComercialPDVDashboard data={data} />;
     case 'comercial-productos':
       return <ComercialProductosDashboard data={data} />;
+    case 'comercial-asadero':
+      return <ComercialAsaderoDashboard data={data} />;
+    case 'comercial-institucional':
+      return <ComercialInstitucionalDashboard data={data} />;
     case 'comercial-huevo':
       return <ComercialHuevoDashboard data={data} />;
     case 'humana':
@@ -72,10 +86,14 @@ export default function DashboardRenderer({ type, data }) {
       return <GestionLogisticaDashboard data={data} />;
     case 'gestion-logistica':
       return <GestionLogisticaDashboard data={data} />;
+    case 'logistica-merma':
+      return <LogisticaMermaDashboard data={data} />;
     case 'produccion-granjas':
       return <GranjasDashboard data={data} />;
     case 'produccion-encasetado':
       return <ProduccionEncasetadoDashboard data={data} />;
+    case 'produccion-pollo-entregado':
+      return <ProduccionPolloEntregadoDashboard data={data} />;
     case 'produccion-huevos':
       return <ProduccionHuevosDashboard data={data} />;
     case 'produccion-indicadores':

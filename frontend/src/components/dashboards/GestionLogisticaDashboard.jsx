@@ -17,7 +17,7 @@ export default function GestionLogisticaDashboard({ data }) {
   const logisticaData = Array.isArray(data) ? data : (data?.items || []);
   
   if (logisticaData.length === 0) {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
+    return <div className="text-gray-600">No hay datos disponibles</div>;
   }
 
   const formatCurrency = (value) => {
@@ -119,9 +119,9 @@ export default function GestionLogisticaDashboard({ data }) {
       >
         <div className="flex items-center gap-3 mb-4">
           <Truck className="w-8 h-8 text-purple-400" />
-          <h2 className="text-3xl font-bold text-white">GESTIÓN LOGÍSTICA - ANÁLISIS CONSOLIDADO</h2>
+          <h2 className="text-3xl font-bold text-gray-900">GESTIÓN LOGÍSTICA - ANÁLISIS CONSOLIDADO</h2>
         </div>
-        <p className="text-gray-300 leading-relaxed">
+        <p className="text-gray-700 leading-relaxed">
           Análisis consolidado de la gestión logística de las sedes operativas de Pollo Fiesta, comparando el desempeño y la eficiencia del gasto 2024 vs. 2025.
         </p>
       </motion.div>
@@ -135,13 +135,13 @@ export default function GestionLogisticaDashboard({ data }) {
             'Total Consolidado 2025',
             `Total consolidado de gastos operacionales logísticos de las 3 sedes para 2025: ${formatCurrency(total2025)}. La variación del ${variacionTotal}% vs 2024 refleja el crecimiento operativo de Sede 2 y Sede 3, compensado parcialmente por la optimización en Sede 1.`
           )}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Total Consolidado 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Total Consolidado 2025</span>
             <DollarSign className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">{formatCurrency(total2025)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(total2025)}</div>
           <div className={`text-xs ${parseFloat(variacionTotal) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {variacionTotal > 0 ? '+' : ''}{variacionTotal}% vs 2024
           </div>
@@ -155,13 +155,13 @@ export default function GestionLogisticaDashboard({ data }) {
             'Sede 1 - Pollo Asadero',
             `Gastos operacionales logísticos Sede 1 para 2025: ${formatCurrency(sedesData[0]?.total2025 || 0)}. La variación del ${sedesData[0]?.variacion || 0}% vs 2024 representa una reducción controlada gracias a la optimización de fletes y reducción de personal de postproceso por la unificación de procesos en Sede 3.`
           )}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Sede 1</span>
+            <span className="text-gray-600 text-sm font-medium">Sede 1</span>
             <Building className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">{formatCurrency(sedesData[0]?.total2025 || 0)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[0]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[0]?.variacion || 0}% vs 2024
           </div>
@@ -175,13 +175,13 @@ export default function GestionLogisticaDashboard({ data }) {
             'Sede 2 - Productos Congelados',
             `Gastos operacionales logísticos Sede 2 para 2025: ${formatCurrency(sedesData[1]?.total2025 || 0)}. El incremento del ${sedesData[1]?.variacion || 0}% vs 2024 está directamente relacionado con el crecimiento del 31.3% en ventas, principalmente por mayor capacidad instalada y personal para atender la demanda de D1 y ARA.`
           )}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Sede 2</span>
+            <span className="text-gray-600 text-sm font-medium">Sede 2</span>
             <Building className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">{formatCurrency(sedesData[1]?.total2025 || 0)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[1]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[1]?.variacion || 0}% vs 2024
           </div>
@@ -195,13 +195,13 @@ export default function GestionLogisticaDashboard({ data }) {
             'Sede 3 - Clientes Institucionales',
             `Gastos operacionales logísticos Sede 3 para 2025: ${formatCurrency(sedesData[2]?.total2025 || 0)}. El incremento del ${sedesData[2]?.variacion || 0}% vs 2024 refleja el crecimiento operativo y la consolidación de procesos, principalmente por personal de postproceso (+23.43%) y fletes (+28.17%) para atender clientes institucionales.`
           )}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm font-medium">Sede 3</span>
+            <span className="text-gray-600 text-sm font-medium">Sede 3</span>
             <Building className="w-6 h-6 text-orange-400" />
           </div>
-          <div className="text-3xl font-bold text-white mb-1">{formatCurrency(sedesData[2]?.total2025 || 0)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[2]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[2]?.variacion || 0}% vs 2024
           </div>
@@ -213,9 +213,16 @@ export default function GestionLogisticaDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        onClick={() => openModal(
+          'Comparativa por Sede 2024 vs 2025',
+          `Análisis comparativo de gastos operacionales logísticos por sede. Sede 1: ${formatCurrency(sedesData[0]?.total2025 || 0)} (${sedesData[0]?.variacion || 0}% vs 2024) - Reducción por optimización de fletes y personal. Sede 2: ${formatCurrency(sedesData[1]?.total2025 || 0)} (${sedesData[1]?.variacion || 0}% vs 2024) - Incremento por crecimiento del 31.3% en ventas. Sede 3: ${formatCurrency(sedesData[2]?.total2025 || 0)} (${sedesData[2]?.variacion || 0}% vs 2024) - Crecimiento operativo y consolidación de procesos.`
+        )}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
       >
-        <h3 className="text-xl font-bold text-white mb-6">Comparativa por Sede 2024 vs 2025</h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900">Comparativa por Sede 2024 vs 2025</h3>
+          <Info className="w-5 h-5 text-purple-400 animate-pulse" />
+        </div>
         <ResponsiveContainer width="100%" height={350}>
           <BarChart data={sedesData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -225,8 +232,8 @@ export default function GestionLogisticaDashboard({ data }) {
               if (active && payload && payload.length) {
                 const data = payload[0].payload;
                 return (
-                  <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
-                    <p className="text-white font-semibold mb-2">{data.sede}</p>
+                  <div className="bg-white border border-gray-300 rounded-lg p-3 shadow-xl">
+                    <p className="text-gray-900 font-semibold mb-2">{data.sede}</p>
                     <p className="text-sm text-cyan-400">2024: {formatCurrency(data.total2024)}</p>
                     <p className="text-sm text-green-400">2025: {formatCurrency(data.total2025)}</p>
                     <p className={`text-sm font-bold mt-1 ${parseFloat(data.variacion) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
@@ -253,10 +260,10 @@ export default function GestionLogisticaDashboard({ data }) {
           `Análisis detallado de gastos operacionales logísticos consolidados de las 3 sedes. El incremento del ${variacionTotal}% refleja el crecimiento operativo, especialmente en Sede 2 y Sede 3, mientras que Sede 1 optimizó procesos logrando una reducción.`,
           true
         )}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700 hover:border-purple-500 transition-all cursor-pointer"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-white">Gastos Consolidados por Concepto</h3>
+          <h3 className="text-xl font-bold text-gray-900">Gastos Consolidados por Concepto</h3>
           <Info className="w-5 h-5 text-purple-400 animate-pulse" />
         </div>
         <ResponsiveContainer width="100%" height={400}>
@@ -268,8 +275,8 @@ export default function GestionLogisticaDashboard({ data }) {
               if (active && payload && payload.length) {
                 const data = payload[0].payload;
                 return (
-                  <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
-                    <p className="text-white font-semibold mb-2">{data.concepto}</p>
+                  <div className="bg-white border border-gray-300 rounded-lg p-3 shadow-xl">
+                    <p className="text-gray-900 font-semibold mb-2">{data.concepto}</p>
                     <p className="text-sm text-cyan-400">2024: {formatCurrency(data.valor2024)}</p>
                     <p className="text-sm text-green-400">2025: {formatCurrency(data.valor2025)}</p>
                     <p className={`text-sm font-bold mt-1 ${parseFloat(data.variacion) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
@@ -303,24 +310,24 @@ export default function GestionLogisticaDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-6xl w-full border-4 border-purple-500 shadow-2xl max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-xl p-6 max-w-6xl w-full border-4 border-purple-500 shadow-2xl max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-purple-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
               
               <div className="mb-6 bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                <p className="text-sm text-gray-300 leading-relaxed">
+                <p className="text-sm text-gray-700 leading-relaxed">
                   {modalContent.description}
                 </p>
               </div>
@@ -328,79 +335,85 @@ export default function GestionLogisticaDashboard({ data }) {
               {/* Tabla dentro del modal - solo si showTable es true */}
               {modalContent.showTable && (
                 <div className="overflow-x-auto">
-                <h4 className="text-lg font-bold text-white mb-4">
-                  GASTOS OPERACIONALES LOGÍSTICOS CONSOLIDADOS 2024 VS 2025
-                </h4>
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-purple-700/50 border-b-2 border-slate-600">
-                      <th className="text-left py-3 px-4 text-white font-bold">CONCEPTO</th>
-                      <th className="text-right py-3 px-4 text-white font-bold">TOTAL 2024</th>
-                      <th className="text-right py-3 px-4 text-white font-bold">TOTAL 2025</th>
-                      <th className="text-right py-3 px-4 text-white font-bold">% Var 25/24</th>
-                      <th className="text-center py-3 px-4 text-white font-bold">DIFERENCIA</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {consolidadoArray.map((row, idx) => {
-                      const esIncremento = row.diferencia > 0;
-                      
-                      return (
-                        <tr key={idx} className="border-b border-slate-700/30 hover:bg-slate-700/20">
-                          <td className="py-2 px-4 text-white">{row.concepto}</td>
-                          <td className="py-2 px-4 text-right text-cyan-300 tabular-nums">
-                            $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                          </td>
-                          <td className="py-2 px-4 text-right text-orange-300 tabular-nums">
-                            $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                          </td>
-                          <td className="py-2 px-4 text-right tabular-nums">
-                            <span className={`inline-flex items-center gap-1 ${esIncremento ? 'text-red-400' : 'text-green-400'}`}>
-                              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
-                                {esIncremento ? '↑' : '↓'}
+                  <h4 className="text-lg font-bold text-gray-900 mb-4">
+                    GASTOS OPERACIONALES LOGÍSTICOS CONSOLIDADOS 2024 VS 2025
+                  </h4>
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-gradient-to-r from-purple-500 to-purple-600 border-b-2 border-gray-300">
+                        <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
+                        <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
+                        <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
+                        <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var 25/24</th>
+                        <th className="text-center py-3 px-4 text-gray-900 font-bold">DIFERENCIA</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {consolidadoArray.map((row, idx) => {
+                        const esIncremento = row.diferencia > 0;
+                        
+                        return (
+                          <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                            <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
+                            <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">
+                              $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                            </td>
+                            <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
+                              $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                            </td>
+                            <td className="py-2 px-4 text-right tabular-nums">
+                              <span className={`inline-flex items-center gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
+                                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
+                                  {esIncremento ? '↑' : '↓'}
+                                </span>
+                                {row.variacion}%
                               </span>
-                              {row.variacion}%
+                            </td>
+                            <td className="py-2 px-4 text-center">
+                              <span className={esIncremento ? 'text-red-600' : 'text-green-600'}>
+                                $ {Math.abs(row.diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      <tr className="bg-gray-50 border-t-2 border-gray-400 font-bold">
+                        <td className="py-3 px-4 text-gray-900">TOTAL GASTOS LOGÍSTICOS CONSOLIDADOS</td>
+                        <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">
+                          $ {total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </td>
+                        <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
+                          $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </td>
+                        <td className="py-3 px-4 text-right tabular-nums">
+                          <span className={`inline-flex items-center gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+                              {parseFloat(variacionTotal) > 0 ? '↑' : '↓'}
                             </span>
-                          </td>
-                          <td className="py-2 px-4 text-center">
-                            <span className={esIncremento ? 'text-red-400' : 'text-green-400'}>
-                              $ {Math.abs(row.diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                    <tr className="bg-slate-700/50 border-t-2 border-slate-500 font-bold">
-                      <td className="py-3 px-4 text-white">TOTAL GASTOS LOGÍSTICOS CONSOLIDADOS</td>
-                      <td className="py-3 px-4 text-right text-cyan-300 tabular-nums">
-                        $ {total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                      </td>
-                      <td className="py-3 px-4 text-right text-orange-300 tabular-nums">
-                        $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                      </td>
-                      <td className="py-3 px-4 text-right tabular-nums">
-                        <span className={`inline-flex items-center gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500'}`}>
-                            {parseFloat(variacionTotal) > 0 ? '↑' : '↓'}
+                            {variacionTotal}%
                           </span>
-                          {variacionTotal}%
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        <span className={parseFloat(variacionTotal) > 0 ? 'text-red-400' : 'text-green-400'}>
-                          $ {Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <span className={parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}>
+                            $ {Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  
+                  <div className="mt-6 bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      <span className="font-semibold text-gray-900">Análisis Consolidado:</span> El incremento del {variacionTotal}% en gastos totales consolidados refleja el crecimiento operativo de las sedes. Sede 2 presenta el mayor incremento (+{sedesData[1]?.variacion || 0}%) debido al crecimiento del 31.3% en ventas. Sede 3 incrementó {sedesData[2]?.variacion || 0}% por consolidación de procesos. Sede 1 logró una reducción del {Math.abs(parseFloat(sedesData[0]?.variacion || 0))}% mediante optimización de fletes y personal.
+                    </p>
+                  </div>
+                </div>
               )}
 
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-gray-900 rounded-lg transition-colors"
                 >
                   Cerrar
                 </button>

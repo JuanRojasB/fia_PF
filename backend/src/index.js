@@ -56,7 +56,7 @@ async function startServer() {
       console.log('✅ Servidor iniciado correctamente');
       console.log(`📡 Puerto: ${serverConfig.port}`);
       console.log(`🌍 URL: http://localhost:${serverConfig.port}`);
-      console.log(`🗄️  Base de datos: ${process.env.DB_NAME || 'data_dashboard'}`);
+      console.log(`🗄️  Base de datos: ${process.env.DB_NAME || 'erp_pollo_fiesta'}`);
       console.log(`\n📚 Endpoints disponibles:`);
       console.log(`   POST   /api/auth/login`);
       console.log(`   POST   /api/auth/logout`);

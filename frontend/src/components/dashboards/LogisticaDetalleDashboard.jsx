@@ -45,8 +45,8 @@ export default function LogisticaDetalleDashboard({ data }) {
     <div className="space-y-6">
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-white">Logística - Detalle por Sede</h2>
-        <p className="text-gray-400 mt-2">Gastos operacionales logísticos detallados por cada sede</p>
+        <h2 className="text-3xl font-bold text-gray-900">Logística - Detalle por Sede</h2>
+        <p className="text-gray-600 mt-2">Gastos operacionales logísticos detallados por cada sede</p>
       </div>
 
       {/* Tablas por Sede */}
@@ -61,26 +61,26 @@ export default function LogisticaDetalleDashboard({ data }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700 overflow-x-auto"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold text-gray-900">
                 GASTOS OPERACIONALES LOGÍSTICOS {sede} AÑO 2024 VS 2025
               </h3>
               <button
                 onClick={() => openModal(`Gastos ${sede}`, `Detalle de gastos operacionales logísticos para ${sede}.`)}
-                className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                <Info className="w-5 h-5 text-gray-400" />
+                <Info className="w-5 h-5 text-gray-600" />
               </button>
             </div>
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-cyan-700/50 border-b-2 border-slate-600">
-                  <th className="text-left py-3 px-4 text-white font-bold">CONCEPTO</th>
-                  <th className="text-right py-3 px-4 text-white font-bold">TOTAL 2024</th>
-                  <th className="text-right py-3 px-4 text-white font-bold">TOTAL 2025</th>
-                  <th className="text-right py-3 px-4 text-white font-bold">% Var 25/24</th>
+                <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-gray-300">
+                  <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var 25/24</th>
                 </tr>
               </thead>
               <tbody>
@@ -89,16 +89,16 @@ export default function LogisticaDetalleDashboard({ data }) {
                   const esIncremento = variacion > 0;
                   
                   return (
-                    <tr key={rowIdx} className="border-b border-slate-700/30 hover:bg-slate-700/20">
-                      <td className="py-2 px-4 text-white">{row.concepto}</td>
-                      <td className="py-2 px-4 text-right text-cyan-300 tabular-nums">
+                    <tr key={rowIdx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                      <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
+                      <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">
                         $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </td>
-                      <td className="py-2 px-4 text-right text-orange-300 tabular-nums">
+                      <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
                         $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </td>
                       <td className="py-2 px-4 text-right tabular-nums">
-                        <span className={`flex items-center justify-end gap-1 ${esIncremento ? 'text-red-400' : 'text-green-400'}`}>
+                        <span className={`flex items-center justify-end gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
                           {esIncremento ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                           {Math.abs(variacion).toFixed(2)}%
                         </span>
@@ -107,15 +107,15 @@ export default function LogisticaDetalleDashboard({ data }) {
                   );
                 })}
                 {/* Total por sede */}
-                <tr className="bg-cyan-900/30 border-t-2 border-cyan-700 font-bold">
-                  <td className="py-3 px-4 text-cyan-200">TOTAL {sede}</td>
-                  <td className="py-3 px-4 text-right text-cyan-100 tabular-nums">
+                <tr className="bg-blue-50 border-t-2 border-blue-600 font-bold">
+                  <td className="py-3 px-4 text-blue-900 font-bold">TOTAL {sede}</td>
+                  <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">
                     $ {totalSede2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </td>
-                  <td className="py-3 px-4 text-right text-orange-100 tabular-nums">
+                  <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
                     $ {totalSede2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </td>
-                  <td className="py-3 px-4 text-right text-white tabular-nums">
+                  <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
                     {totalSede2024 > 0 ? (((totalSede2025 - totalSede2024) / totalSede2024) * 100).toFixed(2) : 0}%
                   </td>
                 </tr>
@@ -139,28 +139,28 @@ export default function LogisticaDetalleDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-cyan-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed">
                 {modalContent.description}
               </div>
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-gray-900 rounded-lg transition-colors"
                 >
                   Entendido
                 </button>
@@ -172,3 +172,4 @@ export default function LogisticaDetalleDashboard({ data }) {
     </div>
   );
 }
+

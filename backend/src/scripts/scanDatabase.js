@@ -2,6 +2,7 @@
  * Script para escanear la estructura de la base de datos
  */
 
+require('dotenv').config();
 const { getInstance } = require('../infrastructure/database/connection');
 
 async function scanDatabase() {

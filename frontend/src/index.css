@@ -13,8 +13,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: radial-gradient(circle at top, #020617 0, #020617 35%, #020617 40%, #020617 100%);
-  color: #e5e7eb;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  color: #1e293b;
 }
 
 /* Scrollbar personalizado */
@@ -24,17 +24,17 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(241, 245, 249, 0.8);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.5);
+  background: rgba(148, 163, 184, 0.6);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.7);
+  background: rgba(100, 116, 139, 0.8);
 }
 
 /* Animaciones personalizadas */
@@ -70,7 +70,7 @@ body {
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(56, 189, 248, 0.1) 50%,
+    rgba(56, 189, 248, 0.15) 50%,
     transparent 100%
   );
   background-size: 1000px 100%;

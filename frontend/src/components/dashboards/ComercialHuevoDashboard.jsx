@@ -1,139 +1,344 @@
-import { motion } from 'framer-motion';
-import { Egg, TrendingUp, TrendingDown } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { Egg, TrendingDown, DollarSign, X, Info, AlertTriangle, Package } from 'lucide-react';
 
 export default function ComercialHuevoDashboard({ data }) {
-  if (!data || typeof data !== 'object') {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
-  }
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', description: '' });
 
-  const {
-    ventasHuevo = [],
-    comparativoHuevo = []
-  } = data;
-
-  const formatNumber = (value) => {
-    if (!value || isNaN(value)) return '0';
-    return new Intl.NumberFormat('es-CO').format(value);
+  const openModal = (title, description) => {
+    setModalContent({ title, description });
+    setModalOpen(true);
   };
+
+  // Extraer datos de ventas de huevo
+  const ventasHuevo = data?.ventasHuevo || [];
+  
+  if (ventasHuevo.length === 0) {
+    return (
+      <div className="bg-white/95 backdrop-blur-xl rounded-xl p-12 border border-gray-200 text-center">
+        <div className="text-gray-600 text-lg">No hay datos disponibles de Ventas de Huevo</div>
+      </div>
+    );
+  }
 
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
+    return '$' + new Intl.NumberFormat('es-CO', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(value);
   };
 
+  const formatNumber = (value) => {
+    if (!value || isNaN(value)) return '0';
+    return new Intl.NumberFormat('es-CO', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+
+  // Ordenar por año descendente
+  const datosOrdenados = [...ventasHuevo].sort((a, b) => b.anio - a.anio);
+  
+  // Datos del año más reciente (2025)
+  const datos2025 = datosOrdenados.find(v => v.anio === 2025) || {};
+  const datos2024 = datosOrdenados.find(v => v.anio === 2024) || {};
+  const datos2023 = datosOrdenados.find(v => v.anio === 2023) || {};
+
+  // Calcular variaciones
+  const varUnidades2025vs2024 = datos2024.unidades_vendidas > 0 
+    ? (((datos2025.unidades_vendidas - datos2024.unidades_vendidas) / datos2024.unidades_vendidas) * 100).toFixed(2)
+    : 0;
+  
+  const varPrecio2025vs2024 = datos2024.precio_promedio_unidad > 0
+    ? (((datos2025.precio_promedio_unidad - datos2024.precio_promedio_unidad) / datos2024.precio_promedio_unidad) * 100).toFixed(2)
+    : 0;
+
+  const varPrecio3años = datos2023.precio_promedio_unidad > 0
+    ? (((datos2025.precio_promedio_unidad - datos2023.precio_promedio_unidad) / datos2023.precio_promedio_unidad) * 100).toFixed(2)
+    : 0;
+
+  const varIngresos = datos2024.ingresos_totales_calculados > 0
+    ? (((datos2025.ingresos_totales_calculados - datos2024.ingresos_totales_calculados) / datos2024.ingresos_totales_calculados) * 100).toFixed(2)
+    : 0;
+
+  // Preparar datos para el gráfico
+  const datosGrafico = datosOrdenados.reverse().map(v => ({
+    año: v.anio.toString(),
+    unidades: parseInt(v.unidades_vendidas),
+    precio: parseInt(v.precio_promedio_unidad)
+  }));
+
   return (
     <div className="space-y-6">
-      {/* Título */}
-      <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-xl rounded-xl p-6 border border-yellow-500/30">
-        <div className="flex items-center gap-3">
-          <Egg className="w-8 h-8 text-yellow-400" />
-          <div>
-            <h2 className="text-3xl font-bold text-white">Ventas de Huevo</h2>
-            <p className="text-gray-400 mt-1">Análisis de ventas por raza y comparativas multianuales</p>
-          </div>
-        </div>
-      </div>
 
-      {/* Tabla de Ventas de Huevo */}
-      {ventasHuevo.length > 0 && (
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-xl rounded-xl p-6 border-2 border-yellow-500/30"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <Egg className="w-8 h-8 text-yellow-600" />
+          <h2 className="text-3xl font-bold text-gray-900">VENTAS DE HUEVO (AÑOS 2025/24/23)</h2>
+        </div>
+        <p className="text-gray-700 leading-relaxed">
+          Nuestra unidad de negocio de huevo con producción de la raza Hy-Line Brown. 
+          En 2025 se vendieron {formatNumber(datos2025.unidades_vendidas)} unidades a un precio promedio de {formatCurrency(datos2025.precio_promedio_unidad)}, 
+          mostrando una caída del precio del {Math.abs(varPrecio3años)}% en 3 años, indicando presión por mayor competencia.
+        </p>
+      </motion.div>
+
+      {/* KPIs Principales */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          onClick={() => openModal(
+            'Unidades Vendidas 2025',
+            `Total de unidades vendidas en 2025: ${formatNumber(datos2025.unidades_vendidas)}. Variación vs 2024: ${varUnidades2025vs2024}%. El volumen se mantiene relativamente estable, con fluctuaciones dentro de un rango estrecho. En 2024 se logró el máximo volumen del periodo con ${formatNumber(datos2024.unidades_vendidas)} unidades.`
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
-          <h3 className="text-xl font-bold text-white mb-4">Ventas de Huevo por Raza</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b-2 border-slate-600">
-                  <th className="text-left py-3 px-4 text-gray-300 font-bold">Año</th>
-                  <th className="text-left py-3 px-4 text-gray-300 font-bold">Raza</th>
-                  <th className="text-right py-3 px-4 text-gray-300 font-bold">Unidades</th>
-                  <th className="text-right py-3 px-4 text-gray-300 font-bold">Precio Prom.</th>
-                  <th className="text-right py-3 px-4 text-gray-300 font-bold">Ingresos</th>
-                  <th className="text-right py-3 px-4 text-gray-300 font-bold">Utilidad (M)</th>
-                  <th className="text-right py-3 px-4 text-gray-300 font-bold">Margen %</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ventasHuevo.map((v, idx) => (
-                  <tr key={idx} className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors">
-                    <td className="py-3 px-4 text-white font-medium">{v.anio}</td>
-                    <td className="py-3 px-4 text-white">{v.raza_produccion}</td>
-                    <td className="py-3 px-4 text-right text-blue-400 font-bold">{formatNumber(v.unidades_vendidas)}</td>
-                    <td className="py-3 px-4 text-right text-green-400">{formatCurrency(v.precio_promedio_unidad)}</td>
-                    <td className="py-3 px-4 text-right text-purple-400 font-bold">{formatCurrency(v.ingresos_totales_calculados)}</td>
-                    <td className="py-3 px-4 text-right text-yellow-400">${v.utilidad_neta_millones}M</td>
-                    <td className={`py-3 px-4 text-right font-bold ${v.margen_neto_pct > 10 ? 'text-green-400' : v.margen_neto_pct > 5 ? 'text-yellow-400' : 'text-red-400'}`}>
-                      {v.margen_neto_pct}%
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-600 text-sm font-medium">Unidades 2025</span>
+            <Package className="w-6 h-6 text-blue-400" />
+          </div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.unidades_vendidas)}</div>
+          <div className={`text-xs flex items-center gap-1 ${parseFloat(varUnidades2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <TrendingDown className="w-4 h-4" />
+            {varUnidades2025vs2024}% vs 2024
           </div>
         </motion.div>
-      )}
 
-      {/* Comparativo Multianual de Huevo */}
-      {comparativoHuevo.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          onClick={() => openModal(
+            'Precio Promedio 2025',
+            `Precio promedio por unidad en 2025: ${formatCurrency(datos2025.precio_promedio_unidad)}. El precio presenta una tendencia descendente continua, acumulando una caída del ${Math.abs(varPrecio3años)}% en tres años (2023-2025). Esto indica presión en márgenes por mayor competencia en el mercado.`
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
-          <h3 className="text-xl font-bold text-white mb-6">Análisis Comparativo Multianual - Ventas de Huevo</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {comparativoHuevo.map((comp, idx) => (
-              <div key={idx} className="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-xl rounded-lg p-6 border border-yellow-500/30">
-                <div className="text-center mb-4">
-                  <div className="text-xl font-bold text-white mb-2">{comp.periodo_comparado}</div>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <div className="text-sm text-gray-400 mb-2 flex items-center justify-center gap-2">
-                      {parseInt(comp.variacion_unidades) >= 0 ? (
-                        <TrendingUp className="w-4 h-4 text-green-400" />
-                      ) : (
-                        <TrendingDown className="w-4 h-4 text-red-400" />
-                      )}
-                      <span>Variación en Unidades</span>
-                    </div>
-                    <div className={`text-2xl font-bold ${parseInt(comp.variacion_unidades) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {parseInt(comp.variacion_unidades) >= 0 ? '+' : ''}{formatNumber(comp.variacion_unidades)}
-                    </div>
-                    <div className={`text-sm font-bold ${parseFloat(comp.variacion_unidades_pct) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {parseFloat(comp.variacion_unidades_pct) >= 0 ? '+' : ''}{comp.variacion_unidades_pct}%
-                    </div>
-                  </div>
-                  <div className="border-t border-slate-600 pt-4">
-                    <div className="text-sm text-gray-400 mb-2 flex items-center justify-center gap-2">
-                      {parseFloat(comp.variacion_precio) >= 0 ? (
-                        <TrendingUp className="w-4 h-4 text-green-400" />
-                      ) : (
-                        <TrendingDown className="w-4 h-4 text-red-400" />
-                      )}
-                      <span>Variación en Precio</span>
-                    </div>
-                    <div className={`text-2xl font-bold ${parseFloat(comp.variacion_precio) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {parseFloat(comp.variacion_precio) >= 0 ? '+' : ''}{formatCurrency(comp.variacion_precio)}
-                    </div>
-                    <div className={`text-sm font-bold ${parseFloat(comp.variacion_precio_pct) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {parseFloat(comp.variacion_precio_pct) >= 0 ? '+' : ''}{comp.variacion_precio_pct}%
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-600 text-sm font-medium">Precio Promedio 2025</span>
+            <TrendingDown className="w-6 h-6 text-red-400" />
+          </div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(datos2025.precio_promedio_unidad)}</div>
+          <div className="text-xs flex items-center gap-1 text-red-600">
+            <AlertTriangle className="w-4 h-4" />
+            {varPrecio2025vs2024}% vs 2024
           </div>
         </motion.div>
-      )}
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          onClick={() => openModal(
+            'Ingresos Totales 2025',
+            `Ingresos totales en 2025: ${formatCurrency(datos2025.ingresos_totales_calculados)}. Variación vs 2024: ${varIngresos}%. Aunque la demanda se mantiene sólida, los ingresos disminuyen debido a la caída continua en precios. Se han adoptado estrategias de ajuste gradual de precios y segmentación de clientes.`
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-600 text-sm font-medium">Ingresos 2025</span>
+            <DollarSign className="w-6 h-6 text-green-400" />
+          </div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(datos2025.ingresos_totales_calculados)}</div>
+          <div className={`text-xs flex items-center gap-1 ${parseFloat(varIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <TrendingDown className="w-4 h-4" />
+            {varIngresos}% vs 2024
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          onClick={() => openModal(
+            'Caída de Precio en 3 Años',
+            `El precio promedio ha caído ${Math.abs(varPrecio3años)}% en tres años, pasando de ${formatCurrency(datos2023.precio_promedio_unidad)} en 2023 a ${formatCurrency(datos2025.precio_promedio_unidad)} en 2025. Esta tendencia descendente continua indica presión competitiva en el mercado. Mientras el volumen se mantiene estable, la disminución del precio impacta los márgenes.`
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-600 text-sm font-medium">Caída Precio 3 Años</span>
+            <AlertTriangle className="w-6 h-6 text-orange-400" />
+          </div>
+          <div className="text-3xl font-bold text-red-600 mb-1">{Math.abs(varPrecio3años)}%</div>
+          <div className="text-xs text-gray-600">
+            2023 → 2025
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Análisis de Comportamiento */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200"
+        >
+          <h4 className="text-lg font-bold text-blue-900 mb-3 flex items-center gap-2">
+            <Package className="w-5 h-5" />
+            Comportamiento de Volumen
+          </h4>
+          <ul className="space-y-2 text-sm text-blue-800">
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500 font-bold">•</span>
+              <span>En 2024 se logra el máximo volumen del periodo ({formatNumber(datos2024.unidades_vendidas)} unidades), con un incremento frente a 2023.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500 font-bold">•</span>
+              <span>En 2025 se observa una corrección a la baja ({formatNumber(datos2025.unidades_vendidas)} unidades), aunque el volumen permanece por encima del nivel de 2023.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500 font-bold">•</span>
+              <span>El comportamiento sugiere estabilidad general en la demanda, con fluctuaciones dentro de un rango estrecho.</span>
+            </li>
+          </ul>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-red-50 rounded-xl p-6 border-2 border-red-200"
+        >
+          <h4 className="text-lg font-bold text-red-900 mb-3 flex items-center gap-2">
+            <TrendingDown className="w-5 h-5" />
+            Comportamiento de Precios
+          </h4>
+          <ul className="space-y-2 text-sm text-red-800">
+            <li className="flex items-start gap-2">
+              <span className="text-red-500 font-bold">•</span>
+              <span>El precio promedio presenta una tendencia descendente continua, acumulando una caída del {Math.abs(varPrecio3años)}% en tres años.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-red-500 font-bold">•</span>
+              <span>Mientras el volumen se mantiene relativamente estable, la disminución del precio promedio indica presión en márgenes por mayor competencia.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-red-500 font-bold">•</span>
+              <span>Aunque la demanda se mantiene sólida, los precios siguen descendiendo, por lo que se han adoptado estrategias de ajuste gradual de precios y segmentación de clientes.</span>
+            </li>
+          </ul>
+        </motion.div>
+      </div>
+
+      {/* Gráfico Combinado */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        onClick={() => openModal(
+          'Evolución de Ventas de Huevo',
+          'Este gráfico muestra la evolución de unidades vendidas (barras azules) y precio promedio (línea naranja) durante los años 2023-2025. Se observa claramente cómo el volumen se mantiene estable alrededor de 34 millones de unidades, mientras que el precio cae continuamente desde $512 en 2023 hasta $403 en 2025, una reducción del 21.29%.'
+        )}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-yellow-400 transition-all"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900">Evolución de Ventas de Huevo (2023-2025)</h3>
+          <Info className="w-5 h-5 text-yellow-400 animate-pulse" />
+        </div>
+        <ResponsiveContainer width="100%" height={400}>
+          <ComposedChart data={datosGrafico}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis dataKey="año" stroke="#64748b" />
+            <YAxis 
+              yAxisId="left" 
+              stroke="#3b82f6" 
+              tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
+              label={{ value: 'Unidades', angle: -90, position: 'insideLeft', style: { fill: '#3b82f6' } }}
+            />
+            <YAxis 
+              yAxisId="right" 
+              orientation="right" 
+              stroke="#f97316"
+              tickFormatter={(value) => `$${value}`}
+              label={{ value: '$/Unidad', angle: 90, position: 'insideRight', style: { fill: '#f97316' } }}
+            />
+            <Tooltip 
+              content={({ active, payload, label }) => {
+                if (active && payload && payload.length) {
+                  const unidades = payload[0].payload.unidades;
+                  const precio = payload[0].payload.precio;
+                  
+                  return (
+                    <div className="bg-white border-2 border-yellow-500 rounded-xl p-4 shadow-xl">
+                      <p className="font-bold text-gray-900 mb-3 text-lg">Año {label}</p>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center gap-4">
+                          <span className="text-blue-600 font-medium">Unidades:</span>
+                          <span className="font-bold text-gray-900">{formatNumber(unidades)}</span>
+                        </div>
+                        <div className="flex justify-between items-center gap-4">
+                          <span className="text-orange-600 font-medium">Precio:</span>
+                          <span className="font-bold text-gray-900">{formatCurrency(precio)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
+            <Legend />
+            <Bar yAxisId="left" dataKey="unidades" fill="#3b82f6" name="Unidades Vendidas" radius={[8, 8, 0, 0]} />
+            <Line yAxisId="right" type="monotone" dataKey="precio" stroke="#f97316" strokeWidth={3} name="Precio Promedio ($/Unidad)" dot={{ r: 6 }} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </motion.div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {modalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+            onClick={() => setModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-yellow-500 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Info className="w-6 h-6 text-yellow-400" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
+                </div>
+                <button
+                  onClick={() => setModalOpen(false)}
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="text-gray-700 leading-relaxed">
+                {modalContent.description}
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => setModalOpen(false)}
+                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors"
+                >
+                  Entendido
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

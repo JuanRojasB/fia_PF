@@ -51,6 +51,18 @@ class GetDashboardDataUseCase {
         case 'produccion-granjas':
           data = await this.dashboardRepository.getProduccionGranjas();
           break;
+        case 'produccion-encasetado':
+          data = await this.dashboardRepository.getProduccionHistorico();
+          break;
+        case 'produccion-pollo-entregado':
+          data = await this.dashboardRepository.getProduccionHistorico();
+          break;
+        case 'produccion-indicadores':
+          data = await this.dashboardRepository.getProduccionHistorico();
+          break;
+        case 'produccion-huevos':
+          data = await this.dashboardRepository.getProduccionHistorico();
+          break;
         case 'produccion-historico':
           data = await this.dashboardRepository.getProduccionHistorico();
           break;
