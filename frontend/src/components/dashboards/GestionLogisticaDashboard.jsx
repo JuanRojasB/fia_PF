@@ -115,13 +115,13 @@ export default function GestionLogisticaDashboard({ data }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-purple-500/20 to-pink-600/10 backdrop-blur-xl rounded-xl p-6 border-2 border-purple-500/30"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-purple-500/30"
       >
-        <div className="flex items-center gap-3 mb-4">
-          <Truck className="w-8 h-8 text-purple-400" />
-          <h2 className="text-3xl font-bold text-gray-900">GESTIÓN LOGÍSTICA - ANÁLISIS CONSOLIDADO</h2>
+        <div className="flex items-center gap-2 sm:gap-3 mb-4">
+          <Truck className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">GESTIÓN LOGÍSTICA - ANÁLISIS CONSOLIDADO</h2>
         </div>
-        <p className="text-gray-700 leading-relaxed">
+        <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
           Análisis consolidado de la gestión logística de las sedes operativas de Pollo Fiesta, comparando el desempeño y la eficiencia del gasto 2024 vs. 2025.
         </p>
       </motion.div>

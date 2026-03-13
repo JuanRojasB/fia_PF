@@ -264,13 +264,13 @@ export default function LogisticaMermaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-blue-500/30"
         >
-          <div className="flex items-start gap-3 mb-3">
-            <Info className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+          <div className="flex items-start gap-2 sm:gap-3 mb-3">
+            <Info className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 flex-shrink-0 mt-1" />
             <div>
-              <h4 className="font-bold text-gray-900 mb-2">Cambios Estructurales 2025</h4>
-              <p className="text-sm text-gray-700 leading-relaxed">
+              <h4 className="text-sm sm:text-base font-bold text-gray-900 mb-2">Cambios Estructurales 2025</h4>
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                 Se implementaron cambios en el flujo logístico: la planta de beneficio pasó a despachar únicamente a Sede 3, 
                 que asumió la re-selección y redistribución hacia Sede 1. Este rediseño concentró el control en un punto intermedio, 
                 mejorando trazabilidad y centralizando la gestión de calidad.
@@ -283,13 +283,13 @@ export default function LogisticaMermaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-green-500/30"
         >
-          <div className="flex items-start gap-3 mb-3">
-            <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+          <div className="flex items-start gap-2 sm:gap-3 mb-3">
+            <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 flex-shrink-0 mt-1" />
             <div>
-              <h4 className="font-bold text-gray-900 mb-2">Resultados Segundo Semestre</h4>
-              <p className="text-sm text-gray-700 leading-relaxed">
+              <h4 className="text-sm sm:text-base font-bold text-gray-900 mb-2">Resultados Segundo Semestre</h4>
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                 Posterior a la reestructuración, el indicador presentó mayor control con meses cercanos a la meta 
                 (septiembre 10.21%, julio 10.73%, octubre 10.64%). La nueva estructura comienza a generar resultados 
                 operativos positivos, aunque persiste una brecha de 1.70 puntos porcentuales.
@@ -302,13 +302,13 @@ export default function LogisticaMermaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-purple-500/30"
         >
-          <div className="flex items-start gap-3 mb-3">
-            <TrendingDown className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
+          <div className="flex items-start gap-2 sm:gap-3 mb-3">
+            <TrendingDown className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 flex-shrink-0 mt-1" />
             <div>
-              <h4 className="font-bold text-gray-900 mb-2">Sede 1: Transformación Exitosa</h4>
-              <p className="text-sm text-gray-700 leading-relaxed">
+              <h4 className="text-sm sm:text-base font-bold text-gray-900 mb-2">Sede 1: Transformación Exitosa</h4>
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                 Pasó de operar históricamente en niveles superiores al 16% a estabilizarse después de marzo en rangos 
                 entre 7% y 8%. El promedio anual 2025 de 9.49% incluye los meses previos al cambio. El comportamiento 
                 posterior evidencia una mejora real y sostenible.
@@ -321,13 +321,13 @@ export default function LogisticaMermaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
-          className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-orange-500/30"
         >
-          <div className="flex items-start gap-3 mb-3">
-            <Target className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
+          <div className="flex items-start gap-2 sm:gap-3 mb-3">
+            <Target className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 flex-shrink-0 mt-1" />
             <div>
-              <h4 className="font-bold text-gray-900 mb-2">Sedes 2 y 3: Mejora Progresiva</h4>
-              <p className="text-sm text-gray-700 leading-relaxed">
+              <h4 className="text-sm sm:text-base font-bold text-gray-900 mb-2">Sedes 2 y 3: Mejora Progresiva</h4>
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                 Sede 2 cerró en -22.31%, acercándose a su meta de -25%, con tendencia favorable. Sede 3 cerró en 13.05%, 
                 mostrando reducción progresiva pero manteniendo una brecha de 1.05 puntos vs meta de 12%. Ambas sedes 
                 mostraron capacidad de adaptación al nuevo esquema operativo.

@@ -98,9 +98,9 @@ export default function CalidadDashboard({ data }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Reducción Agua */}
-          <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 rounded-xl p-5 border-2 border-blue-500/30">
+          <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-blue-500/30">
             <div className="flex items-center gap-2 mb-3">
-              <Droplet className="w-6 h-6 text-blue-400" />
+              <Droplet className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
               <h4 className="text-lg font-bold text-blue-400">Consumo de Agua</h4>
             </div>
             <div className="space-y-3">
@@ -122,9 +122,9 @@ export default function CalidadDashboard({ data }) {
           </div>
 
           {/* Residuos Aprovechables */}
-          <div className="bg-gradient-to-br from-green-500/10 to-green-600/5 rounded-xl p-5 border-2 border-green-500/30">
+          <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-green-500/30">
             <div className="flex items-center gap-2 mb-3">
-              <Recycle className="w-6 h-6 text-green-400" />
+              <Recycle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
               <h4 className="text-lg font-bold text-green-400">Residuos Aprovechables</h4>
             </div>
             <div className="space-y-3">
@@ -146,9 +146,9 @@ export default function CalidadDashboard({ data }) {
           </div>
 
           {/* Capacitaciones */}
-          <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 rounded-xl p-5 border-2 border-purple-500/30">
+          <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-purple-500/30">
             <div className="flex items-center gap-2 mb-3">
-              <Users className="w-6 h-6 text-purple-400" />
+              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
               <h4 className="text-lg font-bold text-purple-400">Capacitaciones</h4>
             </div>
             <div className="space-y-3">
@@ -189,24 +189,24 @@ export default function CalidadDashboard({ data }) {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 rounded-lg p-4 border border-cyan-500/30">
-            <div className="text-xs text-gray-400 mb-1">Capacitaciones</div>
-            <div className="text-3xl font-bold text-white">22</div>
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-cyan-500/30">
+            <div className="text-xs text-gray-600 mb-1">Capacitaciones</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">22</div>
             <div className="text-xs text-gray-500 mt-1">Realizadas</div>
           </div>
-          <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 rounded-lg p-4 border border-green-500/30">
-            <div className="text-xs text-gray-400 mb-1">Asistentes</div>
-            <div className="text-3xl font-bold text-white">347</div>
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-green-500/30">
+            <div className="text-xs text-gray-600 mb-1">Asistentes</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">347</div>
             <div className="text-xs text-gray-500 mt-1">Participantes</div>
           </div>
-          <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-lg p-4 border border-purple-500/30">
-            <div className="text-xs text-gray-400 mb-1">Simulacros</div>
-            <div className="text-3xl font-bold text-white">1</div>
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-purple-500/30">
+            <div className="text-xs text-gray-600 mb-1">Simulacros</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">1</div>
             <div className="text-xs text-gray-500 mt-1">Octubre 2025</div>
           </div>
-          <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/10 rounded-lg p-4 border border-orange-500/30">
-            <div className="text-xs text-gray-400 mb-1">Gimnasia Laboral</div>
-            <div className="text-2xl font-bold text-white">Activa</div>
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-orange-500/30">
+            <div className="text-xs text-gray-600 mb-1">Gimnasia Laboral</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-900">Activa</div>
             <div className="text-xs text-gray-500 mt-1">Prevención</div>
           </div>
         </div>
@@ -271,10 +271,10 @@ export default function CalidadDashboard({ data }) {
             </button>
           </div>
 
-          <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 rounded-lg p-5 border border-cyan-500/30 mb-4">
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-4 sm:p-5 border border-cyan-500/30 mb-4">
             <div className="text-center">
-              <div className="text-5xl font-bold text-white mb-2">1,166</div>
-              <div className="text-sm text-gray-300">Encuestas Realizadas 2025</div>
+              <div className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">1,166</div>
+              <div className="text-sm text-gray-600">Encuestas Realizadas 2025</div>
               <div className="text-xs text-gray-500 mt-1">-38% vs 2024</div>
             </div>
           </div>
@@ -297,31 +297,31 @@ export default function CalidadDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
-        className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 rounded-xl p-6 border border-blue-500/30"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-blue-500/30"
       >
-        <h3 className="text-xl font-bold text-white mb-4">Líneas de Acción 2025</h3>
+        <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Líneas de Acción 2025</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-600">
-            <h4 className="text-sm font-bold text-blue-400 mb-2">Dirección Estratégica</h4>
-            <p className="text-xs text-gray-300 leading-relaxed">
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-blue-500/30">
+            <h4 className="text-xs sm:text-sm font-bold text-blue-600 mb-2">Dirección Estratégica</h4>
+            <p className="text-xs text-gray-700 leading-relaxed">
               Conexión estrategia-ejecución, priorización de riesgos y decisiones informadas
             </p>
           </div>
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-600">
-            <h4 className="text-sm font-bold text-green-400 mb-2">Mejora Continua</h4>
-            <p className="text-xs text-gray-300 leading-relaxed">
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-green-500/30">
+            <h4 className="text-xs sm:text-sm font-bold text-green-600 mb-2">Mejora Continua</h4>
+            <p className="text-xs text-gray-700 leading-relaxed">
               Cultura de mejora y enfoque preventivo alineado con ISO 9001:2026
             </p>
           </div>
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-600">
-            <h4 className="text-sm font-bold text-purple-400 mb-2">Gestión de Riesgos</h4>
-            <p className="text-xs text-gray-300 leading-relaxed">
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-purple-500/30">
+            <h4 className="text-xs sm:text-sm font-bold text-purple-600 mb-2">Gestión de Riesgos</h4>
+            <p className="text-xs text-gray-700 leading-relaxed">
               Integración de riesgos y cumplimiento normativo sanitario y ambiental
             </p>
           </div>
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-600">
-            <h4 className="text-sm font-bold text-cyan-400 mb-2">Transformación Digital</h4>
-            <p className="text-xs text-gray-300 leading-relaxed">
+          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-cyan-500/30">
+            <h4 className="text-xs sm:text-sm font-bold text-cyan-600 mb-2">Transformación Digital</h4>
+            <p className="text-xs text-gray-700 leading-relaxed">
               Migración a ISOLUCION y actualización CRM SIESA para mejor trazabilidad
             </p>
           </div>

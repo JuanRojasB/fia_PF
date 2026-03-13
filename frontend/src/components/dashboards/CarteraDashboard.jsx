@@ -72,25 +72,25 @@ export default function CarteraDashboard({ data }) {
   const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-green-500/20 to-blue-600/10 backdrop-blur-xl rounded-xl p-6 border-2 border-green-500/30"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-green-500/30"
       >
-        <div className="flex items-center gap-3 mb-4">
-          <DollarSign className="w-8 h-8 text-green-400" />
-          <h2 className="text-3xl font-bold text-gray-900">GESTIÓN DE CARTERA</h2>
+        <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+          <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">GESTIÓN DE CARTERA</h2>
         </div>
-        <p className="text-gray-700 leading-relaxed">
+        <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
           Análisis integral de la cartera de clientes, exposición financiera, rotación de cartera y gestión de cobranza. 
           Monitoreo de indicadores clave para optimizar el flujo de caja y minimizar riesgos crediticios.
         </p>
       </motion.div>
 
       {/* KPIs Principales */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -98,14 +98,14 @@ export default function CarteraDashboard({ data }) {
             'Cartera Total',
             `La cartera total es de ${formatCurrency(totales.totalCartera)} (${totales.totalCarteraMillones}M). Este valor representa el saldo pendiente de cobro de todos los clientes. Una cartera saludable debe tener baja morosidad y rotación rápida. El objetivo es mantener un equilibrio entre ventas a crédito (para impulsar ventas) y cobro eficiente (para mantener liquidez).`
           )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Cartera Total</span>
-            <DollarSign className="w-6 h-6 text-green-400" />
+            <span className="text-gray-600 text-xs sm:text-sm font-medium">Cartera Total</span>
+            <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${totales.totalCarteraMillones}M</div>
-          <div className="text-sm text-gray-600 mt-1">{formatCurrency(totales.totalCartera)}</div>
+          <div className="text-2xl sm:text-3xl font-bold text-gray-900">${totales.totalCarteraMillones}M</div>
+          <div className="text-xs sm:text-sm text-gray-600 mt-1">{formatCurrency(totales.totalCartera)}</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">Saldo pendiente total</div>
           </div>
@@ -119,16 +119,16 @@ export default function CarteraDashboard({ data }) {
             'Rotación Promedio de Cartera',
             `La rotación promedio es de ${totales.promedioRotacion} días. Este indicador mide cuántos días en promedio tarda un cliente en pagar. Ideal: <30 días. Entre 30-45 días es aceptable. >45 días requiere atención. >60 días es crítico. Una rotación baja indica cobro eficiente y buena salud financiera.`
           )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Rotación Promedio</span>
-            <TrendingUp className="w-6 h-6 text-blue-400" />
+            <span className="text-gray-600 text-xs sm:text-sm font-medium">Rotación Promedio</span>
+            <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{totales.promedioRotacion}</div>
-          <div className="text-sm text-gray-600 mt-1">días</div>
+          <div className="text-2xl sm:text-3xl font-bold text-gray-900">{totales.promedioRotacion}</div>
+          <div className="text-xs sm:text-sm text-gray-600 mt-1">días</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className={`text-xs ${parseFloat(totales.promedioRotacion) <= 30 ? 'text-green-400' : parseFloat(totales.promedioRotacion) <= 45 ? 'text-yellow-400' : 'text-red-400'}`}>
+            <div className={`text-xs ${parseFloat(totales.promedioRotacion) <= 30 ? 'text-green-600' : parseFloat(totales.promedioRotacion) <= 45 ? 'text-yellow-600' : 'text-red-600'}`}>
               {parseFloat(totales.promedioRotacion) <= 30 ? '✓ Excelente' : parseFloat(totales.promedioRotacion) <= 45 ? '⚠ Aceptable' : '⚠ Requiere atención'}
             </div>
           </div>
@@ -142,14 +142,14 @@ export default function CarteraDashboard({ data }) {
             'Total de Clientes',
             `Total de ${totales.totalClientes} clientes activos gestionados por ${totales.totalAsesores} asesores comerciales. La distribución equilibrada de clientes por asesor permite mejor seguimiento y atención personalizada. Cada asesor debe mantener contacto regular con sus clientes para asegurar cobro oportuno.`
           )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total Clientes</span>
-            <Users className="w-6 h-6 text-purple-400" />
+            <span className="text-gray-600 text-xs sm:text-sm font-medium">Total Clientes</span>
+            <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{totales.totalClientes}</div>
-          <div className="text-sm text-gray-600 mt-1">{totales.totalAsesores} asesores</div>
+          <div className="text-2xl sm:text-3xl font-bold text-gray-900">{totales.totalClientes}</div>
+          <div className="text-xs sm:text-sm text-gray-600 mt-1">{totales.totalAsesores} asesores</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">
               ~{Math.round(totales.totalClientes / totales.totalAsesores)} clientes/asesor
@@ -165,16 +165,16 @@ export default function CarteraDashboard({ data }) {
             'Clientes Críticos',
             `${totales.clientesCriticos} clientes (${totales.porcentajeCriticos}% del total) tienen rotación >60 días. Estos clientes requieren atención inmediata: llamadas de seguimiento, planes de pago, visitas personales. Alto riesgo de incobrabilidad. Prioridad máxima para el equipo de cobranza.`
           )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Clientes Críticos</span>
-            <AlertTriangle className="w-6 h-6 text-red-400" />
+            <span className="text-gray-600 text-xs sm:text-sm font-medium">Clientes Críticos</span>
+            <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{totales.clientesCriticos}</div>
-          <div className="text-sm text-red-400 mt-1">{totales.porcentajeCriticos}% del total</div>
+          <div className="text-2xl sm:text-3xl font-bold text-gray-900">{totales.clientesCriticos}</div>
+          <div className="text-xs sm:text-sm text-red-600 mt-1">{totales.porcentajeCriticos}% del total</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-red-400">⚠ Rotación &gt;60 días</div>
+            <div className="text-xs text-red-600">⚠ Rotación &gt;60 días</div>
           </div>
         </motion.div>
       </div>
@@ -185,22 +185,22 @@ export default function CarteraDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gradient-to-r from-blue-500/10 to-green-600/5 backdrop-blur-xl rounded-xl p-6 border-2 border-blue-500/30"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-blue-500/30"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <Calendar className="w-8 h-8 text-blue-400" />
-            <h2 className="text-2xl font-bold text-gray-900">EXPOSICIÓN DE CARTERA 2025 vs 2024</h2>
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">EXPOSICIÓN DE CARTERA 2025 vs 2024</h2>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-xs sm:text-sm">
               <thead>
                 <tr className="border-b-2 border-blue-600">
-                  <th className="text-left py-3 px-4 text-gray-700 font-bold bg-blue-900/30">MES</th>
-                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-green-900/30">T.2025 (M)</th>
-                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-gray-100/30">T.2024 (M)</th>
-                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-purple-900/30">DIFERENCIA</th>
-                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-orange-900/30">% VAR</th>
+                  <th className="text-left py-3 px-2 sm:px-4 text-gray-700 font-bold bg-blue-100/50">MES</th>
+                  <th className="text-right py-3 px-2 sm:px-4 text-gray-700 font-bold bg-green-100/50">T.2025 (M)</th>
+                  <th className="text-right py-3 px-2 sm:px-4 text-gray-700 font-bold bg-gray-100/50">T.2024 (M)</th>
+                  <th className="text-right py-3 px-2 sm:px-4 text-gray-700 font-bold bg-purple-100/50">DIFERENCIA</th>
+                  <th className="text-right py-3 px-2 sm:px-4 text-gray-700 font-bold bg-orange-100/50">% VAR</th>
                 </tr>
               </thead>
               <tbody>
@@ -209,11 +209,11 @@ export default function CarteraDashboard({ data }) {
                   const variacion = parseFloat(row.variacion_pct);
                   return (
                     <tr key={idx} className="border-b border-gray-200/50 hover:bg-gray-100/30 transition-colors">
-                      <td className="py-3 px-4 text-gray-900 font-semibold">{row.mes_nombre}</td>
-                      <td className="py-3 px-4 text-right text-green-400 font-bold">${formatNumber(row.t2025)}</td>
-                      <td className="py-3 px-4 text-right text-gray-600">${formatNumber(row.t2024)}</td>
-                      <td className="py-3 px-4 text-right text-purple-400">${formatNumber(Math.abs(diferencia))}</td>
-                      <td className={`py-3 px-4 text-right font-bold ${variacion >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      <td className="py-3 px-2 sm:px-4 text-gray-900 font-semibold">{row.mes_nombre}</td>
+                      <td className="py-3 px-2 sm:px-4 text-right text-green-600 font-bold">${formatNumber(row.t2025)}</td>
+                      <td className="py-3 px-2 sm:px-4 text-right text-gray-600">${formatNumber(row.t2024)}</td>
+                      <td className="py-3 px-2 sm:px-4 text-right text-purple-600">${formatNumber(Math.abs(diferencia))}</td>
+                      <td className={`py-3 px-2 sm:px-4 text-right font-bold ${variacion >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                         {variacion >= 0 ? '+' : ''}{variacion}%
                       </td>
                     </tr>
@@ -223,8 +223,8 @@ export default function CarteraDashboard({ data }) {
             </table>
           </div>
 
-          <div className="mt-6 bg-gray-100/30 rounded-lg p-4 border border-gray-300">
-            <p className="text-sm text-gray-700">
+          <div className="mt-4 sm:mt-6 bg-gray-100/50 rounded-lg p-3 sm:p-4 border border-gray-300">
+            <p className="text-xs sm:text-sm text-gray-700">
               <span className="font-semibold text-gray-900">Análisis:</span> Comparativa mensual de la exposición de cartera. 
               Valores negativos indican reducción de cartera (mejora en cobro). Valores positivos indican aumento (más ventas a crédito o menor cobro).
             </p>
@@ -233,7 +233,7 @@ export default function CarteraDashboard({ data }) {
       )}
 
       {/* Gráficas */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Gráfica 1: Exposición de Cartera */}
         {datosExposicion.length > 0 && (
           <motion.div
@@ -244,13 +244,13 @@ export default function CarteraDashboard({ data }) {
               'Exposición de Cartera 2025 vs 2024',
               'Evolución mensual de la cartera. Permite identificar tendencias, estacionalidad y comparar el desempeño año tras año. Una cartera estable o decreciente indica buen cobro.'
             )}
-            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-4 border-gray-300/50 hover:border-blue-500 transition-all cursor-pointer"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900">Exposición de Cartera (Millones)</h3>
-              <Info className="w-5 h-5 text-blue-400 animate-pulse" />
+              <h3 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900">Exposición de Cartera (Millones)</h3>
+              <Info className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 animate-pulse" />
             </div>
-            <ResponsiveContainer width="100%" height={350}>
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart data={datosExposicion}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="mes" stroke="#64748b" />
@@ -314,14 +314,14 @@ export default function CarteraDashboard({ data }) {
               'Clientes por Rango de Rotación',
               'Distribución de clientes según días de rotación. Excelente (0-15): cobro rápido. Bueno (16-30): estándar. Regular (31-45): requiere seguimiento. Malo (46-60): atención prioritaria. Crítico (>60): riesgo alto.'
             )}
-            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-green-500 transition-all cursor-pointer"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-4 border-gray-300/50 hover:border-green-500 transition-all cursor-pointer"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900">Clientes por Rango de Rotación</h3>
-              <Info className="w-5 h-5 text-green-400 animate-pulse" />
+              <h3 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900">Clientes por Rango de Rotación</h3>
+              <Info className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 animate-pulse" />
             </div>
-            <div className="flex items-center gap-6">
-              <ResponsiveContainer width="60%" height={350}>
+            <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6">
+              <ResponsiveContainer width="100%" height={300} className="lg:w-3/5">
                 <PieChart>
                   <Pie
                     data={datosRangos}

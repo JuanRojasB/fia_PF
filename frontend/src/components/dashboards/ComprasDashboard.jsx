@@ -305,13 +305,13 @@ export default function ComprasDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="bg-gradient-to-br from-green-500/20 to-green-600/10 rounded-xl p-5 border border-green-500/30"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-green-500/30"
         >
-          <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
+          <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-green-600" />
             Crecimiento 2025
           </h4>
-          <div className="space-y-2 text-sm text-gray-300">
+          <div className="space-y-2 text-xs sm:text-sm text-gray-700">
             <div>• Crecimiento total: +9.66% vs 2024</div>
             <div>• Octubre: +49.83% (mayor aumento)</div>
             <div>• Agosto: +35.59% (crecimiento fuerte)</div>
@@ -323,13 +323,13 @@ export default function ComprasDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
-          className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 rounded-xl p-5 border border-blue-500/30"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-blue-500/30"
         >
-          <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-            <ShoppingCart className="w-5 h-5" />
+          <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <ShoppingCart className="w-5 h-5 text-blue-600" />
             Alcance del Proceso
           </h4>
-          <div className="space-y-2 text-sm text-gray-300">
+          <div className="space-y-2 text-xs sm:text-sm text-gray-700">
             <div>• Suministro oportuno de materias primas</div>
             <div>• Optimización de costos operativos</div>
             <div>• Gestión estratégica de proveedores</div>

@@ -251,13 +251,13 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-gradient-to-br from-green-500/20 to-green-600/10 rounded-xl p-5 border border-green-500/30"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-green-500/30"
         >
-          <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
+          <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-green-600" />
             Fortalezas 2025
           </h4>
-          <div className="space-y-2 text-sm text-gray-300">
+          <div className="space-y-2 text-xs sm:text-sm text-gray-700">
             <div>• Calificación Efectividad Campañas Digitales: 3.7</div>
             <div>• Crecimiento de seguidores digitales: +154%</div>
             <div>• ROI promedio: 17.4%</div>
@@ -269,13 +269,13 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 rounded-xl p-5 border border-blue-500/30"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-blue-500/30"
         >
-          <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-            <Target className="w-5 h-5" />
+          <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <Target className="w-5 h-5 text-blue-600" />
             Oportunidades 2026
           </h4>
-          <div className="space-y-2 text-sm text-gray-300">
+          <div className="space-y-2 text-xs sm:text-sm text-gray-700">
             <div>• Mejorar ROI en canal PDV</div>
             <div>• Garantizar pauta digital activa 12 meses</div>
             <div>• Redistribuir ahorro hacia canales de alto ROI</div>

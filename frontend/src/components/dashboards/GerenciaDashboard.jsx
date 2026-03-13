@@ -155,9 +155,9 @@ export default function GerenciaDashboard({ data }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="bg-gradient-to-r from-blue-500/10 to-blue-600/5 backdrop-blur-xl rounded-xl p-6 border border-blue-500/30"
+                className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-blue-500/30"
               >
-                <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-bold text-blue-600 mb-4 flex items-center gap-2">
                   <div className="w-1.5 h-8 bg-blue-400 rounded-full"></div>
                   Introducción - Gerencia Estratégica 2025
                 </h3>
@@ -178,9 +178,9 @@ export default function GerenciaDashboard({ data }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35 }}
-                className="bg-gradient-to-r from-green-500/10 to-green-600/5 backdrop-blur-xl rounded-xl p-6 border border-green-500/30"
+                className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-green-500/30"
               >
-                <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-bold text-green-600 mb-4 flex items-center gap-2">
                   <div className="w-1.5 h-8 bg-green-400 rounded-full"></div>
                   Líneas de Acción Estratégicas
                 </h3>

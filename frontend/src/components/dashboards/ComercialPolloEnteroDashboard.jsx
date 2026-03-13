@@ -79,13 +79,13 @@ export default function ComercialPolloEnteroDashboard({ data }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-orange-500/20 to-red-600/10 backdrop-blur-xl rounded-xl p-6 border-2 border-orange-500/30"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-orange-500/30"
       >
-        <div className="flex items-center gap-3 mb-4">
-          <Package className="w-8 h-8 text-orange-400" />
-          <h2 className="text-3xl font-bold text-gray-900">INGRESOS VS VENTAS - POLLOS ENTEROS</h2>
+        <div className="flex items-center gap-2 sm:gap-3 mb-4">
+          <Package className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600" />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">INGRESOS VS VENTAS - POLLOS ENTEROS</h2>
         </div>
-        <p className="text-gray-700 leading-relaxed">
+        <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
           Análisis de la participación de la línea Asadero (pollo entero) respecto al total de pollos enteros producidos en planta Fiesta. 
           En 2025 se logró una participación del {datos2025.participacionLograda}%, mejorando {mejoraParticipacion} puntos porcentuales vs 2024.
         </p>
