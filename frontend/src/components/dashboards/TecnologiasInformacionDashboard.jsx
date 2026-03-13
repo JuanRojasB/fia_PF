@@ -28,7 +28,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
     { 
       icono: Video, 
       titulo: 'Seguridad y CCTV', 
-      descripción: 'Consolidación de infraestructura de videovigilancia mediante implementación y mantenimiento del Sistema de Circuito Cerrado de Televisión (CCTV) en oficina principal, sedes administrativas, plantas de proceso, puntos de venta y granjas avícolas. Incremento de niveles de seguridad, control operativo y monitoreo preventivo en toda la cadena empresarial.',
+      descripcion: 'Consolidación de infraestructura de videovigilancia mediante implementación y mantenimiento del Sistema de Circuito Cerrado de Televisión (CCTV) en oficina principal, sedes administrativas, plantas de proceso, puntos de venta y granjas avícolas. Incremento de niveles de seguridad, control operativo y monitoreo preventivo en toda la cadena empresarial.',
       color: 'purple'
     },
     { 
