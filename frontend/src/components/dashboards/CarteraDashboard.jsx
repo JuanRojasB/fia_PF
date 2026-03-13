@@ -65,7 +65,27 @@ export default function CarteraDashboard({ data }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 transition-all"
+          onClick={() => openModal(
+            'Rotación de Cartera',
+            <div className="text-gray-700">
+              <p className="mb-4 font-semibold">¿Qué es la rotación de cartera?</p>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 mb-4">
+                <p className="text-sm">Es el tiempo promedio (en días) que tardan los clientes en pagar sus facturas después de recibir el producto.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 mb-4">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Resultado 2025:</p>
+                <p className="text-sm">• Rotación actual: <strong className="text-green-600">{resumenAnual.rotacion_dic_2025} días</strong></p>
+                <p className="text-sm">• Meta ISO: <strong>15 días</strong></p>
+                <p className="text-sm">• Rotación 2024: <strong>{resumenAnual.rotacion_dic_2024} días</strong></p>
+                <p className="text-sm mt-2"><strong className="text-green-600">Meta cumplida.</strong> Se mejoró en 5 días respecto al año anterior.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">¿Por qué es importante?</p>
+                <p className="text-sm">Menos días significa más rápido recuperamos el dinero, lo que resulta en mejor flujo de caja para la empresa.</p>
+              </div>
+            </div>
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Rotación Dic 2025</span>
@@ -77,13 +97,32 @@ export default function CarteraDashboard({ data }) {
             <div className="text-xs text-gray-500">vs Dic 2024</div>
             <div className="text-lg font-semibold text-green-600">{resumenAnual.rotacion_dic_2024} días</div>
           </div>
+          <Info className="w-4 h-4 text-green-600 animate-pulse mt-2" />
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 transition-all"
+          onClick={() => openModal(
+            'Ventas de Contado vs Crédito',
+            <div className="text-gray-700">
+              <p className="mb-4 font-semibold">¿Cómo se distribuyen las ventas?</p>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 mb-4">
+                <p className="text-sm mb-3"><strong>Ventas de Contado ({resumenAnual.ventas_contado_promedio}%):</strong></p>
+                <p className="text-sm">Los clientes pagan inmediatamente al recibir el producto. El dinero entra de inmediato a la empresa.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 mb-4">
+                <p className="text-sm mb-3"><strong>Ventas de Crédito ({resumenAnual.ventas_credito_promedio}%):</strong></p>
+                <p className="text-sm">Los clientes pagan después (a 15, 30 o más días). El dinero entra más tarde.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Interpretación:</p>
+                <p className="text-sm">La mayoría de las ventas (62%) son a crédito, por eso es importante cobrar rápido para mantener el flujo de caja.</p>
+              </div>
+            </div>
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Ventas Contado</span>
@@ -95,13 +134,34 @@ export default function CarteraDashboard({ data }) {
             <div className="text-xs text-gray-500">Ventas de crédito</div>
             <div className="text-lg font-semibold text-blue-600">{resumenAnual.ventas_credito_promedio}%</div>
           </div>
+          <Info className="w-4 h-4 text-blue-600 animate-pulse mt-2" />
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 transition-all"
+          onClick={() => openModal(
+            'Índice de Morosidad',
+            <div className="text-gray-700">
+              <p className="mb-4 font-semibold">¿Qué es la morosidad?</p>
+              <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-300 mb-4">
+                <p className="text-sm">Es el porcentaje de dinero que los clientes deben y no han pagado a tiempo. Son facturas vencidas que aún no se han cobrado.</p>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300 mb-4">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Situación actual:</p>
+                <p className="text-sm">• Morosidad promedio: <strong className="text-orange-600">{resumenAnual.morosidad_promedio}%</strong></p>
+                <p className="text-sm mt-2">Esto significa que de todo el dinero que deben los clientes, casi la mitad está atrasado.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Acciones recomendadas:</p>
+                <p className="text-sm">• Contactar a los clientes morosos</p>
+                <p className="text-sm">• Establecer planes de pago</p>
+                <p className="text-sm">• Mejorar el seguimiento de cobro</p>
+              </div>
+            </div>
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Morosidad Promedio</span>
@@ -109,13 +169,34 @@ export default function CarteraDashboard({ data }) {
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumenAnual.morosidad_promedio}%</div>
           <div className="text-sm text-gray-600 mt-1">Cartera vencida por recaudar</div>
+          <Info className="w-4 h-4 text-yellow-600 animate-pulse mt-2" />
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 transition-all"
+          onClick={() => openModal(
+            'Cartera Total',
+            <div className="text-gray-700">
+              <p className="mb-4 font-semibold">¿Qué es la cartera total?</p>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 mb-4">
+                <p className="text-sm">Es el total de dinero que los clientes deben a la empresa por ventas a crédito que aún no han pagado.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 mb-4">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Situación Diciembre 2025:</p>
+                <p className="text-sm">• Cartera total: <strong className="text-purple-600">${formatNumber(resumenAnual.cartera_dic_2025)} millones</strong></p>
+                <p className="text-sm">• Cartera Dic 2024: <strong>${formatNumber(16971)} millones</strong></p>
+                <p className="text-sm mt-2">• Variación: <strong className="text-green-600">{resumenAnual.variacion_dic}%</strong></p>
+                <p className="text-sm mt-2">Bajó un 1%, lo que significa que se cobró más de lo que se vendió a crédito.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">¿Por qué es importante?</p>
+                <p className="text-sm">Una cartera baja significa que estamos cobrando bien. Una cartera alta significa que tenemos mucho dinero pendiente de cobro.</p>
+              </div>
+            </div>
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Cartera Dic 2025</span>
@@ -127,6 +208,7 @@ export default function CarteraDashboard({ data }) {
             <div className="text-xs text-gray-500">Variación vs Dic 2024</div>
             <div className="text-lg font-semibold text-green-600">{resumenAnual.variacion_dic}%</div>
           </div>
+          <Info className="w-4 h-4 text-purple-600 animate-pulse mt-2" />
         </motion.div>
       </div>
 
@@ -280,7 +362,7 @@ export default function CarteraDashboard({ data }) {
               <ul className="text-sm space-y-1 list-disc list-inside">
                 <li className="text-green-600">Verde (≤15 días): Excelente - Meta cumplida</li>
                 <li className="text-yellow-600">Amarillo (16-17 días): Aceptable - Cerca de la meta</li>
-                <li className="text-red-600">Rojo (>17 días): Requiere atención</li>
+                <li className="text-red-600">Rojo (&gt;17 días): Requiere atención</li>
               </ul>
             </div>
           </div>
