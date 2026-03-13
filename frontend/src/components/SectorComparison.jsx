@@ -1,11 +1,25 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { TrendingUp, TrendingDown, Minus, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import sector2024 from '../assets/sectorencifras2024.png';
 import sector2025 from '../assets/sectorencifras2025.png';
 
 export default function SectorComparison() {
   const [zoomedImage, setZoomedImage] = useState(null);
+  
+  useEffect(() => {
+    if (zoomedImage) {
+      console.log('Modal abierto con imagen:', zoomedImage);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [zoomedImage]);
+  
   const sectorData = [
     {
       label: 'Consumo per cápita (huevos)',
@@ -141,40 +155,81 @@ export default function SectorComparison() {
 
   return (
     <>
-      {/* Zoom Modal */}
-      <AnimatePresence>
-        {zoomedImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setZoomedImage(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
-            style={{ cursor: 'zoom-out' }}
+      {/* Zoom Modal usando ReactDOM.createPortal */}
+      {zoomedImage && ReactDOM.createPortal(
+        <div
+          onClick={() => setZoomedImage(null)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.95)',
+            zIndex: 999999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '40px',
+            cursor: 'zoom-out',
+            margin: 0
+          }}
+        >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setZoomedImage(null);
+            }}
+            style={{
+              position: 'fixed',
+              top: '30px',
+              right: '30px',
+              backgroundColor: 'white',
+              border: 'none',
+              borderRadius: '50%',
+              width: '50px',
+              height: '50px',
+              cursor: 'pointer',
+              zIndex: 1000000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+            }}
           >
-            <button
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
-            >
-              <X className="w-6 h-6 text-white" />
-            </button>
-            
-            <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              className="w-full max-w-6xl flex items-center justify-center"
+            <X style={{ width: '28px', height: '28px', color: '#000' }} />
+          </button>
+          
+          <div style={{
+            maxWidth: '98%',
+            maxHeight: '98%',
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            padding: '20px',
+            boxShadow: '0 0 60px rgba(255,255,255,0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <img
+              src={zoomedImage}
+              alt="Sector en Cifras"
               onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={zoomedImage}
-                alt="Zoom"
-                className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              style={{
+                maxWidth: '100%',
+                maxHeight: '90vh',
+                width: 'auto',
+                height: 'auto',
+                objectFit: 'contain',
+                display: 'block'
+              }}
+              onError={(e) => console.error('Error cargando imagen:', e)}
+              onLoad={() => console.log('Imagen cargada correctamente')}
+            />
+          </div>
+        </div>,
+        document.body
+      )}
 
       <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -182,7 +237,7 @@ export default function SectorComparison() {
       transition={{ delay: 1.3 }}
       className="backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-2xl mb-6 sm:mb-8"
       style={{
-        background: 'rgba(15, 23, 42, 0.9)',
+        background: 'rgba(255, 255, 255, 0.95)',
         border: '1px solid rgba(148, 163, 184, 0.3)',
         boxShadow: '0 0 60px rgba(251, 191, 36, 0.1)'
       }}
@@ -199,10 +254,10 @@ export default function SectorComparison() {
             🐔
           </div>
         </motion.div>
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
           Sector en Cifras
         </h2>
-        <p className="text-gray-400 text-sm sm:text-base">
+        <p className="text-gray-600 text-sm sm:text-base">
           Comparativa Avicultura 2024 vs 2025
         </p>
       </div>
@@ -213,15 +268,18 @@ export default function SectorComparison() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.5 }}
-          className="rounded-xl overflow-hidden border-2 border-blue-500/30 hover:border-blue-500 transition-all cursor-zoom-in"
-          onClick={() => setZoomedImage(sector2024)}
+          className="rounded-xl overflow-hidden border-2 border-blue-300/50 hover:border-blue-400 transition-all cursor-zoom-in shadow-lg"
+          onClick={() => {
+            console.log('Click en imagen 2024');
+            setZoomedImage(sector2024);
+          }}
         >
-          <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 p-4">
-            <h3 className="text-xl font-bold text-white text-center mb-2">
+          <div className="p-4" style={{ background: 'linear-gradient(135deg, #bfdbfe 0%, #dbeafe 100%)' }}>
+            <h3 className="text-xl font-bold text-gray-800 text-center">
               Avicultura 2024
             </h3>
           </div>
-          <div className="aspect-[16/9] flex items-center justify-center bg-slate-900/50">
+          <div className="aspect-[16/9] flex items-center justify-center bg-white">
             <img 
               src={sector2024} 
               alt="Sector Avícola 2024" 
@@ -234,15 +292,18 @@ export default function SectorComparison() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.6 }}
-          className="rounded-xl overflow-hidden border-2 border-green-500/30 hover:border-green-500 transition-all cursor-zoom-in"
-          onClick={() => setZoomedImage(sector2025)}
+          className="rounded-xl overflow-hidden border-2 border-green-300/50 hover:border-green-400 transition-all cursor-zoom-in shadow-lg"
+          onClick={() => {
+            console.log('Click en imagen 2025');
+            setZoomedImage(sector2025);
+          }}
         >
-          <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 p-4">
-            <h3 className="text-xl font-bold text-white text-center mb-2">
+          <div className="p-4" style={{ background: 'linear-gradient(135deg, #bbf7d0 0%, #d1fae5 100%)' }}>
+            <h3 className="text-xl font-bold text-gray-800 text-center">
               Avicultura 2025
             </h3>
           </div>
-          <div className="aspect-[16/9] flex items-center justify-center bg-slate-900/50">
+          <div className="aspect-[16/9] flex items-center justify-center bg-white">
             <img 
               src={sector2025} 
               alt="Sector Avícola 2025" 
@@ -268,15 +329,15 @@ export default function SectorComparison() {
               transition={{ delay: 1.5 + index * 0.05 }}
               className="p-4 rounded-xl transition-all hover:scale-105"
               style={{
-                background: 'rgba(30, 41, 59, 0.6)',
-                border: '1px solid rgba(148, 163, 184, 0.2)'
+                background: 'rgba(255, 255, 255, 0.8)',
+                border: '1px solid rgba(148, 163, 184, 0.3)'
               }}
             >
               {/* Icon and Label */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{item.icon}</span>
-                  <h3 className="text-sm font-medium text-gray-300">
+                  <h3 className="text-sm font-medium text-gray-700">
                     {item.label}
                   </h3>
                 </div>
@@ -287,13 +348,13 @@ export default function SectorComparison() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">2024</span>
-                  <span className="text-lg font-bold text-gray-400">
+                  <span className="text-lg font-bold text-gray-600">
                     {item.value2024.toLocaleString()} <span className="text-xs">{item.unit}</span>
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">2025</span>
-                  <span className="text-lg font-bold text-white">
+                  <span className="text-lg font-bold text-gray-900">
                     {item.value2025.toLocaleString()} <span className="text-xs">{item.unit}</span>
                   </span>
                 </div>
@@ -301,7 +362,7 @@ export default function SectorComparison() {
 
               {/* Change Information */}
               {!isNeutral && (
-                <div className={`mt-3 pt-3 border-t border-gray-700 space-y-2`}>
+                <div className={`mt-3 pt-3 border-t border-gray-300 space-y-2`}>
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-500">Diferencia</span>
                     <span className={`text-sm font-semibold ${getTrendColor(item.value2024, item.value2025)}`}>
@@ -332,8 +393,8 @@ export default function SectorComparison() {
           border: '1px solid rgba(251, 191, 36, 0.3)'
         }}
       >
-        <p className="text-center text-sm text-gray-300">
-          <span className="font-semibold text-yellow-400">Fuente:</span> FENAVI - Federación Nacional de Avicultores de Colombia
+        <p className="text-center text-sm text-gray-700">
+          <span className="font-semibold text-blue-600">Fuente:</span> FENAVI - Federación Nacional de Avicultores de Colombia
         </p>
       </motion.div>
     </motion.div>

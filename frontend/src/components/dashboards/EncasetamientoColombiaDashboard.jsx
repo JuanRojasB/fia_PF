@@ -34,6 +34,25 @@ export default function EncasetamientoColombiaDashboard() {
     2025: 963.372787
   };
 
+  // Función para formatear números: los datos están en millones, se muestran como unidades con puntos
+  const formatNumber = (value) => {
+    if (value === null || value === undefined) return '';
+    
+    // Convertir a string y eliminar el punto decimal (los datos están en millones)
+    let numString = value.toString().replace('.', '');
+    
+    // Agregar puntos como separadores cada 3 dígitos de derecha a izquierda
+    let formatted = '';
+    for (let i = numString.length - 1, count = 0; i >= 0; i--, count++) {
+      if (count > 0 && count % 3 === 0) {
+        formatted = '.' + formatted;
+      }
+      formatted = numString[i] + formatted;
+    }
+    
+    return formatted;
+  };
+
   return (
     <div className="space-y-8">
       {/* Hero Section */}
@@ -68,15 +87,65 @@ export default function EncasetamientoColombiaDashboard() {
         transition={{ delay: 0.2 }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-4 border-violet-500/30 shadow-xl"
       >
-        {/* Texto Introductorio */}
-        <div className="mb-6 p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
-          <p className="text-sm text-gray-700 leading-relaxed">
-            El encasetamiento nacional cerró en el 2025 en <span className="font-semibold text-violet-700">963.3 millones</span> mientras que en el 2024 
-            cerró con un acumulado de <span className="font-semibold text-gray-900">911.5 millones</span> de aves arrojando un crecimiento 
-            del <span className="font-semibold text-green-600">5.6%</span> que en millones de unidades representa <span className="font-semibold text-violet-700">51 millones de aves más</span>. 
-            Pollo fiesta encasetó durante el 2025 <span className="font-semibold text-violet-700">32.4 millones de aves</span>, participando 
-            el <span className="font-semibold text-green-600">3.3%</span> del encasetamiento nacional.
-          </p>
+        {/* Tabla de Encasetamiento por Mes y Año */}
+        <div className="mb-6 overflow-x-auto">
+          <div className="p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
+            <h3 className="text-lg font-bold text-violet-700 mb-4 text-center">
+              Encasetamiento Mensual por Año (Millones de Aves)
+            </h3>
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-violet-600 text-white">
+                  <th className="border-2 border-violet-700 p-2 font-bold">MES</th>
+                  <th className="border-2 border-violet-700 p-2 font-bold">2020</th>
+                  <th className="border-2 border-violet-700 p-2 font-bold">2021</th>
+                  <th className="border-2 border-violet-700 p-2 font-bold">2022</th>
+                  <th className="border-2 border-violet-700 p-2 font-bold">2023</th>
+                  <th className="border-2 border-violet-700 p-2 font-bold">2024</th>
+                  <th className="border-2 border-violet-700 p-2 font-bold">2025</th>
+                  <th className="border-2 border-violet-700 p-2 font-bold bg-violet-700">INCR.PORCENT<br/>2025 VS 2024</th>
+                  <th className="border-2 border-violet-700 p-2 font-bold bg-violet-700">INCR. MES<br/>ANTER.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {encasetamientoData.map((row, index) => {
+                  const incrementoPorcentual = ((row[2025] - row[2024]) / row[2024] * 100).toFixed(1);
+                  const incrementoMesAnterior = index > 0 
+                    ? ((row[2025] - encasetamientoData[index - 1][2025]) / encasetamientoData[index - 1][2025] * 100).toFixed(1)
+                    : ((row[2025] - encasetamientoData[11][2025]) / encasetamientoData[11][2025] * 100).toFixed(1);
+                  
+                  return (
+                    <tr key={row.mes} className="hover:bg-violet-100 transition-colors">
+                      <td className="border-2 border-violet-300 p-2 font-semibold bg-violet-100">{row.mes.toUpperCase()}</td>
+                      <td className="border-2 border-violet-300 p-2 text-right">{formatNumber(row[2020])}</td>
+                      <td className="border-2 border-violet-300 p-2 text-right">{formatNumber(row[2021])}</td>
+                      <td className="border-2 border-violet-300 p-2 text-right">{formatNumber(row[2022])}</td>
+                      <td className="border-2 border-violet-300 p-2 text-right">{formatNumber(row[2023])}</td>
+                      <td className="border-2 border-violet-300 p-2 text-right">{formatNumber(row[2024])}</td>
+                      <td className="border-2 border-violet-300 p-2 text-right font-bold text-violet-700">{formatNumber(row[2025])}</td>
+                      <td className={`border-2 border-violet-300 p-2 text-right font-bold ${parseFloat(incrementoPorcentual) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {incrementoPorcentual}%
+                      </td>
+                      <td className={`border-2 border-violet-300 p-2 text-right font-bold ${parseFloat(incrementoMesAnterior) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {incrementoMesAnterior}%
+                      </td>
+                    </tr>
+                  );
+                })}
+                <tr className="bg-violet-600 text-white font-bold">
+                  <td className="border-2 border-violet-700 p-2">TOTAL</td>
+                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2020])}</td>
+                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2021])}</td>
+                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2022])}</td>
+                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2023])}</td>
+                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2024])}</td>
+                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2025])}</td>
+                  <td className="border-2 border-violet-700 p-2 text-right">-</td>
+                  <td className="border-2 border-violet-700 p-2 text-right">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Selector de Vista */}
@@ -172,12 +241,12 @@ export default function EncasetamientoColombiaDashboard() {
                   wrapperStyle={{ fontSize: '17px', paddingTop: '20px' }}
                   iconType="line"
                 />
-                <Line type="monotone" dataKey="2020" stroke="#6b7280" strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="2021" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="2022" stroke="#a78bfa" strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="2023" stroke="#c4b5fd" strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="2024" stroke="#3b82f6" strokeWidth={3} dot={{ r: 5 }} />
-                <Line type="monotone" dataKey="2025" stroke="#8b5cf6" strokeWidth={4} dot={{ r: 6 }} />
+                <Line type="monotone" dataKey="2020" stroke="#000000" strokeWidth={2.5} dot={{ r: 4 }} name="2020" />
+                <Line type="monotone" dataKey="2021" stroke="#7c3aed" strokeWidth={2.5} dot={{ r: 4 }} name="2021" />
+                <Line type="monotone" dataKey="2022" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 4 }} name="2022" />
+                <Line type="monotone" dataKey="2023" stroke="#10b981" strokeWidth={2.5} dot={{ r: 4 }} name="2023" />
+                <Line type="monotone" dataKey="2024" stroke="#3b82f6" strokeWidth={3} dot={{ r: 5 }} name="2024" />
+                <Line type="monotone" dataKey="2025" stroke="#ef4444" strokeWidth={4} dot={{ r: 6 }} name="2025" />
               </LineChart>
             </ResponsiveContainer>
           </div>
