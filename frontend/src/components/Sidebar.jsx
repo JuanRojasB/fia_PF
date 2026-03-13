@@ -234,25 +234,6 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
       >
         <div className="flex flex-col h-full" style={{ position: 'relative' }}>
         
-        {/* Collapse Button - Desktop Only */}
-        {isDesktop && (
-          <button
-            onClick={toggleCollapse}
-            className="absolute top-6 -right-3 z-50 p-1.5 rounded-full backdrop-blur-xl hover:scale-110 transition-transform shadow-md"
-            style={{
-              background: 'rgba(255, 255, 255, 0.95)',
-              border: '1px solid rgba(203, 213, 225, 0.5)'
-            }}
-          >
-            <motion.div
-              animate={{ rotate: isCollapsed ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ChevronLeft className="w-4 h-4 text-gray-700" />
-            </motion.div>
-          </button>
-        )}
-        
         {/* Logo Section */}
         <div 
           className={`${isCollapsed ? 'p-3' : 'p-6'} transition-all duration-300`} 
@@ -448,6 +429,37 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
           className={`${isCollapsed ? 'p-2' : 'p-4'} space-y-2`} 
           style={{ borderTop: '1px solid rgba(203, 213, 225, 0.5)' }}
         >
+          {/* Collapse Button - Desktop Only */}
+          {isDesktop && !isCollapsed && (
+            <button
+              onClick={toggleCollapse}
+              className="w-full flex items-center justify-center space-x-2 px-4 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.02]"
+              style={{
+                background: 'rgba(148, 163, 184, 0.1)',
+                border: '1px solid rgba(148, 163, 184, 0.4)',
+                color: '#475569'
+              }}
+            >
+              <ChevronLeft className="w-5 h-5" />
+              <span className="font-medium text-sm">Menú</span>
+            </button>
+          )}
+          
+          {isDesktop && isCollapsed && (
+            <button
+              onClick={toggleCollapse}
+              className="w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 hover:scale-110"
+              style={{
+                background: 'rgba(148, 163, 184, 0.1)',
+                border: '1px solid rgba(148, 163, 184, 0.4)',
+                color: '#475569'
+              }}
+              title="Expandir Menú"
+            >
+              <ChevronLeft className="w-5 h-5" style={{ transform: 'rotate(180deg)' }} />
+            </button>
+          )}
+          
           {!isCollapsed ? (
             <>
               <button
