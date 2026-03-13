@@ -87,6 +87,9 @@ class GetDashboardDataUseCase {
         case 'compras':
           data = await this.dashboardRepository.getGestionCompras();
           break;
+        case 'comercial-pdv':
+          data = await this.dashboardRepository.getComercialPDV();
+          break;
         case 'operaciones':
           data = await this.dashboardRepository.getGestionOperaciones();
           break;
