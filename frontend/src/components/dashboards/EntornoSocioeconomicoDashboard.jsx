@@ -1,39 +1,50 @@
-﻿import { motion } from 'framer-motion';
-import { TrendingUp } from 'lucide-react';
+﻿import { TrendingUp, Info } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, LineChart, Line } from 'recharts';
 import SectorComparison from '../SectorComparison';
+import { useState } from 'react';
 
 export default function EntornoSocioeconomicoDashboard() {
-  // Datos PIB - Tasas de crecimiento anual en volumen
+  const [showPibInfo, setShowPibInfo] = useState(false);
+  const [showIpcInfo, setShowIpcInfo] = useState(false);
+  const [showTrmInfo, setShowTrmInfo] = useState(false);
+  const [showPrecioPolloInfo, setShowPrecioPolloInfo] = useState(false);
+  const [showDesempleoInfo, setShowDesempleoInfo] = useState(false);
+  // Datos PIB - Gasto en alimentos (Millones de pesos constantes)
   const pibData = [
-    { trimestre: '2023 periodo-I', valor: 3.0, letra: 'A' },
-    { trimestre: '2023 periodo-II', valor: 0.7, letra: 'B' },
-    { trimestre: '2023 periodo-III', valor: -0.3, letra: 'C' },
-    { trimestre: '2023 periodo-IV', valor: 0.7, letra: 'D' },
-    { trimestre: '2024 periodo-I', valor: 0.2, letra: 'E' },
-    { trimestre: '2024 periodo-II', valor: 2.0, letra: 'F' },
-    { trimestre: '2024 periodo-III', valor: 2.0, letra: 'G' },
-    { trimestre: '2024 periodo-IV', valor: 2.4, letra: 'H' },
-    { trimestre: '2025 periodo-I', valor: 2.4, letra: 'I' },
-    { trimestre: '2025 periodo-II', valor: 2.0, letra: 'J' },
-    { trimestre: '2025 periodo-III', valor: 3.7, letra: 'K' },
-    { trimestre: '2025 periodo-IV', valor: 2.3, letra: 'L' }
+    { trimestre: 'I', año: '2019', valor: 25000, index: 0 },
+    { trimestre: 'II', año: '2019', valor: 25200, index: 1 },
+    { trimestre: 'III', año: '2019', valor: 25800, index: 2 },
+    { trimestre: 'IV', año: '2019', valor: 26300, index: 3 },
+    { trimestre: 'I', año: '2020', valor: 28200, index: 4 },
+    { trimestre: 'II', año: '2020', valor: 27500, index: 5 },
+    { trimestre: 'III', año: '2020', valor: 27800, index: 6 },
+    { trimestre: 'IV', año: '2020', valor: 28500, index: 7 },
+    { trimestre: 'I', año: '2021', valor: 28300, index: 8 },
+    { trimestre: 'II', año: '2021', valor: 30400, index: 9 },
+    { trimestre: 'III', año: '2021', valor: 30500, index: 10 },
+    { trimestre: 'IV', año: '2021', valor: 30600, index: 11 },
+    { trimestre: 'I', año: '2022', valor: 30400, index: 12 },
+    { trimestre: 'II', año: '2022', valor: 30200, index: 13 },
+    { trimestre: 'III', año: '2022', valor: 30500, index: 14 },
+    { trimestre: 'IV', año: '2022', valor: 30800, index: 15 },
+    { trimestre: 'I', año: '2023p', valor: 31000, index: 16 },
+    { trimestre: 'II', año: '2023p', valor: 31200, index: 17 },
+    { trimestre: 'III', año: '2023p', valor: 31800, index: 18 },
+    { trimestre: 'IV', año: '2023p', valor: 31200, index: 19 },
+    { trimestre: 'I', año: '2024pr', valor: 31500, index: 20 },
+    { trimestre: 'II', año: '2024pr', valor: 32000, index: 21 },
+    { trimestre: 'III', año: '2024pr', valor: 32100, index: 22 },
+    { trimestre: 'IV', año: '2024pr', valor: 32000, index: 23 },
+    { trimestre: 'I', año: '2025pr', valor: 31800, index: 24 },
+    { trimestre: 'II', año: '2025pr', valor: 31500, index: 25 },
+    { trimestre: 'III', año: '2025pr', valor: 31200, index: 26 }
   ];
 
-  const pibLegend = [
-    { letra: 'A', label: '2023 periodo-I' },
-    { letra: 'B', label: '2023 periodo-II' },
-    { letra: 'C', label: '2023 periodo-III' },
-    { letra: 'D', label: '2023 periodo-IV' },
-    { letra: 'E', label: '2024 periodo-I' },
-    { letra: 'F', label: '2024 periodo-II' },
-    { letra: 'G', label: '2024 periodo-III' },
-    { letra: 'H', label: '2024 periodo-IV' },
-    { letra: 'I', label: '2025 periodo-I' },
-    { letra: 'J', label: '2025 periodo-II' },
-    { letra: 'K', label: '2025 periodo-III' },
-    { letra: 'L', label: '2025 periodo-IV' }
-  ];
+  // Datos para la línea de tendencia (línea roja)
+  const tendenciaData = pibData.map((item, index) => ({
+    ...item,
+    tendencia: 25000 + (index * 250) // Línea de tendencia ascendente
+  }));
 
   // Datos de Tasas de Crecimiento por Actividad Económica
   const actividadesData = [
@@ -89,11 +100,7 @@ export default function EntornoSocioeconomicoDashboard() {
   return (
     <div className="space-y-8">
       {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden bg-white/95 backdrop-blur-xl rounded-2xl p-8 lg:p-12 border-4 border-cyan-500/30 shadow-xl"
-      >
+      <div className="relative overflow-hidden bg-white/95 backdrop-blur-xl rounded-2xl p-8 lg:p-12 border-4 border-cyan-500/30 shadow-xl">
         <div className="relative z-10">
           <div className="flex items-center gap-4 mb-6">
             <div className="bg-cyan-500/20 p-4 rounded-xl">
@@ -111,15 +118,10 @@ export default function EntornoSocioeconomicoDashboard() {
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
-      </motion.div>
+      </div>
 
       {/* Graphs Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-4 border-cyan-500/30 shadow-xl"
-      >
+      <div className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-4 border-cyan-500/30 shadow-xl">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
             <TrendingUp className="w-6 h-6 text-white" />
@@ -130,149 +132,182 @@ export default function EntornoSocioeconomicoDashboard() {
         <div className="space-y-8">
           {/* PIB Chart */}
           <div className="rounded-xl overflow-hidden border-2 border-blue-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center mb-4 sm:mb-6">
-              Producto Interno Bruto (PIB) - Tasas de crecimiento anual en volumen
-            </h3>
-            <div className="w-full overflow-x-auto">
-              <div style={{ minWidth: '700px', width: '100%', height: '400px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={pibData} margin={{ bottom: 40, top: 20, left: 20, right: 20 }} barGap={8}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                    <XAxis 
-                      dataKey="letra" 
-                      stroke="#94a3b8"
-                      tick={{ fontSize: 17 }}
-                    />
-                    <YAxis 
-                      stroke="#94a3b8" 
-                      tick={{ fontSize: 17 }}
-                      domain={[-1.0, 4.0]}
-                      ticks={[-1, 0, 1, 2, 3, 4]}
-                      tickFormatter={(value) => `${value}%`}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#ffffff', 
-                        border: '2px solid #3b82f6',
-                        borderRadius: '8px',
-                        fontSize: '17px'
-                      }}
-                      labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
-                      formatter={(value, name, props) => {
-                        return [value + '%', props.payload.trimestre];
-                      }}
-                    />
-                    <Bar dataKey="valor" name="Crecimiento (%)" radius={[6, 6, 0, 0]} maxBarSize={35}>
-                      {pibData.map((entry, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
-                          fill={entry.valor >= 0 ? '#22c55e' : '#ef4444'}
-                          stroke={entry.valor >= 0 ? '#16a34a' : '#dc2626'}
-                          strokeWidth={2}
-                        />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center">
+                  Gasto en alimentos
+                </h3>
+                <p className="text-sm text-gray-600 text-center">
+                  Millones de pesos constantes
+                </p>
               </div>
+              <button
+                onClick={() => setShowPibInfo(!showPibInfo)}
+                className="ml-4 p-2 rounded-full hover:bg-blue-100 transition-colors"
+                title="Información sobre la gráfica"
+              >
+                <Info className="w-5 h-5 text-blue-600" />
+              </button>
             </div>
-            
-            {/* Legend */}
-            <div className="mt-6 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-              {pibLegend.map((item) => (
-                <div key={item.letra} className="flex items-center gap-2 text-gray-700">
-                  <span className="font-bold text-blue-600">{item.letra}:</span>
-                  <span className="text-sm">{item.label}</span>
-                </div>
-              ))}
-            </div>
-            
-            <p className="text-xs text-gray-600 text-center mt-4">
-              Fuente: DANE, PIB. T | 2023 / 2025p - IV
-            </p>
-            
-            {/* Explicación */}
-            <div className="mt-4 p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-blue-700">Descripción:</span> Cada letra (A-L) representa un trimestre desde 2023 periodo-I hasta 2025 periodo-IV. 
-                Las barras verdes indican crecimiento positivo del PIB, mientras que las rojas muestran decrecimiento. 
-                La altura de cada barra representa el porcentaje de variación porcentual del PIB en ese trimestre.
-              </p>
-            </div>
-          </div>
 
-          {/* Actividades Económicas Chart */}
-          <div className="rounded-xl overflow-hidden border-2 border-green-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center mb-4 sm:mb-6">
-              Tasas de Crecimiento por Actividad Económica (%)
-            </h3>
-            <div className="w-full overflow-x-auto">
-              <div style={{ minWidth: '1000px', width: '100%', height: '700px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
-                    data={actividadesData} 
-                    layout="vertical"
-                    margin={{ left: 10, right: 10, top: 10, bottom: 10 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                    <XAxis 
-                      type="number" 
-                      stroke="#94a3b8" 
-                      tick={{ fontSize: 17 }}
-                      domain={[-10, 15]}
-                    />
-                    <YAxis 
-                      dataKey="actividad" 
-                      type="category" 
-                      stroke="#94a3b8"
-                      width={350}
-                      tick={{ fontSize: 17 }}
-                      interval={0}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#ffffff', 
-                        border: '2px solid #3b82f6',
-                        borderRadius: '8px',
-                        fontSize: '17px'
-                      }}
-                      labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
-                    />
-                    <Legend 
-                      wrapperStyle={{ fontSize: '17px', paddingTop: '10px' }}
-                      iconType="rect"
-                    />
-                    <Bar dataKey="anual2025" name="año total 2025 periodo / 2024 periodo" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={20} />
-                    <Bar dataKey="anual2025_IV" name="Anual 2025 periodo-IV / 2024 periodo-IV" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
-                    <Bar dataKey="trim2025_III" name="Trimestral 2025 periodo-IV / 2025 periodo-III" fill="#f59e0b" radius={[0, 4, 4, 0]} barSize={20} />
-                  </BarChart>
-                </ResponsiveContainer>
+            {/* Modal de información */}
+            {showPibInfo && (
+              <div className="mb-4 p-4 rounded-lg bg-blue-50 border-2 border-blue-300 relative">
+                <button
+                  onClick={() => setShowPibInfo(false)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  <span className="font-semibold text-blue-700">Cómo leer esta gráfica:</span> La línea naranja muestra el gasto trimestral en alimentos en millones de pesos constantes desde 2019 hasta 2025. 
+                  La línea roja punteada representa la tendencia general de crecimiento. Se observa un incremento significativo durante 2020-2021, 
+                  seguido de una estabilización en 2022-2023, y una ligera contracción en 2024-2025.
+                </p>
+              </div>
+            )}
+            
+            <div className="w-full">
+              <ResponsiveContainer width="100%" height={450}>
+                <LineChart data={tendenciaData} margin={{ bottom: 65, top: 20, left: 50, right: 30 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                  <XAxis 
+                    dataKey="trimestre" 
+                    stroke="#94a3b8"
+                    tick={{ fontSize: 13, fill: '#64748b' }}
+                    angle={0}
+                    interval={0}
+                    height={20}
+                  />
+                  <YAxis 
+                    stroke="#94a3b8" 
+                    tick={{ fontSize: 14, fill: '#64748b' }}
+                    domain={[24000, 33000]}
+                    ticks={[24000, 25000, 26000, 27000, 28000, 29000, 30000, 31000, 32000, 33000]}
+                    tickFormatter={(value) => `${value.toLocaleString('es-CO')}`}
+                    width={55}
+                  />
+                  <YAxis 
+                    stroke="#94a3b8" 
+                    tick={{ fontSize: 15, fill: '#64748b' }}
+                    domain={[24000, 33000]}
+                    ticks={[24000, 25000, 26000, 27000, 28000, 29000, 30000, 31000, 32000, 33000]}
+                    tickFormatter={(value) => `$${value.toLocaleString('es-CO')}`}
+                    width={75}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#ffffff', 
+                      border: '2px solid #3b82f6',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      padding: '10px'
+                    }}
+                    labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold', marginBottom: '6px' }}
+                    formatter={(value, name) => {
+                      const formattedValue = `$${Math.round(value).toLocaleString('es-CO')}`;
+                      if (name === 'valor') return [formattedValue, 'Gasto en alimentos'];
+                      if (name === 'tendencia') return [formattedValue, 'Tendencia'];
+                      return [formattedValue, name];
+                    }}
+                    labelFormatter={(label, payload) => {
+                      if (payload && payload.length > 0) {
+                        const data = payload[0].payload;
+                        return `${data.trimestre} - ${data.año}`;
+                      }
+                      return label;
+                    }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="valor" 
+                    name="Gasto en alimentos" 
+                    stroke="#f59e0b" 
+                    strokeWidth={3.5}
+                    dot={{ r: 3, fill: '#f59e0b', strokeWidth: 0 }}
+                    activeDot={{ r: 6, fill: '#f59e0b', strokeWidth: 2, stroke: '#fff' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="tendencia" 
+                    name="Tendencia" 
+                    stroke="#ef4444" 
+                    strokeWidth={2.5}
+                    strokeDasharray="6 3"
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Etiquetas de años debajo de los trimestres - centradas entre cada grupo de 4 */}
+            <div className="relative" style={{ marginTop: '-55px', paddingLeft: '50px', paddingRight: '30px', height: '20px' }}>
+              <div className="flex" style={{ position: 'relative' }}>
+                {/* Posicionar cada año exactamente en el medio de sus 4 trimestres */}
+                <div className="text-xs font-bold text-gray-700 absolute" style={{ left: 'calc((100% / 27) * 3.5)', transform: 'translateX(-50%)' }}>2019</div>
+                <div className="text-xs font-bold text-gray-700 absolute" style={{ left: 'calc((100% / 27) * 7)', transform: 'translateX(-50%)' }}>2020</div>
+                <div className="text-xs font-bold text-gray-700 absolute" style={{ left: 'calc((100% / 27) * 11)', transform: 'translateX(-50%)' }}>2021</div>
+                <div className="text-xs font-bold text-gray-700 absolute" style={{ left: 'calc((100% / 27) * 15)', transform: 'translateX(-50%)' }}>2022</div>
+                <div className="text-xs font-bold text-gray-700 absolute" style={{ left: 'calc((100% / 27) * 19)', transform: 'translateX(-50%)' }}>2023p</div>
+                <div className="text-xs font-bold text-gray-700 absolute" style={{ left: 'calc((100% / 27) * 23)', transform: 'translateX(-50%)' }}>2024pr</div>
+                <div className="text-xs font-bold text-gray-700 absolute" style={{ left: 'calc((100% / 27) * 26.5)', transform: 'translateX(-50%)' }}>2025pr</div>
+              </div>
+            </div>
+            
+            {/* Leyenda personalizada debajo */}
+            <div className="flex items-center justify-center gap-8 mt-6">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-0.5 bg-orange-500"></div>
+                <span className="text-sm text-gray-700">Gasto en alimentos</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-0.5 bg-red-500 border-dashed" style={{ borderTop: '2px dashed #ef4444', height: '0' }}></div>
+                <span className="text-sm text-gray-700">Tendencia</span>
               </div>
             </div>
             
             <p className="text-xs text-gray-600 text-center mt-4">
-              Fuente: DANE, PIB. T | Serie original y ajustada por efecto estacional y calendario
+              Fuente: DANE, Cuentas Nacionales
             </p>
-            
-            {/* Explicación */}
-            <div className="mt-4 p-4 rounded-lg bg-green-50 border-2 border-green-300">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-green-700">Descripción:</span> Esta gráfica compara las tasas de crecimiento de diferentes sectores Económicos en tres períodos: 
-                año completo 2025 periodo vs 2024 periodo (azul), comparación anual del cuarto trimestre (verde), y comparación trimestral (naranja). 
-                Las barras hacia la derecha indican crecimiento, mientras que las que van hacia la izquierda muestran decrecimiento en ese sector.
-              </p>
-            </div>
           </div>
 
           {/* IPC Colombia Chart */}
           <div className="rounded-xl overflow-hidden border-2 border-purple-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center mb-4 sm:mb-6">
-              IPC Colombia últimos 5 años
-            </h3>
-            <div className="w-full overflow-x-auto">
-              <div style={{ minWidth: '600px', width: '100%', height: '450px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center">
+                  IPC Colombia últimos 5 años
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowIpcInfo(!showIpcInfo)}
+                className="ml-4 p-2 rounded-full hover:bg-purple-100 transition-colors"
+                title="Información sobre la gráfica"
+              >
+                <Info className="w-5 h-5 text-purple-600" />
+              </button>
+            </div>
+
+            {/* Modal de información */}
+            {showIpcInfo && (
+              <div className="mb-4 p-4 rounded-lg bg-purple-50 border-2 border-purple-300 relative">
+                <button
+                  onClick={() => setShowIpcInfo(false)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  <span className="font-semibold text-purple-700">Cómo leer esta gráfica:</span> El Índice de Precios al Consumidor (IPC) mide la variación de precios de bienes y servicios. 
+                  Un IPC más alto indica mayor inflación. En 2022 se registró el pico más alto (13.12%), mientras que en 2025 se proyecta una estabilización en 5.1%, 
+                  similar a los niveles de 2024 (5.2%).
+                </p>
+              </div>
+            )}
+            
+            <div className="w-full">
+              <ResponsiveContainer width="100%" aspect={1.5}>
+                <BarChart 
                     data={[
                       { año: '2021', ipc: 5.62, color: '#6366f1' },
                       { año: '2022', ipc: 13.12, color: '#0891b2' },
@@ -280,7 +315,7 @@ export default function EntornoSocioeconomicoDashboard() {
                       { año: '2024', ipc: 5.2, color: '#10b981' },
                       { año: '2025', ipc: 5.1, color: '#84cc16' }
                     ]} 
-                    margin={{ bottom: 60, top: 40, left: 20, right: 20 }}
+                    margin={{ bottom: 60, top: 50, left: 20, right: 20 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                     <XAxis 
@@ -305,7 +340,13 @@ export default function EntornoSocioeconomicoDashboard() {
                       labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
                       formatter={(value) => [`${value}%`, 'IPC']}
                     />
-                    <Bar dataKey="ipc" name="IPC (%)" radius={[8, 8, 0, 0]} maxBarSize={80}>
+                    <Bar dataKey="ipc" name="IPC (%)" radius={[8, 8, 0, 0]} maxBarSize={80} label={{ 
+                      position: 'top', 
+                      fill: '#1f2937',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      formatter: (value) => `${value}%`
+                    }}>
                       {[
                         { año: '2021', ipc: 5.62, color: '#6366f1' },
                         { año: '2022', ipc: 13.12, color: '#0891b2' },
@@ -319,45 +360,63 @@ export default function EntornoSocioeconomicoDashboard() {
                         />
                       ))}
                     </Bar>
+                    <Line 
+                      type="monotone" 
+                      dataKey="ipc" 
+                      stroke="#1f2937" 
+                      strokeWidth={2}
+                      dot={{ r: 4, fill: '#1f2937', strokeWidth: 0 }}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-            </div>
             
             <p className="text-xs text-gray-600 text-center mt-4">
               Fuente: datos oficiales del DANE
             </p>
-            
-            {/* Explicación */}
-            <div className="mt-4 p-4 rounded-lg bg-purple-50 border-2 border-purple-300">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-purple-700">Descripción:</span> El Índice de Precios al Consumidor (IPC) mide la variación de precios de bienes y servicios. 
-                Un IPC más alto indica mayor inflación. En 2022 se registró el pico más alto (13.12%), mientras que en 2025 se proyecta una estabilización en 5.1%, 
-                similar a los niveles de 2024 (5.2%).
-              </p>
-            </div>
-            
-            {/* Nota adicional */}
-            <div className="mt-4 p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
-              <p className="text-sm text-blue-700">
-                <span className="font-semibold">Nota:</span> El Departamento Administrativo Nacional de Estadística (DANE), el Índice de Precios al Consumidor de diciembre pasado fue de 5.1% en todo el año frente al 5.2% de 2024.
-              </p>
-            </div>
           </div>
 
           {/* TRM Promedio Anual Chart */}
           <div className="rounded-xl overflow-hidden border-2 border-cyan-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center mb-4 sm:mb-6">
-              TRM Promedio Anual con Línea de Tendencia - 2024, 2025, 2026 (YTD)
-            </h3>
-            <div className="w-full overflow-x-auto">
-              <div style={{ minWidth: '600px', width: '100%', height: '450px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center">
+                  TRM Promedio Anual con Línea de Tendencia - 2024, 2025, 2026 (YTD)
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowTrmInfo(!showTrmInfo)}
+                className="ml-4 p-2 rounded-full hover:bg-cyan-100 transition-colors"
+                title="Información sobre la gráfica"
+              >
+                <Info className="w-5 h-5 text-cyan-600" />
+              </button>
+            </div>
+
+            {/* Modal de información */}
+            {showTrmInfo && (
+              <div className="mb-4 p-4 rounded-lg bg-cyan-50 border-2 border-cyan-300 relative">
+                <button
+                  onClick={() => setShowTrmInfo(false)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  <span className="font-semibold text-cyan-700">Cómo leer esta gráfica:</span> La TRM (Tasa Representativa del Mercado) muestra el valor promedio anual del dólar en pesos colombianos. 
+                  La tendencia lineal refleja claramente la desaceleración del dólar entre 2024 y 2026 (a la fecha), mostrando un movimiento descendente consistente en el promedio anual de la TRM, 
+                  cayendo el <span className="font-semibold text-red-600">-9.21%</span> de 2023 a la fecha.
+                </p>
+              </div>
+            )}
+            
+            <div className="w-full">
+              <ResponsiveContainer width="100%" aspect={1.5}>
+                <BarChart 
                     data={[
                       { año: '2024', trm: 4071.28, tendencia: 4071.28 },
                       { año: '2025', trm: 4052.86, tendencia: 4000 },
-                      { año: '2026 (YTD)', trm: 3646.27, tendencia: 3646.27 }
+                      { año: '2026 (YTD)', trm: 3640.27, tendencia: 3640.27 }
                     ]} 
                     margin={{ bottom: 60, top: 80, left: 60, right: 60 }}
                   >
@@ -382,184 +441,206 @@ export default function EntornoSocioeconomicoDashboard() {
                         fontSize: '17px'
                       }}
                       labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
-                      formatter={(value) => [`$${value.toLocaleString()}`, 'TRM Promedio']}
+                      formatter={(value, name) => {
+                        if (name === 'Línea de Tendencia') return [`$${value.toLocaleString()}`, 'Línea de Tendencia'];
+                        return [`$${value.toLocaleString()}`, 'TRM Promedio'];
+                      }}
                     />
-                    <Bar dataKey="trm" name="TRM Promedio" radius={[8, 8, 0, 0]} maxBarSize={120}>
-                      <Cell fill="#0e7490" />
-                      <Cell fill="#0891b2" />
-                      <Cell fill="#67e8f9" />
+                    <Bar dataKey="trm" name="TRM Promedio" radius={[8, 8, 0, 0]} maxBarSize={180}>
+                      <Cell fill="#1e40af" />
+                      <Cell fill="#3b82f6" />
+                      <Cell fill="#60a5fa" />
                     </Bar>
+                    <Line 
+                      type="linear" 
+                      dataKey="trm" 
+                      name="Línea de Tendencia"
+                      stroke="#ef4444" 
+                      strokeWidth={3}
+                      strokeDasharray="8 4"
+                      dot={{ r: 6, fill: '#ef4444', strokeWidth: 2, stroke: '#fff' }}
+                      activeDot={{ r: 8 }}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
+                
+                {/* Custom overlay con valores */}
+                <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '500px', pointerEvents: 'none' }}>
+                  {/* Valores encima de cada barra */}
+                  <text x="29%" y="60" fill="#1e40af" fontSize="18" fontWeight="bold" textAnchor="middle">$4,071.28</text>
+                  <text x="54%" y="60" fill="#3b82f6" fontSize="18" fontWeight="bold" textAnchor="middle">$4,052.86</text>
+                  <text x="78%" y="60" fill="#60a5fa" fontSize="18" fontWeight="bold" textAnchor="middle">$3,640.27</text>
+                </svg>
               </div>
-            </div>
             
             <p className="text-xs text-gray-600 text-center mt-4">
-              Fuente: Actualícese
+              Fuente: datos oficiales del DANE
             </p>
             
-            {/* Explicación */}
-            <div className="mt-4 p-4 rounded-lg bg-cyan-50 border-2 border-cyan-300">
+            {/* Análisis */}
+            <div className="p-4 rounded-lg bg-cyan-50 border-2 border-cyan-300 mt-4">
               <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-cyan-700">Descripción:</span> La TRM (Tasa Representativa del Mercado) muestra el valor promedio anual del dólar en pesos colombianos. 
-                La tendencia lineal refleja claramente la desaceleración del dólar entre 2024 y 2026 (a la fecha), mostrando un movimiento descendente consistente en el promedio anual de la TRM, 
-                cayendo el <span className="font-semibold text-red-600">-9.21%</span> de 2023 a la fecha.
+                <span className="font-semibold text-cyan-700">Análisis:</span> La tendencia lineal refleja claramente la <span className="font-semibold text-cyan-600">desaceleración del dólar</span> entre 2024 y 2026 (a la fecha), mostrando un movimiento descendente consistente en el promedio anual de la TRM, cayendo el <span className="font-semibold text-red-600">-9.21%</span> de 2024 a la fecha.
               </p>
-            </div>
-            
-            {/* Nota adicional */}
-            <div className="mt-4 p-4 rounded-lg bg-cyan-50 border-2 border-cyan-300">
-              <div className="space-y-2">
-                <p className="text-sm text-cyan-700">
-                  <span className="font-semibold">2024:</span> $4,071.28 COP/USD
-                </p>
-                <p className="text-sm text-cyan-700">
-                  <span className="font-semibold">2025:</span> $4,052.86 COP/USD
-                </p>
-                <p className="text-sm text-cyan-700">
-                  <span className="font-semibold">2026 (YTD):</span> $3,646.27 COP/USD
-                </p>
-                <p className="text-sm text-cyan-700 mt-3 pt-3 border-t border-cyan-300">
-                  <span className="font-semibold">variación:</span> Caída del 9.21% desde 2023 hasta la fecha actual
-                </p>
-              </div>
+              <p className="text-xs text-gray-600 mt-2">Fuente: Actualícese</p>
             </div>
           </div>
 
           {/* Precio Promedio por Kilogramo Chart */}
           <div className="rounded-xl overflow-hidden border-2 border-teal-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center mb-4 sm:mb-6">
-              Precio Promedio por Kilogramo - Variación Anual por Mercado Mayorista
-            </h3>
-            <div className="w-full overflow-x-auto">
-              <div style={{ minWidth: '600px', width: '100%', height: '450px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center">
+                  Precio Promedio por Kilogramo - Variación Anual por Mercado Mayorista
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowPrecioPolloInfo(!showPrecioPolloInfo)}
+                className="ml-4 p-2 rounded-full hover:bg-teal-100 transition-colors"
+                title="Información sobre la gráfica"
+              >
+                <Info className="w-5 h-5 text-teal-600" />
+              </button>
+            </div>
+
+            {/* Modal de información */}
+            {showPrecioPolloInfo && (
+              <div className="mb-4 p-4 rounded-lg bg-teal-50 border-2 border-teal-300 relative">
+                <button
+                  onClick={() => setShowPrecioPolloInfo(false)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  <span className="font-semibold text-teal-700">Cómo leer esta gráfica:</span> El precio del pollo en el año 2025-2024 
+                  aumentó de 1.9%. Mientras que lo que va corrido de 2026 versus 2025 el mercado registró una contracción de precios lo que 
+                  arroja una disminución del -4%, respecto a promedio de precios del año anterior.
+                </p>
+              </div>
+            )}
+            
+            <div className="w-full" style={{ position: 'relative' }}>
+              <ResponsiveContainer width="100%" height={500}>
+                <BarChart 
                     data={[
-                      { año: '2024', precio: 10500, variacion: null },
-                      { año: '2025', precio: 10700, variacion: 1.9 },
-                      { año: '2026', precio: 10660, variacion: -0.4 }
+                      { año: '2024', precio: 10500 },
+                      { año: '2025', precio: 10700 },
+                      { año: '2026', precio: 10660 }
                     ]} 
-                    margin={{ bottom: 60, top: 80, left: 60, right: 60 }}
+                    margin={{ bottom: 60, top: 100, left: 70, right: 70 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis 
                       dataKey="año" 
                       stroke="#94a3b8"
-                      tick={{ fontSize: 17 }}
-                      label={{ value: 'año', position: 'insideBottom', offset: -10, style: { fontSize: 17, fill: '#94a3b8' } }}
+                      tick={{ fontSize: 16 }}
                     />
                     <YAxis 
                       stroke="#94a3b8" 
-                      tick={{ fontSize: 17 }}
-                      domain={[0, 12000]}
-                      ticks={[0, 1000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]}
+                      tick={{ fontSize: 16 }}
+                      domain={[0, 11000]}
+                      ticks={[0, 2000, 4000, 6000, 8000, 10000]}
                       tickFormatter={(value) => `$${value.toLocaleString()}`}
                     />
                     <Tooltip 
                       contentStyle={{ 
                         backgroundColor: '#ffffff', 
-                        border: '2px solid #3b82f6',
+                        border: '2px solid #14b8a6',
                         borderRadius: '8px',
-                        fontSize: '17px'
+                        fontSize: '15px'
                       }}
-                      labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
-                      formatter={(value, name) => {
-                        if (name === 'precio') return [``, 'Precio por Kg'];
-                        if (name === 'variacion') return [`%`, 'variación'];
-                        return [value, name];
-                      }}
+                      formatter={(value) => [`$${value.toLocaleString()} miles de millones de pesos`, 'Precio por Kg']}
                     />
-                    <Bar yAxisId="left" dataKey="precio" name="Precio por Kg" radius={[8, 8, 0, 0]} maxBarSize={120}>
+                    <Bar dataKey="precio" name="Precio por Kg" radius={[8, 8, 0, 0]} maxBarSize={180}>
                       <Cell fill="#14b8a6" />
-                      <Cell fill="#0d9488" />
-                      <Cell fill="#0f766e" />
+                      <Cell fill="#14b8a6" />
+                      <Cell fill="#14b8a6" />
                     </Bar>
-                    <Line 
-                      yAxisId="right"
-                      type="monotone" 
-                      dataKey="variacion" 
-                      name="variación (%)" 
-                      stroke="#1e293b" 
-                      strokeWidth={3}
-                      strokeDasharray="5 5"
-                      dot={{ r: 6, fill: '#1e293b', strokeWidth: 2, stroke: '#fff' }}
-                      activeDot={{ r: 8 }}
-                      connectNulls={false}
-                      label={({ x, y, value, index }) => {
-                        if (value === null || index === 0) return null;
-                        return (
-                          <g>
-                            <rect
-                              x={x - 35}
-                              y={y - 35}
-                              width={70}
-                              height={30}
-                              fill="#0f766e"
-                              stroke="#14b8a6"
-                              strokeWidth={2}
-                              rx={15}
-                            />
-                            <text
-                              x={x}
-                              y={y - 15}
-                              fill="#fff"
-                              fontSize={16}
-                              fontWeight="bold"
-                              textAnchor="middle"
-                            >
-                              {value > 0 ? '+' : ''}{value}%
-                            </text>
-                          </g>
-                        );
-                      }}
-                    />
                   </BarChart>
                 </ResponsiveContainer>
+                
+                {/* Custom lines and labels overlay */}
+                <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '500px', pointerEvents: 'none' }}>
+                  {/* Línea horizontal ENCIMA de las barras */}
+                  <line x1="15%" y1="80" x2="88%" y2="80" stroke="#64748b" strokeWidth="3" />
+                  
+                  {/* Etiquetas de porcentaje encima de la línea horizontal */}
+                  <rect x="36%" y="50" width="70" height="32" fill="#14b8a6" stroke="#0d9488" strokeWidth="2" rx="16" />
+                  <text x="39.5%" y="72" fill="#fff" fontSize="16" fontWeight="bold" textAnchor="middle">1,9%</text>
+                  
+                  <rect x="59%" y="50" width="70" height="32" fill="#14b8a6" stroke="#0d9488" strokeWidth="2" rx="16" />
+                  <text x="62.5%" y="72" fill="#fff" fontSize="16" fontWeight="bold" textAnchor="middle">-,4%</text>
+                  
+                  {/* Líneas verticales desde la línea horizontal hasta los puntos de la línea punteada */}
+                  {/* Primera barra (2024): punto más alto en la tendencia */}
+                  <line x1="29%" y1="80" x2="29%" y2="210" stroke="#64748b" strokeWidth="2.5" />
+                  {/* Segunda barra (2025): punto medio en la tendencia descendente */}
+                  <line x1="54%" y1="80" x2="54%" y2="250" stroke="#64748b" strokeWidth="2.5" />
+                  {/* Tercera barra (2026): punto más bajo en la tendencia */}
+                  <line x1="78%" y1="80" x2="78%" y2="265" stroke="#64748b" strokeWidth="2.5" />
+                  
+                  {/* Línea punteada DESCENDENTE continua */}
+                  <line x1="29%" y1="210" x2="54%" y2="250" stroke="#1e293b" strokeWidth="2.5" strokeDasharray="6 6" />
+                  <line x1="54%" y1="250" x2="78%" y2="265" stroke="#1e293b" strokeWidth="2.5" strokeDasharray="6 6" />
+                  
+                  {/* Puntos en la línea punteada descendente */}
+                  <circle cx="29%" cy="210" r="6" fill="#1e293b" />
+                  <circle cx="54%" cy="250" r="6" fill="#1e293b" />
+                  <circle cx="78%" cy="265" r="6" fill="#1e293b" />
+                  
+                  {/* Etiqueta adicional -0.4% cerca de la tercera barra */}
+                  <text x="82%" y="290" fill="#fff" fontSize="15" fontWeight="bold" textAnchor="middle">-0.4%</text>
+                </svg>
               </div>
-            </div>
             
             <p className="text-xs text-gray-600 text-center mt-4">
               Fuente: Fenavi
             </p>
-            
-            {/* Explicación */}
-            <div className="mt-4 p-4 rounded-lg bg-teal-50 border-2 border-teal-300">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-teal-700">Descripción:</span> El precio del pollo en el año 2025-2024 
-                aumentó de 1.9%. Mientras que lo que va corrido de 2026 versus 2025 el mercado registró una contracción de precios lo que 
-                arroja una disminución del -4%, respecto a promedio de precios del año anterior.
-              </p>
-            </div>
-            
-            {/* Nota adicional con variaciones */}
-            <div className="mt-4 p-4 rounded-lg bg-teal-50 border-2 border-teal-300">
-              <div className="space-y-2">
-                <p className="text-sm text-teal-700">
-                  <span className="font-semibold">variación 2024-2025:</span> +1.9% (aumento de $200)
-                </p>
-                <p className="text-sm text-teal-700">
-                  <span className="font-semibold">variación 2025-2026:</span> -0.4% (disminución de $40)
-                </p>
-                <p className="text-sm text-teal-700 mt-3 pt-3 border-t border-teal-300">
-                  <span className="font-semibold">Tendencia:</span> Después del aumento en 2025, se observa una ligera contracción en 2026
+          </div>
+          <div className="rounded-xl overflow-hidden border-2 border-rose-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center">
+                  Tasa Global de Participación (TGP), Tasa de Ocupación (TO) y Tasa de Desocupación (TD)
+                </h3>
+                <p className="text-sm text-gray-600 text-center mt-2">
+                  Total nacional - Enero (2018 - 2026)
                 </p>
               </div>
+              <button
+                onClick={() => setShowDesempleoInfo(!showDesempleoInfo)}
+                className="ml-4 p-2 rounded-full hover:bg-rose-100 transition-colors"
+                title="Información sobre la gráfica"
+              >
+                <Info className="w-5 h-5 text-rose-600" />
+              </button>
             </div>
-          </div>
 
-          {/* Tasas de Desempleo Chart */}
-          <div className="rounded-xl overflow-hidden border-2 border-rose-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center mb-4 sm:mb-6">
-              Tasa Global de Participación (TGP), Tasa de Ocupación (TO) y Tasa de Desocupación (TD)
-            </h3>
-            <p className="text-sm text-gray-600 text-center mb-6">
-              Total nacional - Enero (2018 - 2026)
-            </p>
-            <div className="w-full overflow-x-auto">
-              <div style={{ minWidth: '800px', width: '100%', height: '500px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart 
+            {/* Modal de información */}
+            {showDesempleoInfo && (
+              <div className="mb-4 p-4 rounded-lg bg-rose-50 border-2 border-rose-300 relative">
+                <button
+                  onClick={() => setShowDesempleoInfo(false)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  <span className="font-semibold text-rose-700">Cómo leer esta gráfica:</span> Esta gráfica muestra tres indicadores clave del mercado laboral colombiano:
+                  <br/><br/>
+                  • <span className="text-red-600 font-semibold">TGP (Línea roja)</span>: Tasa Global de Participación - porcentaje de la población en edad de trabajar que participa activamente en el mercado laboral.
+                  <br/>
+                  • <span className="text-orange-600 font-semibold">TO (Línea naranja)</span>: Tasa de Ocupación - porcentaje de la población en edad de trabajar que está empleada.
+                  <br/>
+                  • <span className="text-gray-700 font-semibold">TD (Línea gris)</span>: Tasa de Desocupación - porcentaje de la población Económicamente activa que está desempleada.
+                </p>
+              </div>
+            )}
+            
+            <div className="w-full">
+              <ResponsiveContainer width="100%" aspect={1.6}>
+                <LineChart 
                     data={desempleoData} 
                     margin={{ bottom: 60, top: 40, left: 20, right: 40 }}
                   >
@@ -641,39 +722,10 @@ export default function EntornoSocioeconomicoDashboard() {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-            </div>
             
             <p className="text-xs text-gray-600 text-center mt-4">
               Fuente: chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.dane.gov.co/files/operaciones/GEIH/bol-GEIH-ene2026.pdf
             </p>
-            
-            {/* Explicación */}
-            <div className="mt-4 p-4 rounded-lg bg-rose-50 border-2 border-rose-300">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-rose-700">Descripción:</span> Esta gráfica muestra tres indicadores clave del mercado laboral colombiano:
-                <br/><br/>
-                • <span className="text-red-600 font-semibold">TGP (Línea roja)</span>: Tasa Global de Participación - porcentaje de la población en edad de trabajar que participa activamente en el mercado laboral.
-                <br/>
-                • <span className="text-orange-600 font-semibold">TO (Línea naranja)</span>: Tasa de Ocupación - porcentaje de la población en edad de trabajar que está empleada.
-                <br/>
-                • <span className="text-gray-700 font-semibold">TD (Línea gris)</span>: Tasa de Desocupación - porcentaje de la población Económicamente activa que está desempleada.
-              </p>
-            </div>
-            
-            {/* Nota adicional */}
-            <div className="mt-4 p-4 rounded-lg bg-rose-50 border-2 border-rose-300">
-              <div className="space-y-2">
-                <h4 className="text-base font-semibold text-rose-700 mb-3">Análisis de Desempleo</h4>
-                <p className="text-sm text-rose-600">
-                  <span className="font-semibold">Desempleo:</span> Colombia cerró en enero 2026 con una tasa de desempleo del 10.9%, 
-                  mientras que en enero 2025 fue de 11.6%, lo que supuso una disminución de 0.7 puntos porcentuales.
-                </p>
-                <p className="text-sm text-rose-600 mt-2">
-                  La tendencia muestra una mejora sostenida desde el pico de 17.6% en enero 2021 (pandemia), 
-                  alcanzando el nivel más bajo de la serie en enero 2026.
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* Sector en Cifras */}
@@ -705,10 +757,9 @@ export default function EntornoSocioeconomicoDashboard() {
             <h4 className="text-lg font-bold text-gray-900 mb-4">Costos materia prima esencial</h4>
 
             {/* gráfica de Granos */}
-            <div className="w-full overflow-x-auto mb-6">
-              <div style={{ minWidth: '700px', width: '100%', height: '450px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart 
+            <div className="w-full mb-6">
+              <ResponsiveContainer width="100%" aspect={1.6}>
+                <LineChart 
                     data={granosData} 
                     margin={{ bottom: 60, top: 40, left: 60, right: 60 }}
                   >
@@ -766,7 +817,6 @@ export default function EntornoSocioeconomicoDashboard() {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-            </div>
 
             <p className="text-xs text-gray-600 text-center mb-4">
               Fuente: CAN. Cálculos Fenavi -PEE
@@ -796,10 +846,9 @@ export default function EntornoSocioeconomicoDashboard() {
             </p>
 
             {/* gráfica de Precios Colombia */}
-            <div className="w-full overflow-x-auto mb-6">
-              <div style={{ minWidth: '700px', width: '100%', height: '450px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart 
+            <div className="w-full mb-6">
+              <ResponsiveContainer width="100%" aspect={1.6}>
+                <LineChart 
                     data={preciosColombiaData} 
                     margin={{ bottom: 60, top: 40, left: 60, right: 60 }}
                   >
@@ -831,7 +880,7 @@ export default function EntornoSocioeconomicoDashboard() {
                           soyaGrano: 'Soya grano',
                           tortaSoya: 'Torta de soya'
                         };
-                        return [`${value.toLocaleString()} miles`, labels[name] || name];
+                        return [`${value.toLocaleString()} miles de millones de pesos`, labels[name] || name];
                       }}
                     />
                     <Legend 
@@ -842,33 +891,32 @@ export default function EntornoSocioeconomicoDashboard() {
                       type="monotone" 
                       dataKey="maizAmarillo" 
                       name="Maíz amarillo" 
-                      stroke="#60a5fa" 
+                      stroke="#fbbf24" 
                       strokeWidth={4}
-                      dot={{ r: 6, fill: '#60a5fa' }}
+                      dot={{ r: 6, fill: '#fbbf24' }}
                       activeDot={{ r: 8 }}
                     />
                     <Line 
                       type="monotone" 
                       dataKey="soyaGrano" 
                       name="Soya grano" 
-                      stroke="#3b82f6" 
+                      stroke="#84cc16" 
                       strokeWidth={4}
-                      dot={{ r: 6, fill: '#3b82f6' }}
+                      dot={{ r: 6, fill: '#84cc16' }}
                       activeDot={{ r: 8 }}
                     />
                     <Line 
                       type="monotone" 
                       dataKey="tortaSoya" 
                       name="Torta de soya" 
-                      stroke="#1e40af" 
+                      stroke="#92400e" 
                       strokeWidth={4}
-                      dot={{ r: 6, fill: '#1e40af' }}
+                      dot={{ r: 6, fill: '#92400e' }}
                       activeDot={{ r: 8 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-            </div>
 
             {/* Análisis */}
             <div className="p-4 rounded-lg bg-sky-50 border-2 border-sky-300">
@@ -912,7 +960,7 @@ export default function EntornoSocioeconomicoDashboard() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

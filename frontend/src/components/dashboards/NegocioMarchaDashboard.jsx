@@ -6,59 +6,76 @@ export default function NegocioMarchaDashboard() {
     {
       id: 1,
       icon: TrendingUp,
-      title: 'Rentabilidad y Mercado 2024',
+      title: 'Rentabilidad y Mercado 2025',
       color: 'from-green-500 to-green-600',
+      highlights: [
+        { text: 'mejores precios de ventas', color: 'text-green-600 font-bold' },
+        { text: 'fortalece el control interno', color: 'text-emerald-600 font-bold' }
+      ],
       content: [
-        'Durante el año 2024, el mercado de oferta y demanda generó mejores precios de ventas atípicos lo que generó rentabilidad no vista en años anteriores.',
-        'Las materias primas tuvieron tendencia a la baja con relación a los años 2023 y 2022, este comportamiento se marcó más en el segundo semestre que en el primero.',
-        'Se ha venido trabajando en una intensa revisión de procesos de control con niveles de autorizaciones escalonados para la proveeduría de bienes y servicios dada por el cambio en la Gerencia General.',
-        'Todo lo anterior permitió fortalecer la estructuración de la rentabilidad obtenida en los procesos misionales de la compañía.'
+        'Durante el año 2025, el mercado de oferta y demanda generó mejores precios de ventas.',
+        'La revisión de procesos de control con niveles de autorizaciones escalonados para la proveeduría de bienes y servicios fortalece el control interno en los procesos misionales de la compañía.'
       ]
     },
     {
       id: 2,
       icon: Factory,
-      title: 'Producción y Operaciones',
+      title: 'Producción Granjas - Resultados 2025',
       color: 'from-blue-500 to-blue-600',
+      highlights: [
+        { text: '+6.6%', color: 'text-blue-600 font-bold text-xl' },
+        { text: '+1.04%', color: 'text-blue-600 font-bold text-xl' },
+        { text: '3.88%', color: 'text-green-600 font-bold text-xl' }
+      ],
       content: [
-        'El área funcional de producción granjas pollo engorde decreció aproximadamente el 4% en el encasetamiento y pollo entregado a planta debido a factores zootécnicos y disponibilidad de pollo en el sector.',
-        'Esta situación impactó en el 1.4% menos de las ventas anuales frente a las del año 2023. No obstante, se reitera los márgenes de rentabilidad neta obtenidas del 2.84%.',
+        'El área funcional de producción granjas pollo engorde creció el 6.6% en el encasetamiento, generando un incremento en las ventas netas del +1.04%.',
+        'El margen de rentabilidad neta obtenida fue del 3.88%.',
         'En la parte operacional granjas se realizaron mantenimiento y reparaciones locativas a las casas de los administradores, redes eléctricas e hidro sanitarias, arreglo o reforzamiento de techos, equipos de comederos, bebederos y silos.'
       ]
     },
     {
       id: 3,
       icon: ShoppingCart,
-      title: 'Mercadeo y Publicidad',
+      title: 'Mercadeo y Publicidad 360°',
       color: 'from-purple-500 to-purple-600',
+      highlights: [
+        { text: 'campañas 360°', color: 'text-purple-600 font-bold' },
+        { text: 'indicadores ISO', color: 'text-purple-600 font-bold' }
+      ],
       content: [
-        'Se realizaron campañas publicitarias 360 con presencia en:',
-        '• Radio',
-        '• Diario El Tiempo',
-        '• TV: City TV, Red Más Noticias',
-        '• Eventos puntuales con el Estado',
+        'Se realizaron campañas publicitarias 360: (digitales BTL "Acciones de Marketing" y medios masivos):',
+        '• Presencia en Radio',
+        '• TV: Red Más Noticias, Caracol',
         '',
-        'Se continuó con auto ventas en Bogotá y regionales.',
-        'Se publicitó en el Tour de Francia y Vuelta a España.',
-        'Página completa en el diario El Tiempo para los portafolios de productos navideños.'
+        'Se continuó con auto ventas en Bogotá y regionales, cuyos impactos fueron medidos y evaluados en los indicadores ISO de la empresa.'
       ]
     },
     {
       id: 4,
       icon: Factory,
-      title: 'Planta de Beneficio',
+      title: 'Planta de Beneficio - OEE y Mantenimiento',
       color: 'from-cyan-500 to-cyan-600',
+      highlights: [
+        { text: 'OEE', color: 'text-cyan-600 font-bold' },
+        { text: '7.800 pollos/hora', color: 'text-cyan-600 font-bold' },
+        { text: 'cero paradas', color: 'text-green-600 font-bold text-lg' }
+      ],
       content: [
-        'Se desmontó el túnel de congelación antiguo y se trasladó a la bodega Angel Blanco – VANTI, fortaleciendo toda la red de frío, totalmente climatizada.',
-        'Esto permitió ampliar el área del chiller y empaque de víscera, ganando ergonomía en los puestos de trabajo y mejora en tiempos de proceso.',
-        'Se fortaleció el área de procesados y adobados para cumplir con contratos de:',
-        '• Frisby',
-        '• Cencosud',
-        '• Colsubsidio',
-        '• Grupo Éxito',
-        '• Jerónimo Martins',
+        'El indicador OEE (Overall Equipment Effectiveness – Eficiencia Global Productiva) mostró avances significativos como resultado de las acciones de mantenimiento ejecutadas durante el periodo.',
         '',
-        'En el caso de la comercialización de huevo, en el año 2024 se mantuvo la tendencia del año anterior en la conformación de la rentabilidad del negocio.'
+        '📍 Línea de Descargue: Overhaul mecánico y eléctrico que permitió mantener estable la capacidad operativa de 7.800 pollos por hora, garantizando continuidad en la primera etapa del proceso.',
+        '',
+        '📍 Zona de Máquinas y Calderas: Se logró estabilizar el problema de sobrecalentamiento mediante mantenimientos preventivos y correctivos, asegurando un funcionamiento confiable y eficiente.',
+        '',
+        '📍 Transfer: Desempeño operativo exitoso tras el mantenimiento total mejorando daño en el muñón del pollo, cambio en la línea de descargue y contribuyendo a una mayor fluidez del proceso.',
+        '',
+        '📍 Línea de Selección Linco: Intervenida con el cambio de la cadena y sus accesorios, mejorando la precisión y el rendimiento del sistema de selección.',
+        '',
+        '📍 Línea de Evisceración: Mantenimientos parciales y generales a los módulos (cloacas, abdomen, maestro, corta pescuezo y lavado de canales), mejorando rendimientos.',
+        '',
+        '📍 Desplumadura #1 (ITA): Se han venido efectuando mantenimientos frecuentes en bocines y dedos. Se proyecta reemplazo del equipo en 2026 debido al desgaste acumulado.',
+        '',
+        '🎯 Resultado: Desempeño óptimo de la planta de beneficio con cero paradas en la temporada más importante del año (diciembre, enero y febrero), arrojando menores costos en la operación y mayor cumplimiento a los clientes.'
       ]
     }
   ];
@@ -80,7 +97,7 @@ export default function NegocioMarchaDashboard() {
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-2">
                 Negocio en Marcha
               </h1>
-              <p className="text-xl text-emerald-600">Informe de Gestión 2024</p>
+              <p className="text-xl text-emerald-600">Informe de Gestión 2025</p>
             </div>
           </div>
         </div>
@@ -99,21 +116,58 @@ export default function NegocioMarchaDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 * (index + 1) }}
-            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-2 border-gray-200"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-2 border-gray-200 hover:border-gray-300 transition-all"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${section.color} flex items-center justify-center`}>
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${section.color} flex items-center justify-center shadow-lg`}>
                 <Icon className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-gray-900">{section.title}</h2>
             </div>
             
             <div className="space-y-4 text-gray-700 leading-relaxed">
-              {section.content.map((paragraph, idx) => (
-                <p key={idx} className={paragraph.startsWith('•') ? 'ml-4' : ''}>
-                  {paragraph}
-                </p>
-              ))}
+              {section.content.map((paragraph, idx) => {
+                // Resaltar números y porcentajes importantes
+                let highlightedText = paragraph;
+                
+                // Resaltar +6.6%, +1.04%, 3.88%
+                highlightedText = highlightedText.replace(/6\.6%/g, '<span class="text-blue-600 font-bold text-xl bg-blue-50 px-2 py-1 rounded">6.6%</span>');
+                highlightedText = highlightedText.replace(/\+1\.04%/g, '<span class="text-blue-600 font-bold text-xl bg-blue-50 px-2 py-1 rounded">+1.04%</span>');
+                highlightedText = highlightedText.replace(/3\.88%/g, '<span class="text-green-600 font-bold text-xl bg-green-50 px-2 py-1 rounded">3.88%</span>');
+                
+                // Resaltar 7.800 pollos/hora
+                highlightedText = highlightedText.replace(/7\.800 pollos por hora/g, '<span class="text-cyan-600 font-bold bg-cyan-50 px-2 py-1 rounded">7.800 pollos/hora</span>');
+                
+                // Resaltar "cero paradas"
+                highlightedText = highlightedText.replace(/cero paradas/g, '<span class="text-green-600 font-bold text-lg bg-green-100 px-3 py-1 rounded-full">✓ CERO PARADAS</span>');
+                
+                // Resaltar "OEE"
+                highlightedText = highlightedText.replace(/OEE \(Overall Equipment Effectiveness – Eficiencia Global Productiva\)/g, '<span class="text-cyan-600 font-bold">OEE (Overall Equipment Effectiveness – Eficiencia Global Productiva)</span>');
+                
+                // Resaltar "mejores precios"
+                highlightedText = highlightedText.replace(/mejores precios de ventas/g, '<span class="text-green-600 font-semibold">mejores precios de ventas</span>');
+                
+                // Resaltar "fortalece el control interno"
+                highlightedText = highlightedText.replace(/fortalece el control interno/g, '<span class="text-emerald-600 font-semibold">fortalece el control interno</span>');
+                
+                // Resaltar "menores costos" y "mayor cumplimiento"
+                highlightedText = highlightedText.replace(/menores costos/g, '<span class="text-green-600 font-semibold">menores costos</span>');
+                highlightedText = highlightedText.replace(/mayor cumplimiento/g, '<span class="text-green-600 font-semibold">mayor cumplimiento</span>');
+                
+                // Resaltar "indicadores ISO"
+                highlightedText = highlightedText.replace(/indicadores ISO/g, '<span class="text-purple-600 font-semibold">indicadores ISO</span>');
+                
+                const isEmoji = paragraph.startsWith('📍') || paragraph.startsWith('🎯');
+                const isBullet = paragraph.startsWith('•');
+                
+                return (
+                  <p 
+                    key={idx} 
+                    className={`${isBullet ? 'ml-4' : ''} ${isEmoji ? 'bg-gray-50 p-3 rounded-lg border-l-4 border-cyan-500' : ''}`}
+                    dangerouslySetInnerHTML={{ __html: highlightedText }}
+                  />
+                );
+              })}
             </div>
           </motion.div>
         );
@@ -130,28 +184,28 @@ export default function NegocioMarchaDashboard() {
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center">
             <Award className="w-6 h-6 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">Calidad y Certificaciones</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Calidad y Certificaciones INVIMA</h2>
         </div>
         
         <div className="space-y-4 text-gray-700 leading-relaxed">
           <p>
-            Las visitas del Invima IVC (Inspección de Vigilancia y Control), obtuvo en su última calificación de <span className="font-semibold text-yellow-400">97.55%</span> frente al <span className="font-semibold">96.69%</span>.
+            Las visitas del Invima IVC (Inspección de Vigilancia y Control), obtuvo en su última calificación en P.B. de <span className="font-bold text-2xl text-yellow-600">96.69%</span> frente al <span className="font-bold text-2xl text-yellow-500">97.55%</span>.
           </p>
           <p>
-            Esta mejora corresponde a la calidad del agua potable que presentó una característica física de color que no afecta al pollo.
+            La calificación fue afectada por aspectos locativos, limpieza y desinfección, implementación y mantenimiento de las acciones encaminadas a la dirección de la gestión ambiental, Seguridad y Salud en el trabajo y el sistema de gestión de calidad; velando por el cumplimiento de la normatividad vigente y requisitos de la <span className="font-semibold text-blue-600">ISO 9001:2015</span>.
           </p>
         </div>
 
         {/* Tarjeta de Calificación */}
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 rounded-lg bg-yellow-50 border border-yellow-300 text-center">
+          <div className="p-4 rounded-lg bg-yellow-100 border-2 border-yellow-400 text-center">
             <p className="text-sm text-gray-600 mb-1">Calificación Anterior</p>
-            <p className="text-3xl font-bold text-gray-900">96.69%</p>
+            <p className="text-4xl font-bold text-yellow-500">97.55%</p>
           </div>
-          <div className="p-4 rounded-lg bg-yellow-100 border border-yellow-400 text-center">
-            <p className="text-sm text-gray-600 mb-1">Calificación Actual</p>
-            <p className="text-3xl font-bold text-yellow-600">97.55%</p>
-            <p className="text-sm text-green-400 font-semibold mt-1">↑ +0.86%</p>
+          <div className="p-4 rounded-lg bg-yellow-50 border-2 border-yellow-300 text-center">
+            <p className="text-sm text-gray-600 mb-1">Calificación Actual 2025</p>
+            <p className="text-4xl font-bold text-yellow-600">96.69%</p>
+            <p className="text-sm text-orange-600 font-semibold mt-1">↓ -0.86%</p>
           </div>
         </div>
       </motion.div>
@@ -222,25 +276,36 @@ export default function NegocioMarchaDashboard() {
         transition={{ delay: 0.9 }}
         className="bg-gradient-to-r from-emerald-50 to-teal-50 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-2 border-emerald-300"
       >
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Indicadores Clave 2024</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Indicadores Clave 2025</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-lg bg-white border border-gray-200 text-center">
+          <div className="p-4 rounded-lg bg-white border-2 border-green-300 text-center">
             <p className="text-sm text-gray-600 mb-2">Rentabilidad Neta</p>
-            <p className="text-3xl font-bold text-green-600">2.84%</p>
+            <p className="text-4xl font-bold text-green-600">3.88%</p>
+            <p className="text-xs text-green-500 mt-1">↑ vs 2.84% (2024)</p>
           </div>
-          <div className="p-4 rounded-lg bg-white border border-gray-200 text-center">
-            <p className="text-sm text-gray-600 mb-2">Variación Ventas</p>
-            <p className="text-3xl font-bold text-red-600">-1.4%</p>
+          <div className="p-4 rounded-lg bg-white border-2 border-blue-300 text-center">
+            <p className="text-sm text-gray-600 mb-2">Crecimiento Encasetamiento</p>
+            <p className="text-4xl font-bold text-blue-600">+6.6%</p>
+            <p className="text-xs text-blue-500 mt-1">vs -4% (2024)</p>
           </div>
-          <div className="p-4 rounded-lg bg-white border border-gray-200 text-center">
-            <p className="text-sm text-gray-600 mb-2">Variación Producción</p>
-            <p className="text-3xl font-bold text-red-600">-4%</p>
+          <div className="p-4 rounded-lg bg-white border-2 border-cyan-300 text-center">
+            <p className="text-sm text-gray-600 mb-2">Incremento Ventas Netas</p>
+            <p className="text-4xl font-bold text-cyan-600">+1.04%</p>
+            <p className="text-xs text-cyan-500 mt-1">vs -1.4% (2024)</p>
           </div>
-          <div className="p-4 rounded-lg bg-white border border-gray-200 text-center">
+          <div className="p-4 rounded-lg bg-white border-2 border-yellow-300 text-center">
             <p className="text-sm text-gray-600 mb-2">Calificación INVIMA</p>
-            <p className="text-3xl font-bold text-yellow-600">97.55%</p>
+            <p className="text-4xl font-bold text-yellow-600">96.69%</p>
+            <p className="text-xs text-orange-500 mt-1">↓ vs 97.55% (2024)</p>
           </div>
+        </div>
+
+        {/* Destacado Especial */}
+        <div className="mt-6 p-6 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white text-center">
+          <p className="text-sm font-semibold mb-2">🎯 LOGRO DESTACADO 2025</p>
+          <p className="text-2xl font-bold">CERO PARADAS en Planta de Beneficio</p>
+          <p className="text-sm mt-2 opacity-90">Durante la temporada más importante: Diciembre, Enero y Febrero</p>
         </div>
       </motion.div>
     </div>

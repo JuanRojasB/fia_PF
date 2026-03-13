@@ -1,15 +1,10 @@
-import { motion } from 'framer-motion';
 import { FileText, Building2, Calendar, Users, TrendingUp, Award, Shield, Target } from 'lucide-react';
 
 export default function BienvenidaDashboard() {
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden bg-white/95 backdrop-blur-xl rounded-2xl p-6 sm:p-8 lg:p-12 border-2 border-blue-500/30"
-      >
+      <div className="relative overflow-hidden bg-white/95 backdrop-blur-xl rounded-2xl p-6 sm:p-8 lg:p-12 border-2 border-blue-500/30">
         <div className="relative z-10">
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
             <div className="bg-blue-500/20 p-3 sm:p-4 rounded-xl">
@@ -35,15 +30,10 @@ export default function BienvenidaDashboard() {
             </p>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Puntos Importantes de las Subsecciones */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 lg:p-8 border-2 border-indigo-500/30"
-      >
+      <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 lg:p-8 border-2 border-indigo-500/30">
         <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
           <Target className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" />
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Puntos Destacados 2024-2025</h2>
@@ -165,15 +155,10 @@ export default function BienvenidaDashboard() {
             de materias primas y mejora en indicadores nacionales, contribuyó al desempeño positivo de la compañía.
           </p>
         </div>
-      </motion.div>
+      </div>
 
       {/* Consideraciones Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 lg:p-8 border-2 border-gray-300/50"
-      >
+      <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 lg:p-8 border-2 border-gray-300/50">
         <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
           <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Consideraciones</h2>
@@ -188,131 +173,50 @@ export default function BienvenidaDashboard() {
             A continuación, se presenta el informe anual por la gestión desarrollada durante el ejercicio económico del año <span className="font-semibold text-gray-900">2025</span>, el cual contiene una exposición fiel sobre la evolución del negocio, la situación jurídica, la situación económica y la situación administrativa de la sociedad en cumplimiento con el ordenamiento legal.
           </p>
         </div>
-      </motion.div>
+      </div>
 
       {/* Key Areas Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer group"
-        >
+        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-blue-500/30">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600 group-hover:scale-110 transition-transform" />
+            <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600" />
           </div>
           <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Evolución del Negocio</h3>
           <p className="text-xs sm:text-sm text-gray-600">
             Análisis del crecimiento y desarrollo empresarial durante el ejercicio 2025
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-green-500/30 hover:border-green-500 transition-all cursor-pointer group"
-        >
+        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-green-500/30">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-green-600 group-hover:scale-110 transition-transform" />
+            <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
           </div>
           <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Situación Jurídica</h3>
           <p className="text-xs sm:text-sm text-gray-600">
             Cumplimiento normativo y marco legal de la organización
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer group"
-        >
+        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-purple-500/30">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <Award className="w-8 h-8 sm:w-10 sm:h-10 text-purple-600 group-hover:scale-110 transition-transform" />
+            <Award className="w-8 h-8 sm:w-10 sm:h-10 text-purple-600" />
           </div>
           <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Situación Económica</h3>
           <p className="text-xs sm:text-sm text-gray-600">
             Estados financieros y resultados del ejercicio fiscal
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer group"
-        >
+        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-orange-500/30">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <Users className="w-8 h-8 sm:w-10 sm:h-10 text-orange-600 group-hover:scale-110 transition-transform" />
+            <Users className="w-8 h-8 sm:w-10 sm:h-10 text-orange-600" />
           </div>
           <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Situación Administrativa</h3>
           <p className="text-xs sm:text-sm text-gray-600">
             Gestión organizacional y estructura operativa
           </p>
-        </motion.div>
+        </div>
       </div>
-
-      {/* Stats Overview */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 lg:p-8 border-2 border-gray-300/50"
-      >
-        <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-          <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-600" />
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Ejercicio Económico 2025</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-4 sm:p-6 border border-gray-300">
-            <div className="flex items-center gap-2 sm:gap-3 mb-3">
-              <Target className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900">Áreas de Gestión</h3>
-            </div>
-            <p className="text-2xl sm:text-3xl font-bold text-blue-600 mb-2">10+</p>
-            <p className="text-xs sm:text-sm text-gray-600">Dashboards especializados disponibles</p>
-          </div>
-
-          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-4 sm:p-6 border border-gray-300">
-            <div className="flex items-center gap-2 sm:gap-3 mb-3">
-              <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900">Indicadores</h3>
-            </div>
-            <p className="text-2xl sm:text-3xl font-bold text-green-600 mb-2">100+</p>
-            <p className="text-xs sm:text-sm text-gray-600">KPIs y métricas de desempeño</p>
-          </div>
-
-          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-4 sm:p-6 border border-gray-300">
-            <div className="flex items-center gap-2 sm:gap-3 mb-3">
-              <Award className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900">Transparencia</h3>
-            </div>
-            <p className="text-2xl sm:text-3xl font-bold text-purple-600 mb-2">100%</p>
-            <p className="text-xs sm:text-sm text-gray-600">Cumplimiento normativo y legal</p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Call to Action */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 lg:p-8 border-2 border-blue-500/30 text-center"
-      >
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
-          Explore los Dashboards
-        </h3>
-        <p className="text-gray-700 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base">
-          Utilice el menú lateral para navegar entre las diferentes áreas de gestión y acceder a información detallada sobre producción, comercial, logística, recursos humanos y más.
-        </p>
-        <div className="flex items-center justify-center gap-2 text-blue-600 text-sm sm:text-base">
-          <span className="text-lg">←</span>
-          <span className="font-semibold">Seleccione una sección del menú para comenzar</span>
-        </div>
-      </motion.div>
     </div>
   );
 }
