@@ -160,74 +160,77 @@ export default function LogisticaSede2Dashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+        className="rounded-xl overflow-hidden border border-gray-200"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
-          GASTOS OPERACIONALES LOGÍSTICOS SEDE 2 AÑO 2024 VS 2025
-        </h3>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="bg-gradient-to-r from-green-500 to-green-600 border-b-2 border-gray-300">
-              <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var 25/24</th>
-              <th className="text-center py-3 px-4 text-gray-900 font-bold">DIFERENCIA</th>
-            </tr>
-          </thead>
-          <tbody>
-            {conceptosArray.map((row, idx) => {
-              const esIncremento = row.diferencia > 0;
-              
-              return (
-                <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
-                  <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
-                  <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">
-                    $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+        <CollapsibleTable
+          title="GASTOS OPERACIONALES LOGÍSTICOS SEDE 2 AÑO 2024 VS 2025"
+          defaultOpen={true}
+        >
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr>
+                  <th className="text-left py-3 px-4">CONCEPTO</th>
+                  <th className="text-right py-3 px-4">TOTAL 2024</th>
+                  <th className="text-right py-3 px-4">TOTAL 2025</th>
+                  <th className="text-right py-3 px-4">% Var 25/24</th>
+                  <th className="text-center py-3 px-4">DIFERENCIA</th>
+                </tr>
+              </thead>
+              <tbody>
+                {conceptosArray.map((row, idx) => {
+                  const esIncremento = row.diferencia > 0;
+                  return (
+                    <tr key={idx}>
+                      <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
+                      <td className="py-2 px-4 text-right text-cyan-700 tabular-nums">
+                        $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                      </td>
+                      <td className="py-2 px-4 text-right text-orange-700 tabular-nums">
+                        $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                      </td>
+                      <td className="py-2 px-4 text-right tabular-nums">
+                        <span className={`inline-flex items-center gap-1 font-semibold px-2 py-1 rounded ${esIncremento ? 'text-red-700 bg-red-50' : 'text-green-700 bg-green-50'}`}>
+                          <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs text-white ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
+                            {esIncremento ? '↑' : '↓'}
+                          </span>
+                          {row.variacion}%
+                        </span>
+                      </td>
+                      <td className="py-2 px-4 text-center font-semibold">
+                        <span className={esIncremento ? 'text-red-700' : 'text-green-700'}>
+                          $ {Math.abs(row.diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+                <tr className="border-t-2 border-gray-400 font-bold bg-gray-100">
+                  <td className="py-3 px-4 text-gray-900">TOTAL GASTOS LOGÍSTICOS 2024 VS 2025</td>
+                  <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">
+                    $ {total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </td>
-                  <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
-                    $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
+                    $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </td>
-                  <td className="py-2 px-4 text-right tabular-nums">
-                    <span className={`inline-flex items-center gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
-                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
-                        {esIncremento ? '↑' : '↓'}
+                  <td className="py-3 px-4 text-right tabular-nums">
+                    <span className={`inline-flex items-center gap-1 font-semibold px-2 py-1 rounded ${parseFloat(variacionTotal) > 0 ? 'text-red-700 bg-red-50' : 'text-green-700 bg-green-50'}`}>
+                      <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs text-white ${parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+                        {parseFloat(variacionTotal) > 0 ? '↑' : '↓'}
                       </span>
-                      {row.variacion}%
+                      {variacionTotal}%
                     </span>
                   </td>
-                  <td className="py-2 px-4 text-center">
-                    <span className={esIncremento ? 'text-red-600' : 'text-green-600'}>
-                      $ {Math.abs(row.diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  <td className="py-3 px-4 text-center font-semibold">
+                    <span className={parseFloat(variacionTotal) > 0 ? 'text-red-700' : 'text-green-700'}>
+                      $ {Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                     </span>
                   </td>
                 </tr>
-              );
-            })}
-            <tr className="bg-gray-50 border-t-2 border-gray-400 font-bold">
-              <td className="py-3 px-4 text-gray-900">TOTAL GASTOS LOGÍSTICOS 2024 VS 2025</td>
-              <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">
-                $ {total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-              </td>
-              <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
-                $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-              </td>
-              <td className="py-3 px-4 text-right tabular-nums">
-                <span className={`inline-flex items-center gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500'}`}>
-                    {parseFloat(variacionTotal) > 0 ? '↑' : '↓'}
-                  </span>
-                  {variacionTotal}%
-                </span>
-              </td>
-              <td className="py-3 px-4 text-center">
-                <span className={parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}>
-                  $ {Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </tbody>
+            </table>
+          </div>
+        </CollapsibleTable>
       </motion.div>
 
       {/* Gráfico - Clickeable */}

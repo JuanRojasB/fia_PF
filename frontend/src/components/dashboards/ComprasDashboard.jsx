@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell } from 'recharts';
 import { TrendingUp, TrendingDown, ShoppingCart, DollarSign, X, Info, ArrowUp, ArrowDown } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ComprasDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -274,72 +275,78 @@ export default function ComprasDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.65 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-indigo-500/30"
+        className="rounded-xl overflow-hidden border-4 border-indigo-500/30"
       >
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">Detalle de Compras por Mes 2023-2025</h3>
-            <p className="text-sm text-gray-600 mt-1">Valores en pesos colombianos y variaciones porcentuales</p>
-          </div>
-          <Info className="w-6 h-6 text-indigo-600" />
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b-2 border-gray-300">
-                <th className="text-left py-3 px-3 text-gray-900 font-bold">Mes</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">2025</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">2024</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">2023</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">Var 25/24</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">Var 24/23</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comprasMensuales.map((mes, idx) => (
-                <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
-                  <td className="py-3 px-3 text-gray-900 font-semibold">{mes.mes}</td>
-                  <td className="py-3 px-3 text-right text-gray-900">${formatCurrencyFull(mes.compras)}</td>
-                  <td className="py-3 px-3 text-right text-gray-700">${formatCurrencyFull(mes.compras2024)}</td>
-                  <td className="py-3 px-3 text-right text-gray-700">${formatCurrencyFull(mes.compras2023)}</td>
-                  <td className={`py-3 px-3 text-right font-bold ${parseFloat(mes.variacion2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {parseFloat(mes.variacion2025vs2024) >= 0 ? '+' : ''}{mes.variacion2025vs2024}%
+        <CollapsibleTable
+          title="Detalle de Compras por Mes 2023-2025"
+          defaultOpen={true}
+        >
+          <p className="text-sm text-gray-600 mb-4">Valores en pesos colombianos y variaciones porcentuales</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr>
+                  <th className="text-left py-3 px-3">Mes</th>
+                  <th className="text-right py-3 px-3">2025</th>
+                  <th className="text-right py-3 px-3">2024</th>
+                  <th className="text-right py-3 px-3">2023</th>
+                  <th className="text-right py-3 px-3">Var 25/24</th>
+                  <th className="text-right py-3 px-3">Var 24/23</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comprasMensuales.map((mes, idx) => (
+                  <tr key={idx}>
+                    <td className="py-3 px-3 font-semibold">{mes.mes}</td>
+                    <td className="py-3 px-3 text-right">${formatCurrencyFull(mes.compras)}</td>
+                    <td className="py-3 px-3 text-right text-gray-600">${formatCurrencyFull(mes.compras2024)}</td>
+                    <td className="py-3 px-3 text-right text-gray-600">${formatCurrencyFull(mes.compras2023)}</td>
+                    <td className="py-3 px-3 text-right">
+                      <span className={`font-semibold px-2 py-1 rounded inline-block ${parseFloat(mes.variacion2025vs2024) >= 0 ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'}`}>
+                        {parseFloat(mes.variacion2025vs2024) >= 0 ? '+' : ''}{mes.variacion2025vs2024}%
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 text-right">
+                      <span className={`font-semibold px-2 py-1 rounded inline-block ${parseFloat(mes.variacion2024vs2023) >= 0 ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'}`}>
+                        {parseFloat(mes.variacion2024vs2023) >= 0 ? '+' : ''}{mes.variacion2024vs2023}%
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                <tr className="border-t-2 border-gray-400 font-bold bg-gray-100">
+                  <td className="py-3 px-3 text-gray-900">TOTALES</td>
+                  <td className="py-3 px-3 text-right">${formatCurrencyFull(totales.total2025)}</td>
+                  <td className="py-3 px-3 text-right text-gray-700">${formatCurrencyFull(totales.total2024)}</td>
+                  <td className="py-3 px-3 text-right text-gray-700">${formatCurrencyFull(totales.total2023)}</td>
+                  <td className="py-3 px-3 text-right">
+                    <span className="font-semibold px-2 py-1 rounded inline-block text-green-700 bg-green-50">+{totales.variacion2025vs2024}%</span>
                   </td>
-                  <td className={`py-3 px-3 text-right font-bold ${parseFloat(mes.variacion2024vs2023) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {parseFloat(mes.variacion2024vs2023) >= 0 ? '+' : ''}{mes.variacion2024vs2023}%
+                  <td className="py-3 px-3 text-right">
+                    <span className="font-semibold px-2 py-1 rounded inline-block text-red-700 bg-red-50">{totales.variacion2024vs2023}%</span>
                   </td>
                 </tr>
-              ))}
-              <tr className="border-t-2 border-gray-300 bg-gray-100 font-bold">
-                <td className="py-3 px-3 text-gray-900">TOTALES</td>
-                <td className="py-3 px-3 text-right text-gray-900">${formatCurrencyFull(totales.total2025)}</td>
-                <td className="py-3 px-3 text-right text-gray-900">${formatCurrencyFull(totales.total2024)}</td>
-                <td className="py-3 px-3 text-right text-gray-900">${formatCurrencyFull(totales.total2023)}</td>
-                <td className="py-3 px-3 text-right text-green-600">+{totales.variacion2025vs2024}%</td>
-                <td className="py-3 px-3 text-right text-red-600">{totales.variacion2024vs2023}%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
 
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-green-50 rounded-lg p-4 border border-green-300">
-            <div className="text-xs text-gray-600 mb-1">Crecimiento 2025</div>
-            <div className="text-2xl font-bold text-green-600">+9.66%</div>
-            <div className="text-xs text-gray-600 mt-1">Recuperación sólida</div>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+              <div className="text-xs text-gray-600 mb-1">Crecimiento 2025</div>
+              <div className="text-2xl font-bold text-green-600">+9.66%</div>
+              <div className="text-xs text-gray-600 mt-1">Recuperación sólida</div>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+              <div className="text-xs text-gray-600 mb-1">Contracción 2024</div>
+              <div className="text-2xl font-bold text-red-600">-2.97%</div>
+              <div className="text-xs text-gray-600 mt-1">Año de ajuste</div>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+              <div className="text-xs text-gray-600 mb-1">Promedio Mensual 2025</div>
+              <div className="text-2xl font-bold text-blue-600">{formatCurrency(totales.total2025 / 12)}</div>
+              <div className="text-xs text-gray-600 mt-1">Por mes</div>
+            </div>
           </div>
-          <div className="bg-red-50 rounded-lg p-4 border border-red-300">
-            <div className="text-xs text-gray-600 mb-1">Contracción 2024</div>
-            <div className="text-2xl font-bold text-red-600">-2.97%</div>
-            <div className="text-xs text-gray-600 mt-1">Año de ajuste</div>
-          </div>
-          <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
-            <div className="text-xs text-gray-600 mb-1">Promedio Mensual 2025</div>
-            <div className="text-2xl font-bold text-blue-600">{formatCurrency(totales.total2025 / 12)}</div>
-            <div className="text-xs text-gray-600 mt-1">Por mes</div>
-          </div>
-        </div>
+        </CollapsibleTable>
       </motion.div>
 
       {/* Análisis de Contracción 2024 */}

@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, MapPin, Clock, CheckCircle, Circle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { X, Calendar, MapPin, Clock, CheckCircle, Circle, ChevronDown } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 
 export function OrdenDelDiaModal({ isOpen, onClose }) {
   const [checkedItems, setCheckedItems] = useState(() => {
@@ -8,6 +8,9 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
     const saved = localStorage.getItem('ordenDelDiaChecks');
     return saved ? JSON.parse(saved) : {};
   });
+  
+  const modalContentRef = useRef(null);
+  const bottomRef = useRef(null);
 
   // Guardar en localStorage cuando cambie
   useEffect(() => {
@@ -19,11 +22,36 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
       ...prev,
       [index]: !prev[index]
     }));
+    
+    // Scroll suave hacia abajo después de marcar
+    setTimeout(() => {
+      if (bottomRef.current) {
+        bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 100);
+  };
+
+  const continueToNext = () => {
+    // Encontrar el primer item no marcado
+    const nextUnchecked = agendaItems.find(item => !checkedItems[item.num]);
+    
+    if (nextUnchecked) {
+      toggleCheck(nextUnchecked.num);
+    } else {
+      // Si todos están marcados, hacer scroll al final
+      if (bottomRef.current) {
+        bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }
   };
 
   const resetChecks = () => {
     setCheckedItems({});
     localStorage.removeItem('ordenDelDiaChecks');
+    // Scroll al inicio
+    if (modalContentRef.current) {
+      modalContentRef.current.scrollTop = 0;
+    }
   };
 
   const agendaItems = [
@@ -44,6 +72,7 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
   const completedCount = Object.values(checkedItems).filter(Boolean).length;
   const totalCount = agendaItems.length;
   const progress = (completedCount / totalCount) * 100;
+  const allCompleted = completedCount === totalCount;
   return (
     <AnimatePresence>
       {isOpen && (
@@ -92,7 +121,11 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
             </div>
 
             {/* Contenido */}
-            <div className="p-4 sm:p-6 lg:p-8">
+            <div 
+              ref={modalContentRef}
+              className="p-4 sm:p-6 lg:p-8 overflow-y-auto"
+              style={{ maxHeight: 'calc(95vh - 200px)' }}
+            >
               {/* Información de la convocatoria */}
               <div className="text-center mb-6 sm:mb-8">
                 <h3 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-2">
@@ -199,15 +232,16 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
 
               {/* Botones de acción */}
               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                
-                
                 <button
                   onClick={onClose}
                   className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl transition-all shadow-lg hover:shadow-xl font-semibold text-base sm:text-lg"
                 >
-                  Cerrar
+                  Continuar
                 </button>
               </div>
+              
+              {/* Referencia para scroll al final */}
+              <div ref={bottomRef} className="h-4" />
             </div>
           </motion.div>
         </motion.div>

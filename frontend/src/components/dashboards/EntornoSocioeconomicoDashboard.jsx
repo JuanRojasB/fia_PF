@@ -160,7 +160,7 @@ export default function EntornoSocioeconomicoDashboard() {
                   ✕
                 </button>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  <span className="font-semibold text-blue-700">Cómo leer esta gráfica:</span> La línea naranja muestra el gasto trimestral en alimentos en millones de pesos constantes desde 2019 hasta 2025. 
+                  <span className="font-semibold text-blue-700">Descripción:</span> La línea naranja muestra el gasto trimestral en alimentos en millones de pesos constantes desde 2019 hasta 2025. 
                   La línea roja punteada representa la tendencia general de crecimiento. Se observa un incremento significativo durante 2020-2021, 
                   seguido de una estabilización en 2022-2023, y una ligera contracción en 2024-2025.
                 </p>
@@ -298,7 +298,7 @@ export default function EntornoSocioeconomicoDashboard() {
                   ✕
                 </button>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  <span className="font-semibold text-purple-700">Cómo leer esta gráfica:</span> El Índice de Precios al Consumidor (IPC) mide la variación de precios de bienes y servicios. 
+                  <span className="font-semibold text-purple-700">Descripción:</span> El Índice de Precios al Consumidor (IPC) mide la variación de precios de bienes y servicios. 
                   Un IPC más alto indica mayor inflación. En 2022 se registró el pico más alto (13.12%), mientras que en 2025 se proyecta una estabilización en 5.1%, 
                   similar a los niveles de 2024 (5.2%).
                 </p>
@@ -403,7 +403,7 @@ export default function EntornoSocioeconomicoDashboard() {
                   ✕
                 </button>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  <span className="font-semibold text-cyan-700">Cómo leer esta gráfica:</span> La TRM (Tasa Representativa del Mercado) muestra el valor promedio anual del dólar en pesos colombianos. 
+                  <span className="font-semibold text-cyan-700">Descripción:</span> La TRM (Tasa Representativa del Mercado) muestra el valor promedio anual del dólar en pesos colombianos. 
                   La tendencia lineal refleja claramente la desaceleración del dólar entre 2024 y 2026 (a la fecha), mostrando un movimiento descendente consistente en el promedio anual de la TRM, 
                   cayendo el <span className="font-semibold text-red-600">-9.21%</span> de 2023 a la fecha.
                 </p>
@@ -513,7 +513,7 @@ export default function EntornoSocioeconomicoDashboard() {
                   ✕
                 </button>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  <span className="font-semibold text-teal-700">Cómo leer esta gráfica:</span> El precio del pollo en el año 2025-2024 
+                  <span className="font-semibold text-teal-700">Descripción:</span> El precio del pollo en el año 2025-2024 
                   aumentó de 1.9%. Mientras que lo que va corrido de 2026 versus 2025 el mercado registró una contracción de precios lo que 
                   arroja una disminución del -4%, respecto a promedio de precios del año anterior.
                 </p>
@@ -627,7 +627,7 @@ export default function EntornoSocioeconomicoDashboard() {
                   ✕
                 </button>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  <span className="font-semibold text-rose-700">Cómo leer esta gráfica:</span> Esta gráfica muestra tres indicadores clave del mercado laboral colombiano:
+                  <span className="font-semibold text-rose-700">Descripción:</span> Esta gráfica muestra tres indicadores clave del mercado laboral colombiano:
                   <br/><br/>
                   • <span className="text-red-600 font-semibold">TGP (Línea roja)</span>: Tasa Global de Participación - porcentaje de la población en edad de trabajar que participa activamente en el mercado laboral.
                   <br/>

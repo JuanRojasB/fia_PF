@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell } from 'recharts';
 import { DollarSign, TrendingUp, TrendingDown, Calendar, AlertTriangle, X, Info, CreditCard, Percent } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 // Componente de Tooltip personalizado
 const CustomTooltip = ({ active, payload, label, formatNumber }) => {
@@ -501,63 +502,66 @@ export default function CarteraDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-indigo-500/30"
+        className="bg-white/95 backdrop-blur-xl rounded-xl border-4 border-indigo-500/30 overflow-hidden"
       >
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">Detalle Mensual de Gestión de Cartera 2025</h3>
-            <p className="text-sm text-gray-600 mt-1">Valores en pesos colombianos y porcentajes</p>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b-2 border-gray-300">
-                <th className="text-left py-3 px-3 text-gray-900 font-bold">Mes</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">Total Cartera</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">Cartera Vencida</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">Morosidad</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">Rotación</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">% Contado</th>
-                <th className="text-right py-3 px-3 text-gray-900 font-bold">% Crédito</th>
-              </tr>
-            </thead>
-            <tbody>
-              {datosMensuales.map((mes, idx) => (
-                <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
-                  <td className="py-3 px-3 text-gray-900 font-semibold">{mes.mes}</td>
-                  <td className="py-3 px-3 text-right text-gray-900">{formatCurrency(mes.total_cartera)}</td>
-                  <td className="py-3 px-3 text-right text-yellow-600">{formatCurrency(mes.cartera_vencida)}</td>
-                  <td className="py-3 px-3 text-right text-yellow-600 font-bold">{mes.indice_morosidad}%</td>
-                  <td className={`py-3 px-3 text-right font-bold ${mes.dias_rotacion <= 15 ? 'text-green-600' : mes.dias_rotacion <= 17 ? 'text-yellow-600' : 'text-red-600'}`}>
-                    {mes.dias_rotacion}
-                  </td>
-                  <td className="py-3 px-3 text-right text-blue-600">{mes.pct_contado}%</td>
-                  <td className="py-3 px-3 text-right text-purple-600">{mes.pct_credito}%</td>
+        <CollapsibleTable
+          title="Detalle Mensual de Gestión de Cartera 2025"
+          defaultOpen={true}
+        >
+          <p className="text-sm text-gray-600 mb-4">Valores en pesos colombianos y porcentajes</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr>
+                  <th className="text-left py-3 px-3">Mes</th>
+                  <th className="text-right py-3 px-3">Total Cartera</th>
+                  <th className="text-right py-3 px-3">Cartera Vencida</th>
+                  <th className="text-right py-3 px-3">Morosidad</th>
+                  <th className="text-right py-3 px-3">Rotación</th>
+                  <th className="text-right py-3 px-3">% Contado</th>
+                  <th className="text-right py-3 px-3">% Crédito</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {datosMensuales.map((mes, idx) => (
+                  <tr key={idx}>
+                    <td className="py-3 px-3 font-semibold">{mes.mes}</td>
+                    <td className="py-3 px-3 text-right">{formatCurrency(mes.total_cartera)}</td>
+                    <td className="py-3 px-3 text-right text-amber-700">{formatCurrency(mes.cartera_vencida)}</td>
+                    <td className="py-3 px-3 text-right">
+                      <span className="value-neutral">{mes.indice_morosidad}%</span>
+                    </td>
+                    <td className="py-3 px-3 text-right font-bold">
+                      <span className={mes.dias_rotacion <= 15 ? 'value-positive' : mes.dias_rotacion <= 17 ? 'value-neutral' : 'value-negative'}>
+                        {mes.dias_rotacion}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 text-right text-blue-600">{mes.pct_contado}%</td>
+                    <td className="py-3 px-3 text-right text-purple-600">{mes.pct_credito}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-green-50 rounded-lg p-4 border border-green-300">
-            <div className="text-xs text-gray-600 mb-1">Rotación Dic 2025</div>
-            <div className="text-2xl font-bold text-green-600">{resumenAnual.rotacion_dic_2025} días</div>
-            <div className="text-xs text-gray-600 mt-1">Meta ISO cumplida</div>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+              <div className="text-xs text-gray-600 mb-1">Rotación Dic 2025</div>
+              <div className="text-2xl font-bold text-green-600">{resumenAnual.rotacion_dic_2025} días</div>
+              <div className="text-xs text-gray-600 mt-1">Meta ISO cumplida</div>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+              <div className="text-xs text-gray-600 mb-1">Ventas Contado Promedio</div>
+              <div className="text-2xl font-bold text-blue-600">{resumenAnual.ventas_contado_promedio}%</div>
+              <div className="text-xs text-gray-600 mt-1">Año 2025</div>
+            </div>
+            <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+              <div className="text-xs text-gray-600 mb-1">Morosidad Promedio</div>
+              <div className="text-2xl font-bold text-yellow-600">{resumenAnual.morosidad_promedio}%</div>
+              <div className="text-xs text-gray-600 mt-1">Cartera vencida</div>
+            </div>
           </div>
-          <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
-            <div className="text-xs text-gray-600 mb-1">Ventas Contado Promedio</div>
-            <div className="text-2xl font-bold text-blue-600">{resumenAnual.ventas_contado_promedio}%</div>
-            <div className="text-xs text-gray-600 mt-1">Año 2025</div>
-          </div>
-          <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
-            <div className="text-xs text-gray-600 mb-1">Morosidad Promedio</div>
-            <div className="text-2xl font-bold text-yellow-600">{resumenAnual.morosidad_promedio}%</div>
-            <div className="text-xs text-gray-600 mt-1">Cartera vencida</div>
-          </div>
-        </div>
+        </CollapsibleTable>
       </motion.div>
 
       {/* Distribución de Ventas Contado vs Crédito */}

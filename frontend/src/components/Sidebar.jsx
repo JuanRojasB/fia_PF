@@ -260,14 +260,14 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
           className={`${isCollapsed ? 'p-3' : 'p-6'} transition-all duration-300`} 
           style={{ borderBottom: '1px solid rgba(203, 213, 225, 0.5)' }}
         >
-          <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} mb-3`}>
+          <div className={`flex items-start ${isCollapsed ? 'justify-center' : 'gap-4'} mb-3`}>
             <motion.div 
               animate={{ 
-                width: isCollapsed ? 40 : 64,
-                height: isCollapsed ? 40 : 64
+                width: isCollapsed ? 40 : 56,
+                height: isCollapsed ? 40 : 56
               }}
               transition={{ duration: 0.3 }}
-              className="rounded-full flex items-center justify-center overflow-hidden"
+              className="rounded-full flex items-center justify-center overflow-hidden flex-shrink-0"
               style={{
                 background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2), rgba(255, 255, 255, 0.9))',
                 border: '2px solid rgba(59, 130, 246, 0.4)',
@@ -283,15 +283,20 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
             
             <AnimatePresence>
               {!isCollapsed && (
-                <motion.h2
+                <motion.div
                   initial={{ opacity: 0, width: 0 }}
                   animate={{ opacity: 1, width: 'auto' }}
                   exit={{ opacity: 0, width: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-xl font-bold text-gray-900"
+                  className="flex flex-col justify-center pt-1"
                 >
-                  FIA
-                </motion.h2>
+                  <h2 className="text-xl font-bold text-gray-900 leading-tight mb-0.5">
+                    FIA
+                  </h2>
+                  <p className="text-xs text-gray-600 leading-tight">
+                    Fiesta Intelligence Assistant
+                  </p>
+                </motion.div>
               )}
             </AnimatePresence>
           </div>

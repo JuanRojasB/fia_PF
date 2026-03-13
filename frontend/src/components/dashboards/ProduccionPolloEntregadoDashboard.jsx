@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Truck, TrendingDown, Package, AlertCircle, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import StandardTable from '../StandardTable';
+import { getValueColor } from '../../utils/colorUtils';
 
 export default function ProduccionPolloEntregadoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -167,7 +169,9 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <TrendingDown className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(Math.round(datos2025.total / 1000000))}M</div>
-          <div className="text-xs text-red-600 mt-1">{datos2025.var_pct}% vs 2024</div>
+          <div className={`text-xs mt-1 font-semibold px-2 py-1 rounded inline-block ${getValueColor(datos2025.var_pct).bg} ${getValueColor(datos2025.var_pct).text}`}>
+            {datos2025.var_pct}% vs 2024
+          </div>
         </motion.div>
       </div>
 
@@ -176,38 +180,35 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
         title="Comparativo de Aves Entregadas 2025 vs 2024"
         defaultOpen={false}
       >
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-100 border-b-2 border-gray-300">
-                <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">Año</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-gray-700">Programado</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-gray-700 bg-green-50">REAL</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-gray-700 bg-orange-50">Comprado</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-gray-700 bg-blue-50">Total</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-gray-700">%Var</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-gray-200 hover:bg-gray-50 bg-yellow-50">
-                <td className="px-4 py-3 text-sm font-bold text-gray-900">2025</td>
-                <td className="px-4 py-3 text-sm text-right text-gray-700">{formatNumber(datos2025.programado)}</td>
-                <td className="px-4 py-3 text-sm text-right font-bold text-gray-900 bg-green-50">{formatNumber(datos2025.real_granjas)}</td>
-                <td className="px-4 py-3 text-sm text-right font-bold text-gray-900 bg-orange-50">{formatNumber(datos2025.comprado)}</td>
-                <td className="px-4 py-3 text-sm text-right font-bold text-gray-900 bg-blue-50">{formatNumber(datos2025.total)}</td>
-                <td className="px-4 py-3 text-sm text-right font-bold text-red-600">{datos2025.var_pct}%</td>
-              </tr>
-              <tr className="border-b border-gray-200 hover:bg-gray-50">
-                <td className="px-4 py-3 text-sm font-bold text-gray-900">2024</td>
-                <td className="px-4 py-3 text-sm text-right text-gray-700">{formatNumber(datos2024.programado)}</td>
-                <td className="px-4 py-3 text-sm text-right font-bold text-gray-900 bg-green-50">{formatNumber(datos2024.real_granjas)}</td>
-                <td className="px-4 py-3 text-sm text-right font-bold text-gray-900 bg-orange-50">{formatNumber(datos2024.comprado)}</td>
-                <td className="px-4 py-3 text-sm text-right font-bold text-gray-900 bg-blue-50">{formatNumber(datos2024.total)}</td>
-                <td className="px-4 py-3 text-sm text-right font-bold text-red-600">{datos2024.var_pct}%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <StandardTable
+          headers={[
+            { label: 'Año', key: 'año', align: 'left', bold: true },
+            { label: 'Programado', key: 'programado', align: 'right' },
+            { label: 'REAL', key: 'real_granjas', align: 'right', bold: true, bgColor: 'rgba(240, 253, 244, 0.5)' },
+            { label: 'Comprado', key: 'comprado', align: 'right', bold: true, bgColor: 'rgba(255, 251, 235, 0.5)' },
+            { label: 'Total', key: 'total', align: 'right', bold: true, bgColor: 'rgba(239, 246, 255, 0.5)' },
+            { label: '%Var', key: 'var_pct', align: 'right', type: 'variation' }
+          ]}
+          rows={[
+            {
+              año: '2025',
+              programado: formatNumber(datos2025.programado),
+              real_granjas: formatNumber(datos2025.real_granjas),
+              comprado: formatNumber(datos2025.comprado),
+              total: formatNumber(datos2025.total),
+              var_pct: `${datos2025.var_pct}%`
+            },
+            {
+              año: '2024',
+              programado: formatNumber(datos2024.programado),
+              real_granjas: formatNumber(datos2024.real_granjas),
+              comprado: formatNumber(datos2024.comprado),
+              total: formatNumber(datos2024.total),
+              var_pct: `${datos2024.var_pct}%`
+            }
+          ]}
+          highlightVariations={true}
+        />
       </CollapsibleTable>
 
       {/* Gráficos Mejorados */}
