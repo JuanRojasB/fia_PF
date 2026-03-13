@@ -78,11 +78,17 @@ class GetDashboardDataUseCase {
         case 'sagrilaft':
           data = await this.dashboardRepository.getSistemaSagrilaft();
           break;
+        case 'presupuesto-2025':
+          data = await this.dashboardRepository.getGestionGerencia();
+          break;
         case 'gerencia':
           data = await this.dashboardRepository.getGestionGerencia();
           break;
         case 'compras':
           data = await this.dashboardRepository.getGestionCompras();
+          break;
+        case 'comercial-pdv':
+          data = await this.dashboardRepository.getComercialPDV();
           break;
         case 'operaciones':
           data = await this.dashboardRepository.getGestionOperaciones();

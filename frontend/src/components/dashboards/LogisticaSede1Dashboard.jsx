@@ -6,10 +6,10 @@ import CollapsibleTable from '../CollapsibleTable';
 
 export default function LogisticaSede1Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', description: '', showTable: false });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, description, showTable = false) => {
+    setModalContent({ title, description, showTable });
     setModalOpen(true);
   };
 
@@ -99,6 +99,7 @@ export default function LogisticaSede1Dashboard({ data }) {
           <div className="bg-white/95 rounded-lg p-4 border border-gray-300">
             <div className="text-sm text-gray-600 mb-1">Responsable</div>
             <div className="text-xl font-bold text-blue-400">Clara Fontalvo</div>
+            <div className="text-xs text-gray-500 mt-1">A cargo de Sede 1</div>
           </div>
           <div className="bg-white/95 rounded-lg p-4 border border-gray-300">
             <div className="text-sm text-gray-600 mb-1">Colaboradores</div>
@@ -136,6 +137,10 @@ export default function LogisticaSede1Dashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
+          onClick={() => openModal(
+            'Variación Anual',
+            `La variación anual de ${formatCurrency(Math.abs(total2025 - total2024))} representa un ${parseFloat(variacionTotal) >= 0 ? 'incremento' : 'reducción'} del ${Math.abs(variacionTotal)}% en los gastos operacionales logísticos de Sede 1. Esta variación está relacionada con la disminución del -9.4% en ventas de pollo asadero durante 2025.`
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -152,6 +157,10 @@ export default function LogisticaSede1Dashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
+          onClick={() => openModal(
+            'Conceptos de Gasto',
+            `Sede 1 gestiona ${conceptosArray.length} conceptos de gasto operacional logístico para la comercialización de pollo entero tipo asadero. Estos rubros incluyen arriendos, fletes, personal, servicios públicos y otros gastos necesarios para la operación. Cada concepto es monitoreado mensualmente para optimizar costos y mantener la eficiencia operativa.`
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -248,9 +257,17 @@ export default function LogisticaSede1Dashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
+        onClick={() => openModal(
+          'Detalle de Gastos Sede 1',
+          `Análisis detallado de gastos operacionales logísticos Sede 1 para 2024 vs 2025. La variación del ${variacionTotal}% refleja una reducción controlada gracias a la optimización de fletes y reducción de personal de postproceso por la unificación de procesos en Sede 3, compensando la disminución del -9.4% en ventas de pollo asadero.`,
+          true
+        )}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-blue-500 transition-all cursor-pointer"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Comparativa de Gastos 2024 vs 2025</h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900">Comparativa de Gastos 2024 vs 2025</h3>
+          <Info className="w-5 h-5 text-blue-400 animate-pulse" />
+        </div>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={conceptosArray} layout="vertical" margin={{ left: 180, right: 30 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -315,7 +332,7 @@ export default function LogisticaSede1Dashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-6xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -330,17 +347,84 @@ export default function LogisticaSede1Dashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              
+              <div className="mb-6 bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {modalContent.description}
+                </p>
               </div>
-              <div className="mt-6 flex justify-end">
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors"
-                >
-                  Entendido
-                </button>
-              </div>
+
+              {/* Tabla dentro del modal - solo si showTable es true */}
+              {modalContent.showTable && (
+                <div className="overflow-x-auto">
+                  <h4 className="text-lg font-bold text-gray-900 mb-4">
+                    GASTOS OPERACIONALES LOGÍSTICOS SEDE 1 AÑO 2024 VS 2025
+                  </h4>
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-gray-300">
+                        <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
+                        <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
+                        <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
+                        <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var 25/24</th>
+                        <th className="text-center py-3 px-4 text-gray-900 font-bold">DIFERENCIA</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {conceptosArray.map((row, idx) => {
+                        const esIncremento = row.diferencia > 0;
+                        
+                        return (
+                          <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                            <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
+                            <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">
+                              $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                            </td>
+                            <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
+                              $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                            </td>
+                            <td className="py-2 px-4 text-right">
+                              <span className={`inline-flex items-center justify-end gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
+                                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
+                                  {esIncremento ? '↑' : '↓'}
+                                </span>
+                                <span className="font-mono w-16 text-right">{row.variacion}%</span>
+                              </span>
+                            </td>
+                            <td className="py-2 px-4 text-center">
+                              <span className={esIncremento ? 'text-red-600' : 'text-green-600'}>
+                                $ {Math.abs(row.diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      <tr className="bg-gray-50 border-t-2 border-gray-400 font-bold">
+                        <td className="py-3 px-4 text-gray-900">TOTAL GASTOS LOGÍSTICOS 2024 VS 2025</td>
+                        <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">
+                          $ {total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </td>
+                        <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
+                          $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <span className={`inline-flex items-center justify-end gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+                              {parseFloat(variacionTotal) > 0 ? '↑' : '↓'}
+                            </span>
+                            <span className="font-mono w-16 text-right font-bold">{variacionTotal}%</span>
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <span className={parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}>
+                            $ {Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}

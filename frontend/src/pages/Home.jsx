@@ -16,12 +16,95 @@ export default function Home() {
   }, [navigate]);
 
   const handleLogout = useCallback(async () => {
+    playSound();
     await authService.logout();
     navigate(ROUTES.LOGIN);
   }, [navigate]);
 
-  const dashboardSections = [
+  const playSound = () => {
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
+    audio.volume = 1.0;
+    audio.playbackRate = 0.7;
+    audio.preservesPitch = true;
+    audio.play().catch(err => console.log('Audio blocked:', err));
+  };
 
+  const handleDashboardClick = () => {
+    playSound();
+    navigate(ROUTES.DASHBOARD);
+  };
+
+  const dashboardSections = [
+    {
+      icon: Factory,
+      label: 'Producción',
+      description: 'Granjas y sacrificio',
+      color: 'from-cyan-400 to-cyan-500',
+      section: 'produccion-granjas'
+    },
+    {
+      icon: TrendingUp,
+      label: 'Comercial',
+      description: 'Ventas por línea',
+      color: 'from-purple-400 to-purple-500',
+      section: 'comercial'
+    },
+    {
+      icon: Users,
+      label: 'Equipo de Ventas',
+      description: 'Desempeño comercial',
+      color: 'from-blue-400 to-blue-500',
+      section: 'ventas'
+    },
+    {
+      icon: BarChart3,
+      label: 'Auditoría',
+      description: 'Merma y devoluciones',
+      color: 'from-yellow-400 to-yellow-500',
+      section: 'auditoria'
+    },
+    {
+      icon: Package,
+      label: 'Logística',
+      description: 'Costos operacionales',
+      color: 'from-pink-400 to-pink-500',
+      section: 'logistica'
+    },
+    {
+      icon: Briefcase,
+      label: 'Cartera',
+      description: 'Morosidad y rotación',
+      color: 'from-green-400 to-green-500',
+      section: 'cartera'
+    },
+    {
+      icon: Briefcase,
+      label: 'Gerencia',
+      description: 'Indicadores estratégicos',
+      color: 'from-indigo-400 to-indigo-500',
+      section: 'gerencia'
+    },
+    {
+      icon: Users,
+      label: 'Humana',
+      description: 'Costos de nómina',
+      color: 'from-orange-400 to-orange-500',
+      section: 'humana'
+    },
+    {
+      icon: Shield,
+      label: 'SAGRILAFT',
+      description: 'Análisis y evaluación',
+      color: 'from-red-400 to-red-500',
+      section: 'sagrilaft'
+    },
+    {
+      icon: DollarSign,
+      label: 'Balance General',
+      description: 'Activos, Pasivos y Patrimonio',
+      color: 'from-blue-400 to-blue-500',
+      section: 'fuentes-usos'
+    }
   ];
 
   return (
@@ -54,65 +137,145 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8 sm:mb-12"
         >
-          <div className="relative inline-block mb-4 sm:mb-6">
-            {/* Outer rotating rings */}
+          <div className="relative w-[350px] h-[350px] mx-auto mb-4 sm:mb-6 flex items-center justify-center">
+            {/* Anillo exterior 1 - más grande */}
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 rounded-full"
+              className="absolute inset-0"
               style={{
-                width: '120px',
-                height: '120px',
-                border: '2px solid transparent',
-                borderTopColor: '#3b82f6',
-                borderRightColor: '#1d4ed8',
-                filter: 'blur(1px)'
-              }}
-            />
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 rounded-full"
-              style={{
-                width: '120px',
-                height: '120px',
-                border: '2px solid transparent',
-                borderBottomColor: '#3b82f6',
-                borderLeftColor: '#1d4ed8',
+                border: '3px solid transparent',
+                borderTopColor: 'rgba(59, 130, 246, 0.5)',
+                borderRadius: '50%',
                 filter: 'blur(1px)'
               }}
             />
             
-            {/* Core orb */}
+            {/* Anillo exterior 2 */}
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+              className="absolute"
+              style={{
+                width: '95%',
+                height: '95%',
+                border: '2px solid transparent',
+                borderRightColor: 'rgba(96, 165, 250, 0.4)',
+                borderBottomColor: 'rgba(96, 165, 250, 0.3)',
+                borderRadius: '50%',
+                filter: 'blur(0.5px)'
+              }}
+            />
+            
+            {/* Anillo medio-exterior */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 13, repeat: Infinity, ease: "linear" }}
+              className="absolute"
+              style={{
+                width: '85%',
+                height: '85%',
+                border: '2px solid transparent',
+                borderLeftColor: 'rgba(59, 130, 246, 0.6)',
+                borderRadius: '50%'
+              }}
+            />
+            
+            {/* Anillo medio */}
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 11, repeat: Infinity, ease: "linear" }}
+              className="absolute"
+              style={{
+                width: '75%',
+                height: '75%',
+                border: '2px solid transparent',
+                borderTopColor: 'rgba(29, 78, 216, 0.5)',
+                borderRightColor: 'rgba(29, 78, 216, 0.3)',
+                borderRadius: '50%',
+                filter: 'blur(0.5px)'
+              }}
+            />
+            
+            {/* Anillo medio-interior */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+              className="absolute"
+              style={{
+                width: '65%',
+                height: '65%',
+                border: '2px solid transparent',
+                borderBottomColor: 'rgba(59, 130, 246, 0.7)',
+                borderRadius: '50%'
+              }}
+            />
+            
+            {/* Anillo interior */}
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
+              className="absolute"
+              style={{
+                width: '55%',
+                height: '55%',
+                border: '2px solid transparent',
+                borderLeftColor: 'rgba(96, 165, 250, 0.6)',
+                borderTopColor: 'rgba(96, 165, 250, 0.4)',
+                borderRadius: '50%',
+                filter: 'blur(0.5px)'
+              }}
+            />
+            
+            {/* Glow effect pulsante exterior */}
             <motion.div
               animate={{
-                scale: [1, 1.05, 1],
-                boxShadow: [
-                  '0 0 40px rgba(59, 130, 246, 0.3)',
-                  '0 0 60px rgba(59, 130, 246, 0.5)',
-                  '0 0 40px rgba(59, 130, 246, 0.3)'
-                ]
+                scale: [1, 1.2, 1],
+                opacity: [0.15, 0.35, 0.15]
               }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-[120px] h-[120px] sm:w-[180px] sm:h-[180px] rounded-full flex items-center justify-center overflow-hidden"
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0"
               style={{
-                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.08) 100%)',
-                border: '1px solid rgba(59, 130, 246, 0.25)'
+                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)',
+                borderRadius: '50%',
+                filter: 'blur(30px)'
+              }}
+            />
+            
+            {/* Glow effect pulsante interior */}
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              className="absolute"
+              style={{
+                width: '70%',
+                height: '70%',
+                background: 'radial-gradient(circle, rgba(96, 165, 250, 0.4) 0%, transparent 60%)',
+                borderRadius: '50%',
+                filter: 'blur(20px)'
+              }}
+            />
+            
+            {/* Core orb - imagen estática más grande */}
+            <div
+              className="relative rounded-full flex items-center justify-center overflow-hidden z-10"
+              style={{
+                width: '260px',
+                height: '260px',
+                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(29, 78, 216, 0.03) 100%)',
+                border: '3px solid rgba(59, 130, 246, 0.3)',
+                boxShadow: '0 15px 50px rgba(59, 130, 246, 0.3)'
               }}
             >
               <img 
                 src={orbImage} 
                 alt="FIA Logo" 
-                className="w-[140%] h-[140%] object-contain"
-                style={{
-                  imageRendering: '-webkit-optimize-contrast',
-                  backfaceVisibility: 'hidden',
-                  transform: 'translateZ(0)',
-                  maskImage: 'radial-gradient(circle, black 50%, transparent 100%)',
-                  WebkitMaskImage: 'radial-gradient(circle, black 50%, transparent 100%)'
-                }}
+                className="w-full h-full object-contain p-4"
               />
-            </motion.div>
+            </div>
           </div>
 
           <motion.h1
@@ -150,7 +313,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            onClick={() => navigate(ROUTES.DASHBOARD)}
+            onClick={handleDashboardClick}
             className="group w-full p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl text-left transition-all hover:scale-[1.02] mb-6 sm:mb-8"
             style={{
               background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.15) 100%)',
@@ -175,27 +338,15 @@ export default function Home() {
                 </div>
               </div>
               <motion.div
-                animate={{ x: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ x: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 className="hidden sm:block"
               >
-                <ArrowRight className="w-8 h-8 lg:w-10 lg:h-10 text-blue-600" />
+                <ArrowRight className="w-8 h-8 lg:w-10 lg:h-10 text-blue-600 group-hover:scale-110 transition-transform" />
               </motion.div>
             </div>
           </motion.button>
-
- 
         </motion.div>
-
-        {/* Footer hint */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="text-center text-gray-500 text-xs sm:text-sm px-4"
-        >
-          Haz clic en "Acceder al Dashboard" para ver todos los análisis comparativos 2024 vs 2025
-        </motion.p>
       </div>
     </div>
   );

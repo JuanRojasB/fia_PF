@@ -28,7 +28,37 @@ export default function HumanaCausasDashboard({ data }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-cyan-500/30 shadow-lg"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-cyan-500/30 hover:border-cyan-500 shadow-lg cursor-pointer transition-all"
+        onClick={() => openModal(
+          'Análisis de Causas de Desvinculación 2025',
+          <div className="space-y-4">
+            <p>Durante 2025 se registraron <strong className="text-cyan-600">{formatNumber(kpis.totalRetiros2025)}</strong> retiros de personal, distribuidos en 9 categorías principales.</p>
+            
+            <div className="bg-cyan-50 rounded-lg p-4 border border-cyan-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Hallazgo Principal:</p>
+              <p className="text-sm text-gray-700">La <strong>Renuncia Voluntaria</strong> representa el 83.81% de los retiros, siendo la causa predominante de desvinculación. Esto indica que la mayoría de las salidas son decisiones del colaborador, no de la empresa.</p>
+            </div>
+
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Causas Administrativas:</p>
+              <p className="text-sm text-gray-700">Las terminaciones por contrato SENA (5.69%), terminación de contrato (4.09%) y período de prueba (2.67%) suman el 12.45% de los retiros, reflejando procesos normales de gestión contractual.</p>
+            </div>
+
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Causas Menores:</p>
+              <p className="text-sm text-gray-700">Las terminaciones con justa causa (1.96%), mutuo acuerdo (0.71%), sin justa causa (0.36%), por pensión (0.53%) y por muerte (0.18%) representan menos del 4% del total.</p>
+            </div>
+
+            <div className="bg-gray-100 rounded-lg p-4">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Implicaciones:</p>
+              <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                <li>Alta rotación voluntaria puede indicar oportunidades de mejora en retención</li>
+                <li>Bajo porcentaje de despidos sugiere buena gestión del desempeño</li>
+                <li>Importante analizar motivos detrás de las renuncias voluntarias</li>
+              </ul>
+            </div>
+          </div>
+        )}
       >
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -37,12 +67,7 @@ export default function HumanaCausasDashboard({ data }) {
               Total de retiros: <span className="text-cyan-600 font-bold">{formatNumber(kpis.totalRetiros2025)}</span> personas
             </p>
           </div>
-          <button
-            onClick={() => openModal('Causas de Desvinculación', 'En 2025 se registraron 562 retiros, de los cuales 84% (471) corresponden a renuncia voluntaria, 12% (66) a terminaciones de contrato (con y sin causa), 3% (15) por período de prueba. El restante 1% corresponde a causas marginales (pensión, fallecimiento, mutuo acuerdo). El predominio de renuncias voluntarias sugiere revisar estrategias de atracción, satisfacción y retención del talento.')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <Info className="w-5 h-5 text-gray-600" />
-          </button>
+          <Info className="w-6 h-6 text-cyan-600" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -66,7 +91,7 @@ export default function HumanaCausasDashboard({ data }) {
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: idx * 0.08, type: "spring", bounce: 0.3 }}
-                className={`relative group cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br ${color.from} ${color.to} p-[2px] hover:scale-105 transition-transform duration-300`}
+                className={`relative group overflow-hidden rounded-2xl bg-gradient-to-br ${color.from} ${color.to} p-[2px] hover:scale-105 transition-transform duration-300`}
               >
                 <div className="relative bg-white backdrop-blur-xl rounded-2xl p-5 h-full shadow-lg">
                   <div className="absolute -top-2 -right-2 w-12 h-12 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-gray-300 shadow-lg">
@@ -87,7 +112,7 @@ export default function HumanaCausasDashboard({ data }) {
                       </div>
                       <div className="text-right">
                         <div className="text-3xl font-black text-gray-900">
-                          {motivo.porcentaje}%
+                          {motivo.porcentaje % 1 === 0 ? Math.round(motivo.porcentaje) : motivo.porcentaje}%
                         </div>
                         <div className="text-gray-600 text-xs font-medium">del total</div>
                       </div>

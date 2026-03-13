@@ -74,6 +74,10 @@ export default function PlantaBeneficioDashboard({ data }) {
 
   return (
     <div className="space-y-8">
+      {/* Descripción */}
+      <div className="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl p-6 border border-blue-300">
+        <p className="text-gray-700">Análisis operativo de la planta de beneficio con 17.744.156 aves procesadas (-0.77% vs 2024). Peso promedio de 1.987g por ave, merma reducida a 5.38% (vs 6.55% en 2024) y participación canal+víscera de 94.68%.</p>
+      </div>
 
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -465,10 +469,10 @@ export default function PlantaBeneficioDashboard({ data }) {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-cyan-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <Info className="w-6 h-6 text-cyan-600" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
-                <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+                <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
@@ -477,13 +481,13 @@ export default function PlantaBeneficioDashboard({ data }) {
               {/* Tabla de datos */}
               {modalContent.table && modalContent.table.length > 0 && (
                 <div className="mt-6">
-                  <h4 className="text-lg font-bold text-white mb-3">Datos Detallados</h4>
+                  <h4 className="text-lg font-bold text-gray-900 mb-3">Datos Detallados</h4>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-slate-600">
+                        <tr className="border-b border-gray-300">
                           {Object.keys(modalContent.table[0]).map((key) => (
-                            <th key={key} className="text-left py-3 px-4 text-cyan-400 font-semibold">
+                            <th key={key} className="text-left py-3 px-4 text-cyan-600 font-semibold">
                               {key}
                             </th>
                           ))}
@@ -491,7 +495,7 @@ export default function PlantaBeneficioDashboard({ data }) {
                       </thead>
                       <tbody>
                         {modalContent.table.map((row, idx) => (
-                          <tr key={idx} className="border-b border-gray-300 hover:bg-gray-50">
+                          <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
                             {Object.values(row).map((value, i) => (
                               <td key={i} className="py-3 px-4 text-gray-700">
                                 {value}

@@ -42,6 +42,10 @@ class IDashboardRepository {
   async getGestionAuditoria() {
     throw new Error('Método getGestionAuditoria() debe ser implementado');
   }
+
+  async getComercialPDV() {
+    throw new Error('Método getComercialPDV() debe ser implementado');
+  }
 }
 
 module.exports = IDashboardRepository;

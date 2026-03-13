@@ -13,6 +13,11 @@ export default function CalidadDashboard({ data }) {
 
   return (
     <div className="space-y-6">
+      {/* Descripción */}
+      <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl p-6 border border-blue-300">
+        <p className="text-gray-700">Análisis consolidado de los procesos de Aseguramiento de Calidad, Compras, HSEQ, Bienestar Animal y Vigías de Riesgos.</p>
+      </div>
+
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <motion.div
@@ -23,7 +28,7 @@ export default function CalidadDashboard({ data }) {
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-xs font-medium">Accidentes Laborales</span>
-            <AlertTriangle className="w-5 h-5 text-orange-400" />
+            <AlertTriangle className="w-5 h-5 text-orange-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">112</div>
           <div className="text-xs text-gray-600">Registrados en 2025</div>
@@ -39,11 +44,11 @@ export default function CalidadDashboard({ data }) {
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-xs font-medium">Reducción PQRs</span>
-            <TrendingDown className="w-5 h-5 text-green-400" />
+            <TrendingDown className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">-28.45%</div>
           <div className="text-xs text-gray-600">vs 2024</div>
-          <div className="text-xs text-green-400 mt-1">Mejora continua</div>
+          <div className="text-xs text-green-600 mt-1">Mejora continua</div>
         </motion.div>
 
         <motion.div
@@ -55,11 +60,11 @@ export default function CalidadDashboard({ data }) {
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-xs font-medium">Planes de Acción</span>
-            <FileCheck className="w-5 h-5 text-blue-400" />
+            <FileCheck className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">154</div>
           <div className="text-xs text-gray-600">Ejecutados en 2025</div>
-          <div className="text-xs text-blue-400 mt-1">+27.92% vs 2024</div>
+          <div className="text-xs text-blue-600 mt-1">+27.92% vs 2024</div>
         </motion.div>
 
         <motion.div
@@ -71,11 +76,11 @@ export default function CalidadDashboard({ data }) {
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-xs font-medium">Auditorías ISO</span>
-            <Shield className="w-5 h-5 text-purple-400" />
+            <Shield className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">14</div>
           <div className="text-xs text-gray-600">Procesos auditados</div>
-          <div className="text-xs text-purple-400 mt-1">ISO 9001:2015</div>
+          <div className="text-xs text-purple-600 mt-1">ISO 9001:2015</div>
         </motion.div>
       </div>
 
@@ -84,37 +89,36 @@ export default function CalidadDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        onClick={() => openModal('Gestión Ambiental', 'Reducción del consumo de agua potable por ave beneficiada: 5.9% respecto a 2024 y 16.07% respecto a 2023. Gestión de residuos sólidos: aumento del 24.65% en residuos aprovechables respecto a 2024. Realización de 23 capacitaciones y 24 sensibilizaciones sobre prevención de plagas, manejo de residuos y ahorro de recursos.')}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 cursor-pointer transition-all"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold text-white">Gestión Ambiental 2025</h3>
-            <p className="text-sm text-gray-400 mt-1">Reducción de consumo y gestión de residuos</p>
+            <h3 className="text-2xl font-bold text-gray-900">Gestión Ambiental 2025</h3>
+            <p className="text-sm text-gray-600 mt-1">Reducción de consumo y gestión de residuos</p>
           </div>
-          <button onClick={() => openModal('Gestión Ambiental', 'Reducción del consumo de agua potable por ave beneficiada: 5.9% respecto a 2024 y 16.07% respecto a 2023. Gestión de residuos sólidos: aumento del 24.65% en residuos aprovechables respecto a 2024. Realización de 23 capacitaciones y 24 sensibilizaciones sobre prevención de plagas, manejo de residuos y ahorro de recursos.')} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-            <Info className="w-6 h-6 text-gray-400" />
-          </button>
+          <Info className="w-6 h-6 text-green-600" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Reducción Agua */}
-          <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-blue-500/30">
+          <div className="bg-white rounded-xl p-4 sm:p-5 border-2 border-blue-500/30">
             <div className="flex items-center gap-2 mb-3">
               <Droplet className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
-              <h4 className="text-lg font-bold text-blue-400">Consumo de Agua</h4>
+              <h4 className="text-lg font-bold text-blue-600">Consumo de Agua</h4>
             </div>
             <div className="space-y-3">
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-500/20">
-                <div className="text-sm text-gray-400 mb-1">vs 2024</div>
-                <div className="text-4xl font-bold text-white mb-2">-5.9%</div>
-                <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <div className="text-sm text-gray-600 mb-1">vs 2024</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">-5.9%</div>
+                <div className="text-xs text-gray-600 leading-relaxed">
                   Por ave beneficiada
                 </div>
               </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-500/20">
-                <div className="text-sm text-gray-400 mb-1">vs 2023</div>
-                <div className="text-4xl font-bold text-white mb-2">-16.07%</div>
-                <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <div className="text-sm text-gray-600 mb-1">vs 2023</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">-16.07%</div>
+                <div className="text-xs text-gray-600 leading-relaxed">
                   Reducción acumulada
                 </div>
               </div>
@@ -122,23 +126,23 @@ export default function CalidadDashboard({ data }) {
           </div>
 
           {/* Residuos Aprovechables */}
-          <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-green-500/30">
+          <div className="bg-white rounded-xl p-4 sm:p-5 border-2 border-green-500/30">
             <div className="flex items-center gap-2 mb-3">
               <Recycle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-              <h4 className="text-lg font-bold text-green-400">Residuos Aprovechables</h4>
+              <h4 className="text-lg font-bold text-green-600">Residuos Aprovechables</h4>
             </div>
             <div className="space-y-3">
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-green-500/20">
-                <div className="text-sm text-gray-400 mb-1">Incremento 2025</div>
-                <div className="text-4xl font-bold text-white mb-2">+24.65%</div>
-                <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <div className="text-sm text-gray-600 mb-1">Incremento 2025</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">+24.65%</div>
+                <div className="text-xs text-gray-600 leading-relaxed">
                   vs 2024
                 </div>
               </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-red-500/20">
-                <div className="text-sm text-gray-400 mb-1">Canastillas rotas</div>
-                <div className="text-4xl font-bold text-white mb-2">-20.02%</div>
-                <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+                <div className="text-sm text-gray-600 mb-1">Canastillas rotas</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">-20.02%</div>
+                <div className="text-xs text-gray-600 leading-relaxed">
                   Reducción vs 2024
                 </div>
               </div>
@@ -146,23 +150,23 @@ export default function CalidadDashboard({ data }) {
           </div>
 
           {/* Capacitaciones */}
-          <div className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-5 border-2 border-purple-500/30">
+          <div className="bg-white rounded-xl p-4 sm:p-5 border-2 border-purple-500/30">
             <div className="flex items-center gap-2 mb-3">
               <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-              <h4 className="text-lg font-bold text-purple-400">Capacitaciones</h4>
+              <h4 className="text-lg font-bold text-purple-600">Capacitaciones</h4>
             </div>
             <div className="space-y-3">
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/20">
-                <div className="text-sm text-gray-400 mb-1">Ambientales</div>
-                <div className="text-4xl font-bold text-white mb-2">23</div>
-                <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <div className="text-sm text-gray-600 mb-1">Ambientales</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">23</div>
+                <div className="text-xs text-gray-600 leading-relaxed">
                   Capacitaciones realizadas
                 </div>
               </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/20">
-                <div className="text-sm text-gray-400 mb-1">Sensibilizaciones</div>
-                <div className="text-4xl font-bold text-white mb-2">24</div>
-                <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <div className="text-sm text-gray-600 mb-1">Sensibilizaciones</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">24</div>
+                <div className="text-xs text-gray-600 leading-relaxed">
                   Prevención y manejo
                 </div>
               </div>
@@ -176,38 +180,37 @@ export default function CalidadDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        onClick={() => openModal('SST 2025', 'Ejecución de un simulacro de evacuación en octubre y 22 capacitaciones con 347 asistentes. Implementación de gimnasia laboral para mitigar riesgos osteomusculares. Retorno de visitas a sedes y puntos de venta para inspecciones de seguridad. Actualización de documentos como matriz legal, matriz de riesgos y reglamento de higiene y seguridad industrial.')}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 cursor-pointer transition-all"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold text-white">Seguridad y Salud en el Trabajo</h3>
-            <p className="text-sm text-gray-400 mt-1">Actividades y capacitaciones SST 2025</p>
+            <h3 className="text-2xl font-bold text-gray-900">Seguridad y Salud en el Trabajo</h3>
+            <p className="text-sm text-gray-600 mt-1">Actividades y capacitaciones SST 2025</p>
           </div>
-          <button onClick={() => openModal('SST 2025', 'Ejecución de un simulacro de evacuación en octubre y 22 capacitaciones con 347 asistentes. Implementación de gimnasia laboral para mitigar riesgos osteomusculares. Retorno de visitas a sedes y puntos de venta para inspecciones de seguridad. Actualización de documentos como matriz legal, matriz de riesgos y reglamento de higiene y seguridad industrial.')} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-            <Info className="w-6 h-6 text-gray-400" />
-          </button>
+          <Info className="w-6 h-6 text-orange-600" />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-cyan-500/30">
+          <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-cyan-500/30">
             <div className="text-xs text-gray-600 mb-1">Capacitaciones</div>
             <div className="text-2xl sm:text-3xl font-bold text-gray-900">22</div>
-            <div className="text-xs text-gray-500 mt-1">Realizadas</div>
+            <div className="text-xs text-gray-600 mt-1">Realizadas</div>
           </div>
-          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-green-500/30">
+          <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-green-500/30">
             <div className="text-xs text-gray-600 mb-1">Asistentes</div>
             <div className="text-2xl sm:text-3xl font-bold text-gray-900">347</div>
-            <div className="text-xs text-gray-500 mt-1">Participantes</div>
+            <div className="text-xs text-gray-600 mt-1">Participantes</div>
           </div>
-          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-purple-500/30">
+          <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-purple-500/30">
             <div className="text-xs text-gray-600 mb-1">Simulacros</div>
             <div className="text-2xl sm:text-3xl font-bold text-gray-900">1</div>
-            <div className="text-xs text-gray-500 mt-1">Octubre 2025</div>
+            <div className="text-xs text-gray-600 mt-1">Octubre 2025</div>
           </div>
-          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-orange-500/30">
+          <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-orange-500/30">
             <div className="text-xs text-gray-600 mb-1">Gimnasia Laboral</div>
             <div className="text-xl sm:text-2xl font-bold text-gray-900">Activa</div>
-            <div className="text-xs text-gray-500 mt-1">Prevención</div>
+            <div className="text-xs text-gray-600 mt-1">Prevención</div>
           </div>
         </div>
       </motion.div>
@@ -218,38 +221,37 @@ export default function CalidadDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          onClick={() => openModal('ISO 9001', 'Actualización de matrices de partes interesadas, DOFA/PESTEL y caracterización de procesos. Implementación de la plataforma ISOLUCION para digitalizar el sistema de gestión de calidad. Avances en la transición hacia la ISO 9001:2026, con mayor integración digital y tecnológica, reorganización del capítulo de mejora y énfasis en la experiencia del cliente.')}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 cursor-pointer transition-all"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-bold text-white">Sistema de Gestión ISO</h3>
-              <p className="text-xs text-gray-400 mt-1">Transición a ISO 9001:2026</p>
+              <h3 className="text-xl font-bold text-gray-900">Sistema de Gestión ISO</h3>
+              <p className="text-xs text-gray-600 mt-1">Transición a ISO 9001:2026</p>
             </div>
-            <button onClick={() => openModal('ISO 9001', 'Actualización de matrices de partes interesadas, DOFA/PESTEL y caracterización de procesos. Implementación de la plataforma ISOLUCION para digitalizar el sistema de gestión de calidad. Avances en la transición hacia la ISO 9001:2026, con mayor integración digital y tecnológica, reorganización del capítulo de mejora y énfasis en la experiencia del cliente.')} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-              <Info className="w-5 h-5 text-gray-400" />
-            </button>
+            <Info className="w-5 h-5 text-blue-600" />
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg border border-green-500/30">
-              <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-300">
+              <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
               <div className="flex-1">
-                <div className="text-sm font-medium text-white">Plataforma ISOLUCION</div>
-                <div className="text-xs text-gray-400">Digitalización del SGC</div>
+                <div className="text-sm font-medium text-gray-900">Plataforma ISOLUCION</div>
+                <div className="text-xs text-gray-600">Digitalización del SGC</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-blue-500/10 rounded-lg border border-blue-500/30">
-              <CheckCircle className="w-5 h-5 text-blue-400 flex-shrink-0" />
+            <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-300">
+              <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0" />
               <div className="flex-1">
-                <div className="text-sm font-medium text-white">Comité Triángulo de Calidad</div>
-                <div className="text-xs text-gray-400">Ejecución mensual</div>
+                <div className="text-sm font-medium text-gray-900">Comité Triángulo de Calidad</div>
+                <div className="text-xs text-gray-600">Ejecución mensual</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-purple-500/10 rounded-lg border border-purple-500/30">
-              <CheckCircle className="w-5 h-5 text-purple-400 flex-shrink-0" />
+            <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg border border-purple-300">
+              <CheckCircle className="w-5 h-5 text-purple-600 flex-shrink-0" />
               <div className="flex-1">
-                <div className="text-sm font-medium text-white">Actualización CRM SIESA</div>
-                <div className="text-xs text-gray-400">Trazabilidad mejorada</div>
+                <div className="text-sm font-medium text-gray-900">Actualización CRM SIESA</div>
+                <div className="text-xs text-gray-600">Trazabilidad mejorada</div>
               </div>
             </div>
           </div>
@@ -259,34 +261,33 @@ export default function CalidadDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          onClick={() => openModal('Satisfacción Cliente', 'Ejecución de 1.166 encuestas de satisfacción, con una disminución del 38% frente a 2024. La reducción de PQRs en un 28.45% refleja mejoras en la experiencia del cliente.')}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-cyan-500/30 hover:border-cyan-500 cursor-pointer transition-all"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-bold text-white">Encuestas de Satisfacción</h3>
-              <p className="text-xs text-gray-400 mt-1">Medición experiencia del cliente</p>
+              <h3 className="text-xl font-bold text-gray-900">Encuestas de Satisfacción</h3>
+              <p className="text-xs text-gray-600 mt-1">Medición experiencia del cliente</p>
             </div>
-            <button onClick={() => openModal('Satisfacción Cliente', 'Ejecución de 1.166 encuestas de satisfacción, con una disminución del 38% frente a 2024. La reducción de PQRs en un 28.45% refleja mejoras en la experiencia del cliente.')} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-              <Info className="w-5 h-5 text-gray-400" />
-            </button>
+            <Info className="w-5 h-5 text-cyan-600" />
           </div>
 
-          <div className="bg-white/95 backdrop-blur-xl rounded-lg p-4 sm:p-5 border border-cyan-500/30 mb-4">
+          <div className="bg-white rounded-lg p-4 sm:p-5 border-2 border-cyan-500/30 mb-4">
             <div className="text-center">
               <div className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">1,166</div>
               <div className="text-sm text-gray-600">Encuestas Realizadas 2025</div>
-              <div className="text-xs text-gray-500 mt-1">-38% vs 2024</div>
+              <div className="text-xs text-gray-600 mt-1">-38% vs 2024</div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-slate-700/30 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-green-400">-28.45%</div>
-              <div className="text-xs text-gray-400 mt-1">Reducción PQRs</div>
+            <div className="bg-green-50 rounded-lg p-3 text-center border border-green-300">
+              <div className="text-2xl font-bold text-green-600">-28.45%</div>
+              <div className="text-xs text-gray-600 mt-1">Reducción PQRs</div>
             </div>
-            <div className="bg-slate-700/30 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-blue-400">+27.92%</div>
-              <div className="text-xs text-gray-400 mt-1">Planes acción</div>
+            <div className="bg-blue-50 rounded-lg p-3 text-center border border-blue-300">
+              <div className="text-2xl font-bold text-blue-600">+27.92%</div>
+              <div className="text-xs text-gray-600 mt-1">Planes acción</div>
             </div>
           </div>
         </motion.div>
@@ -342,19 +343,19 @@ export default function CalidadDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-cyan-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <Info className="w-6 h-6 text-cyan-600" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
-                <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+                <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">{modalContent.description}</div>
+              <div className="text-gray-700 leading-relaxed">{modalContent.description}</div>
               <div className="mt-6 flex justify-end">
                 <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors">
                   Entendido

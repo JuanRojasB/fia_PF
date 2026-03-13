@@ -53,6 +53,11 @@ export default function HumanaDashboard({ data }) {
 
   return (
     <div className="space-y-6">
+      {/* Descripción */}
+      <div className="bg-gradient-to-r from-cyan-100 to-blue-100 rounded-xl p-6 border border-cyan-300">
+        <p className="text-gray-700">Análisis consolidado de la planta de personal, costos de nómina y rotación de colaboradores, reflejando el crecimiento moderado para fortalecer áreas estratégicas y garantizar la sostenibilidad de la operación.</p>
+      </div>
+
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 
@@ -248,26 +253,26 @@ export default function HumanaDashboard({ data }) {
             {/* 2024 */}
             <div className="space-y-3">
               <div className="text-center">
-                <h4 className="text-lg font-bold text-cyan-400">2024</h4>
+                <h4 className="text-lg font-bold text-cyan-600">2024</h4>
               </div>
               
-              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-lg p-4 border border-purple-500/30 h-[90px]">
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-500/30 h-[90px]">
                 <div className="flex items-center justify-between h-full">
                   <div>
                     <div className="text-xs text-gray-600 mb-1">Ingresos</div>
-                    <div className="text-2xl font-bold text-white">{formatNumber(rotacionData[1]?.ingresos || 0)}</div>
+                    <div className="text-2xl font-bold text-gray-900">{formatNumber(rotacionData[1]?.ingresos || 0)}</div>
                   </div>
-                  <UserPlus className="w-6 h-6 text-purple-400" />
+                  <UserPlus className="w-6 h-6 text-purple-600" />
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 rounded-lg p-4 border border-red-500/30 h-[90px]">
+              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-500/30 h-[90px]">
                 <div className="flex items-center justify-between h-full">
                   <div>
                     <div className="text-xs text-gray-600 mb-1">Retiros</div>
-                    <div className="text-2xl font-bold text-white">{formatNumber(rotacionData[1]?.retiros || 0)}</div>
+                    <div className="text-2xl font-bold text-gray-900">{formatNumber(rotacionData[1]?.retiros || 0)}</div>
                   </div>
-                  <UserMinus className="w-6 h-6 text-red-400" />
+                  <UserMinus className="w-6 h-6 text-red-600" />
                 </div>
               </div>
 
@@ -282,44 +287,44 @@ export default function HumanaDashboard({ data }) {
             {/* 2025 */}
             <div className="space-y-3">
               <div className="text-center">
-                <h4 className="text-lg font-bold text-orange-400">2025</h4>
+                <h4 className="text-lg font-bold text-orange-600">2025</h4>
               </div>
               
-              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-lg p-4 border border-purple-500/30 h-[90px]">
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-500/30 h-[90px]">
                 <div className="flex items-center justify-between h-full">
                   <div className="flex-1">
                     <div className="text-xs text-gray-600 mb-1">Ingresos</div>
                     <div className="flex items-baseline gap-2">
-                      <div className="text-2xl font-bold text-white">{formatNumber(rotacionData[0]?.ingresos || 0)}</div>
-                      <div className="text-xs text-green-400 flex items-center gap-1">
+                      <div className="text-2xl font-bold text-gray-900">{formatNumber(rotacionData[0]?.ingresos || 0)}</div>
+                      <div className="text-xs text-green-600 flex items-center gap-1">
                         <ArrowUp className="w-3 h-3" />
                         +{formatNumber((rotacionData[0]?.ingresos || 0) - (rotacionData[1]?.ingresos || 0))}
                       </div>
                     </div>
                   </div>
-                  <UserPlus className="w-6 h-6 text-purple-400" />
+                  <UserPlus className="w-6 h-6 text-purple-600" />
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 rounded-lg p-4 border border-red-500/30 h-[90px]">
+              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-500/30 h-[90px]">
                 <div className="flex items-center justify-between h-full">
                   <div className="flex-1">
                     <div className="text-xs text-gray-600 mb-1">Retiros</div>
                     <div className="flex items-baseline gap-2">
-                      <div className="text-2xl font-bold text-white">{formatNumber(rotacionData[0]?.retiros || 0)}</div>
-                      <div className="text-xs text-orange-400 flex items-center gap-1">
+                      <div className="text-2xl font-bold text-gray-900">{formatNumber(rotacionData[0]?.retiros || 0)}</div>
+                      <div className="text-xs text-orange-600 flex items-center gap-1">
                         <ArrowUp className="w-3 h-3" />
                         +{formatNumber((rotacionData[0]?.retiros || 0) - (rotacionData[1]?.retiros || 0))}
                       </div>
                     </div>
                   </div>
-                  <UserMinus className="w-6 h-6 text-red-400" />
+                  <UserMinus className="w-6 h-6 text-red-600" />
                 </div>
               </div>
 
               <div className="bg-gray-100 rounded-lg p-3 border border-gray-300 text-center h-[70px] flex flex-col justify-center">
                 <div className="text-xs text-gray-600 mb-1">Saldo Neto</div>
-                <div className={`text-xl font-bold ${(rotacionData[0]?.ingresos - rotacionData[0]?.retiros) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <div className={`text-xl font-bold ${(rotacionData[0]?.ingresos - rotacionData[0]?.retiros) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                   {(rotacionData[0]?.ingresos - rotacionData[0]?.retiros) >= 0 ? '+' : ''}{formatNumber((rotacionData[0]?.ingresos || 0) - (rotacionData[0]?.retiros || 0))}
                 </div>
               </div>
@@ -342,22 +347,22 @@ export default function HumanaDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-cyan-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <Info className="w-6 h-6 text-cyan-600" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="text-gray-600 hover:text-white transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed">
                 {modalContent.description}
               </div>
               <div className="mt-6 flex justify-end">

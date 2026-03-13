@@ -286,113 +286,154 @@ class DashboardRepository extends IDashboardRepository {
     const db = getInstance();
     const pool = db.getPool();
     
-    let exposicionCartera = [];
-    let mixVentas = [];
-    
-    // Vista: Exposición de cartera 2025 vs 2024 - NUEVA (opcional)
-    try {
-      const [result] = await pool.query(`
-        SELECT * FROM vista_fin_exposicion_cartera_25_vs_24 ORDER BY mes_num
-      `);
-      exposicionCartera = result;
-    } catch (error) {
-      console.log('⚠️ Vista vista_fin_exposicion_cartera_25_vs_24 no existe, continuando sin exposición');
-    }
-    
-    // Vista: Mix de ventas 2025 (contado/crédito, morosidad, rotación) - NUEVA (opcional)
-    try {
-      const [result] = await pool.query(`
-        SELECT * FROM vista_fin_mix_ventas_2025 ORDER BY mes_num
-      `);
-      mixVentas = result;
-    } catch (error) {
-      console.log('⚠️ Vista vista_fin_mix_ventas_2025 no existe, continuando sin mix de ventas');
-    }
-    
-    // Todos los clientes con detalles completos
-    const [clientes] = await pool.query(`
-      SELECT 
-        id_cliente,
-        nombre_cliente,
-        dias_rotacion_real,
-        saldo_pendiente,
-        asesor_asignado,
-        (saldo_pendiente / 1000000) as saldo_millones
-      FROM com_cartera_clientes
-      ORDER BY saldo_pendiente DESC
-    `);
-    
-    // Calcular métricas generales
-    const totalCartera = clientes.reduce((sum, c) => sum + (parseFloat(c.saldo_pendiente) || 0), 0);
-    const promedioRotacion = clientes.length > 0
-      ? clientes.reduce((sum, c) => sum + (parseFloat(c.dias_rotacion_real) || 0), 0) / clientes.length
-      : 0;
-    
-    // Agrupar por asesor
-    const porAsesor = clientes.reduce((acc, c) => {
-      const asesor = c.asesor_asignado || 'Sin asignar';
-      if (!acc[asesor]) {
-        acc[asesor] = { 
-          clientes: 0, 
-          cartera: 0, 
-          rotacionTotal: 0,
-          rotacionPromedio: 0,
-          clientesLista: []
-        };
-      }
-      acc[asesor].clientes += 1;
-      acc[asesor].cartera += parseFloat(c.saldo_pendiente) || 0;
-      acc[asesor].rotacionTotal += parseFloat(c.dias_rotacion_real) || 0;
-      acc[asesor].clientesLista.push({
-        nombre: c.nombre_cliente,
-        saldo: c.saldo_pendiente,
-        rotacion: c.dias_rotacion_real
-      });
-      return acc;
-    }, {});
-    
-    // Calcular promedios por asesor
-    Object.keys(porAsesor).forEach(asesor => {
-      const data = porAsesor[asesor];
-      data.rotacionPromedio = (data.rotacionTotal / data.clientes).toFixed(2);
-      data.carteraPorcentaje = totalCartera > 0 ? ((data.cartera / totalCartera) * 100).toFixed(2) : 0;
-    });
-    
-    // Clasificar clientes por rango de rotación
-    const porRangoRotacion = {
-      'Excelente (0-15 días)': clientes.filter(c => c.dias_rotacion_real <= 15).length,
-      'Bueno (16-30 días)': clientes.filter(c => c.dias_rotacion_real > 15 && c.dias_rotacion_real <= 30).length,
-      'Regular (31-45 días)': clientes.filter(c => c.dias_rotacion_real > 30 && c.dias_rotacion_real <= 45).length,
-      'Malo (46-60 días)': clientes.filter(c => c.dias_rotacion_real > 45 && c.dias_rotacion_real <= 60).length,
-      'Crítico (>60 días)': clientes.filter(c => c.dias_rotacion_real > 60).length
+    // Datos mensuales detallados de gestión de cartera 2025
+    const datosMensuales = [
+      { mes: 'Ene', total_cartera: 14412689391, cartera_vencida: 6176399177, indice_morosidad: 43, dias_rotacion: 19.78, pct_contado: 35.86, pct_credito: 64.13, ventas_contado: 11987878785, ventas_credito: 21437479983 },
+      { mes: 'Feb', total_cartera: 15097421607, cartera_vencida: 7065964437, indice_morosidad: 47, dias_rotacion: 16.59, pct_contado: 33.54, pct_credito: 66.46, ventas_contado: 10438364907, ventas_credito: 20679848688 },
+      { mes: 'Mar', total_cartera: 14469921094, cartera_vencida: 7277406809, indice_morosidad: 50, dias_rotacion: 16.47, pct_contado: 35.13, pct_credito: 64.87, ventas_contado: 11609872525, ventas_credito: 21437803674 },
+      { mes: 'Abr', total_cartera: 17936508752, cartera_vencida: 8717656442, indice_morosidad: 49, dias_rotacion: 14.39, pct_contado: 33.84, pct_credito: 66.16, ventas_contado: 10356355285, ventas_credito: 20251153500 },
+      { mes: 'May', total_cartera: 18209254924, cartera_vencida: 7030281613, indice_morosidad: 39, dias_rotacion: 15.32, pct_contado: 39.09, pct_credito: 60.91, ventas_contado: 12985883589, ventas_credito: 20238388567 },
+      { mes: 'Jun', total_cartera: 18490901842, cartera_vencida: 8583907709, indice_morosidad: 46, dias_rotacion: 16.79, pct_contado: 38.01, pct_credito: 61.99, ventas_contado: 11041764270, ventas_credito: 18011416335 },
+      { mes: 'Jul', total_cartera: 16734768996, cartera_vencida: 6118360787, indice_morosidad: 37, dias_rotacion: 12.69, pct_contado: 38.59, pct_credito: 61.40, ventas_contado: 12805263305, ventas_credito: 20372743972 },
+      { mes: 'Ago', total_cartera: 20856456595, cartera_vencida: 10315161061, indice_morosidad: 49, dias_rotacion: 17.01, pct_contado: 36.90, pct_credito: 63.10, ventas_contado: 11388755473, ventas_credito: 19478201008 },
+      { mes: 'Sep', total_cartera: 17309202563, cartera_vencida: 7218602492, indice_morosidad: 42, dias_rotacion: 16.06, pct_contado: 35.76, pct_credito: 64.24, ventas_contado: 11061123842, ventas_credito: 19870276930 },
+      { mes: 'Oct', total_cartera: 19652177415, cartera_vencida: 11656799639, indice_morosidad: 59, dias_rotacion: 16.05, pct_contado: 40.81, pct_credito: 59.19, ventas_contado: 15827220099, ventas_credito: 22958626315 },
+      { mes: 'Nov', total_cartera: 20952520953, cartera_vencida: 10134081938, indice_morosidad: 48, dias_rotacion: 16.21, pct_contado: 40.58, pct_credito: 59.42, ventas_contado: 14939957297, ventas_credito: 21873567783 },
+      { mes: 'Dic', total_cartera: 16785466719, cartera_vencida: 8486129930, indice_morosidad: 51, dias_rotacion: 15.4, pct_contado: 46.85, pct_credito: 53.15, ventas_contado: 20054162655, ventas_credito: 22754467018 }
+    ];
+
+    // Exposición de cartera 2025 vs 2024
+    const exposicionCartera = [
+      { mes: 'Enero', t2025: 14413, t2024: 17366, variacion: '-17' },
+      { mes: 'Febrero', t2025: 15097, t2024: 17668, variacion: '-15' },
+      { mes: 'Marzo', t2025: 15568, t2024: 18555, variacion: '-16' },
+      { mes: 'Abril', t2025: 17937, t2024: 17161, variacion: '5' },
+      { mes: 'Mayo', t2025: 18209, t2024: 16978, variacion: '7' },
+      { mes: 'Junio', t2025: 18491, t2024: 17763, variacion: '4' },
+      { mes: 'Julio', t2025: 16735, t2024: 17415, variacion: '-4' },
+      { mes: 'Agosto', t2025: 20667, t2024: 18241, variacion: '13' },
+      { mes: 'Septiembre', t2025: 17110, t2024: 19078, variacion: '-10' },
+      { mes: 'Octubre', t2025: 19652, t2024: 20493, variacion: '-4' },
+      { mes: 'Noviembre', t2025: 22838, t2024: 18704, variacion: '22' },
+      { mes: 'Diciembre', t2025: 16785, t2024: 16971, variacion: '-1' }
+    ];
+
+    // Resumen anual
+    const resumenAnual = {
+      rotacion_dic_2025: '15,40',
+      rotacion_dic_2024: '20,86',
+      ventas_contado_promedio: '37.91',
+      ventas_credito_promedio: '62.09',
+      morosidad_promedio: '46.63',
+      cartera_dic_2025: 16785,
+      variacion_dic: '-1'
     };
     
-    // Top 10 clientes por saldo
-    const top10Clientes = clientes.slice(0, 10);
-    
-    // Clientes con rotación crítica (>60 días)
-    const clientesCriticos = clientes.filter(c => c.dias_rotacion_real > 60);
-    
     return {
-      // Vistas nuevas
-      exposicionCartera,
-      mixVentas,
-      
-      // Datos existentes
-      clientes,
-      porAsesor,
-      porRangoRotacion,
-      top10Clientes,
-      clientesCriticos,
-      totales: {
-        totalCartera,
-        totalCarteraMillones: (totalCartera / 1000000).toFixed(2),
-        promedioRotacion: promedioRotacion.toFixed(2),
-        totalClientes: clientes.length,
-        totalAsesores: Object.keys(porAsesor).length,
-        clientesCriticos: clientesCriticos.length,
-        porcentajeCriticos: ((clientesCriticos.length / clientes.length) * 100).toFixed(2)
+      resumenAnual,
+      datosMensuales,
+      exposicionCartera
+    };
+  }
+
+  // ==================== COMERCIAL PDV ====================
+  
+  async getComercialPDV() {
+    const db = getInstance();
+    const pool = db.getPool();
+    
+    // Datos basados en el texto proporcionado (hardcodeados según el texto del usuario)
+    const resumen = {
+      total_pdv: 22,
+      total_coordinadores: 7
+    };
+
+    const coordinadores = [
+      {
+        nombre: 'Elmira Gonzalez',
+        cantidad_pdv: 7,
+        ubicaciones: ['6 puntos en el sur de Bogotá', '1 punto en Fusagasugá']
+      },
+      {
+        nombre: 'Michael Arias',
+        cantidad_pdv: 5,
+        ubicaciones: ['5 puntos en el Norte de Bogotá']
+      },
+      {
+        nombre: 'Adriana',
+        cantidad_pdv: 1,
+        ubicaciones: ['Chiquinquirá']
+      },
+      {
+        nombre: 'John Ramirez',
+        cantidad_pdv: 2,
+        ubicaciones: ['Tunja', 'Sogamoso']
+      },
+      {
+        nombre: 'Julián Mora',
+        cantidad_pdv: 5,
+        ubicaciones: ['4 locales en Yopal', '1 local en Aguazul']
+      },
+      {
+        nombre: 'Ivan Romero',
+        cantidad_pdv: 1,
+        ubicaciones: ['Central de carnes del frigorífico de Guadalupe']
+      },
+      {
+        nombre: 'Belisario Eguis',
+        cantidad_pdv: 1,
+        ubicaciones: ['Visión Colombia']
       }
+    ];
+
+    // Datos de crecimiento Bogotá según el texto (2024 vs 2025)
+    const crecimientoBogota = {
+      // Total Bogotá
+      kilos_2024_ton: 675,
+      kilos_2025_ton: 723,
+      crecimiento_kilos_pct: 7,
+      millones_2024: 5965,
+      millones_2025: 6514,
+      crecimiento_millones_pct: 9,
+      
+      // Por zona
+      por_zona: [
+        {
+          zona: 'Norte',
+          kilos_2024: 217,
+          kilos_2025: 244,
+          crecimiento_kilos: 12,
+          millones_2024: 2123,
+          millones_2025: 2504,
+          crecimiento_millones: 18
+        },
+        {
+          zona: 'Sur',
+          kilos_2024: 458,
+          kilos_2025: 479,
+          crecimiento_kilos: 7,
+          millones_2024: 3842,
+          millones_2025: 4010,
+          crecimiento_millones: 7
+        }
+      ]
+    };
+
+    // Datos reales de la BD para complementar
+    const [ventasZonales] = await pool.query(`
+      SELECT * FROM com_pdv_ventas_zonales ORDER BY anio DESC, zona_geografica
+    `);
+    
+    const [topDesempeno] = await pool.query(`
+      SELECT * FROM com_pdv_top_desempeno WHERE anio = 2024 ORDER BY kilos_pollo DESC LIMIT 10
+    `);
+
+    return {
+      resumen,
+      coordinadores,
+      crecimientoBogota,
+      ventasZonales,
+      topDesempeno
     };
   }
 
@@ -1102,7 +1143,7 @@ class DashboardRepository extends IDashboardRepository {
     // Calcular porcentajes de motivos
     const motivosConPorcentaje = motivos.map(m => ({
       ...m,
-      porcentaje: totalRetiros2025 > 0 ? ((m.cantidad / totalRetiros2025) * 100).toFixed(0) : 0
+      porcentaje: totalRetiros2025 > 0 ? parseFloat(((m.cantidad / totalRetiros2025) * 100).toFixed(2)) : 0
     }));
     
     return {

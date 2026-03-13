@@ -15,6 +15,18 @@ export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+
+  // Detectar cambios de tamaño de ventana
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Mapeo de secciones a tipos de dashboard
   const sectionToDashboardType = {
@@ -29,7 +41,7 @@ export default function Dashboard() {
     'cartera': 'cartera',
     'comercial': 'comercial',
     'comercial-resumen': 'comercial',
-    'comercial-pdv': 'comercial',
+    'comercial-pdv': 'comercial-pdv',
     'comercial-productos': 'comercial',
     'comercial-asadero': 'comercial',
     'comercial-institucional': 'comercial',
@@ -51,6 +63,7 @@ export default function Dashboard() {
     'produccion-huevos': 'produccion-historico',
     'produccion-indicadores': 'produccion-historico',
     'sagrilaft': 'sagrilaft',
+    'presupuesto-2025': 'presupuesto-2025',
     'gerencia': 'gerencia'
   };
 
@@ -123,13 +136,20 @@ export default function Dashboard() {
         activeSection={activeSection} 
         setActiveSection={handleSectionChange}
         onLogout={handleLogout}
+        onCollapsedChange={setIsSidebarCollapsed}
       />
       
-      <div className="lg:ml-64 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
+      <motion.div 
+        className="p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8"
+        animate={{
+          marginLeft: isDesktop ? (isSidebarCollapsed ? '64px' : '256px') : '0'
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-7xl mx-auto"
+          className={`mx-auto transition-all duration-300 ${isSidebarCollapsed ? 'max-w-full' : 'max-w-7xl'}`}
         >
           {/* Header */}
           <div className="mb-6 lg:mb-8">
@@ -146,8 +166,11 @@ export default function Dashboard() {
                   'tecnologias-informacion': 'Tecnologías de la Información',
                   'cartera': 'Gestión de Cartera',
                   'comercial': 'Gestión Comercial',
+                  'comercial-pdv': 'Puntos de Venta',
                   'ventas': 'Equipo de Ventas',
                   'humana': 'Gestión Humana',
+                  'humana-general': 'Gestión Humana',
+                  'humana-causas': 'Gestión Humana',
                   'marketing': 'Gestión de Publicidad y Mercadeo',
                   'marketing-general': 'Gestión de Publicidad y Mercadeo',
                   'logistica': 'Gestión Logística',
@@ -155,6 +178,7 @@ export default function Dashboard() {
                   'produccion-granjas': 'Capacidad de Granjas',
                   'produccion-historico': 'Histórico de Producción',
                   'sagrilaft': 'Sistema SAGRILAFT',
+                  'presupuesto-2025': 'Presupuesto 2025',
                   'gerencia': 'Gerencia Estratégica'
                 };
                 
@@ -200,7 +224,7 @@ export default function Dashboard() {
             <DashboardRenderer type={activeSection} data={dashboardData} />
           )}
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }
