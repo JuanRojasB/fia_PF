@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
 import { User, Lock, LogIn } from 'lucide-react';
@@ -11,6 +11,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [showAgendaModal, setShowAgendaModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export default function Login() {
 
     try {
       await authService.login(username, password);
-      navigate(ROUTES.HOME);
+      setShowWelcomeModal(true); // Mostrar primer modal en lugar de navegar
     } catch (err) {
       setError(err.response?.data?.message || 'Error al iniciar sesión');
     } finally {
@@ -36,10 +38,113 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{
-      background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)'
+      background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)'
     }}>
       
-      {/* Orb Container */}
+      {/* Modal 1: Consideraciones */}
+      <AnimatePresence>
+        {showWelcomeModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-lg shadow-2xl max-w-4xl w-full p-12 text-center"
+            >
+              <p className="text-xl text-gray-800 mb-3">Bogotá, D.C. República de Colombia.</p>
+              <p className="text-xl text-gray-800 mb-8">Miércoles 19 de Marzo de 2.025</p>
+              <h1 className="text-4xl font-bold text-gray-900 mb-8">POLLO FIESTA S.A.</h1>
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">INFORME DE GESTIÓN AÑO 2024</h2>
+              <p className="text-xl font-bold text-gray-900 mb-6">A LA HONORABLE ASAMBLEA GENERAL DE ACCIONISTAS</p>
+              <div className="w-32 h-1 bg-gray-300 mx-auto mb-6"></div>
+              <p className="text-2xl font-bold text-gray-900 mb-6">Consideraciones</p>
+              <div className="text-left space-y-4 mb-8 text-gray-700 max-w-3xl mx-auto">
+                <p className="text-lg text-justify">
+                  En cumplimiento con las disposiciones estatutarias de la sociedad Pollo Fiesta S.A. y de conformidad con lo 
+                  previsto en los artículos 38, 45, 46 y 47 de la ley 222 de 1995; art. 1 de la ley 603 de 2000, y demás normas 
+                  concordantes contempladas en la legislación vigente sobre la materia.
+                </p>
+                <p className="text-lg text-justify">
+                  A continuación, se presenta el informe anual por la gestión desarrollada durante el ejercicio económico del 
+                  año 2.024, el cual contiene una exposición fiel sobre la evolución del negocio, la situación jurídica, la situación 
+                  económica y la situación administrativa de la sociedad en cumplimiento con el ordenamiento legal.
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowWelcomeModal(false);
+                  setShowAgendaModal(true);
+                }}
+                className="px-12 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg transition-colors"
+              >
+                Continuar
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal 2: Orden del Día */}
+      <AnimatePresence>
+        {showAgendaModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-lg shadow-2xl max-w-4xl w-full my-8"
+            >
+              <div className="bg-blue-600 px-8 py-5">
+                <h2 className="text-3xl font-bold text-white text-center">Orden del Día</h2>
+              </div>
+              <div className="p-8">
+                <div className="text-center mb-6">
+                  <p className="text-base font-bold text-gray-900 mb-1">BOGOTÁ, D.C. REPÚBLICA DE COLOMBIA.</p>
+                  <p className="text-base font-bold text-gray-900 mb-1">MIÉRCOLES 19 DE MARZO DE 2025</p>
+                  <p className="text-base font-bold text-gray-900 mb-3">POLLO FIESTA S.A.</p>
+                  <div className="w-24 h-0.5 bg-gray-300 mx-auto mb-3"></div>
+                  <p className="text-lg font-bold text-gray-900 mb-1">INFORME DE GESTIÓN AÑO 2024</p>
+                  <p className="text-base font-semibold text-blue-600">Orden del día</p>
+                </div>
+                <div className="space-y-2 mb-6 max-w-3xl mx-auto">
+                  {[
+                    'Verificación del Quorum',
+                    'Nombramiento del presidente y secretario de la Asamblea',
+                    'Nombramiento de la Comisión verificadora del Acta',
+                    'Lectura del Acta anterior',
+                    'Informe de Gestión de los Administradores',
+                    'Informe del Revisor Fiscal',
+                    'Estudio y aprobación de los Estados Financieros a 31 de diciembre de 2024',
+                    'Proyecto de Distribución de Utilidades',
+                    'Elección de Junta Directiva',
+                    'Elección del Revisor Fiscal y asignación de Honorarios',
+                    'Proposiciones y varios',
+                    'Aprobación y firma del Acta de sesión'
+                  ].map((item, index) => (
+                    <div key={index} className="flex gap-3 py-1">
+                      <span className="font-bold text-gray-900 text-base flex-shrink-0">{index + 1}.</span>
+                      <p className="text-gray-800 text-base">{item}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-center">
+                  <button
+                    onClick={() => {
+                      setShowAgendaModal(false);
+                      navigate(ROUTES.HOME);
+                    }}
+                    className="px-10 py-3 bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold rounded-lg transition-colors"
+                  >
+                    Ingresar al Dashboard
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Orb Container - Estilo IA */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -54,7 +159,7 @@ export default function Login() {
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],
-                opacity: [0.2, 0.4, 0.2]
+                opacity: [0.3, 0.6, 0.3]
               }}
               transition={{
                 duration: 3,
@@ -63,7 +168,7 @@ export default function Login() {
               }}
               className="absolute w-72 h-72 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.25), transparent 70%)'
+                background: 'radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 70%)'
               }}
             />
 
@@ -73,8 +178,8 @@ export default function Login() {
               transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
               className="absolute w-52 h-52 rounded-full"
               style={{
-                border: '1px solid rgba(59, 130, 246, 0.3)',
-                boxShadow: '0 0 18px rgba(59, 130, 246, 0.4)'
+                border: '1px solid rgba(191, 219, 254, 0.4)',
+                boxShadow: '0 0 18px rgba(56, 189, 248, 0.6)'
               }}
             />
             
@@ -83,8 +188,8 @@ export default function Login() {
               transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
               className="absolute w-44 h-44 rounded-full"
               style={{
-                border: '1px solid rgba(99, 102, 241, 0.4)',
-                boxShadow: '0 0 18px rgba(99, 102, 241, 0.4)'
+                border: '1px solid rgba(129, 140, 248, 0.6)',
+                boxShadow: '0 0 18px rgba(56, 189, 248, 0.6)'
               }}
             />
 
@@ -100,15 +205,15 @@ export default function Login() {
               }}
               className="relative w-40 h-40 rounded-full flex items-center justify-center"
               style={{
-                background: 'radial-gradient(circle at 30% 30%, #ffffff, #e0e7ff 70%)',
-                boxShadow: '0 0 32px rgba(59, 130, 246, 0.35), 0 0 80px rgba(59, 130, 246, 0.25)'
+                background: 'radial-gradient(circle at 30% 30%, #1f2937, #020617 70%)',
+                boxShadow: '0 0 32px rgba(56, 189, 248, 0.45), 0 0 80px rgba(37, 99, 235, 0.35)'
               }}
             >
               <div 
                 className="w-32 h-32 rounded-full flex items-center justify-center overflow-hidden"
                 style={{
-                  background: 'radial-gradient(circle at 25% 25%, #ffffff, #f1f5f9 55%, #e0e7ff 80%)',
-                  boxShadow: '0 0 24px rgba(148, 163, 184, 0.5), 0 0 40px rgba(148, 163, 184, 0.4)'
+                  background: 'radial-gradient(circle at 25% 25%, #ffffff, #e5e7eb 55%, #cbd5f5 80%)',
+                  boxShadow: '0 0 24px rgba(148, 163, 184, 0.7), 0 0 40px rgba(148, 163, 184, 0.6)'
                 }}
               >
                 <img 
@@ -134,12 +239,12 @@ export default function Login() {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-8xl font-black tracking-wider"
             style={{
-              background: 'linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1d4ed8 100%)',
+              background: 'linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #1d4ed8 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(29, 78, 216, 0.3)',
-              filter: 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.3))'
+              textShadow: '0 0 40px rgba(56, 189, 248, 0.6), 0 0 80px rgba(29, 78, 216, 0.4)',
+              filter: 'drop-shadow(0 0 20px rgba(56, 189, 248, 0.5))'
             }}
           >
             FIA
@@ -151,12 +256,12 @@ export default function Login() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-center text-gray-600 text-lg font-light tracking-wide"
+          className="text-center text-gray-700 text-lg font-light tracking-wide"
           style={{
-            textShadow: '0 0 18px rgba(59, 130, 246, 0.3), 0 0 32px rgba(59, 130, 246, 0.2)'
+            textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
           }}
         >
-          Fiesta Intelligence Assistant
+          Fiesta Intelligence Asistant
         </motion.p>
       </motion.div>
 
@@ -168,7 +273,7 @@ export default function Login() {
         className="w-full max-w-md backdrop-blur-xl rounded-2xl shadow-2xl p-8"
         style={{
           background: 'rgba(255, 255, 255, 0.95)',
-          border: '1px solid rgba(203, 213, 225, 0.5)',
+          border: '2px solid rgba(56, 189, 248, 0.3)',
           boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
         }}
       >
@@ -198,8 +303,8 @@ export default function Login() {
                 required
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 style={{
-                  background: 'rgba(248, 250, 252, 0.9)',
-                  border: '1px solid rgba(203, 213, 225, 0.8)'
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  border: '2px solid rgba(203, 213, 225, 0.8)'
                 }}
                 placeholder="Ingresa tu usuario"
               />
@@ -223,8 +328,8 @@ export default function Login() {
                 required
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 style={{
-                  background: 'rgba(248, 250, 252, 0.9)',
-                  border: '1px solid rgba(203, 213, 225, 0.8)'
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  border: '2px solid rgba(203, 213, 225, 0.8)'
                 }}
                 placeholder="Ingresa tu contraseña"
               />
@@ -236,10 +341,10 @@ export default function Login() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="px-4 py-3 rounded-xl text-sm"
+              className="px-4 py-3 rounded-xl text-sm font-medium"
               style={{
-                background: 'rgba(239, 68, 68, 0.1)',
-                border: '1px solid rgba(239, 68, 68, 0.4)',
+                background: 'rgba(254, 226, 226, 0.9)',
+                border: '2px solid rgba(239, 68, 68, 0.5)',
                 color: '#dc2626'
               }}
             >
@@ -251,10 +356,10 @@ export default function Login() {
           <button 
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
-              background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
-              boxShadow: '0 10px 15px -3px rgba(59, 130, 246, 0.4), 0 4px 6px -4px rgba(59, 130, 246, 0.3)'
+              background: 'linear-gradient(135deg, #1d4ed8, #38bdf8)',
+              boxShadow: '0 10px 15px -3px rgba(30, 64, 175, 0.8), 0 4px 6px -4px rgba(30, 64, 175, 0.7)'
             }}
           >
             {loading ? (

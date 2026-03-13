@@ -169,7 +169,7 @@ export default function PlantaBeneficioDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-blue-500 transition-all cursor-pointer"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         onClick={() => {
           const tableData = avesProcessadasMensual.map((m, idx) => ({
             'Mes': mesesCompletos[idx],
@@ -184,8 +184,8 @@ export default function PlantaBeneficioDashboard({ data }) {
           );
         }}
       >
-        <h3 className="text-xl font-bold text-white mb-2">Aves Procesadas Mensual 2024 vs 2025</h3>
-        <p className="text-sm text-gray-400 mb-6">Azul: 2025 • Verde: 2024</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Aves Procesadas Mensual 2024 vs 2025</h3>
+        <p className="text-sm text-gray-600 mb-6">Azul: 2025 • Verde: 2024</p>
         <ResponsiveContainer width="100%" height={450}>
           <LineChart data={datosAvesMensuales} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -201,14 +201,14 @@ export default function PlantaBeneficioDashboard({ data }) {
             <YAxis stroke="#9ca3af" tickFormatter={(v) => `${(v/1000).toFixed(0)}K`} style={{ fontSize: '13px' }} />
             <Tooltip
               contentStyle={{ 
-                backgroundColor: '#1e293b', 
-                border: '1px solid #475569', 
+                backgroundcolor: '#1f2937', 
+                border: '2px solid #3b82f6', 
                 borderRadius: '8px',
                 fontSize: '14px',
                 padding: '12px'
               }}
-              labelStyle={{ color: '#ffffff' }}
-              itemStyle={{ color: '#ffffff' }}
+              labelStyle={{ color: '#1f2937', fontWeight: 'bold' }}
+              itemStyle={{ color: '#374151' }}
               labelFormatter={(label, payload) => {
                 if (payload && payload[0]) {
                   return payload[0].payload.mesCompleto;
@@ -228,7 +228,7 @@ export default function PlantaBeneficioDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-green-500 transition-all cursor-pointer"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         onClick={() => {
           const tableData = promedioPesos.map((m, idx) => ({
             'Mes': mesesCompletos[idx],
@@ -243,8 +243,8 @@ export default function PlantaBeneficioDashboard({ data }) {
           );
         }}
       >
-        <h3 className="text-xl font-bold text-white mb-2">Promedio de Peso por Ave Mensual</h3>
-        <p className="text-sm text-gray-400 mb-6">Peso en gramos • Más estable en 2025</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Promedio de Peso por Ave Mensual</h3>
+        <p className="text-sm text-gray-600 mb-6">Peso en gramos • Más estable en 2025</p>
         <ResponsiveContainer width="100%" height={450}>
           <LineChart data={datosPesosMensuales} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -260,14 +260,14 @@ export default function PlantaBeneficioDashboard({ data }) {
             <YAxis stroke="#9ca3af" tickFormatter={(v) => `${v}g`} style={{ fontSize: '13px' }} domain={[1850, 2050]} />
             <Tooltip
               contentStyle={{ 
-                backgroundColor: '#1e293b', 
-                border: '1px solid #475569', 
+                backgroundcolor: '#1f2937', 
+                border: '2px solid #3b82f6', 
                 borderRadius: '8px',
                 fontSize: '14px',
                 padding: '12px'
               }}
-              labelStyle={{ color: '#ffffff' }}
-              itemStyle={{ color: '#ffffff' }}
+              labelStyle={{ color: '#1f2937' }}
+              itemStyle={{ color: '#1f2937' }}
               labelFormatter={(label, payload) => {
                 if (payload && payload[0]) {
                   return payload[0].payload.mesCompleto;
@@ -287,7 +287,7 @@ export default function PlantaBeneficioDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-yellow-500 transition-all cursor-pointer"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
         onClick={() => {
           const tableData = participacionRangos.map(p => ({
             'Año': p.anio,
@@ -302,8 +302,8 @@ export default function PlantaBeneficioDashboard({ data }) {
           );
         }}
       >
-        <h3 className="text-xl font-bold text-white mb-2">Participación por Rangos de Peso</h3>
-        <p className="text-sm text-gray-400 mb-6">Distribución de aves por categoría de peso</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Participación por Rangos de Peso</h3>
+        <p className="text-sm text-gray-600 mb-6">Distribución de aves por categoría de peso</p>
         <ResponsiveContainer width="100%" height={450}>
           <LineChart data={datosRangos} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -319,14 +319,14 @@ export default function PlantaBeneficioDashboard({ data }) {
             <YAxis stroke="#9ca3af" tickFormatter={(v) => `${v}%`} style={{ fontSize: '13px' }} />
             <Tooltip
               contentStyle={{ 
-                backgroundColor: '#1e293b', 
-                border: '1px solid #475569', 
+                backgroundcolor: '#1f2937', 
+                border: '2px solid #3b82f6', 
                 borderRadius: '8px',
                 fontSize: '14px',
                 padding: '12px'
               }}
-              labelStyle={{ color: '#ffffff' }}
-              itemStyle={{ color: '#ffffff' }}
+              labelStyle={{ color: '#1f2937' }}
+              itemStyle={{ color: '#1f2937' }}
               formatter={(value) => [`${value}%`, '']}
             />
             <Legend />
@@ -341,7 +341,7 @@ export default function PlantaBeneficioDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-orange-500 transition-all cursor-pointer"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         onClick={() => {
           const tableData = descartesKilos.map(d => ({
             'Categoría': d.categoria,
@@ -356,8 +356,8 @@ export default function PlantaBeneficioDashboard({ data }) {
           );
         }}
       >
-        <h3 className="text-xl font-bold text-white mb-2">Descartes en Kilos - Análisis 2024 vs 2025</h3>
-        <p className="text-sm text-gray-400 mb-6">Azul: 2024 • Naranja: 2025</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Descartes en Kilos - Análisis 2024 vs 2025</h3>
+        <p className="text-sm text-gray-600 mb-6">Azul: 2024 • Naranja: 2025</p>
         <ResponsiveContainer width="100%" height={450}>
           <BarChart data={datosDescartes} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -373,14 +373,14 @@ export default function PlantaBeneficioDashboard({ data }) {
             <YAxis stroke="#9ca3af" tickFormatter={(v) => formatNumber(v)} style={{ fontSize: '13px' }} />
             <Tooltip
               contentStyle={{ 
-                backgroundColor: '#1e293b', 
-                border: '1px solid #475569', 
+                backgroundcolor: '#1f2937', 
+                border: '2px solid #3b82f6', 
                 borderRadius: '8px',
                 fontSize: '14px',
                 padding: '12px'
               }}
-              labelStyle={{ color: '#ffffff' }}
-              itemStyle={{ color: '#ffffff' }}
+              labelStyle={{ color: '#1f2937' }}
+              itemStyle={{ color: '#1f2937' }}
               labelFormatter={(label, payload) => {
                 if (payload && payload[0]) {
                   return payload[0].payload.categoriaCompleta;
@@ -401,7 +401,7 @@ export default function PlantaBeneficioDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border-4 border-slate-700 hover:border-purple-500 transition-all cursor-pointer"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         onClick={() => {
           const tableData = participacionCanal.map(p => ({
             'Año': p.anio,
@@ -418,8 +418,8 @@ export default function PlantaBeneficioDashboard({ data }) {
           );
         }}
       >
-        <h3 className="text-xl font-bold text-white mb-2">Participación Canal y Vísceras - Histórico 2021-2025</h3>
-        <p className="text-sm text-gray-400 mb-6">Evolución de rendimientos operativos</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Participación Canal y Vísceras - Histórico 2021-2025</h3>
+        <p className="text-sm text-gray-600 mb-6">Evolución de rendimientos operativos</p>
         <ResponsiveContainer width="100%" height={450}>
           <BarChart data={datosCanal} margin={{ top: 5, right: 30, left: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -427,14 +427,14 @@ export default function PlantaBeneficioDashboard({ data }) {
             <YAxis stroke="#9ca3af" tickFormatter={(v) => `${v}%`} style={{ fontSize: '13px' }} />
             <Tooltip
               contentStyle={{ 
-                backgroundColor: '#1e293b', 
-                border: '1px solid #475569', 
+                backgroundcolor: '#1f2937', 
+                border: '2px solid #3b82f6', 
                 borderRadius: '8px',
                 fontSize: '14px',
                 padding: '12px'
               }}
-              labelStyle={{ color: '#ffffff' }}
-              itemStyle={{ color: '#ffffff' }}
+              labelStyle={{ color: '#1f2937' }}
+              itemStyle={{ color: '#1f2937' }}
               formatter={(value) => [`${value}%`, '']}
             />
             <Legend />
@@ -459,7 +459,7 @@ export default function PlantaBeneficioDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto border-4 border-cyan-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto border-4 border-cyan-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -471,7 +471,7 @@ export default function PlantaBeneficioDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed mb-4">{modalContent.description}</div>
+              <div className="text-gray-700 leading-relaxed mb-4">{modalContent.description}</div>
               
               {/* Tabla de datos */}
               {modalContent.table && modalContent.table.length > 0 && (
@@ -490,9 +490,9 @@ export default function PlantaBeneficioDashboard({ data }) {
                       </thead>
                       <tbody>
                         {modalContent.table.map((row, idx) => (
-                          <tr key={idx} className="border-b border-slate-700 hover:bg-slate-700/30">
+                          <tr key={idx} className="border-b border-gray-300 hover:bg-gray-50">
                             {Object.values(row).map((value, i) => (
-                              <td key={i} className="py-3 px-4 text-gray-300">
+                              <td key={i} className="py-3 px-4 text-gray-700">
                                 {value}
                               </td>
                             ))}
@@ -516,3 +516,4 @@ export default function PlantaBeneficioDashboard({ data }) {
     </div>
   );
 }
+

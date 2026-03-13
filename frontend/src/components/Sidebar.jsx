@@ -25,9 +25,16 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       id: 'bienvenida', 
       label: 'Bienvenida', 
       icon: Home,
-      type: 'single',
-      dashboardType: 'bienvenida'
+      type: 'expandable',
+      subitems: [
+        { id: 'bienvenida-principal', label: 'Inicio', dashboardType: 'bienvenida' },
+        { id: 'contexto-mundial', label: 'Contexto Mundial', dashboardType: 'contexto-mundial' },
+        { id: 'entorno-socioeconomico', label: 'Entorno Socio Económico Nacional', dashboardType: 'entorno-socioeconomico' },
+        { id: 'encasetamiento-colombia', label: 'Encasetamiento en Colombia', dashboardType: 'encasetamiento-colombia' },
+        { id: 'negocio-marcha', label: 'El Negocio en Marcha', dashboardType: 'negocio-marcha' }
+      ]
     },
+
     { 
       id: 'produccion', 
       label: 'Gestión de Producción', 
@@ -80,12 +87,43 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       type: 'single',
       dashboardType: 'cartera'
     },
+
+    { 
+      id: 'logistica', 
+      label: 'Gestión Logística', 
+      icon: Truck,
+      type: 'expandable',
+      subitems: [
+        { id: 'logistica-consolidado', label: 'Análisis Consolidado', dashboardType: 'gestion-logistica' },
+        { id: 'logistica-sede1', label: 'Sede 1 - Pollo Asadero', dashboardType: 'logistica-sede1' },
+        { id: 'logistica-sede2', label: 'Sede 2 - Productos Congelados', dashboardType: 'logistica-sede2' },
+        { id: 'logistica-sede3', label: 'Sede 3 - Clientes Institucionales', dashboardType: 'logistica-sede3' }
+      ]
+    },
+
+    { 
+      id: 'marketing', 
+      label: 'Gestión de Publicidad y Mercadeo', 
+      icon: TrendingUp,
+      type: 'single',
+      dashboardType: 'marketing-general'
+    },
     { 
       id: 'calidad', 
       label: 'Aseguramiento de Calidad', 
       icon: Shield,
       type: 'single',
       dashboardType: 'calidad'
+    },
+        { 
+      id: 'humana', 
+      label: 'Gestión Humana', 
+      icon: UserCheck,
+      type: 'expandable',
+      subitems: [
+        { id: 'humana-general', label: 'Nómina y Rotación', dashboardType: 'humana-general' },
+        { id: 'humana-causas', label: 'Causas de Desvinculación', dashboardType: 'humana-causas' }
+      ]
     },
     { 
       id: 'compras', 
@@ -116,49 +154,19 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
       dashboardType: 'tecnologias-informacion'
     },
     { 
-      id: 'logistica', 
-      label: 'Gestión Logística', 
-      icon: Truck,
-      type: 'expandable',
-      subitems: [
-        { id: 'logistica-consolidado', label: 'Análisis Consolidado', dashboardType: 'gestion-logistica' },
-        { id: 'logistica-sede1', label: 'Sede 1 - Pollo Asadero', dashboardType: 'logistica-sede1' },
-        { id: 'logistica-sede2', label: 'Sede 2 - Productos Congelados', dashboardType: 'logistica-sede2' },
-        { id: 'logistica-sede3', label: 'Sede 3 - Clientes Institucionales', dashboardType: 'logistica-sede3' }
-      ]
-    },
- 
-    { 
-      id: 'gerencia', 
-      label: 'Presupuesto 2025', 
-      icon: Briefcase,
-      type: 'single',
-      dashboardType: 'gerencia'
-    },
-    { 
-      id: 'humana', 
-      label: 'Gestión Humana', 
-      icon: UserCheck,
-      type: 'expandable',
-      subitems: [
-        { id: 'humana-general', label: 'Nómina y Rotación', dashboardType: 'humana-general' },
-        { id: 'humana-causas', label: 'Causas de Desvinculación', dashboardType: 'humana-causas' }
-      ]
-    },
-    { 
-      id: 'marketing', 
-      label: 'Gestión de Publicidad y Mercadeo', 
-      icon: TrendingUp,
-      type: 'single',
-      dashboardType: 'marketing-general'
-    },
-    { 
       id: 'sagrilaft', 
       label: 'Análisis y Evaluación Sistema SAGRILAFT', 
       icon: Shield,
       type: 'single',
       dashboardType: 'sagrilaft'
     },
+    { 
+      id: 'situacion-economica', 
+      label: 'Situación Económica', 
+      icon: Briefcase,
+      type: 'single',
+      dashboardType: 'situacion-economica'
+    }
   ];
 
   return (
@@ -323,14 +331,14 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
                                 setActiveSection(subitem.id);
                                 setIsMobileMenuOpen(false);
                               }}
-                              className="w-full text-left px-4 py-2 rounded-lg transition-all duration-200 text-sm"
+                              className="w-full flex items-start px-4 py-2 rounded-lg transition-all duration-200 text-sm"
                               style={{
                                 background: isSubActive ? 'rgba(59, 130, 246, 0.12)' : 'transparent',
                                 color: isSubActive ? '#1d4ed8' : '#64748b',
                                 borderLeft: isSubActive ? '2px solid #3b82f6' : '2px solid transparent'
                               }}
                             >
-                              {subitem.label}
+                              <span className="font-medium text-left">{subitem.label}</span>
                             </motion.button>
                           );
                         })}

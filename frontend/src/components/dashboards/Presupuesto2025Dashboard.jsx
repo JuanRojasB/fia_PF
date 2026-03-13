@@ -13,7 +13,7 @@ export default function Presupuesto2025Dashboard({ data }) {
   };
 
   if (!data || !data.variablesMacro) {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
+    return <div className="text-gray-600">No hay datos disponibles</div>;
   }
 
   const { variablesMacro, presupuestoCaja, ejecucionTrimestral, tributacion, marcoLegal } = data;
@@ -31,9 +31,9 @@ export default function Presupuesto2025Dashboard({ data }) {
   return (
     <div className="space-y-6">
       {/* Título */}
-      <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-xl rounded-xl p-6 border border-blue-500/30">
-        <h2 className="text-3xl font-bold text-white mb-2">Presupuesto 2025</h2>
-        <p className="text-gray-300">Análisis de ejecución presupuestal, variables macroeconómicas y marco tributario</p>
+      <div className="bg-gradient-to-r from-blue-100 to-purple-100 backdrop-blur-xl rounded-xl p-6 border border-blue-500/30">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Presupuesto 2025</h2>
+        <p className="text-gray-700">Análisis de ejecución presupuestal, variables macroeconómicas y marco tributario</p>
       </div>
 
       {/* KPIs Principales */}
@@ -44,10 +44,10 @@ export default function Presupuesto2025Dashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Crecimiento 2025',
-            <div className="text-gray-300">
+            <div className="text-gray-700">
               <p className="mb-4">El crecimiento del <strong className="text-green-400">{variablesMacro.crecimiento}%</strong> en 2025 refleja los resultados positivos de la gestión empresarial.</p>
-              <div className="bg-green-900/30 rounded-lg p-4 border border-green-700/50">
-                <p className="text-sm font-semibold text-white mb-2">Factores clave:</p>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Factores clave:</p>
                 <ul className="text-sm space-y-1 list-disc list-inside">
                   <li>Inflación controlada similar a 2024</li>
                   <li>Reducción del índice de mortalidad</li>
@@ -72,15 +72,15 @@ export default function Presupuesto2025Dashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Presupuesto de Caja',
-            <div className="text-gray-300">
-              <p className="mb-4">El efectivo y sus equivalentes aumentaron en <strong className="text-blue-400">${formatNumber(presupuestoCaja.incremento_absoluto)} MM</strong>, representando un incremento del <strong className="text-white">{presupuestoCaja.incremento_porcentual}%</strong>.</p>
+            <div className="text-gray-700">
+              <p className="mb-4">El efectivo y sus equivalentes aumentaron en <strong className="text-blue-400">${formatNumber(presupuestoCaja.incremento_absoluto)} MM</strong>, representando un incremento del <strong className="text-gray-900">{presupuestoCaja.incremento_porcentual}%</strong>.</p>
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-slate-700/50 rounded-lg p-3">
-                  <p className="text-xs text-gray-400 mb-1">2024</p>
-                  <p className="text-lg font-bold text-white">${formatNumber(presupuestoCaja.efectivo_2024)} MM</p>
+                <div className="bg-gray-100 rounded-lg p-3">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-lg font-bold text-gray-900">${formatNumber(presupuestoCaja.efectivo_2024)} MM</p>
                 </div>
-                <div className="bg-blue-900/30 rounded-lg p-3 border border-blue-700/50">
-                  <p className="text-xs text-gray-400 mb-1">2025</p>
+                <div className="bg-blue-50 rounded-lg p-3 border-2 border-blue-300">
+                  <p className="text-xs text-gray-600 mb-1">2025</p>
                   <p className="text-lg font-bold text-blue-400">${formatNumber(presupuestoCaja.efectivo_2025)} MM</p>
                 </div>
               </div>
@@ -109,15 +109,15 @@ export default function Presupuesto2025Dashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Reducción de Mortalidad',
-            <div className="text-gray-300">
+            <div className="text-gray-700">
               <p className="mb-4">Es de resaltar que se redujo el índice de mortalidad significativamente:</p>
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-red-900/30 rounded-lg p-3 border border-red-700/50">
-                  <p className="text-xs text-gray-400 mb-1">2024</p>
+                <div className="bg-red-50 rounded-lg p-3 border-2 border-red-300">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
                   <p className="text-2xl font-bold text-red-400">{variablesMacro.mortalidad_2024}%</p>
                 </div>
                 <div className="bg-green-900/30 rounded-lg p-3 border border-green-700/50">
-                  <p className="text-xs text-gray-400 mb-1">2025</p>
+                  <p className="text-xs text-gray-600 mb-1">2025</p>
                   <p className="text-2xl font-bold text-green-400">{variablesMacro.mortalidad_2025}%</p>
                 </div>
               </div>
@@ -146,19 +146,19 @@ export default function Presupuesto2025Dashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Inflación Controlada',
-            <div className="text-gray-300">
+            <div className="text-gray-700">
               <p className="mb-4">La inflación se mantuvo estable y controlada entre 2024 y 2025:</p>
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-slate-700/50 rounded-lg p-3">
-                  <p className="text-xs text-gray-400 mb-1">2024</p>
-                  <p className="text-2xl font-bold text-white">{variablesMacro.inflacion_2024}%</p>
+                <div className="bg-gray-100 rounded-lg p-3">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-2xl font-bold text-gray-900">{variablesMacro.inflacion_2024}%</p>
                 </div>
-                <div className="bg-purple-900/30 rounded-lg p-3 border border-purple-700/50">
-                  <p className="text-xs text-gray-400 mb-1">2025</p>
+                <div className="bg-purple-50 rounded-lg p-3 border-2 border-purple-300">
+                  <p className="text-xs text-gray-600 mb-1">2025</p>
                   <p className="text-2xl font-bold text-purple-400">{variablesMacro.inflacion_2025}%</p>
                 </div>
               </div>
-              <div className="bg-blue-900/30 rounded-lg p-3 border border-blue-700/50">
+              <div className="bg-blue-50 rounded-lg p-3 border-2 border-blue-300">
                 <p className="text-sm">La inflación muy similar año tras año <strong className="text-blue-400">ayudó con el crecimiento del {variablesMacro.crecimiento}%</strong>.</p>
               </div>
             </div>
@@ -184,34 +184,34 @@ export default function Presupuesto2025Dashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-white">Total Pollo Fiesta - Ejecución Trimestral</h3>
+            <h3 className="text-xl font-bold text-gray-900">Total Pollo Fiesta - Ejecución Trimestral</h3>
             <button
               onClick={() => openModal(
                 'Total PF - Tabla Completa',
-                <div className="text-gray-300">
+                <div className="text-gray-700">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b-2 border-slate-600">
-                          <th className="text-left py-2 px-3 text-white font-bold">Trimestre</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">2025 Real</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">2025 Ppto</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">2024 Real</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">Var Ppto</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">Var 25/24</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">Var 24/23</th>
+                          <th className="text-left py-2 px-3 text-gray-900 font-bold">Trimestre</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Real</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Ppto</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">2024 Real</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Var Ppto</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Var 25/24</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Var 24/23</th>
                         </tr>
                       </thead>
                       <tbody>
                         {ejecucionTrimestral.totalPF.data.map((row, idx) => (
-                          <tr key={idx} className="border-b border-slate-700/30 hover:bg-slate-700/20">
-                            <td className="py-2 px-3 text-white font-semibold">{row.trimestre}</td>
+                          <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
+                            <td className="py-2 px-3 text-gray-900 font-semibold">{row.trimestre}</td>
                             <td className="py-2 px-3 text-right text-green-400 font-bold">${formatNumber(row.real_2025)}</td>
                             <td className="py-2 px-3 text-right text-blue-400">${formatNumber(row.ppto_2025)}</td>
-                            <td className="py-2 px-3 text-right text-gray-400">${formatNumber(row.real_2024)}</td>
+                            <td className="py-2 px-3 text-right text-gray-600">${formatNumber(row.real_2024)}</td>
                             <td className={`py-2 px-3 text-right font-bold ${row.var_25_ppto_vs_real >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                               {row.var_25_ppto_vs_real}%
                             </td>
@@ -223,11 +223,11 @@ export default function Presupuesto2025Dashboard({ data }) {
                             </td>
                           </tr>
                         ))}
-                        <tr className="border-t-2 border-slate-600 bg-slate-700/50 font-bold">
-                          <td className="py-2 px-3 text-white">TOTAL</td>
+                        <tr className="border-t-2 border-slate-600 bg-gray-100 font-bold">
+                          <td className="py-2 px-3 text-gray-900">TOTAL</td>
                           <td className="py-2 px-3 text-right text-green-400">${formatNumber(ejecucionTrimestral.totalPF.totales.real_2025)}</td>
                           <td className="py-2 px-3 text-right text-blue-400">${formatNumber(ejecucionTrimestral.totalPF.totales.ppto_2025)}</td>
-                          <td className="py-2 px-3 text-right text-gray-400">${formatNumber(ejecucionTrimestral.totalPF.totales.real_2024)}</td>
+                          <td className="py-2 px-3 text-right text-gray-600">${formatNumber(ejecucionTrimestral.totalPF.totales.real_2024)}</td>
                           <td className={`py-2 px-3 text-right ${parseFloat(ejecucionTrimestral.totalPF.variaciones.var_25_ppto_vs_real) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {ejecucionTrimestral.totalPF.variaciones.var_25_ppto_vs_real}%
                           </td>
@@ -243,7 +243,7 @@ export default function Presupuesto2025Dashboard({ data }) {
                   </div>
                 </div>
               )}
-              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <Info className="w-5 h-5 text-blue-400" />
             </button>
@@ -254,7 +254,7 @@ export default function Presupuesto2025Dashboard({ data }) {
               <XAxis dataKey="trimestre" stroke="#9ca3af" />
               <YAxis stroke="#9ca3af" tickFormatter={(value) => `${formatMiles(value)}M`} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
+                contentStyle={{ backgroundcolor: '#1f2937', border: '2px solid #3b82f6' }}
                 labelStyle={{ color: '#fff' }}
                 itemStyle={{ color: '#fff' }}
                 formatter={(value) => [`$${formatNumber(value)}`, '']}
@@ -272,34 +272,34 @@ export default function Presupuesto2025Dashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-white">Integrado Mayorista - Ejecución Trimestral</h3>
+            <h3 className="text-xl font-bold text-gray-900">Integrado Mayorista - Ejecución Trimestral</h3>
             <button
               onClick={() => openModal(
                 'Integrado Mayorista - Tabla Completa',
-                <div className="text-gray-300">
+                <div className="text-gray-700">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b-2 border-slate-600">
-                          <th className="text-left py-2 px-3 text-white font-bold">Trimestre</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">2025 Real</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">2025 Ppto</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">2024 Real</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">Var Ppto</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">Var 25/24</th>
-                          <th className="text-right py-2 px-3 text-white font-bold">Var 24/23</th>
+                          <th className="text-left py-2 px-3 text-gray-900 font-bold">Trimestre</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Real</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Ppto</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">2024 Real</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Var Ppto</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Var 25/24</th>
+                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Var 24/23</th>
                         </tr>
                       </thead>
                       <tbody>
                         {ejecucionTrimestral.integradoMayorista.data.map((row, idx) => (
-                          <tr key={idx} className="border-b border-slate-700/30 hover:bg-slate-700/20">
-                            <td className="py-2 px-3 text-white font-semibold">{row.trimestre}</td>
+                          <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
+                            <td className="py-2 px-3 text-gray-900 font-semibold">{row.trimestre}</td>
                             <td className="py-2 px-3 text-right text-green-400 font-bold">${formatNumber(row.real_2025)}</td>
                             <td className="py-2 px-3 text-right text-blue-400">${formatNumber(row.ppto_2025)}</td>
-                            <td className="py-2 px-3 text-right text-gray-400">${formatNumber(row.real_2024)}</td>
+                            <td className="py-2 px-3 text-right text-gray-600">${formatNumber(row.real_2024)}</td>
                             <td className={`py-2 px-3 text-right font-bold ${row.var_25_ppto_vs_real >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                               {row.var_25_ppto_vs_real}%
                             </td>
@@ -311,11 +311,11 @@ export default function Presupuesto2025Dashboard({ data }) {
                             </td>
                           </tr>
                         ))}
-                        <tr className="border-t-2 border-slate-600 bg-slate-700/50 font-bold">
-                          <td className="py-2 px-3 text-white">TOTAL</td>
+                        <tr className="border-t-2 border-slate-600 bg-gray-100 font-bold">
+                          <td className="py-2 px-3 text-gray-900">TOTAL</td>
                           <td className="py-2 px-3 text-right text-green-400">${formatNumber(ejecucionTrimestral.integradoMayorista.totales.real_2025)}</td>
                           <td className="py-2 px-3 text-right text-blue-400">${formatNumber(ejecucionTrimestral.integradoMayorista.totales.ppto_2025)}</td>
-                          <td className="py-2 px-3 text-right text-gray-400">${formatNumber(ejecucionTrimestral.integradoMayorista.totales.real_2024)}</td>
+                          <td className="py-2 px-3 text-right text-gray-600">${formatNumber(ejecucionTrimestral.integradoMayorista.totales.real_2024)}</td>
                           <td className={`py-2 px-3 text-right ${parseFloat(ejecucionTrimestral.integradoMayorista.variaciones.var_25_ppto_vs_real) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {ejecucionTrimestral.integradoMayorista.variaciones.var_25_ppto_vs_real}%
                           </td>
@@ -331,7 +331,7 @@ export default function Presupuesto2025Dashboard({ data }) {
                   </div>
                 </div>
               )}
-              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <Info className="w-5 h-5 text-blue-400" />
             </button>
@@ -342,7 +342,7 @@ export default function Presupuesto2025Dashboard({ data }) {
               <XAxis dataKey="trimestre" stroke="#9ca3af" />
               <YAxis stroke="#9ca3af" tickFormatter={(value) => `${formatMiles(value)}M`} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
+                contentStyle={{ backgroundcolor: '#1f2937', border: '2px solid #3b82f6' }}
                 labelStyle={{ color: '#fff' }}
                 itemStyle={{ color: '#fff' }}
                 formatter={(value) => [`$${formatNumber(value)}`, '']}
@@ -360,34 +360,34 @@ export default function Presupuesto2025Dashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-white">Pollo Canal - Ejecución Trimestral</h3>
+          <h3 className="text-xl font-bold text-gray-900">Pollo Canal - Ejecución Trimestral</h3>
           <button
             onClick={() => openModal(
               'Pollo Canal - Tabla Completa',
-              <div className="text-gray-300">
+              <div className="text-gray-700">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b-2 border-slate-600">
-                        <th className="text-left py-2 px-3 text-white font-bold">Trimestre</th>
-                        <th className="text-right py-2 px-3 text-white font-bold">2025 Real</th>
-                        <th className="text-right py-2 px-3 text-white font-bold">2025 Ppto</th>
-                        <th className="text-right py-2 px-3 text-white font-bold">2024 Real</th>
-                        <th className="text-right py-2 px-3 text-white font-bold">Var Ppto</th>
-                        <th className="text-right py-2 px-3 text-white font-bold">Var 25/24</th>
-                        <th className="text-right py-2 px-3 text-white font-bold">Var 24/23</th>
+                        <th className="text-left py-2 px-3 text-gray-900 font-bold">Trimestre</th>
+                        <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Real</th>
+                        <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Ppto</th>
+                        <th className="text-right py-2 px-3 text-gray-900 font-bold">2024 Real</th>
+                        <th className="text-right py-2 px-3 text-gray-900 font-bold">Var Ppto</th>
+                        <th className="text-right py-2 px-3 text-gray-900 font-bold">Var 25/24</th>
+                        <th className="text-right py-2 px-3 text-gray-900 font-bold">Var 24/23</th>
                       </tr>
                     </thead>
                     <tbody>
                       {ejecucionTrimestral.polloCanal.data.map((row, idx) => (
-                        <tr key={idx} className="border-b border-slate-700/30 hover:bg-slate-700/20">
-                          <td className="py-2 px-3 text-white font-semibold">{row.trimestre}</td>
+                        <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
+                          <td className="py-2 px-3 text-gray-900 font-semibold">{row.trimestre}</td>
                           <td className="py-2 px-3 text-right text-green-400 font-bold">${formatNumber(row.real_2025)}</td>
                           <td className="py-2 px-3 text-right text-blue-400">${formatNumber(row.ppto_2025)}</td>
-                          <td className="py-2 px-3 text-right text-gray-400">${formatNumber(row.real_2024)}</td>
+                          <td className="py-2 px-3 text-right text-gray-600">${formatNumber(row.real_2024)}</td>
                           <td className={`py-2 px-3 text-right font-bold ${row.var_25_ppto_vs_real >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {row.var_25_ppto_vs_real}%
                           </td>
@@ -399,11 +399,11 @@ export default function Presupuesto2025Dashboard({ data }) {
                           </td>
                         </tr>
                       ))}
-                      <tr className="border-t-2 border-slate-600 bg-slate-700/50 font-bold">
-                        <td className="py-2 px-3 text-white">TOTAL</td>
+                      <tr className="border-t-2 border-slate-600 bg-gray-100 font-bold">
+                        <td className="py-2 px-3 text-gray-900">TOTAL</td>
                         <td className="py-2 px-3 text-right text-green-400">${formatNumber(ejecucionTrimestral.polloCanal.totales.real_2025)}</td>
                         <td className="py-2 px-3 text-right text-blue-400">${formatNumber(ejecucionTrimestral.polloCanal.totales.ppto_2025)}</td>
-                        <td className="py-2 px-3 text-right text-gray-400">${formatNumber(ejecucionTrimestral.polloCanal.totales.real_2024)}</td>
+                        <td className="py-2 px-3 text-right text-gray-600">${formatNumber(ejecucionTrimestral.polloCanal.totales.real_2024)}</td>
                         <td className={`py-2 px-3 text-right ${parseFloat(ejecucionTrimestral.polloCanal.variaciones.var_25_ppto_vs_real) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                           {ejecucionTrimestral.polloCanal.variaciones.var_25_ppto_vs_real}%
                         </td>
@@ -419,7 +419,7 @@ export default function Presupuesto2025Dashboard({ data }) {
                 </div>
               </div>
             )}
-            className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <Info className="w-5 h-5 text-blue-400" />
           </button>
@@ -430,7 +430,7 @@ export default function Presupuesto2025Dashboard({ data }) {
             <XAxis dataKey="trimestre" stroke="#9ca3af" />
             <YAxis stroke="#9ca3af" tickFormatter={(value) => `${formatMiles(value)}M`} />
             <Tooltip
-              contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
+              contentStyle={{ backgroundcolor: '#1f2937', border: '2px solid #3b82f6' }}
               labelStyle={{ color: '#fff' }}
               itemStyle={{ color: '#fff' }}
               formatter={(value) => [`$${formatNumber(value)}`, '']}
@@ -450,9 +450,9 @@ export default function Presupuesto2025Dashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30"
       >
-        <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Scale className="w-6 h-6 text-orange-400" />
           Marco Tributario 2025
         </h3>
@@ -461,15 +461,15 @@ export default function Presupuesto2025Dashboard({ data }) {
             className="bg-gradient-to-br from-orange-900/40 to-orange-800/20 rounded-xl p-4 border border-orange-700/50 cursor-pointer hover:border-orange-500 transition-all"
             onClick={() => openModal(
               'Tasa Mínima de Tributación',
-              <div className="text-gray-300">
+              <div className="text-gray-700">
                 <p className="mb-4">El artículo 240, parágrafo 6 establece una <strong className="text-orange-400">tasa mínima de tributación del {tributacion.tasa_minima}%</strong> para los contribuyentes del impuesto sobre la renta.</p>
                 <div className="bg-orange-900/30 rounded-lg p-4 border border-orange-700/50 mb-4">
-                  <p className="text-sm font-semibold text-white mb-2">Tasa de Tributación Depurada (TTD):</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Tasa de Tributación Depurada (TTD):</p>
                   <p className="text-sm">TTD = Impuesto Depurado (ID) / Utilidad Depurada (UD)</p>
                   <p className="text-sm mt-2">La TTD no podrá ser inferior al 15%</p>
                 </div>
-                <div className="bg-green-900/30 rounded-lg p-4 border border-green-700/50">
-                  <p className="text-sm font-semibold text-white mb-2">Resultado Pollo Fiesta:</p>
+                <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Resultado Pollo Fiesta:</p>
                   <p className="text-sm">Para el año gravable 2025, Pollo Fiesta incrementó su tasa de tributación en <strong className="text-green-400">{tributacion.incremento_tributacion_2025}%</strong> con relación al impuesto neto de renta del año 2024.</p>
                 </div>
               </div>
@@ -477,21 +477,21 @@ export default function Presupuesto2025Dashboard({ data }) {
           >
             <Scale className="w-8 h-8 text-orange-400 mb-3" />
             <div className="text-orange-400 font-semibold mb-2">Tasa Mínima</div>
-            <div className="text-white text-2xl font-bold">{tributacion.tasa_minima}%</div>
-            <div className="text-xs text-gray-400 mt-2">Incremento 2025: +{tributacion.incremento_tributacion_2025}%</div>
+            <div className="text-gray-900 text-2xl font-bold">{tributacion.tasa_minima}%</div>
+            <div className="text-xs text-gray-600 mt-2">Incremento 2025: +{tributacion.incremento_tributacion_2025}%</div>
           </div>
 
           <div 
             className="bg-gradient-to-br from-red-900/40 to-red-800/20 rounded-xl p-4 border border-red-700/50 cursor-pointer hover:border-red-500 transition-all"
             onClick={() => openModal(
               'Impuestos Saludables',
-              <div className="text-gray-300">
+              <div className="text-gray-700">
                 <p className="mb-4">Continúa vigente el impuesto sobre alimentos ultra procesados o azucarados:</p>
                 <div className="space-y-2 mb-4">
                   {tributacion.impuestos_saludables.map((imp, idx) => (
-                    <div key={idx} className="bg-slate-700/50 rounded-lg p-3 flex items-center justify-between">
-                      <span className="font-semibold text-white">{imp.anio}</span>
-                      <span className={`text-xl font-bold ${imp.anio === 2025 ? 'text-red-400' : 'text-gray-400'}`}>{imp.tasa}%</span>
+                    <div key={idx} className="bg-gray-100 rounded-lg p-3 flex items-center justify-between">
+                      <span className="font-semibold text-gray-900">{imp.anio}</span>
+                      <span className={`text-xl font-bold ${imp.anio === 2025 ? 'text-red-400' : 'text-gray-600'}`}>{imp.tasa}%</span>
                     </div>
                   ))}
                 </div>
@@ -503,18 +503,18 @@ export default function Presupuesto2025Dashboard({ data }) {
           >
             <AlertCircle className="w-8 h-8 text-red-400 mb-3" />
             <div className="text-red-400 font-semibold mb-2">Impuestos Saludables</div>
-            <div className="text-white text-2xl font-bold">20%</div>
-            <div className="text-xs text-gray-400 mt-2">Tasa 2025 y siguientes</div>
+            <div className="text-gray-900 text-2xl font-bold">20%</div>
+            <div className="text-xs text-gray-600 mt-2">Tasa 2025 y siguientes</div>
           </div>
 
           <div 
             className="bg-gradient-to-br from-green-900/40 to-green-800/20 rounded-xl p-4 border border-green-700/50 cursor-pointer hover:border-green-500 transition-all"
             onClick={() => openModal(
               'Cumplimiento Tributario',
-              <div className="text-gray-300">
+              <div className="text-gray-700">
                 <p className="mb-4">En materia tributaria por el año gravable 2025, Pollo Fiesta S.A. elaboró y presentó oportunamente todas las declaraciones de impuestos.</p>
-                <div className="bg-green-900/30 rounded-lg p-4 border border-green-700/50 mb-4">
-                  <p className="text-sm font-semibold text-white mb-2">Recuperación de cartera fiscal:</p>
+                <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 mb-4">
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Recuperación de cartera fiscal:</p>
                   <ul className="text-sm space-y-1 list-disc list-inside">
                     <li>Saldos a favor en IVA recuperados</li>
                     <li>Sin ningún tipo de glosa ante la DIAN</li>
@@ -527,8 +527,8 @@ export default function Presupuesto2025Dashboard({ data }) {
           >
             <FileText className="w-8 h-8 text-green-400 mb-3" />
             <div className="text-green-400 font-semibold mb-2">Cumplimiento</div>
-            <div className="text-white text-lg font-bold">100%</div>
-            <div className="text-xs text-gray-400 mt-2">Declaraciones presentadas</div>
+            <div className="text-gray-900 text-lg font-bold">100%</div>
+            <div className="text-xs text-gray-600 mt-2">Declaraciones presentadas</div>
           </div>
         </div>
       </motion.div>
@@ -538,23 +538,23 @@ export default function Presupuesto2025Dashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30"
       >
-        <h3 className="text-xl font-bold text-white mb-4">Situación Jurídica y Tecnológica</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Situación Jurídica y Tecnológica</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div 
             className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 rounded-xl p-4 border border-blue-700/50 cursor-pointer hover:border-blue-500 transition-all"
             onClick={() => openModal(
               'Marco Legal - Protección de Datos',
-              <div className="text-gray-300">
+              <div className="text-gray-700">
                 <div className="bg-blue-900/30 rounded-lg p-4 border border-blue-700/50 mb-4">
-                  <p className="text-sm font-semibold text-white mb-2">{marcoLegal.ley_603_2000}</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">{marcoLegal.ley_603_2000}</p>
                   <p className="text-sm">Propiedad intelectual y derechos de autor en Proceso Electrónico de Datos (PED).</p>
                 </div>
-                <div className="bg-green-900/30 rounded-lg p-4 border border-green-700/50 mb-4">
-                  <p className="text-sm font-semibold text-white mb-2">Ley 1581 de 2012</p>
+                <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 mb-4">
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Ley 1581 de 2012</p>
                   <p className="text-sm mb-3">{marcoLegal.ley_1581_2012}</p>
-                  <p className="text-sm font-semibold text-white mb-2">Principios aplicados por Pollo Fiesta:</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Principios aplicados por Pollo Fiesta:</p>
                   <ul className="text-sm space-y-1 list-disc list-inside">
                     <li><strong>Legalidad:</strong> Inscrita en el RNBD (Habeas Data)</li>
                     <li><strong>Finalidad:</strong> Datos para fines legítimos informados</li>
@@ -568,18 +568,18 @@ export default function Presupuesto2025Dashboard({ data }) {
           >
             <FileText className="w-8 h-8 text-blue-400 mb-3" />
             <div className="text-blue-400 font-semibold mb-2">Marco Legal</div>
-            <div className="text-white text-sm mb-2">Ley 603/2000 - Ley 1581/2012</div>
-            <div className="text-xs text-gray-400">Protección de datos y PED</div>
+            <div className="text-gray-900 text-sm mb-2">Ley 603/2000 - Ley 1581/2012</div>
+            <div className="text-xs text-gray-600">Protección de datos y PED</div>
           </div>
 
           <div 
             className="bg-gradient-to-br from-purple-900/40 to-purple-800/20 rounded-xl p-4 border border-purple-700/50 cursor-pointer hover:border-purple-500 transition-all"
             onClick={() => openModal(
               'Sistema ERP Enterprise',
-              <div className="text-gray-300">
+              <div className="text-gray-700">
                 <p className="mb-4">El sistema de información con su nube (cloud) navega con el <strong className="text-purple-400">{marcoLegal.erp_sistema}</strong></p>
                 <div className="bg-purple-900/30 rounded-lg p-4 border border-purple-700/50 mb-4">
-                  <p className="text-sm font-semibold text-white mb-2">Aplicativos activos:</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Aplicativos activos:</p>
                   <ul className="text-sm space-y-1 list-disc list-inside">
                     <li>Nómina, Comercial y Finanzas</li>
                     <li>CRM - Gestión de Relación con Clientes</li>
@@ -589,8 +589,8 @@ export default function Presupuesto2025Dashboard({ data }) {
                     <li>Reporteadores Flex, Mobile, Generic Transfer</li>
                   </ul>
                 </div>
-                <div className="bg-slate-700/50 rounded-lg p-4">
-                  <p className="text-sm font-semibold text-white mb-2">En proceso de Re-parametrización:</p>
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <p className="text-sm font-semibold text-gray-900 mb-2">En proceso de Re-parametrización:</p>
                   <p className="text-sm">Compras, Almacén, Inventarios y Mantenimiento</p>
                 </div>
               </div>
@@ -598,21 +598,21 @@ export default function Presupuesto2025Dashboard({ data }) {
           >
             <PieChartIcon className="w-8 h-8 text-purple-400 mb-3" />
             <div className="text-purple-400 font-semibold mb-2">ERP Enterprise</div>
-            <div className="text-white text-sm mb-2">SIESA DIGITAL S.A.S.</div>
-            <div className="text-xs text-gray-400">Minería de datos y BI</div>
+            <div className="text-gray-900 text-sm mb-2">SIESA DIGITAL S.A.S.</div>
+            <div className="text-xs text-gray-600">Minería de datos y BI</div>
           </div>
 
           <div 
             className="bg-gradient-to-br from-yellow-900/40 to-yellow-800/20 rounded-xl p-4 border border-yellow-700/50 cursor-pointer hover:border-yellow-500 transition-all"
             onClick={() => openModal(
               'Proceso Ronda Río Fucha',
-              <div className="text-gray-300">
+              <div className="text-gray-700">
                 <div className="bg-yellow-900/30 rounded-lg p-4 border border-yellow-700/50 mb-4">
-                  <p className="text-sm font-semibold text-white mb-2">Estado actual:</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Estado actual:</p>
                   <p className="text-sm">{marcoLegal.proceso_rio_fucha.estado}</p>
                 </div>
-                <div className="bg-slate-700/50 rounded-lg p-4 mb-4">
-                  <p className="text-sm font-semibold text-white mb-2">Antecedentes:</p>
+                <div className="bg-gray-100 rounded-lg p-4 mb-4">
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Antecedentes:</p>
                   <ul className="text-sm space-y-2">
                     <li>• Auto de fecha {marcoLegal.proceso_rio_fucha.fecha_auto}: Juez 19 Administrativa solicitó informe final de entrega de predios</li>
                     <li>• Cumplimiento por interiores 1 y 3 (Globerty no involucrada)</li>
@@ -620,7 +620,7 @@ export default function Presupuesto2025Dashboard({ data }) {
                   </ul>
                 </div>
                 <div className="bg-red-900/30 rounded-lg p-4 border border-red-700/50">
-                  <p className="text-sm font-semibold text-white mb-2">Recursos presentados (fuera de término legal):</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Recursos presentados (fuera de término legal):</p>
                   <ul className="text-sm space-y-1 list-disc list-inside">
                     <li>Recurso de excepción de pérdida de ejecutoriedad (2023)</li>
                     <li>Recurso de reposición subsidiariamente con apelación (2023)</li>
@@ -632,8 +632,8 @@ export default function Presupuesto2025Dashboard({ data }) {
           >
             <AlertCircle className="w-8 h-8 text-yellow-400 mb-3" />
             <div className="text-yellow-400 font-semibold mb-2">Río Fucha</div>
-            <div className="text-white text-sm mb-2">Recurso de excepción</div>
-            <div className="text-xs text-gray-400">Pérdida de ejecutoriedad</div>
+            <div className="text-gray-900 text-sm mb-2">Recurso de excepción</div>
+            <div className="text-xs text-gray-600">Pérdida de ejecutoriedad</div>
           </div>
         </div>
       </motion.div>
@@ -652,23 +652,23 @@ export default function Presupuesto2025Dashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto border-4 border-blue-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-blue-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
-                <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+                <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed">
                 {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">
-                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors">
                   Entendido
                 </button>
               </div>
@@ -679,3 +679,4 @@ export default function Presupuesto2025Dashboard({ data }) {
     </div>
   );
 }
+

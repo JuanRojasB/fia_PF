@@ -183,15 +183,15 @@ export default function ComprasDashboard({ data }) {
             <YAxis stroke="#9ca3af" tickFormatter={(v) => `$${v}M`} style={{ fontSize: '13px' }} />
             <Tooltip
               contentStyle={{ 
-                backgroundColor: '#1e293b', 
-                border: '1px solid #475569', 
+                backgroundcolor: '#1f2937', 
+                border: '2px solid #3b82f6', 
                 borderRadius: '8px',
                 fontSize: '14px',
                 padding: '12px',
-                color: '#ffffff'
+                color: '#1f2937'
               }}
-              labelStyle={{ color: '#ffffff' }}
-              itemStyle={{ color: '#ffffff' }}
+              labelStyle={{ color: '#1f2937' }}
+              itemStyle={{ color: '#1f2937' }}
               labelFormatter={(label, payload) => {
                 if (payload && payload[0]) {
                   return payload[0].payload.mesCompleto;
@@ -242,15 +242,15 @@ export default function ComprasDashboard({ data }) {
             />
             <Tooltip
               contentStyle={{ 
-                backgroundColor: '#1e293b', 
-                border: '1px solid #475569', 
+                backgroundcolor: '#1f2937', 
+                border: '2px solid #3b82f6', 
                 borderRadius: '8px',
                 fontSize: '14px',
                 padding: '12px',
-                color: '#ffffff'
+                color: '#1f2937'
               }}
-              labelStyle={{ color: '#ffffff' }}
-              itemStyle={{ color: '#ffffff' }}
+              labelStyle={{ color: '#1f2937' }}
+              itemStyle={{ color: '#1f2937' }}
               labelFormatter={(label, payload) => {
                 if (payload && payload[0]) {
                   return payload[0].payload.mesCompleto;
@@ -377,3 +377,4 @@ export default function ComprasDashboard({ data }) {
     </div>
   );
 }
+

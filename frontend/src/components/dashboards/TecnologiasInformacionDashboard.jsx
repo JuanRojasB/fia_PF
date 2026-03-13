@@ -12,7 +12,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
   };
 
   if (!data || !data.ecosistema) {
-    return <div className="text-gray-400">No hay datos disponibles</div>;
+    return <div className="text-gray-600">No hay datos disponibles</div>;
   }
 
   const { proyectos } = data;
@@ -100,13 +100,13 @@ export default function TecnologiasInformacionDashboard({ data }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-xl rounded-xl p-6 border-2 border-blue-500/30"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 shadow-xl"
       >
         <div className="flex items-center gap-3">
-          <Monitor className="w-10 h-10 text-blue-400" />
+          <Monitor className="w-10 h-10 text-blue-600" />
           <div>
-            <h1 className="text-2xl font-bold text-white">Tecnologías de la Información</h1>
-            <p className="text-gray-300 text-sm mt-1">Ecosistema Tecnológico Pollo Fiesta</p>
+            <h1 className="text-2xl font-bold text-gray-900">Tecnologías de la Información</h1>
+            <p className="text-gray-700 text-sm mt-1">Ecosistema Tecnológico Pollo Fiesta</p>
           </div>
         </div>
       </motion.div>
@@ -117,42 +117,42 @@ export default function TecnologiasInformacionDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-green-500/20 to-green-600/10 rounded-xl p-5 border border-green-500/30"
+          className="bg-white/95 rounded-xl p-5 border-4 border-green-500/30 shadow-lg"
         >
           <div className="flex items-center gap-3 mb-2">
-            <CheckCircle2 className="w-7 h-7 text-green-400" />
-            <h3 className="text-lg font-bold text-white">Activos</h3>
+            <CheckCircle2 className="w-7 h-7 text-green-600" />
+            <h3 className="text-lg font-bold text-gray-900">Activos</h3>
           </div>
-          <div className="text-3xl font-bold text-green-400">{proyectos.filter(p => p.estado === 'Activo').length}</div>
-          <p className="text-xs text-gray-400 mt-1">Proyectos operando</p>
+          <div className="text-3xl font-bold text-green-600">{proyectos.filter(p => p.estado === 'Activo').length}</div>
+          <p className="text-xs text-gray-600 mt-1">Proyectos operando</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 rounded-xl p-5 border border-yellow-500/30"
+          className="bg-white/95 rounded-xl p-5 border-4 border-yellow-500/30 shadow-lg"
         >
           <div className="flex items-center gap-3 mb-2">
-            <Clock className="w-7 h-7 text-yellow-400" />
-            <h3 className="text-lg font-bold text-white">En Desarrollo</h3>
+            <Clock className="w-7 h-7 text-yellow-600" />
+            <h3 className="text-lg font-bold text-gray-900">En Desarrollo</h3>
           </div>
-          <div className="text-3xl font-bold text-yellow-400">{proyectos.filter(p => p.estado === 'En Proceso').length}</div>
-          <p className="text-xs text-gray-400 mt-1">Re-parametrización ERP</p>
+          <div className="text-3xl font-bold text-yellow-600">{proyectos.filter(p => p.estado === 'En Proceso').length}</div>
+          <p className="text-xs text-gray-600 mt-1">Re-parametrización ERP</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-xl p-5 border border-purple-500/30"
+          className="bg-white/95 rounded-xl p-5 border-4 border-purple-500/30 shadow-lg"
         >
           <div className="flex items-center gap-3 mb-2">
-            <Database className="w-7 h-7 text-purple-400" />
-            <h3 className="text-lg font-bold text-white">Aplicaciones</h3>
+            <Database className="w-7 h-7 text-purple-600" />
+            <h3 className="text-lg font-bold text-gray-900">Aplicaciones</h3>
           </div>
-          <div className="text-3xl font-bold text-purple-400">{aplicaciones.length}</div>
-          <p className="text-xs text-gray-400 mt-1">Desarrollos internos</p>
+          <div className="text-3xl font-bold text-purple-600">{aplicaciones.length}</div>
+          <p className="text-xs text-gray-600 mt-1">Desarrollos internos</p>
         </motion.div>
       </div>
 
@@ -161,10 +161,10 @@ export default function TecnologiasInformacionDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 shadow-xl"
       >
-        <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-          <Zap className="w-6 h-6 text-yellow-400" />
+        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <Zap className="w-6 h-6 text-yellow-600" />
           Iniciativas Tecnológicas
         </h2>
         
@@ -180,12 +180,12 @@ export default function TecnologiasInformacionDashboard({ data }) {
                 className={`flex items-start gap-4 p-4 rounded-lg border ${getColorClasses(item.color)} hover:scale-[1.02] transition-all cursor-pointer`}
                 onClick={() => openModal(item.titulo, item.descripcion)}
               >
-                <div className="p-2 bg-slate-900/50 rounded-lg flex-shrink-0">
+                <div className="p-2 bg-white/95 rounded-lg flex-shrink-0">
                   <IconComponent className="w-5 h-5" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-white mb-1">{item.titulo}</h3>
-                  <p className="text-sm text-gray-300">{item.descripcion}</p>
+                  <h3 className="font-bold text-gray-900 mb-1">{item.titulo}</h3>
+                  <p className="text-sm text-gray-700">{item.descripcion}</p>
                 </div>
               </motion.div>
             );
@@ -198,10 +198,10 @@ export default function TecnologiasInformacionDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 shadow-xl"
       >
-        <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-          <Database className="w-6 h-6 text-purple-400" />
+        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <Database className="w-6 h-6 text-purple-600" />
           Sistemas del Ecosistema
         </h2>
         
@@ -218,13 +218,13 @@ export default function TecnologiasInformacionDashboard({ data }) {
                 `Sistema ${sistema.nombre} con las siguientes funcionalidades: ${sistema.areas.join(', ')}.`
               )}
             >
-              <h3 className="font-bold text-white mb-3 flex items-center gap-2">
+              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
                 <Monitor className="w-5 h-5 text-blue-400" />
                 {sistema.nombre}
               </h3>
               <ul className="space-y-2">
                 {sistema.areas.map((area, areaIdx) => (
-                  <li key={areaIdx} className="text-sm text-gray-300 flex items-start gap-2">
+                  <li key={areaIdx} className="text-sm text-gray-700 flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>{area}</span>
                   </li>
@@ -240,10 +240,10 @@ export default function TecnologiasInformacionDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 shadow-xl"
       >
-        <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-          <Code className="w-6 h-6 text-orange-400" />
+        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <Code className="w-6 h-6 text-orange-600" />
           Aplicaciones Internas Desarrolladas
         </h2>
         
@@ -261,7 +261,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
               )}
             >
               <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0" />
-              <span className="text-sm text-gray-300">{app}</span>
+              <span className="text-sm text-gray-700">{app}</span>
             </motion.div>
           ))}
         </div>
@@ -281,23 +281,23 @@ export default function TecnologiasInformacionDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-blue-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <Info className="w-6 h-6 text-blue-600" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
-                <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+                <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed">
                 {modalContent.description}
               </div>
               <div className="mt-6 flex justify-end">
-                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors font-semibold">
                   Entendido
                 </button>
               </div>

@@ -95,15 +95,15 @@ export default function MarketingDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 shadow-lg"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold text-white">Inversión Publicitaria 2025</h3>
-            <p className="text-sm text-gray-400 mt-1">Análisis de meses con mayor y menor gasto</p>
+            <h3 className="text-2xl font-bold text-gray-900">Inversión Publicitaria 2025</h3>
+            <p className="text-sm text-gray-600 mt-1">Análisis de meses con mayor y menor gasto</p>
           </div>
-          <button onClick={() => openModal('Análisis de Gasto', 'Mes de menor inversión: Junio $5.297.343 (brecha de continuidad en pauta). Octubre: $163.175.712 (compra centralizada obsequios corporativos fin de año). Diciembre: $123.995.310 (pauta medios masivos RCN TV, Caracol TV, Red + TV y pauta radial).')} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-            <Info className="w-6 h-6 text-gray-400" />
+          <button onClick={() => openModal('Análisis de Gasto', 'Mes de menor inversión: Junio $5.297.343 (brecha de continuidad en pauta). Octubre: $163.175.712 (compra centralizada obsequios corporativos fin de año). Diciembre: $123.995.310 (pauta medios masivos RCN TV, Caracol TV, Red + TV y pauta radial).')} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <Info className="w-6 h-6 text-gray-600" />
           </button>
         </div>
         
@@ -114,10 +114,10 @@ export default function MarketingDashboard({ data }) {
               <div className="w-3 h-3 bg-red-500 rounded-full"></div>
               <h4 className="text-lg font-bold text-red-400">Menor Inversión</h4>
             </div>
-            <div className="bg-slate-800/50 rounded-lg p-4 border border-red-500/20">
-              <div className="text-sm text-gray-400 mb-1">Junio 2025</div>
-              <div className="text-4xl font-bold text-white mb-2">$5.3M</div>
-              <div className="text-xs text-gray-400 leading-relaxed">
+            <div className="bg-white rounded-lg p-4 border-2 border-red-500/30 shadow">
+              <div className="text-sm text-gray-600 mb-1">Junio 2025</div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">$5.3M</div>
+              <div className="text-xs text-gray-600 leading-relaxed">
                 Brecha de continuidad en pauta publicitaria
               </div>
             </div>
@@ -130,17 +130,17 @@ export default function MarketingDashboard({ data }) {
               <h4 className="text-lg font-bold text-blue-400">Mayor Inversión</h4>
             </div>
             <div className="space-y-3">
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-500/20">
-                <div className="text-sm text-gray-400 mb-1">Octubre 2025</div>
-                <div className="text-4xl font-bold text-white mb-2">$163.2M</div>
-                <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="bg-white rounded-lg p-4 border-2 border-blue-500/30 shadow">
+                <div className="text-sm text-gray-600 mb-1">Octubre 2025</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">$163.2M</div>
+                <div className="text-xs text-gray-600 leading-relaxed">
                   Compra centralizada de obsequios corporativos fin de año
                 </div>
               </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/20">
-                <div className="text-sm text-gray-400 mb-1">Diciembre 2025</div>
-                <div className="text-4xl font-bold text-white mb-2">$124.0M</div>
-                <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="bg-white rounded-lg p-4 border-2 border-purple-500/30 shadow">
+                <div className="text-sm text-gray-600 mb-1">Diciembre 2025</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">$124.0M</div>
+                <div className="text-xs text-gray-600 leading-relaxed">
                   Pauta medios masivos: RCN TV, Caracol TV, Red+ TV y radial
                 </div>
               </div>
@@ -156,35 +156,35 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-cyan-500/30 shadow-lg"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-bold text-white">Crecimiento Redes Sociales</h3>
-              <p className="text-xs text-gray-400 mt-1">Seguidores en plataformas digitales</p>
+              <h3 className="text-xl font-bold text-gray-900">Crecimiento Redes Sociales</h3>
+              <p className="text-xs text-gray-600 mt-1">Seguidores en plataformas digitales</p>
             </div>
-            <button onClick={() => openModal('Seguidores Digitales', 'Crecimiento de seguidores: De 4,175 (enero 2024) a 10,610 (diciembre 2025) — incremento del 154%. Se destaca el crecimiento sostenido de seguidores durante el último semestre del año.')} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-              <Info className="w-5 h-5 text-gray-400" />
+            <button onClick={() => openModal('Seguidores Digitales', 'Crecimiento de seguidores: De 4,175 (enero 2024) a 10,610 (diciembre 2025) — incremento del 154%. Se destaca el crecimiento sostenido de seguidores durante el último semestre del año.')} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <Info className="w-5 h-5 text-gray-600" />
             </button>
           </div>
           
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 rounded-lg p-4 border border-cyan-500/30">
-              <div className="text-xs text-gray-400 mb-1">Enero 2024</div>
-              <div className="text-3xl font-bold text-white">4,175</div>
-              <div className="text-xs text-gray-500 mt-1">Seguidores</div>
+            <div className="bg-white rounded-lg p-4 border-2 border-cyan-500/30 shadow">
+              <div className="text-xs text-gray-600 mb-1">Enero 2024</div>
+              <div className="text-3xl font-bold text-gray-900">4,175</div>
+              <div className="text-xs text-gray-600 mt-1">Seguidores</div>
             </div>
-            <div className="bg-gradient-to-br from-cyan-500/30 to-cyan-600/20 rounded-lg p-4 border border-cyan-500/50">
-              <div className="text-xs text-gray-400 mb-1">Diciembre 2025</div>
-              <div className="text-3xl font-bold text-cyan-400">10,610</div>
-              <div className="text-xs text-gray-500 mt-1">Seguidores</div>
+            <div className="bg-white rounded-lg p-4 border-2 border-cyan-500/50 shadow">
+              <div className="text-xs text-gray-600 mb-1">Diciembre 2025</div>
+              <div className="text-3xl font-bold text-cyan-600">10,610</div>
+              <div className="text-xs text-gray-600 mt-1">Seguidores</div>
             </div>
           </div>
 
-          <div className="text-center p-4 bg-gradient-to-r from-green-500/20 to-cyan-500/20 rounded-lg border border-green-500/30">
-            <div className="text-4xl font-bold text-green-400 mb-1">+154%</div>
-            <div className="text-sm text-gray-300">Crecimiento Total</div>
-            <div className="text-xs text-gray-500 mt-1">+6,435 nuevos seguidores en 24 meses</div>
+          <div className="text-center p-4 bg-white rounded-lg border-2 border-green-500/30 shadow">
+            <div className="text-4xl font-bold text-green-600 mb-1">+154%</div>
+            <div className="text-sm text-gray-900">Crecimiento Total</div>
+            <div className="text-xs text-gray-600 mt-1">+6,435 nuevos seguidores en 24 meses</div>
           </div>
         </motion.div>
 
@@ -193,53 +193,53 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 shadow-lg"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-bold text-white">Retorno por Canal de Venta</h3>
-              <p className="text-xs text-gray-400 mt-1">ROI = Retorno sobre Inversión Publicitaria</p>
+              <h3 className="text-xl font-bold text-gray-900">Retorno por Canal de Venta</h3>
+              <p className="text-xs text-gray-600 mt-1">ROI = Retorno sobre Inversión Publicitaria</p>
             </div>
-            <button onClick={() => openModal('Análisis de Canales', 'Canal de mayor retorno: Cencosud con 29.9% promedio (canal con alto potencial). Canal Foco: PDV (Canal prioritario para 2026). Canal con mayor oportunidad: Asadero con 16.6%. Recomendación: Reforzar la inversión hacia Cencosud y PDV en 2026. Evaluar rentabilidad del canal Asadero y ajustar parámetros de activación.')} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-              <Info className="w-5 h-5 text-gray-400" />
+            <button onClick={() => openModal('Análisis de Canales', 'Canal de mayor retorno: Cencosud con 29.9% promedio (canal con alto potencial). Canal Foco: PDV (Canal prioritario para 2026). Canal con mayor oportunidad: Asadero con 16.6%. Recomendación: Reforzar la inversión hacia Cencosud y PDV en 2026. Evaluar rentabilidad del canal Asadero y ajustar parámetros de activación.')} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <Info className="w-5 h-5 text-gray-600" />
             </button>
           </div>
           
           <div className="space-y-4">
             {/* Cencosud */}
-            <div className="bg-gradient-to-r from-green-500/20 to-transparent rounded-lg p-4 border border-green-500/30">
+            <div className="bg-white rounded-lg p-4 border-2 border-green-500/30 shadow">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <div className="text-sm font-medium text-gray-300">Cencosud</div>
-                  <div className="text-xs text-gray-500">Canal de Mayor Retorno</div>
+                  <div className="text-sm font-medium text-gray-900">Cencosud</div>
+                  <div className="text-xs text-gray-600">Canal de Mayor Retorno</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold text-green-400">29.9%</div>
-                  <div className="text-xs text-gray-400">ROI</div>
+                  <div className="text-3xl font-bold text-green-600">29.9%</div>
+                  <div className="text-xs text-gray-600">ROI</div>
                 </div>
               </div>
-              <div className="w-full bg-slate-700 rounded-full h-2 mt-2">
+              <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                 <div className="bg-green-500 h-2 rounded-full" style={{ width: '100%' }}></div>
               </div>
-              <div className="text-xs text-gray-400 mt-2">Por cada $100 invertidos, retornan $29.90</div>
+              <div className="text-xs text-gray-600 mt-2">Por cada $100 invertidos, retornan $29.90</div>
             </div>
 
             {/* Asadero */}
-            <div className="bg-gradient-to-r from-orange-500/20 to-transparent rounded-lg p-4 border border-orange-500/30">
+            <div className="bg-white rounded-lg p-4 border-2 border-orange-500/30 shadow">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <div className="text-sm font-medium text-gray-300">Asadero</div>
-                  <div className="text-xs text-gray-500">Oportunidad de Mejora</div>
+                  <div className="text-sm font-medium text-gray-900">Asadero</div>
+                  <div className="text-xs text-gray-600">Oportunidad de Mejora</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold text-orange-400">16.6%</div>
-                  <div className="text-xs text-gray-400">ROI</div>
+                  <div className="text-3xl font-bold text-orange-600">16.6%</div>
+                  <div className="text-xs text-gray-600">ROI</div>
                 </div>
               </div>
-              <div className="w-full bg-slate-700 rounded-full h-2 mt-2">
+              <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                 <div className="bg-orange-500 h-2 rounded-full" style={{ width: '55%' }}></div>
               </div>
-              <div className="text-xs text-gray-400 mt-2">Por cada $100 invertidos, retornan $16.60</div>
+              <div className="text-xs text-gray-600 mt-2">Por cada $100 invertidos, retornan $16.60</div>
             </div>
           </div>
         </motion.div>
@@ -298,21 +298,21 @@ export default function MarketingDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-slate-800 rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-cyan-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <Info className="w-6 h-6 text-cyan-600" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
-                <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+                <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-300 leading-relaxed">{modalContent.description}</div>
+              <div className="text-gray-700 leading-relaxed">{modalContent.description}</div>
               <div className="mt-6 flex justify-end">
-                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors">
+                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors shadow">
                   Entendido
                 </button>
               </div>

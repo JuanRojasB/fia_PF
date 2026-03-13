@@ -1,5 +1,10 @@
 import BienvenidaDashboard from './BienvenidaDashboard';
-import GerenciaDashboard from './Presupuesto2025Dashboard';
+import ContextoMundialDashboard from './ContextoMundialDashboard';
+import EntornoSocioeconomicoDashboard from './EntornoSocioeconomicoDashboard';
+import EncasetamientoColombiaDashboard from './EncasetamientoColombiaDashboard';
+import NegocioMarchaDashboard from './NegocioMarchaDashboard';
+import GerenciaDashboard from './GerenciaDashboard';
+import SituacionEconomicaDashboard from './SituacionEconomicaDashboard';
 import CarteraDashboard from './CarteraDashboard';
 import FuentesUsosDashboard from './FuentesUsosDashboard';
 import HumanaDashboard from './HumanaDashboard';
@@ -36,7 +41,7 @@ import EnDesarrollo from './EnDesarrollo';
 
 export default function DashboardRenderer({ type, data }) {
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = [];
+  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica'];
   
   if (!data || (Array.isArray(data) && data.length === 0)) {
     // Si el dashboard no requiere datos, continuar normalmente
@@ -51,7 +56,17 @@ export default function DashboardRenderer({ type, data }) {
 
   switch (type) {
     case 'bienvenida':
+    case 'bienvenida-inicio':
+    case 'bienvenida-principal':
       return <BienvenidaDashboard />;
+    case 'contexto-mundial':
+      return <ContextoMundialDashboard />;
+    case 'entorno-socioeconomico':
+      return <EntornoSocioeconomicoDashboard />;
+    case 'encasetamiento-colombia':
+      return <EncasetamientoColombiaDashboard />;
+    case 'negocio-marcha':
+      return <NegocioMarchaDashboard />;
     case 'fuentes-usos':
       return <FuentesUsosDashboard data={data} />;
     case 'auditoria':
@@ -129,6 +144,8 @@ export default function DashboardRenderer({ type, data }) {
       return <SagrilaftDashboard data={data} />;
     case 'gerencia':
       return <GerenciaDashboard data={data} />;
+    case 'situacion-economica':
+      return <SituacionEconomicaDashboard />;
     default:
       return (
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700">

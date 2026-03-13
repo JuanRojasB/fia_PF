@@ -136,7 +136,9 @@ export default function FuentesUsosDashboard({ data }) {
               <XAxis dataKey="name" stroke="#9ca3af" style={{ fontSize: '14px' }} />
               <YAxis stroke="#9ca3af" width={80} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
+                contentStyle={{ backgroundcolor: '#1f2937', border: '2px solid #10b981', borderRadius: '8px' }}
+                labelStyle={{ color: '#1f2937', fontWeight: 'bold' }}
+                itemStyle={{ color: '#374151' }}
                 formatter={(value) => formatCurrency(value)}
               />
               <Legend />
@@ -290,4 +292,5 @@ export default function FuentesUsosDashboard({ data }) {
     </div>
   );
 }
+
 
