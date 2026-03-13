@@ -15,6 +15,14 @@ export default function Login() {
   const [showAgendaModal, setShowAgendaModal] = useState(false);
   const navigate = useNavigate();
 
+  const playSound = () => {
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
+    audio.volume = 1.0;
+    audio.playbackRate = 0.7;
+    audio.preservesPitch = true;
+    audio.play().catch(err => console.log('Audio blocked:', err));
+  };
+
   useEffect(() => {
     if (authService.isAuthenticated()) {
       navigate(ROUTES.HOME);

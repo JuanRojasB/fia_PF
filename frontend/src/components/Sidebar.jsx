@@ -15,6 +15,14 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
 
+  const playSound = () => {
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
+    audio.volume = 1.0;
+    audio.playbackRate = 0.7;
+    audio.preservesPitch = true;
+    audio.play().catch(err => console.log('Audio blocked:', err));
+  };
+
   useEffect(() => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
@@ -476,7 +484,10 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
               </button>
               
               <button
-                onClick={onLogout}
+                onClick={() => {
+                  playSound();
+                  onLogout();
+                }}
                 className="w-full flex items-center justify-center space-x-2 px-4 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.02]"
                 style={{
                   background: 'rgba(239, 68, 68, 0.1)',
@@ -505,7 +516,10 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
               </button>
               
               <button
-                onClick={onLogout}
+                onClick={() => {
+                  playSound();
+                  onLogout();
+                }}
                 className="w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 hover:scale-110 group"
                 style={{
                   background: 'rgba(239, 68, 68, 0.1)',
