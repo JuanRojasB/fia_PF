@@ -16,11 +16,20 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
 
   const playSound = () => {
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
-    audio.volume = 1.0;
-    audio.playbackRate = 0.7;
-    audio.preservesPitch = true;
-    audio.play().catch(err => console.log('Audio blocked:', err));
+    try {
+      const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
+      audio.volume = 1.0;
+      audio.playbackRate = 0.7;
+      audio.preservesPitch = true;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Audio play was prevented, silently ignore
+        });
+      }
+    } catch (error) {
+      // Silently handle any audio errors
+    }
   };
 
   useEffect(() => {

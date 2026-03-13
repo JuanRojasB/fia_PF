@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TrendingUp, DollarSign, Building, FileText, X, Info, Users, Scale, Briefcase } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function SituacionEconomicaDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -243,17 +244,11 @@ export default function SituacionEconomicaDashboard() {
       </motion.div>
 
       {/* Composición Accionaria */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="bg-white/95 rounded-xl p-6 border-4 border-purple-500/30"
+      <CollapsibleTable
+        title="Composición Accionaria - 31 de Diciembre 2025"
+        defaultOpen={false}
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <Users className="w-6 h-6 text-purple-600" />
-            Composición Accionaria - 31 de Diciembre 2025
-          </h3>
           <div className="text-sm text-gray-600">
             Total: {formatNumber(totalAcciones)} acciones | Capital: ${formatNumber(totalCapital)}
           </div>
@@ -288,7 +283,7 @@ export default function SituacionEconomicaDashboard() {
             </tbody>
           </table>
         </div>
-      </motion.div>
+      </CollapsibleTable>
 
       {/* Transacciones con Accionistas */}
       <motion.div

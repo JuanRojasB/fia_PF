@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Shield, AlertTriangle, CheckCircle, X, Info, Users, FileCheck, Target } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function SagrilaftDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
