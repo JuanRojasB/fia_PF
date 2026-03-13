@@ -221,17 +221,15 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
           >
             <div className="flex items-center gap-3 mb-3">
               <motion.div 
-                className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden"
+                className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-lg"
                 style={{
-                  background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2), rgba(255, 255, 255, 0.9))',
-                  border: '2px solid rgba(59, 130, 246, 0.4)',
-                  boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)'
+                  border: '3px solid rgba(59, 130, 246, 0.3)',
                 }}
                 animate={{
                   boxShadow: [
-                    '0 0 20px rgba(59, 130, 246, 0.3)',
-                    '0 0 30px rgba(59, 130, 246, 0.5)',
-                    '0 0 20px rgba(59, 130, 246, 0.3)',
+                    '0 4px 20px rgba(59, 130, 246, 0.2)',
+                    '0 4px 30px rgba(59, 130, 246, 0.4)',
+                    '0 4px 20px rgba(59, 130, 246, 0.2)',
                   ]
                 }}
                 transition={{
@@ -243,19 +241,16 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout }) {
                 <img 
                   src={orbImage} 
                   alt="FIA Logo" 
-                  className="w-full h-full object-contain"
-                  style={{
-                    imageRendering: 'crisp-edges',
-                    backfaceVisibility: 'hidden',
-                    transform: 'translateZ(0) scale(1.1)',
-                    WebkitFontSmoothing: 'antialiased'
-                  }}
+                  className="w-14 h-14 object-contain"
                 />
               </motion.div>
               <div>
                 <h2 className="text-xl font-bold text-gray-900 leading-tight">
-                  FIA 
+                  FIA
                 </h2>
+                <p className="text-xs text-gray-600 font-medium">
+                  Fiesta Intelligence Assistant
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-2 text-sm text-gray-600">

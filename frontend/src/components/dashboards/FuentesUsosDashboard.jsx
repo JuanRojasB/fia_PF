@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, X, Info } from 'lucide-react';
 import EnDesarrollo from './EnDesarrollo';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function FuentesUsosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);

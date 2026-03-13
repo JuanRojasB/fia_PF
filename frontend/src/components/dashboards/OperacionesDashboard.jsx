@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell, PieChart, Pie } from 'recharts';
 import { Wrench, AlertTriangle, TrendingUp, TrendingDown, CheckCircle, XCircle, Info, X, Clock, Activity } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function OperacionesDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);

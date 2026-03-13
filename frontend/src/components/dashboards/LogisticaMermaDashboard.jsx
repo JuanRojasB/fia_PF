@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
 import { TrendingDown, TrendingUp, AlertTriangle, X, Info, Target, CheckCircle2 } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function LogisticaMermaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -225,38 +226,220 @@ export default function LogisticaMermaDashboard({ data }) {
         </div>
       </motion.div>
 
-      {/* Gráfico Comparativo */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        onClick={() => openModal(
-          'Evolución de Mermas por Sede',
-          'Este gráfico muestra la evolución histórica de mermas por sede durante 2023-2025. La línea roja punteada indica la meta general del 10%. Se observa que General mantiene niveles entre 11-12%, Sede 1 (U01) mejoró significativamente de 16.98% a 9.49%, Sede 2 (U02) muestra valores negativos mejorando de -17.19% a -22.31%, y Sede 3 (U03) presenta reducción progresiva de 15.05% a 13.05%.'
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-red-400 transition-all"
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-gray-900">Evolución de Mermas por Sede (2023-2025)</h3>
-          <Info className="w-5 h-5 text-red-400 animate-pulse" />
-        </div>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={datosGrafico}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis dataKey="sede" stroke="#6b7280" />
-            <YAxis stroke="#6b7280" label={{ value: 'Merma (%)', angle: -90, position: 'insideLeft' }} />
-            <Tooltip 
-              contentStyle={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-              formatter={(value) => `${parseFloat(value).toFixed(2)}%`}
+      {/* Gráficos Comparativos - Separados para mejor visualización */}
+      <div className="grid grid-cols-1 gap-6">
+        {/* Gráfico Principal: General, U01, U03 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-2 border-gray-200"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">COMPARATIVO DE MERMAS AÑOS 2025/24/23</h3>
+              <p className="text-sm text-gray-600 mt-1">General, Sede 1 (U01) y Sede 3 (U03)</p>
+            </div>
+            <Info 
+              className="w-5 h-5 text-red-400 cursor-pointer hover:text-red-600 transition-colors" 
+              onClick={() => openModal(
+                'Comparativo de Mermas - Sedes Principales',
+                'Este gráfico muestra la evolución de mermas para General, Sede 1 y Sede 3:\n\n• GENERAL: Se mantiene entre 11-12%, con brecha de 1.70pp vs meta del 10%\n• SEDE 1 (U01): Mejora dramática de 16.98% (2023) a 9.49% (2025), cumpliendo meta\n• SEDE 3 (U03): Reducción progresiva de 15.05% a 13.05%, aún con brecha de 1.05pp\n\nLas barras grises muestran la meta establecida para cada sede.'
+              )}
             />
-            <Legend />
-            <ReferenceLine y={10} stroke="#ef4444" strokeDasharray="5 5" label="Meta General" />
-            <Bar dataKey="2023" fill="#94a3b8" name="2023" />
-            <Bar dataKey="2024" fill="#64748b" name="2024" />
-            <Bar dataKey="2025" fill="#1e40af" name="2025" />
-          </BarChart>
-        </ResponsiveContainer>
-      </motion.div>
+          </div>
+          <ResponsiveContainer width="100%" height={450}>
+            <BarChart 
+              data={datosGrafico.filter(d => d.sede !== 'U02')}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="sede" 
+                stroke="#6b7280"
+                tick={{ fontSize: 14, fontWeight: 'bold' }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                tick={{ fontSize: 12 }}
+                label={{ value: 'Merma (%)', angle: -90, position: 'insideLeft', style: { fontSize: 14, fontWeight: 'bold' } }}
+                domain={[0, 20]}
+              />
+              <Tooltip 
+                contentStyle={{ backgroundColor: 'white', border: '2px solid #3b82f6', borderRadius: '12px', padding: '12px' }}
+                content={({ active, payload, label }) => {
+                  if (active && payload && payload.length) {
+                    const sedeNombre = label === 'U01' ? 'Sede 1 (U01)' : label === 'U03' ? 'Sede 3 (U03)' : label;
+                    return (
+                      <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl">
+                        <p className="font-bold text-gray-900 mb-3 text-lg">{sedeNombre}</p>
+                        <div className="space-y-2">
+                          {payload.map((entry, index) => {
+                            if (entry.value === 0 || entry.value === undefined) return null;
+                            return (
+                              <div key={index} className="flex justify-between items-center gap-6">
+                                <div className="flex items-center gap-2">
+                                  <div 
+                                    className="w-4 h-4 rounded" 
+                                    style={{ backgroundColor: entry.color }}
+                                  ></div>
+                                  <span className="text-gray-700 font-medium">{entry.name}:</span>
+                                </div>
+                                <span className="font-bold text-gray-900">{parseFloat(entry.value).toFixed(2)}%</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Legend 
+                wrapperStyle={{ paddingTop: '20px' }}
+                iconType="rect"
+                formatter={(value) => <span style={{ fontSize: 13, fontWeight: 500 }}>{value}</span>}
+              />
+              <Bar dataKey="2025" fill="#f59e0b" name="2025" radius={[4, 4, 0, 0]} barSize={50} />
+              <Bar dataKey="2024" fill="#3b82f6" name="2024" radius={[4, 4, 0, 0]} barSize={50} />
+              <Bar dataKey="2023" fill="#f97316" name="2023" radius={[4, 4, 0, 0]} barSize={50} />
+              <Bar dataKey="meta" fill="#9ca3af" name="Meta" radius={[4, 4, 0, 0]} barSize={50} />
+            </BarChart>
+          </ResponsiveContainer>
+          
+          {/* Resumen de cambios */}
+          <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-200">
+            <div className="text-center">
+              <div className="text-sm text-gray-600 mb-1">General</div>
+              <div className="text-2xl font-bold text-gray-900">11.70%</div>
+              <div className="text-xs text-red-600 mt-1">+1.70pp vs meta</div>
+            </div>
+            <div className="text-center">
+              <div className="text-sm text-gray-600 mb-1">Sede 1 (U01)</div>
+              <div className="text-2xl font-bold text-green-600">9.49%</div>
+              <div className="text-xs text-green-600 mt-1">✓ Cumple meta</div>
+            </div>
+            <div className="text-center">
+              <div className="text-sm text-gray-600 mb-1">Sede 3 (U03)</div>
+              <div className="text-2xl font-bold text-orange-600">13.05%</div>
+              <div className="text-xs text-orange-600 mt-1">+1.05pp vs meta</div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Gráfico Secundario: U02 (valores negativos) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-2 border-gray-200"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">SEDE 2 (U02) - MERMA NEGATIVA</h3>
+              <p className="text-sm text-gray-600 mt-1">Valores negativos indican ganancia de peso en el proceso</p>
+            </div>
+            <Info 
+              className="w-5 h-5 text-green-400 cursor-pointer hover:text-green-600 transition-colors" 
+              onClick={() => openModal(
+                'Sede 2 (U02) - Merma Negativa',
+                'La Sede 2 presenta valores negativos de merma, lo que indica una GANANCIA de peso durante el proceso logístico.\n\nEvolución:\n• 2023: -17.19%\n• 2024: -20.13%\n• 2025: -22.31%\n• Meta: -25.00%\n\nLa tendencia es favorable, acercándose progresivamente a la meta de -25%. Los valores negativos son normales en esta sede debido a procesos de hidratación o características específicas del producto manejado.\n\nBrecha actual: 2.69 puntos porcentuales para alcanzar la meta.'
+              )}
+            />
+          </div>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart 
+              data={datosGrafico.filter(d => d.sede === 'U02')}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="sede" 
+                stroke="#6b7280"
+                tick={{ fontSize: 14, fontWeight: 'bold' }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                tick={{ fontSize: 12 }}
+                label={{ value: 'Merma (%)', angle: -90, position: 'insideLeft', style: { fontSize: 14, fontWeight: 'bold' } }}
+                domain={[-30, 0]}
+              />
+              <Tooltip 
+                contentStyle={{ backgroundColor: 'white', border: '2px solid #10b981', borderRadius: '12px', padding: '12px' }}
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="bg-white border-2 border-green-500 rounded-xl p-4 shadow-xl">
+                        <p className="font-bold text-gray-900 mb-3 text-lg">Sede 2 (U02)</p>
+                        <div className="space-y-2">
+                          {payload.map((entry, index) => {
+                            if (entry.value === 0 || entry.value === undefined) return null;
+                            return (
+                              <div key={index} className="flex justify-between items-center gap-6">
+                                <div className="flex items-center gap-2">
+                                  <div 
+                                    className="w-4 h-4 rounded" 
+                                    style={{ backgroundColor: entry.color }}
+                                  ></div>
+                                  <span className="text-gray-700 font-medium">{entry.name}:</span>
+                                </div>
+                                <span className="font-bold text-gray-900">{parseFloat(entry.value).toFixed(2)}%</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <p className="text-xs text-gray-600">Valores negativos = Ganancia de peso</p>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Legend 
+                wrapperStyle={{ paddingTop: '20px' }}
+                iconType="rect"
+                formatter={(value) => <span style={{ fontSize: 13, fontWeight: 500 }}>{value}</span>}
+              />
+              <Bar dataKey="2025" fill="#10b981" name="2025" radius={[0, 0, 4, 4]} barSize={60} />
+              <Bar dataKey="2024" fill="#3b82f6" name="2024" radius={[0, 0, 4, 4]} barSize={60} />
+              <Bar dataKey="2023" fill="#f97316" name="2023" radius={[0, 0, 4, 4]} barSize={60} />
+              <Bar dataKey="meta" fill="#9ca3af" name="Meta" radius={[0, 0, 4, 4]} barSize={60} />
+            </BarChart>
+          </ResponsiveContainer>
+          
+          {/* Resumen U02 */}
+          <div className="grid grid-cols-4 gap-4 mt-6 pt-6 border-t border-gray-200">
+            <div className="text-center">
+              <div className="text-sm text-gray-600 mb-1">2025</div>
+              <div className="text-xl font-bold text-green-600">-22.31%</div>
+            </div>
+            <div className="text-center">
+              <div className="text-sm text-gray-600 mb-1">2024</div>
+              <div className="text-xl font-bold text-blue-600">-20.13%</div>
+            </div>
+            <div className="text-center">
+              <div className="text-sm text-gray-600 mb-1">2023</div>
+              <div className="text-xl font-bold text-orange-600">-17.19%</div>
+            </div>
+            <div className="text-center">
+              <div className="text-sm text-gray-600 mb-1">Meta</div>
+              <div className="text-xl font-bold text-gray-600">-25.00%</div>
+            </div>
+          </div>
+          <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <TrendingDown className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-gray-700">
+                <span className="font-semibold">Mejora progresiva:</span> La sede avanza hacia su meta de -25%, 
+                reduciendo la brecha de 7.81pp (2023) a 2.69pp (2025). La tendencia es favorable y consistente.
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Análisis Contextual */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

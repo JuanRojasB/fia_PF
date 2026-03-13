@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Shield, AlertTriangle, CheckCircle, X, Info, Users, FileCheck, Target } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function SagrilaftDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -321,60 +322,65 @@ export default function SagrilaftDashboard({ data }) {
                       <strong className="text-gray-900">Total Stakeholders Validados:</strong> {formatNumber(resumen.total_validados)} personas naturales y jurídicas
                     </p>
                   </div>
-                  <p className="mb-4">Tabla No. 1: Análisis de Stakeholders No Conformes por SAGRILAFT 2022-2025</p>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b-2 border-gray-300">
-                          <th className="text-left py-2 px-3 text-gray-900 font-bold">Contraparte</th>
-                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Rechazados</th>
-                          <th className="text-right py-2 px-3 text-gray-900 font-bold">LA</th>
-                          <th className="text-right py-2 px-3 text-gray-900 font-bold">FT</th>
-                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Doc.</th>
-                          <th className="text-right py-2 px-3 text-gray-900 font-bold">Ant.</th>
-                          <th className="text-right py-2 px-3 text-gray-900 font-bold">PEPs</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {stakeholders.map((row, idx) => {
-                          const porcentaje = calcularPorcentaje(row.rechazados, totalNoConformes.rechazados);
-                          return (
-                            <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
-                              <td className="py-2 px-3 text-gray-900 font-semibold">{row.contraparte}</td>
-                              <td className="py-2 px-3 text-right">
-                                <div className="text-red-600 font-bold">{formatNumber(row.rechazados)}</div>
-                                <div className="text-orange-600 text-xs">({porcentaje}%)</div>
-                              </td>
-                              <td className="py-2 px-3 text-right text-red-600">{row.la_pct}%</td>
-                              <td className="py-2 px-3 text-right text-orange-600">{row.ft_pct}%</td>
-                              <td className="py-2 px-3 text-right text-yellow-400">{row.documentacion_pct}%</td>
-                              <td className="py-2 px-3 text-right text-amber-400">{row.antecedentes_pct}%</td>
-                              <td className="py-2 px-3 text-right text-purple-400">{row.peps_pct}%</td>
-                            </tr>
-                          );
-                        })}
-                        <tr className="border-t-2 border-gray-300 bg-gray-100/50">
-                          <td className="py-2 px-3 text-gray-900 font-bold">{totalNoConformes.contraparte}</td>
-                          <td className="py-2 px-3 text-right">
-                            <div className="text-red-600 font-bold">{formatNumber(totalNoConformes.rechazados)}</div>
-                            <div className="text-orange-600 text-xs">(100%)</div>
-                          </td>
-                          <td className="py-2 px-3 text-right text-red-600 font-bold">{totalNoConformes.la_pct}%</td>
-                          <td className="py-2 px-3 text-right text-orange-600 font-bold">{totalNoConformes.ft_pct}%</td>
-                          <td className="py-2 px-3 text-right text-yellow-400 font-bold">{totalNoConformes.documentacion_pct}%</td>
-                          <td className="py-2 px-3 text-right text-amber-400 font-bold">{totalNoConformes.antecedentes_pct}%</td>
-                          <td className="py-2 px-3 text-right text-purple-400 font-bold">{totalNoConformes.peps_pct}%</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="mt-4 text-xs space-y-1 bg-gray-100/50 rounded-lg p-3">
-                    <p><strong className="text-gray-900">LA:</strong> Lavado de Activos</p>
-                    <p><strong className="text-gray-900">FT:</strong> Financiación del Terrorismo</p>
-                    <p><strong className="text-gray-900">Doc.:</strong> Documentación Inadecuada</p>
-                    <p><strong className="text-gray-900">Ant.:</strong> Antecedentes</p>
-                    <p><strong className="text-gray-900">PEPs:</strong> Personas Expuestas Políticamente</p>
-                  </div>
+                  
+                  <CollapsibleTable 
+                    title="Tabla No. 1: Análisis de Stakeholders No Conformes por SAGRILAFT 2022-2025"
+                    defaultOpen={false}
+                  >
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b-2 border-gray-300">
+                            <th className="text-left py-2 px-3 text-gray-900 font-bold">Contraparte</th>
+                            <th className="text-right py-2 px-3 text-gray-900 font-bold">Rechazados</th>
+                            <th className="text-right py-2 px-3 text-gray-900 font-bold">LA</th>
+                            <th className="text-right py-2 px-3 text-gray-900 font-bold">FT</th>
+                            <th className="text-right py-2 px-3 text-gray-900 font-bold">Doc.</th>
+                            <th className="text-right py-2 px-3 text-gray-900 font-bold">Ant.</th>
+                            <th className="text-right py-2 px-3 text-gray-900 font-bold">PEPs</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {stakeholders.map((row, idx) => {
+                            const porcentaje = calcularPorcentaje(row.rechazados, totalNoConformes.rechazados);
+                            return (
+                              <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                                <td className="py-2 px-3 text-gray-900 font-semibold">{row.contraparte}</td>
+                                <td className="py-2 px-3 text-right">
+                                  <div className="text-red-600 font-bold">{formatNumber(row.rechazados)}</div>
+                                  <div className="text-orange-600 text-xs">({porcentaje}%)</div>
+                                </td>
+                                <td className="py-2 px-3 text-right text-red-600">{row.la_pct}%</td>
+                                <td className="py-2 px-3 text-right text-orange-600">{row.ft_pct}%</td>
+                                <td className="py-2 px-3 text-right text-yellow-400">{row.documentacion_pct}%</td>
+                                <td className="py-2 px-3 text-right text-amber-400">{row.antecedentes_pct}%</td>
+                                <td className="py-2 px-3 text-right text-purple-400">{row.peps_pct}%</td>
+                              </tr>
+                            );
+                          })}
+                          <tr className="border-t-2 border-gray-300 bg-gray-100/50">
+                            <td className="py-2 px-3 text-gray-900 font-bold">{totalNoConformes.contraparte}</td>
+                            <td className="py-2 px-3 text-right">
+                              <div className="text-red-600 font-bold">{formatNumber(totalNoConformes.rechazados)}</div>
+                              <div className="text-orange-600 text-xs">(100%)</div>
+                            </td>
+                            <td className="py-2 px-3 text-right text-red-600 font-bold">{totalNoConformes.la_pct}%</td>
+                            <td className="py-2 px-3 text-right text-orange-600 font-bold">{totalNoConformes.ft_pct}%</td>
+                            <td className="py-2 px-3 text-right text-yellow-400 font-bold">{totalNoConformes.documentacion_pct}%</td>
+                            <td className="py-2 px-3 text-right text-amber-400 font-bold">{totalNoConformes.antecedentes_pct}%</td>
+                            <td className="py-2 px-3 text-right text-purple-400 font-bold">{totalNoConformes.peps_pct}%</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="mt-4 text-xs space-y-1 bg-gray-100/50 rounded-lg p-3">
+                      <p><strong className="text-gray-900">LA:</strong> Lavado de Activos</p>
+                      <p><strong className="text-gray-900">FT:</strong> Financiación del Terrorismo</p>
+                      <p><strong className="text-gray-900">Doc.:</strong> Documentación Inadecuada</p>
+                      <p><strong className="text-gray-900">Ant.:</strong> Antecedentes</p>
+                      <p><strong className="text-gray-900">PEPs:</strong> Personas Expuestas Políticamente</p>
+                    </div>
+                  </CollapsibleTable>
                 </div>
               )}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
 import { ShoppingCart, TrendingUp, DollarSign, X, Info, Package, Percent, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ComercialVentasCompaniaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -179,8 +180,8 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Ingresos Totales 2025',
-            `Ingresos totales en 2025: ${formatCurrency(datos2025.totalIngresos)}. La variación del ${variacionIngresos}% vs 2024 refleja un crecimiento moderado impulsado principalmente por el mayor dinamismo en la línea Mayorista. El efecto conjunto entre volumen y precios generó un aporte positivo de +0.77% en la facturación.`
+            'Ingresos Totales 2025 - Toda la Compañía',
+            `Ingresos totales en 2025: ${formatCurrency(datos2025.totalIngresos)}\nVariación vs 2024: ${variacionIngresos}%\n\nQUÉ INCLUYE:\n• Pollo en Pie (Mayorista)\n• Pollo en Canal (todas las líneas)\n• Huevos\n• Todas las sedes y canales\n\nEste es el ingreso MÁS ALTO porque incluye TODAS las operaciones de la compañía.\n\nCálculo: Suma de todos los ingresos por ventas (kg × precio) de todas las categorías.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -302,26 +303,22 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
       </div>
 
 {/* Tabla Detallada */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+      <CollapsibleTable 
+        title="VENTAS TOTAL COMPAÑÍA - DETALLE PIE / CANAL"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
-          VENTAS TOTAL COMPAÑÍA - DETALLE PIE / CANAL
-        </h3>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="bg-gradient-to-r from-blue-500 to-green-600 border-b-2 border-gray-300">
-              <th className="text-left py-3 px-4 text-gray-900 font-bold">PIE / CANAL</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">Kls.</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">% Part</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">Venta</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">% Part.</th>
-            </tr>
-          </thead>
-          <tbody>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-gradient-to-r from-blue-500 to-green-600 border-b-2 border-gray-300">
+                <th className="text-left py-3 px-4 text-gray-900 font-bold">PIE / CANAL</th>
+                <th className="text-right py-3 px-4 text-gray-900 font-bold">Kls.</th>
+                <th className="text-right py-3 px-4 text-gray-900 font-bold">% Part</th>
+                <th className="text-right py-3 px-4 text-gray-900 font-bold">Venta</th>
+                <th className="text-right py-3 px-4 text-gray-900 font-bold">% Part.</th>
+              </tr>
+            </thead>
+            <tbody>
             {/* 2025 */}
             <tr className="bg-green-50 border-b border-gray-200">
               <td className="py-2 px-4 text-gray-900 font-bold">2025</td>
@@ -434,6 +431,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             </tr>
           </tbody>
         </table>
+        </div>
 
         {/* Tabla de Variaciones */}
         <div className="mt-6">
@@ -550,9 +548,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             </tbody>
           </table>
         </div>
-      
-      </motion.div>
-
+      </CollapsibleTable>
       {/* Gráfico Comparativo */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

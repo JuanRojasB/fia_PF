@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, ComposedChart } from 'recharts';
 import { DollarSign, TrendingUp, TrendingDown, Users, AlertTriangle, Calendar, CreditCard, Percent, X, Info } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function CarteraDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -181,17 +182,10 @@ export default function CarteraDashboard({ data }) {
 
       {/* Tabla Comparativa Exposición de Cartera */}
       {exposicionCartera.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-4 sm:p-6 border-2 border-blue-500/30"
+        <CollapsibleTable 
+          title="EXPOSICIÓN DE CARTERA 2025 vs 2024"
+          defaultOpen={false}
         >
-          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-            <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">EXPOSICIÓN DE CARTERA 2025 vs 2024</h2>
-          </div>
-
           <div className="overflow-x-auto">
             <table className="w-full text-xs sm:text-sm">
               <thead>
@@ -229,7 +223,7 @@ export default function CarteraDashboard({ data }) {
               Valores negativos indican reducción de cartera (mejora en cobro). Valores positivos indican aumento (más ventas a crédito o menor cobro).
             </p>
           </div>
-        </motion.div>
+        </CollapsibleTable>
       )}
 
       {/* Gráficas */}
@@ -382,13 +376,10 @@ export default function CarteraDashboard({ data }) {
 
       {/* Top 10 Clientes */}
       {top10Clientes.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
+        <CollapsibleTable 
+          title="Top 10 Clientes por Saldo"
+          defaultOpen={false}
         >
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Top 10 Clientes por Saldo</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -425,16 +416,10 @@ export default function CarteraDashboard({ data }) {
 
       {/* Clientes Críticos */}
       {clientesCriticos.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30"
+        <CollapsibleTable 
+          title="Clientes Críticos (Rotación > 60 días)"
+          defaultOpen={false}
         >
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-red-400" />
-            Clientes Críticos (Rotación &gt; 60 días)
-          </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -461,7 +446,7 @@ export default function CarteraDashboard({ data }) {
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </CollapsibleTable>
       )}
 
       {/* Modal */}

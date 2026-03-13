@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart, Area, Cell } from 'recharts';
 import { Factory, TrendingUp, Calendar, X, Info, Target, AlertCircle, CheckCircle2 } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ProduccionEncasetadoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -118,21 +119,19 @@ export default function ProduccionEncasetadoDashboard({ data }) {
           transition={{ delay: 0.1 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            '% Cumplimiento del Programa 2025',
-            `El cumplimiento del programa de encasetamiento en 2025 fue del ${cumplimiento2025}%. Un cumplimiento cercano al 100% indica que la planificación de producción se está ejecutando correctamente. La diferencia de ${totalEncasetado2025 >= totalProgramado2025 ? '+' : ''}${formatNumber(totalEncasetado2025 - totalProgramado2025)} pollitos significa que se encasetaron ${totalEncasetado2025 >= totalProgramado2025 ? 'más' : 'menos'} pollitos de los programados (Real: ${formatNumber(totalEncasetado2025)} vs Programado: ${formatNumber(totalProgramado2025)}). Desviaciones pueden deberse a disponibilidad de pollitos BB, capacidad de granjas o ajustes por demanda.`
+            'Total Pollitos Encasetados 2024',
+            `Se encasetaron ${formatNumber(totalEncasetado2024)} pollitos durante el año 2024. Este valor es la suma de todos los pollitos encasetados mes a mes durante el año 2024. El encasetamiento es el proceso de colocar pollitos de un día de edad en los galpones de crianza, marcando el inicio del ciclo productivo de engorde. El valor programado fue de ${formatNumber(totalProgramado2024)} pollitos, logrando un cumplimiento del ${cumplimiento2024}%.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">% Cumplimiento vs Programado</span>
-            {cumplimiento2025 >= 95 ? <CheckCircle2 className="w-5 h-5 text-green-400" /> : <AlertCircle className="w-5 h-5 text-yellow-400" />}
+            <span className="text-gray-600 text-sm">Encasetado Real 2024</span>
+            <Factory className="w-5 h-5 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{cumplimiento2025}%</div>
-          <div className="text-sm text-gray-600 mt-1">Real vs Programado</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(totalEncasetado2024)}</div>
+          <div className="text-sm text-gray-600 mt-1">Suma anual real</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Diferencia Real - Programado</div>
-            <div className={`text-lg font-semibold ${totalEncasetado2025 >= totalProgramado2025 ? 'text-green-400' : 'text-red-400'}`}>
-              {totalEncasetado2025 >= totalProgramado2025 ? '+' : ''}{formatNumber(totalEncasetado2025 - totalProgramado2025)} pollitos
-            </div>
+            <div className="text-xs text-gray-500">Programado 2024 (suma anual)</div>
+            <div className="text-lg font-semibold text-green-400">{formatNumber(totalProgramado2024)} pollitos</div>
           </div>
         </motion.div>
 
@@ -142,19 +141,21 @@ export default function ProduccionEncasetadoDashboard({ data }) {
           transition={{ delay: 0.2 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            '% Variación Anual 2025 vs 2024',
-            `La variación de ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}% se calcula comparando el total encasetado en 2025 (${formatNumber(totalEncasetado2025)} pollitos) contra 2024 (${formatNumber(totalEncasetado2024)} pollitos). Fórmula: ((2025 - 2024) / 2024) × 100 = ${variacionEncasetado}%. La diferencia absoluta es de ${formatNumber(Math.abs(totalEncasetado2025 - totalEncasetado2024))} pollitos ${variacionEncasetado > 0 ? 'más' : 'menos'}. Esta variación refleja ${variacionEncasetado > 0 ? 'un crecimiento' : 'una reducción'} en la capacidad productiva debido a factores como demanda del mercado, disponibilidad de granjas, precio de pollitos BB, y estrategia comercial.`
+            'Comparación 2025 vs 2024',
+            `La variación de ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}% representa la comparación entre 2025 y 2024. Se encasetaron ${formatNumber(totalEncasetado2025)} pollitos en 2025 vs ${formatNumber(totalEncasetado2024)} pollitos en 2024. Fórmula: ((2025 - 2024) / 2024) × 100 = ((${formatNumber(totalEncasetado2025)} - ${formatNumber(totalEncasetado2024)}) / ${formatNumber(totalEncasetado2024)}) × 100 = ${variacionEncasetado}%. La diferencia absoluta es de ${formatNumber(Math.abs(totalEncasetado2025 - totalEncasetado2024))} pollitos ${variacionEncasetado > 0 ? 'más' : 'menos'}. Esta variación refleja ${variacionEncasetado > 0 ? 'un crecimiento' : 'una reducción'} en la capacidad productiva.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">% Variación Anual</span>
+            <span className="text-gray-600 text-sm">Comparación 2025 vs 2024</span>
             <TrendingUp className="w-5 h-5 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{variacionEncasetado > 0 ? '+' : ''}{variacionEncasetado}%</div>
           <div className="text-sm text-gray-600 mt-1">Fórmula: (2025-2024)/2024×100</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">Diferencia 2025 - 2024</div>
-            <div className="text-lg font-semibold text-purple-400">{variacionEncasetado > 0 ? '+' : ''}{formatNumber(Math.abs(totalEncasetado2025 - totalEncasetado2024))} pollitos</div>
+            <div className={`text-lg font-semibold ${variacionEncasetado > 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {variacionEncasetado > 0 ? '+' : ''}{formatNumber(Math.abs(totalEncasetado2025 - totalEncasetado2024))} pollitos
+            </div>
           </div>
         </motion.div>
 
@@ -190,58 +191,63 @@ export default function ProduccionEncasetadoDashboard({ data }) {
       >
         <div className="flex items-center gap-3 mb-6">
           <Factory className="w-8 h-8 text-blue-400" />
-          <h2 className="text-2xl font-bold text-gray-900">COMPARATIVO ENCASETAMIENTO 2025 vs 2024</h2>
+          <h2 className="text-2xl font-bold text-gray-900">COMPARATIVO ENCASETAMIENTO MENSUAL 2025 vs 2024</h2>
         </div>
         
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b-2 border-blue-600">
-                <th className="text-left py-3 px-4 text-gray-700 font-bold bg-blue-900/30">MES</th>
-                <th className="text-right py-3 px-4 text-gray-700 font-bold bg-gray-100/30">PROG 2025</th>
-                <th className="text-right py-3 px-4 text-gray-700 font-bold bg-blue-900/30">REAL 2025</th>
-                <th className="text-right py-3 px-4 text-gray-700 font-bold bg-gray-100/30">REAL 2024</th>
-                <th className="text-right py-3 px-4 text-gray-700 font-bold bg-purple-900/30">DIFERENCIA</th>
-                <th className="text-right py-3 px-4 text-gray-700 font-bold bg-orange-900/30">% VARIACIÓN</th>
-              </tr>
-            </thead>
-            <tbody>
-              {encasetadoMeses.map((mes, idx) => {
-                const diferencia = mes.real2025 - mes.real2024;
-                const variacion = mes.real2024 > 0 ? ((diferencia / mes.real2024) * 100).toFixed(2) : 0;
-                return (
-                  <tr key={idx} className="border-b border-gray-200/50 hover:bg-gray-100/30 transition-colors">
-                    <td className="py-3 px-4 text-gray-900 font-semibold">{mes.mes}</td>
-                    <td className="py-3 px-4 text-right text-gray-600">{formatNumber(mes.prog2025)}</td>
-                    <td className="py-3 px-4 text-right text-blue-400 font-bold">{formatNumber(mes.real2025)}</td>
-                    <td className="py-3 px-4 text-right text-gray-600">{formatNumber(mes.real2024)}</td>
-                    <td className="py-3 px-4 text-right text-purple-400">{formatNumber(diferencia)}</td>
-                    <td className={`py-3 px-4 text-right font-bold ${parseFloat(variacion) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {parseFloat(variacion) > 0 ? '+' : ''}{variacion}%
-                    </td>
-                  </tr>
-                );
-              })}
-              {/* Fila de totales */}
-              <tr className="border-t-2 border-blue-600 bg-blue-900/20 font-bold">
-                <td className="py-3 px-4 text-yellow-300 font-bold">TOTAL</td>
-                <td className="py-3 px-4 text-right text-gray-700">{formatNumber(totalProgramado2025)}</td>
-                <td className="py-3 px-4 text-right text-blue-400 text-lg">{formatNumber(totalEncasetado2025)}</td>
-                <td className="py-3 px-4 text-right text-gray-700">{formatNumber(totalEncasetado2024)}</td>
-                <td className="py-3 px-4 text-right text-purple-400 text-lg">{formatNumber(totalEncasetado2025 - totalEncasetado2024)}</td>
-                <td className={`py-3 px-4 text-right text-lg ${parseFloat(variacionEncasetado) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {parseFloat(variacionEncasetado) > 0 ? '+' : ''}{variacionEncasetado}%
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <CollapsibleTable 
+          title="Detalle Mensual de Encasetamiento"
+          defaultOpen={false}
+        >
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b-2 border-blue-600">
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold bg-blue-900/30">MES</th>
+                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-gray-100/30">PROG 2025</th>
+                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-blue-900/30">REAL 2025</th>
+                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-gray-100/30">REAL 2024</th>
+                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-purple-900/30">DIFERENCIA</th>
+                  <th className="text-right py-3 px-4 text-gray-700 font-bold bg-orange-900/30">% VARIACIÓN</th>
+                </tr>
+              </thead>
+              <tbody>
+                {encasetadoMeses.map((mes, idx) => {
+                  const diferencia = mes.real2025 - mes.real2024;
+                  const variacion = mes.real2024 > 0 ? ((diferencia / mes.real2024) * 100).toFixed(2) : 0;
+                  return (
+                    <tr key={idx} className="border-b border-gray-200/50 hover:bg-gray-100/30 transition-colors">
+                      <td className="py-3 px-4 text-gray-900 font-semibold">{mes.mes}</td>
+                      <td className="py-3 px-4 text-right text-gray-600">{formatNumber(mes.prog2025)}</td>
+                      <td className="py-3 px-4 text-right text-blue-400 font-bold">{formatNumber(mes.real2025)}</td>
+                      <td className="py-3 px-4 text-right text-gray-600">{formatNumber(mes.real2024)}</td>
+                      <td className="py-3 px-4 text-right text-purple-400">{formatNumber(diferencia)}</td>
+                      <td className={`py-3 px-4 text-right font-bold ${parseFloat(variacion) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {parseFloat(variacion) > 0 ? '+' : ''}{variacion}%
+                      </td>
+                    </tr>
+                  );
+                })}
+                {/* Fila de totales */}
+                <tr className="border-t-2 border-blue-600 bg-blue-900/20 font-bold">
+                  <td className="py-3 px-4 text-yellow-300 font-bold">TOTAL</td>
+                  <td className="py-3 px-4 text-right text-gray-700">{formatNumber(totalProgramado2025)}</td>
+                  <td className="py-3 px-4 text-right text-blue-400 text-lg">{formatNumber(totalEncasetado2025)}</td>
+                  <td className="py-3 px-4 text-right text-gray-700">{formatNumber(totalEncasetado2024)}</td>
+                  <td className="py-3 px-4 text-right text-purple-400 text-lg">{formatNumber(totalEncasetado2025 - totalEncasetado2024)}</td>
+                  <td className={`py-3 px-4 text-right text-lg ${parseFloat(variacionEncasetado) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {parseFloat(variacionEncasetado) > 0 ? '+' : ''}{variacionEncasetado}%
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div className="mt-6 bg-gray-100/30 rounded-lg p-4 border border-gray-300">
-          <p className="text-sm text-gray-700">
-            <span className="font-semibold text-gray-900">Análisis Comparativo:</span> Esta tabla muestra el encasetamiento mensual comparando 2025 vs 2024. La diferencia y % de variación permiten identificar meses con crecimiento o reducción de la operación. Los valores en verde indican crecimiento, mientras que los rojos señalan reducción.
-          </p>
-        </div>
+          <div className="mt-4 bg-gray-100/30 rounded-lg p-4 border border-gray-300">
+            <p className="text-sm text-gray-700">
+              <span className="font-semibold text-gray-900">Análisis Comparativo:</span> Esta tabla muestra el encasetamiento mensual comparando 2025 vs 2024. La diferencia y % de variación permiten identificar meses con crecimiento o reducción de la operación. Los valores en verde indican crecimiento, mientras que los rojos señalan reducción.
+            </p>
+          </div>
+        </CollapsibleTable>
       </motion.div>
 
       {/* Gráfico Comparativo Programado vs Real */}
@@ -255,8 +261,8 @@ export default function ProduccionEncasetadoDashboard({ data }) {
           `Comparación mes a mes entre el encasetamiento programado y el real. Las barras azules muestran lo programado y las verdes lo ejecutado. Un cumplimiento consistente cercano al 100% indica buena planificación y ejecución.`
         )}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Cumplimiento del Programa 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Programado vs Real mensual</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Cumplimiento del Programado 2025</h3>
+        <p className="text-x text-gray-600 mb-6">Programado vs Real mensual</p>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={encasetadoMeses} margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />

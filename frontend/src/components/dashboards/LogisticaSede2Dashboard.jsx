@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Truck, TrendingUp, Users, X, Info, DollarSign } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function LogisticaSede2Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);

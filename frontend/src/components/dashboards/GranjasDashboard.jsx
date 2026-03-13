@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Home, TrendingUp, Layers, X, Info } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function GranjasDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -59,6 +60,13 @@ export default function GranjasDashboard({ data }) {
   const totalMetros = granjasData.reduce((sum, d) => sum + (parseFloat(d.metros) || 0), 0);
   const totalAves = granjasData.reduce((sum, d) => sum + (parseFloat(d.aves) || 0), 0);
   const totalGranjas = granjasData.length;
+
+  // Cálculo de capacidad anual
+  const ciclosPorAnio = 6.5;
+  const diasPorCiclo = 56;
+  const mortalidadEstimada = 0.07; // 7%
+  const capacidadAnual = totalAves * ciclosPorAnio;
+  const avesEstimadasSalida = capacidadAnual * (1 - mortalidadEstimada);
 
   const formatNumber = (value) => {
     if (!value || isNaN(value)) return '0';
@@ -147,22 +155,23 @@ export default function GranjasDashboard({ data }) {
   return (
     <div className="space-y-6">
       {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Total de Granjas',
-            `${totalGranjas} granjas activas registradas en el sistema.`
+            'Total de Granjas Activas',
+            `${totalGranjas} granjas activas registradas en el sistema. Estas instalaciones están distribuidas en diferentes zonas climáticas (Frío, Cálido, Caliente) para optimizar las condiciones de crianza según las características de cada región.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Total Granjas</span>
             <Home className="w-6 h-6 text-blue-600" />
           </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{totalGranjas}</div>
-          <div className="text-xs text-blue-600">Instalaciones activas</div>
+          <div className="text-4xl font-bold text-gray-900">{totalGranjas}</div>
+          <div className="text-sm text-gray-600 mt-1">instalaciones activas</div>
+          <div className="text-xs text-blue-600 mt-2">Zonas: Frío, Cálido, Caliente</div>
         </motion.div>
 
         <motion.div
@@ -171,16 +180,17 @@ export default function GranjasDashboard({ data }) {
           transition={{ delay: 0.1 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Densidad de Aves',
-            `Promedio: ${Math.round(totalAves / totalMetros)} aves/m²\n\nCálculo: ${formatNumber(totalAves)} aves ÷ ${formatNumber(totalMetros)} m²`
+            'Densidad Promedio de Aves',
+            `Densidad promedio: ${Math.round(totalAves / totalMetros)} aves/m². Este indicador mide la eficiencia del uso del espacio disponible. Cálculo: ${formatNumber(totalAves)} aves ÷ ${formatNumber(totalMetros)} m² = ${Math.round(totalAves / totalMetros)} aves/m². Una densidad adecuada garantiza el bienestar animal y optimiza la producción.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Aves por m²</span>
+            <span className="text-gray-600 text-sm font-medium">Densidad Promedio</span>
             <Layers className="w-6 h-6 text-green-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{Math.round(totalAves / totalMetros)}</div>
-          <div className="text-xs text-green-600">aves por metro cuadrado</div>
+          <div className="text-4xl font-bold text-gray-900">{Math.round(totalAves / totalMetros)}</div>
+          <div className="text-sm text-gray-600 mt-1">aves por metro cuadrado</div>
+          <div className="text-xs text-green-600 mt-2">{formatNumber(totalMetros)} m² totales</div>
         </motion.div>
 
         <motion.div
@@ -189,16 +199,36 @@ export default function GranjasDashboard({ data }) {
           transition={{ delay: 0.2 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Capacidad Total',
-            `${formatNumber(totalAves)} aves\n\nCapacidad máxima de alojamiento en todas las granjas.`
+            'Capacidad Total por Ciclo',
+            `Capacidad total: ${formatNumber(totalAves)} aves por ciclo. Esta es la capacidad máxima de alojamiento en todas las granjas durante un ciclo de producción de ${diasPorCiclo} días. Representa el número total de aves que pueden estar en crianza simultáneamente en todas las instalaciones.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total Aves</span>
+            <span className="text-gray-600 text-sm font-medium">Capacidad por Ciclo</span>
             <TrendingUp className="w-6 h-6 text-purple-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{totalAves.toLocaleString('es-ES')} aves</div>
-          <div className="text-xs text-purple-600">capacidad total</div>
+          <div className="text-4xl font-bold text-gray-900">{formatNumber(totalAves)}</div>
+          <div className="text-sm text-gray-600 mt-1">aves por ciclo</div>
+          <div className="text-xs text-purple-600 mt-2">Ciclo: {diasPorCiclo} días</div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
+          onClick={() => openModal(
+            'Capacidad Anual Estimada',
+            `Capacidad anual estimada: ${formatNumber(Math.round(avesEstimadasSalida))} aves. Cálculo detallado:\n\n1. Capacidad por ciclo: ${formatNumber(totalAves)} aves\n2. Ciclos por año: ${ciclosPorAnio} ciclos (cada ${diasPorCiclo} días)\n3. Capacidad bruta anual: ${formatNumber(totalAves)} × ${ciclosPorAnio} = ${formatNumber(Math.round(capacidadAnual))} aves\n4. Mortalidad estimada: ${(mortalidadEstimada * 100).toFixed(0)}%\n5. Capacidad neta anual: ${formatNumber(Math.round(capacidadAnual))} × ${((1 - mortalidadEstimada) * 100).toFixed(0)}% = ${formatNumber(Math.round(avesEstimadasSalida))} aves\n\nEste cálculo considera la rotación de ciclos y la mortalidad esperada durante el proceso de crianza.`
+          )}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-600 text-sm font-medium">Capacidad Anual</span>
+            <TrendingUp className="w-6 h-6 text-orange-600" />
+          </div>
+          <div className="text-4xl font-bold text-gray-900">{formatNumber(Math.round(avesEstimadasSalida))}</div>
+          <div className="text-sm text-gray-600 mt-1">aves estimadas/año</div>
+          <div className="text-xs text-orange-600 mt-2">{ciclosPorAnio} ciclos × {(100 - mortalidadEstimada * 100).toFixed(0)}% supervivencia</div>
         </motion.div>
       </div>
 
@@ -296,7 +326,7 @@ export default function GranjasDashboard({ data }) {
         }}
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Top 10 Granjas - Participación de Aves (%)</h3>
+          <h3 className="text-xl font-bold text-gray-900">Top 10 Granjas por Capacidad/Participación de Aves (%)</h3>
           <div className="flex gap-4 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded" style={{ backgroundColor: COLORS['FRIO'] }}></div>
@@ -416,115 +446,110 @@ export default function GranjasDashboard({ data }) {
       </motion.div>
 
       {/* Tabla agrupada por tipo con participación porcentual */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto cursor-pointer hover:border-cyan-500 transition-all"
-        onClick={() => openModal(
-          'Tabla de Granjas',
-          `Columnas:\n• Tipo: Zona climática\n• Granja: Nombre\n• Metros²: Área\n• Aves: Capacidad\n• Participación: (Aves ÷ ${formatNumber(totalAves)}) × 100`
-        )}
+      <CollapsibleTable 
+        title="Detalle Completo por Granja - Participación Porcentual"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Detalle Completo por Granja - Participación Porcentual</h3>
-        <table className="w-full text-xs border-collapse">
-          <thead>
-            <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-blue-700">
-              <th className="text-left py-3 px-2 text-white font-bold">Tipo</th>
-              <th className="text-left py-3 px-2 text-white font-bold">Granja</th>
-              <th className="text-right py-3 px-2 text-white font-bold">Metros²</th>
-              <th className="text-right py-3 px-2 text-white font-bold">Aves</th>
-              <th className="text-right py-3 px-2 text-white font-bold">Participación %</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(() => {
-              const grouped = granjasData.reduce((acc, row) => {
-                const tipo = row.tipo || 'Sin tipo';
-                if (!acc[tipo]) acc[tipo] = [];
-                acc[tipo].push(row);
-                return acc;
-              }, {});
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs border-collapse">
+            <thead>
+              <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-blue-700">
+                <th className="text-left py-3 px-2 text-white font-bold">Tipo</th>
+                <th className="text-left py-3 px-2 text-white font-bold">Granja</th>
+                <th className="text-right py-3 px-2 text-white font-bold">Metros²</th>
+                <th className="text-right py-3 px-2 text-white font-bold">Aves</th>
+                <th className="text-right py-3 px-2 text-white font-bold">Participación %</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(() => {
+                const grouped = granjasData.reduce((acc, row) => {
+                  const tipo = row.tipo || 'Sin tipo';
+                  if (!acc[tipo]) acc[tipo] = [];
+                  acc[tipo].push(row);
+                  return acc;
+                }, {});
 
-              const rows = [];
-              let globalMetros = 0;
-              let globalAves = 0;
+                const rows = [];
+                let globalMetros = 0;
+                let globalAves = 0;
 
-              // Ordenar los tipos para que aparezcan en orden consistente
-              const tiposOrdenados = Object.keys(grouped).sort();
+                // Ordenar los tipos para que aparezcan en orden consistente
+                const tiposOrdenados = Object.keys(grouped).sort();
 
-              tiposOrdenados.forEach((tipo) => {
-                const granjas = grouped[tipo];
-                let tipoMetros = 0;
-                let tipoAves = 0;
+                tiposOrdenados.forEach((tipo) => {
+                  const granjas = grouped[tipo];
+                  let tipoMetros = 0;
+                  let tipoAves = 0;
 
-                // Primero todas las granjas del tipo
-                granjas.forEach((row, idx) => {
-                  const metros = parseFloat(row.metros) || 0;
-                  const aves = parseFloat(row.aves) || 0;
-                  const participacion = ((aves / totalAves) * 100).toFixed(2);
-                  
-                  tipoMetros += metros;
-                  tipoAves += aves;
+                  // Primero todas las granjas del tipo
+                  granjas.forEach((row, idx) => {
+                    const metros = parseFloat(row.metros) || 0;
+                    const aves = parseFloat(row.aves) || 0;
+                    const participacion = ((aves / totalAves) * 100).toFixed(2);
+                    
+                    tipoMetros += metros;
+                    tipoAves += aves;
 
-                  rows.push(
-                    <tr key={`${tipo}-${idx}`} className="border-b border-gray-200 hover:bg-blue-50 transition-colors">
-                      <td className="py-1.5 px-2">
-                        {idx === 0 && (
+                    rows.push(
+                      <tr key={`${tipo}-${idx}`} className="border-b border-gray-200 hover:bg-blue-50 transition-colors">
+                        <td className="py-1.5 px-2">
+                          {idx === 0 && (
+                            <span 
+                              className="inline-block px-3 py-1.5 rounded-lg text-xs font-bold text-white shadow-sm" 
+                              style={{ backgroundColor: COLORS[tipo] }}
+                            >
+                              {tipo}
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-1.5 px-2 text-gray-900 font-medium">{row.granja || 'Sin nombre'}</td>
+                        <td className="py-1.5 px-2 text-right text-green-600 tabular-nums font-semibold">{metros.toLocaleString('es-ES')}</td>
+                        <td className="py-1.5 px-2 text-right text-blue-600 tabular-nums font-semibold">{aves.toLocaleString('es-ES')}</td>
+                        <td className="py-1.5 px-2 text-right tabular-nums">
                           <span 
-                            className="inline-block px-3 py-1.5 rounded-lg text-xs font-bold text-white shadow-sm" 
+                            className="inline-block px-2 py-1 rounded font-bold text-white text-xs"
                             style={{ backgroundColor: COLORS[tipo] }}
                           >
-                            {tipo}
+                            {participacion}%
                           </span>
-                        )}
-                      </td>
-                      <td className="py-1.5 px-2 text-gray-900 font-medium">{row.granja || 'Sin nombre'}</td>
-                      <td className="py-1.5 px-2 text-right text-green-600 tabular-nums font-semibold">{metros.toLocaleString('es-ES')}</td>
-                      <td className="py-1.5 px-2 text-right text-blue-600 tabular-nums font-semibold">{aves.toLocaleString('es-ES')}</td>
-                      <td className="py-1.5 px-2 text-right tabular-nums">
-                        <span 
-                          className="inline-block px-2 py-1 rounded font-bold text-white text-xs"
-                          style={{ backgroundColor: COLORS[tipo] }}
-                        >
-                          {participacion}%
-                        </span>
-                      </td>
+                        </td>
+                      </tr>
+                    );
+                  });
+
+                  // Después el subtotal del tipo
+                  const tipoParticipacion = ((tipoAves / totalAves) * 100).toFixed(2);
+                  rows.push(
+                    <tr key={`subtotal-${tipo}`} className="bg-amber-50 border-y-2 border-amber-300 font-bold">
+                      <td className="py-2 px-2 text-amber-800 text-xs">SUBTOTAL</td>
+                      <td className="py-2 px-2 text-amber-800 text-xs">{tipo}</td>
+                      <td className="py-2 px-2 text-right text-amber-800 text-xs tabular-nums">{tipoMetros.toLocaleString('es-ES')}</td>
+                      <td className="py-2 px-2 text-right text-amber-800 text-xs tabular-nums">{tipoAves.toLocaleString('es-ES')}</td>
+                      <td className="py-2 px-2 text-right text-amber-800 text-xs tabular-nums">{tipoParticipacion}%</td>
                     </tr>
                   );
+
+                  globalMetros += tipoMetros;
+                  globalAves += tipoAves;
                 });
 
-                // Después el subtotal del tipo
-                const tipoParticipacion = ((tipoAves / totalAves) * 100).toFixed(2);
+                // Al final el total general
                 rows.push(
-                  <tr key={`subtotal-${tipo}`} className="bg-amber-50 border-y-2 border-amber-300 font-bold">
-                    <td className="py-2 px-2 text-amber-800 text-xs">SUBTOTAL</td>
-                    <td className="py-2 px-2 text-amber-800 text-xs">{tipo}</td>
-                    <td className="py-2 px-2 text-right text-amber-800 text-xs tabular-nums">{tipoMetros.toLocaleString('es-ES')}</td>
-                    <td className="py-2 px-2 text-right text-amber-800 text-xs tabular-nums">{tipoAves.toLocaleString('es-ES')}</td>
-                    <td className="py-2 px-2 text-right text-amber-800 text-xs tabular-nums">{tipoParticipacion}%</td>
+                  <tr key="total-general" className="bg-gradient-to-r from-blue-50 to-blue-100 border-t-2 border-blue-400 font-bold text-sm">
+                    <td className="py-2 px-2 text-blue-900" colSpan="2">TOTAL GENERAL</td>
+                    <td className="py-2 px-2 text-right text-blue-900 tabular-nums">{globalMetros.toLocaleString('es-ES')}</td>
+                    <td className="py-2 px-2 text-right text-blue-900 tabular-nums">{globalAves.toLocaleString('es-ES')}</td>
+                    <td className="py-2 px-2 text-right text-blue-900 tabular-nums">100.00%</td>
                   </tr>
                 );
 
-                globalMetros += tipoMetros;
-                globalAves += tipoAves;
-              });
-
-              // Al final el total general
-              rows.push(
-                <tr key="total-general" className="bg-gradient-to-r from-blue-50 to-blue-100 border-t-2 border-blue-400 font-bold text-sm">
-                  <td className="py-2 px-2 text-blue-900" colSpan="2">TOTAL GENERAL</td>
-                  <td className="py-2 px-2 text-right text-blue-900 tabular-nums">{globalMetros.toLocaleString('es-ES')}</td>
-                  <td className="py-2 px-2 text-right text-blue-900 tabular-nums">{globalAves.toLocaleString('es-ES')}</td>
-                  <td className="py-2 px-2 text-right text-blue-900 tabular-nums">100.00%</td>
-                </tr>
-              );
-
-              return rows;
-            })()}
-          </tbody>
-        </table>
-      </motion.div>
+                return rows;
+              })()}
+            </tbody>
+          </table>
+        </div>
+      </CollapsibleTable>
 
       {/* Resumen de Capacidad por Zona Climática - DATOS REALES DE BD */}
       <motion.div

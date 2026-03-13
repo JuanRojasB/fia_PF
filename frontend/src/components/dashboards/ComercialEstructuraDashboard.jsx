@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Package, Users, Info, TrendingUp, X } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useState } from 'react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ComercialEstructuraDashboard({ data }) {
   const [showEquipoModal, setShowEquipoModal] = useState(false);
@@ -60,23 +61,58 @@ export default function ComercialEstructuraDashboard({ data }) {
   return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" onClick={() => setShowEquipoModal(true)}>
-          <div className="flex items-center justify-between mb-4"><Package className="w-10 h-10 opacity-80" /><Info className="w-5 h-5 opacity-60 hover:opacity-100" /></div>
-          <div className="text-4xl font-bold mb-2">3</div>
-          <div className="text-sm opacity-90">Categorías de Negocio</div>
-          <div className="text-xs opacity-75 mt-2">Pollo en Pie • Pollo en Canal • Huevos</div>
+        <div 
+          className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
+          onClick={() => openModal(
+            'Total Unidades Procesadas 2025',
+            `En 2025 se procesaron ${formatNumber(total2025)} unidades en total a través de todas las sedes mayoristas. Esto representa un ${total2024 > 0 ? (((total2025 - total2024) / total2024) * 100).toFixed(1) : 0}% ${total2025 > total2024 ? 'de crecimiento' : 'de variación'} respecto a 2024 (${formatNumber(total2024)} unidades). La redistribución estratégica entre sedes permitió optimizar la eficiencia operativa y mejorar el control de calidad en el proceso de selección y despacho.`
+          )}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <Package className="w-10 h-10 opacity-80" />
+            <Info className="w-5 h-5 opacity-60 hover:opacity-100" />
+          </div>
+          <div className="text-4xl font-bold mb-2">{formatNumber(total2025)}</div>
+          <div className="text-sm opacity-90">Unidades Procesadas 2025</div>
+          <div className="text-xs opacity-75 mt-2">
+            {total2025 > total2024 ? '↗' : '↘'} {total2024 > 0 ? Math.abs(((total2025 - total2024) / total2024) * 100).toFixed(1) : 0}% vs 2024 ({formatNumber(total2024)})
+          </div>
         </div>
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" onClick={() => setShowEquipoModal(true)}>
-          <div className="flex items-center justify-between mb-4"><Users className="w-10 h-10 opacity-80" /><Info className="w-5 h-5 opacity-60 hover:opacity-100" /></div>
-          <div className="text-4xl font-bold mb-2">7</div>
-          <div className="text-sm opacity-90">Agrupaciones de Venta</div>
-          <div className="text-xs opacity-75 mt-2">Equipos especializados por canal</div>
+
+        <div 
+          className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
+          onClick={() => openModal(
+            'Sede Líder en Procesamiento 2025',
+            `Sede ${u03_2025?.asignacion.replace('Sede ', '') || 'U03'} lidera el procesamiento con ${formatNumber(u03_2025?.unidades2025 || 0)} unidades (${u03_2025?.participacion2025.toFixed(1) || 0}% del total). Experimentó un crecimiento de +${u03_2025?.variacionPct.toFixed(1) || 0}% respecto a 2024, consolidándose como el centro principal de selección y despacho tras la reorganización estratégica implementada este año.`
+          )}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <TrendingUp className="w-10 h-10 opacity-80" />
+            <Info className="w-5 h-5 opacity-60 hover:opacity-100" />
+          </div>
+          <div className="text-4xl font-bold mb-2">{u03_2025?.participacion2025.toFixed(1) || 0}%</div>
+          <div className="text-sm opacity-90">Participación Sede Líder</div>
+          <div className="text-xs opacity-75 mt-2">
+            {u03_2025?.asignacion.replace('Sede ', '') || 'U03'} • {formatNumber(u03_2025?.unidades2025 || 0)} unidades
+          </div>
         </div>
-        <div className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" onClick={() => setShowEquipoModal(true)}>
-          <div className="flex items-center justify-between mb-4"><Users className="w-10 h-10 opacity-80" /><Info className="w-5 h-5 opacity-60 hover:opacity-100" /></div>
-          <div className="text-4xl font-bold mb-2">10</div>
-          <div className="text-sm opacity-90">Líderes Comerciales</div>
-          <div className="text-xs opacity-75 mt-2">Responsables de gestión y ventas</div>
+
+        <div 
+          className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
+          onClick={() => openModal(
+            'Estructura del Equipo Comercial',
+            'El equipo comercial está organizado en 3 categorías de negocio (Pollo en Pie, Pollo en Canal, Huevos) con 7 agrupaciones especializadas por canal de venta, lideradas por 10 profesionales comerciales. Esta estructura permite atención especializada y enfoque estratégico en cada segmento de mercado: Mayorista (José Rodríguez), Institucional (Hernán Benito), Asadero (German Rodríguez), Sede 5 (Yenny Alvarado), PDV (Elmira González & Michael Arias), Yopal (Julián Mora), y Huevos (Margarita Roa Barrera).'
+          )}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <Users className="w-10 h-10 opacity-80" />
+            <Info className="w-5 h-5 opacity-60 hover:opacity-100" />
+          </div>
+          <div className="text-4xl font-bold mb-2">3 • 7 • 10</div>
+          <div className="text-sm opacity-90">Estructura Comercial</div>
+          <div className="text-xs opacity-75 mt-2">
+            Categorías • Agrupaciones • Líderes
+          </div>
         </div>
       </motion.div>
 
@@ -99,8 +135,10 @@ export default function ComercialEstructuraDashboard({ data }) {
         </div>
       )}
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl p-6 border-2 border-blue-500/30 shadow-sm">
-        <div className="flex items-center gap-3 mb-6"><Package className="w-8 h-8 text-blue-600" /><div><h2 className="text-2xl font-bold text-gray-900">ASIGNACIÓN DE POLLO MAYORISTA</h2><p className="text-sm text-gray-600 mt-1">Distribución de unidades procesadas 2024 vs 2025</p></div></div>
+      <CollapsibleTable 
+        title="ASIGNACIÓN DE POLLO MAYORISTA - Distribución de unidades procesadas 2024 vs 2025"
+        defaultOpen={false}
+      >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead><tr className="bg-gradient-to-r from-blue-500 to-blue-600"><th className="text-left py-3 px-4 text-white font-bold">ASIGNACIÓN</th><th className="text-right py-3 px-4 text-white font-bold">Und. 2025</th><th className="text-right py-3 px-4 text-white font-bold">% Part</th><th className="text-right py-3 px-4 text-white font-bold">Und. 2024</th><th className="text-right py-3 px-4 text-white font-bold">% Part</th><th className="text-right py-3 px-4 text-white font-bold">Variación</th><th className="text-right py-3 px-4 text-white font-bold">Var %</th></tr></thead>
@@ -116,8 +154,8 @@ export default function ComercialEstructuraDashboard({ data }) {
             </tbody>
           </table>
         </div>
-        <div className="mt-6 bg-blue-50 rounded-lg p-4 border border-blue-200"><p className="text-sm text-gray-700"><span className="font-semibold text-gray-900">Redistribución 2025:</span> Sede 1 trasladada a Sede U03 (Ángel Blanco) para selección y despacho. Incremento U03 +119.28%, disminución U01 -84.45%.</p></div>
-      </motion.div>
+        <div className="mt-4 bg-blue-50 rounded-lg p-4 border border-blue-200"><p className="text-sm text-gray-700"><span className="font-semibold text-gray-900">Redistribución 2025:</span> Sede 1 trasladada a Sede U03 (Ángel Blanco) para selección y despacho. Incremento U03 +119.28%, disminución U01 -84.45%.</p></div>
+      </CollapsibleTable>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div 

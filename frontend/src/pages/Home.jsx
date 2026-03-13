@@ -21,76 +21,7 @@ export default function Home() {
   }, [navigate]);
 
   const dashboardSections = [
-    {
-      icon: Factory,
-      label: 'Producción',
-      description: 'Granjas y sacrificio',
-      color: 'from-cyan-400 to-cyan-500',
-      section: 'produccion-granjas'
-    },
-    {
-      icon: TrendingUp,
-      label: 'Comercial',
-      description: 'Ventas por línea',
-      color: 'from-purple-400 to-purple-500',
-      section: 'comercial'
-    },
-    {
-      icon: Users,
-      label: 'Equipo de Ventas',
-      description: 'Desempeño comercial',
-      color: 'from-blue-400 to-blue-500',
-      section: 'ventas'
-    },
-    {
-      icon: BarChart3,
-      label: 'Auditoría',
-      description: 'Merma y devoluciones',
-      color: 'from-yellow-400 to-yellow-500',
-      section: 'auditoria'
-    },
-    {
-      icon: Package,
-      label: 'Logística',
-      description: 'Costos operacionales',
-      color: 'from-pink-400 to-pink-500',
-      section: 'logistica'
-    },
-    {
-      icon: Briefcase,
-      label: 'Cartera',
-      description: 'Morosidad y rotación',
-      color: 'from-green-400 to-green-500',
-      section: 'cartera'
-    },
-    {
-      icon: Briefcase,
-      label: 'Gerencia',
-      description: 'Indicadores estratégicos',
-      color: 'from-indigo-400 to-indigo-500',
-      section: 'gerencia'
-    },
-    {
-      icon: Users,
-      label: 'Humana',
-      description: 'Costos de nómina',
-      color: 'from-orange-400 to-orange-500',
-      section: 'humana'
-    },
-    {
-      icon: Shield,
-      label: 'SAGRILAFT',
-      description: 'Análisis y evaluación',
-      color: 'from-red-400 to-red-500',
-      section: 'sagrilaft'
-    },
-    {
-      icon: DollarSign,
-      label: 'Balance General',
-      description: 'Activos, Pasivos y Patrimonio',
-      color: 'from-blue-400 to-blue-500',
-      section: 'fuentes-usos'
-    }
+
   ];
 
   return (
@@ -253,36 +184,7 @@ export default function Home() {
             </div>
           </motion.button>
 
-          {/* Dashboard Sections Grid */}
-          <div>
-            <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4 uppercase tracking-wider">
-              Secciones Disponibles
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              {dashboardSections.map((section, index) => (
-                <motion.button
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1 + index * 0.05 }}
-                  onClick={() => navigate(`${ROUTES.DASHBOARD}?section=${section.section}`)}
-                  className="group p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all hover:scale-105"
-                  style={{
-                    background: 'rgba(248, 250, 252, 0.8)',
-                    border: '1px solid rgba(203, 213, 225, 0.4)'
-                  }}
-                >
-                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br ${section.color} flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform`}>
-                    <section.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                  <h3 className="text-gray-900 font-semibold mb-1 text-xs sm:text-sm group-hover:text-blue-600 transition-colors">
-                    {section.label}
-                  </h3>
-                  <p className="text-xs text-gray-500 hidden sm:block">{section.description}</p>
-                </motion.button>
-              ))}
-            </div>
-          </div>
+ 
         </motion.div>
 
         {/* Footer hint */}

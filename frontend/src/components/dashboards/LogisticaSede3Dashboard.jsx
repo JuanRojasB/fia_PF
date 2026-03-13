@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Truck, TrendingUp, Users, X, Info, DollarSign } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function LogisticaSede3Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -146,16 +147,12 @@ export default function LogisticaSede3Dashboard({ data }) {
       </div>
       
       {/* Tabla Detallada */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+      <CollapsibleTable 
+        title="GASTOS OPERACIONALES LOGÍSTICOS SEDE 3 AÑO 2024 VS 2025"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
-          GASTOS OPERACIONALES LOGÍSTICOS SEDE 3 AÑO 2024 VS 2025
-        </h3>
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
           <thead>
             <tr className="bg-purple-700/50 border-b-2 border-gray-300">
               <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
@@ -228,7 +225,8 @@ export default function LogisticaSede3Dashboard({ data }) {
             en la sede principal y por el incremento tarifario del 9.5% aplicado en 2025.
           </p>
         </div>
-      </motion.div>
+        </div>
+      </CollapsibleTable>
 
       {/* Gráfico */}
       <motion.div

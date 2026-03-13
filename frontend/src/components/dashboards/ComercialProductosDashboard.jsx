@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Package, TrendingUp, DollarSign, X, Info, Percent, ArrowUpRight, ArrowDownRight, ShoppingBag } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ComercialProductosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -114,8 +115,8 @@ export default function ComercialProductosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
-            'Ventas Totales 2025',
-            `Total de kilos vendidos en 2025: ${formatNumber(total2025)} kg. La variación del ${variacionKilos}% vs 2024 representa un crecimiento de ${formatNumber(total2025 - total2024)} kg. Este incremento se debe principalmente al mayor dinamismo en las líneas Mayorista (+6.05%) y Pollo Entero (+4.94%).`
+            'Ventas Totales 2025 en Kilogramos',
+            `Total de kilogramos vendidos en 2025: ${formatNumber(total2025)} kg. La variación del ${variacionKilos}% vs 2024 representa un crecimiento de ${formatNumber(total2025 - total2024)} kg adicionales. Este incremento se debe principalmente al mayor dinamismo en las líneas Mayorista (+6.05%) y Pollo Entero (+4.94%). En 2024 se vendieron ${formatNumber(total2024)} kg.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
@@ -123,7 +124,8 @@ export default function ComercialProductosDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ventas Totales 2025</span>
             <Package className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(total2025)} kg</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(total2025)}</div>
+          <div className="text-sm text-gray-600 mb-1">kg vendidos</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionKilos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionKilos) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {variacionKilos > 0 ? '+' : ''}{variacionKilos}% vs 2024
@@ -135,8 +137,8 @@ export default function ComercialProductosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Ingresos Totales 2025',
-            `Ingresos totales en 2025: ${formatCurrency(ingresos2025)}. La variación del ${variacionIngresos}% vs 2024 refleja el comportamiento mixto entre volumen y precios. Las líneas de mayor volumen (Mayorista, Pollo Entero) impulsaron el crecimiento, mientras que líneas menores (Carnes Frías, Pollo Campesino) presentaron contracciones significativas.`
+            'Ingresos Totales 2025 - Solo Pollo en Canal',
+            `Ingresos totales en 2025: ${formatCurrency(ingresos2025)}\nVariación vs 2024: ${variacionIngresos}%\n\nQUÉ INCLUYE:\n• Solo Pollo en Canal por líneas de producto\n• Mayorista, Pollo Entero, Presa, Menudencia, Combos, Carnes Frías, Pollo Campesino, Gallos/Gallinas\n\nNO INCLUYE:\n• Pollo en Pie\n• Huevos\n\nEste ingreso es MENOR que "Ventas Total Compañía" porque solo incluye pollo procesado en canal.\n\nCálculo: Suma de (kg vendidos × precio) de cada línea de producto en canal.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -144,7 +146,8 @@ export default function ComercialProductosDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ingresos Totales 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(ingresos2025)}</div>
+          <div className="text-3xl font-bold text-gray-900">{formatCurrency(ingresos2025)}</div>
+          <div className="text-sm text-gray-600 mb-1">pesos colombianos</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionIngresos) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {variacionIngresos > 0 ? '+' : ''}{variacionIngresos}% vs 2024
@@ -156,8 +159,8 @@ export default function ComercialProductosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
-            'Precio Promedio 2025',
-            `Precio promedio por kilo en 2025: ${formatCurrency(precioProm2025)}/kg. La variación del ${variacionPrecio}% vs 2024 refleja presión en precios en la mayoría de las líneas. Menudencia (-3.56%), Gallos/Gallinas (-8.84%), y Pollo Entero (-0.42%) presentaron disminuciones, mientras que Presa (+0.16%) y Combos (+12.24%) registraron aumentos.`
+            'Precio Promedio por Kilogramo 2025',
+            `Precio promedio por kilogramo en 2025: ${formatCurrency(precioProm2025)}/kg. La variación del ${variacionPrecio}% vs 2024 (${formatCurrency(precioProm2024)}/kg) refleja presión en precios en la mayoría de las líneas. Menudencia (-3.56%), Gallos/Gallinas (-8.84%), y Pollo Entero (-0.42%) presentaron disminuciones, mientras que Presa (+0.16%) y Combos (+12.24%) registraron aumentos. El precio promedio ponderado considera el volumen de ventas de cada línea de producto.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -165,7 +168,8 @@ export default function ComercialProductosDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Precio Promedio 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(precioProm2025)}/kg</div>
+          <div className="text-3xl font-bold text-gray-900">{formatCurrency(precioProm2025)}/kg</div>
+          <div className="text-sm text-gray-600 mb-1">pesos por kilogramo</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionPrecio) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {variacionPrecio > 0 ? '+' : ''}{variacionPrecio}% vs 2024
@@ -177,8 +181,8 @@ export default function ComercialProductosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
-            'Líneas en Crecimiento',
-            `${lineasCrecimiento.length} líneas presentan crecimiento: ${lineasCrecimiento.map(l => l.linea).join(', ')}. Las líneas que impulsan el crecimiento son Mayorista (+6.05%), Pollo Entero (+4.94%), Gallos/Gallinas (+12.41%), y Menudencia (+0.46%). Estas líneas compensan las contracciones en Carnes Frías (-88.69%), Pollo Campesino (-83.26%), Presa (-2.20%), y Combos (-42.12%).`
+            'Líneas de Producto en Crecimiento',
+            `${lineasCrecimiento.length} líneas de producto presentan crecimiento en kilogramos vendidos: ${lineasCrecimiento.map(l => l.linea).join(', ')}. Las líneas que impulsan el crecimiento son Mayorista (+6.05%), Pollo Entero (+4.94%), Gallos/Gallinas (+12.41%), y Menudencia (+0.46%). Estas líneas compensan las contracciones en Carnes Frías (-88.69%), Pollo Campesino (-83.26%), Presa (-2.20%), y Combos (-42.12%). El balance neto es positivo con ${lineasCrecimiento.length} líneas en expansión vs ${lineasContraccion.length} en contracción.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
@@ -186,7 +190,8 @@ export default function ComercialProductosDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Líneas en Crecimiento</span>
             <Percent className="w-6 h-6 text-orange-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{lineasCrecimiento.length}</div>
+          <div className="text-3xl font-bold text-gray-900">{lineasCrecimiento.length}</div>
+          <div className="text-sm text-gray-600 mb-1">líneas de producto</div>
           <div className="text-xs text-green-600">
             vs {lineasContraccion.length} en contracción
           </div>
@@ -194,16 +199,12 @@ export default function ComercialProductosDashboard({ data }) {
       </div>
 
       {/* Tabla Detallada */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+      <CollapsibleTable 
+        title="VENTAS POR LÍNEA DE PRODUCTO - DETALLE"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
-          VENTAS POR LÍNEA DE PRODUCTO - DETALLE
-        </h3>
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
           <thead>
             <tr className="bg-gradient-to-r from-blue-500 to-purple-600 border-b-2 border-gray-300">
               <th className="text-left py-3 px-4 text-white font-bold">Agrupación Línea</th>
@@ -279,6 +280,7 @@ export default function ComercialProductosDashboard({ data }) {
             </tr>
           </tbody>
         </table>
+        </div>
 
         {/* Análisis */}
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -299,7 +301,7 @@ export default function ComercialProductosDashboard({ data }) {
             </ul>
           </div>
         </div>
-      </motion.div>
+      </CollapsibleTable>
 
       {/* Gráficos - Solo 2 gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

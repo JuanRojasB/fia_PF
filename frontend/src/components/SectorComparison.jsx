@@ -128,15 +128,15 @@ export default function SectorComparison() {
   };
 
   const getTrendIcon = (val2024, val2025) => {
-    if (val2025 > val2024) return <TrendingUp className="w-4 h-4 text-green-400" />;
-    if (val2025 < val2024) return <TrendingDown className="w-4 h-4 text-red-400" />;
-    return <Minus className="w-4 h-4 text-gray-400" />;
+    if (val2025 > val2024) return <TrendingUp className="w-4 h-4 text-green-600" />;
+    if (val2025 < val2024) return <TrendingDown className="w-4 h-4 text-red-600" />;
+    return <Minus className="w-4 h-4 text-gray-600" />;
   };
 
   const getTrendColor = (val2024, val2025) => {
-    if (val2025 > val2024) return 'text-green-400';
-    if (val2025 < val2024) return 'text-red-400';
-    return 'text-gray-400';
+    if (val2025 > val2024) return 'text-green-600';
+    if (val2025 < val2024) return 'text-red-600';
+    return 'text-gray-600';
   };
 
   return (
@@ -148,29 +148,48 @@ export default function SectorComparison() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={() => setZoomedImage(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
             style={{ cursor: 'zoom-out' }}
           >
             <button
               onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
+              className="absolute top-4 right-4 p-3 rounded-full bg-white/20 hover:bg-white/30 transition-all z-10 backdrop-blur-sm"
             >
               <X className="w-6 h-6 text-white" />
             </button>
             
             <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              className="w-full max-w-6xl flex items-center justify-center"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="relative w-full h-full flex items-center justify-center p-8"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={zoomedImage}
-                alt="Zoom"
-                className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
-              />
+              <div className="relative max-w-7xl max-h-full">
+                <img
+                  src={zoomedImage}
+                  alt="Zoom"
+                  className="w-full h-full object-contain rounded-2xl shadow-2xl"
+                  style={{
+                    maxHeight: '85vh',
+                    maxWidth: '100%',
+                  }}
+                />
+                {/* Indicador de zoom */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
+                >
+                  <p className="text-sm font-medium text-gray-900">
+                    Click para cerrar
+                  </p>
+                </motion.div>
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -180,12 +199,7 @@ export default function SectorComparison() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.3 }}
-      className="backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-2xl mb-6 sm:mb-8"
-      style={{
-        background: 'rgba(15, 23, 42, 0.9)',
-        border: '1px solid rgba(148, 163, 184, 0.3)',
-        boxShadow: '0 0 60px rgba(251, 191, 36, 0.1)'
-      }}
+      className="backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-2xl mb-6 sm:mb-8 bg-white/95 border-4 border-yellow-500/30"
     >
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8">
@@ -195,14 +209,14 @@ export default function SectorComparison() {
           transition={{ delay: 1.4, type: "spring" }}
           className="inline-block mb-4"
         >
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center text-3xl sm:text-4xl">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center text-3xl sm:text-4xl shadow-lg">
             🐔
           </div>
         </motion.div>
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
           Sector en Cifras
         </h2>
-        <p className="text-gray-400 text-sm sm:text-base">
+        <p className="text-gray-600 text-sm sm:text-base">
           Comparativa Avicultura 2024 vs 2025
         </p>
       </div>
@@ -213,15 +227,15 @@ export default function SectorComparison() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.5 }}
-          className="rounded-xl overflow-hidden border-2 border-blue-500/30 hover:border-blue-500 transition-all cursor-zoom-in"
+          className="rounded-xl overflow-hidden border-2 border-blue-500/30 hover:border-blue-500 transition-all cursor-zoom-in shadow-lg"
           onClick={() => setZoomedImage(sector2024)}
         >
-          <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 p-4">
-            <h3 className="text-xl font-bold text-white text-center mb-2">
+          <div className="bg-gradient-to-br from-blue-100 to-blue-50 p-4">
+            <h3 className="text-xl font-bold text-gray-900 text-center mb-2">
               Avicultura 2024
             </h3>
           </div>
-          <div className="aspect-[16/9] flex items-center justify-center bg-slate-900/50">
+          <div className="aspect-[16/9] flex items-center justify-center bg-white">
             <img 
               src={sector2024} 
               alt="Sector Avícola 2024" 
@@ -234,15 +248,15 @@ export default function SectorComparison() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.6 }}
-          className="rounded-xl overflow-hidden border-2 border-green-500/30 hover:border-green-500 transition-all cursor-zoom-in"
+          className="rounded-xl overflow-hidden border-2 border-green-500/30 hover:border-green-500 transition-all cursor-zoom-in shadow-lg"
           onClick={() => setZoomedImage(sector2025)}
         >
-          <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 p-4">
-            <h3 className="text-xl font-bold text-white text-center mb-2">
+          <div className="bg-gradient-to-br from-green-100 to-green-50 p-4">
+            <h3 className="text-xl font-bold text-gray-900 text-center mb-2">
               Avicultura 2025
             </h3>
           </div>
-          <div className="aspect-[16/9] flex items-center justify-center bg-slate-900/50">
+          <div className="aspect-[16/9] flex items-center justify-center bg-white">
             <img 
               src={sector2025} 
               alt="Sector Avícola 2025" 
@@ -266,17 +280,13 @@ export default function SectorComparison() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.5 + index * 0.05 }}
-              className="p-4 rounded-xl transition-all hover:scale-105"
-              style={{
-                background: 'rgba(30, 41, 59, 0.6)',
-                border: '1px solid rgba(148, 163, 184, 0.2)'
-              }}
+              className="p-4 rounded-xl transition-all hover:scale-105 bg-white border-2 border-gray-200 shadow-md"
             >
               {/* Icon and Label */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{item.icon}</span>
-                  <h3 className="text-sm font-medium text-gray-300">
+                  <h3 className="text-sm font-medium text-gray-700">
                     {item.label}
                   </h3>
                 </div>
@@ -287,13 +297,13 @@ export default function SectorComparison() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">2024</span>
-                  <span className="text-lg font-bold text-gray-400">
+                  <span className="text-lg font-bold text-gray-600">
                     {item.value2024.toLocaleString()} <span className="text-xs">{item.unit}</span>
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">2025</span>
-                  <span className="text-lg font-bold text-white">
+                  <span className="text-lg font-bold text-gray-900">
                     {item.value2025.toLocaleString()} <span className="text-xs">{item.unit}</span>
                   </span>
                 </div>
@@ -301,7 +311,7 @@ export default function SectorComparison() {
 
               {/* Change Information */}
               {!isNeutral && (
-                <div className={`mt-3 pt-3 border-t border-gray-700 space-y-2`}>
+                <div className={`mt-3 pt-3 border-t border-gray-200 space-y-2`}>
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-500">Diferencia</span>
                     <span className={`text-sm font-semibold ${getTrendColor(item.value2024, item.value2025)}`}>
@@ -326,14 +336,10 @@ export default function SectorComparison() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.5 }}
-        className="mt-6 sm:mt-8 p-4 rounded-xl"
-        style={{
-          background: 'rgba(251, 191, 36, 0.1)',
-          border: '1px solid rgba(251, 191, 36, 0.3)'
-        }}
+        className="mt-6 sm:mt-8 p-4 rounded-xl bg-yellow-50 border-2 border-yellow-300"
       >
-        <p className="text-center text-sm text-gray-300">
-          <span className="font-semibold text-yellow-400">Fuente:</span> FENAVI - Federación Nacional de Avicultores de Colombia
+        <p className="text-center text-sm text-gray-700">
+          <span className="font-semibold text-yellow-700">Fuente:</span> FENAVI - Federación Nacional de Avicultores de Colombia
         </p>
       </motion.div>
     </motion.div>

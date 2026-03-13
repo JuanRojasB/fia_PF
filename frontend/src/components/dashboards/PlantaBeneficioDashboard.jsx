@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { Factory, TrendingDown, Info, X, Activity, Award } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function PlantaBeneficioDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);

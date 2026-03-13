@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { CheckCircle, AlertTriangle, FileText, TrendingDown, X, Info } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function AuditoriaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -68,17 +69,18 @@ export default function AuditoriaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
-            'Total de Auditorías',
-            `Se han ejecutado ${totales.totalAuditorias} auditorías en total, distribuidas en ${totales.tiposAuditoria} tipos diferentes. Las auditorías cubren procesos misionales y puntos de venta, permitiendo evaluar el cumplimiento de estándares de calidad y operación en toda la compañía.`
+            'Total de Auditorías Ejecutadas',
+            `Se han ejecutado ${totales.totalAuditorias} auditorías en total, distribuidas en ${totales.tiposAuditoria} tipos diferentes: auditorías de procesos misionales y auditorías de puntos de venta. Estas auditorías permiten evaluar el cumplimiento de estándares de calidad, operación y control en toda la compañía, identificando oportunidades de mejora y asegurando el cumplimiento normativo.`
           )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Total Auditorías</span>
+            <span className="text-gray-600 text-sm font-medium">Total Auditorías</span>
             <FileText className="w-5 h-5 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{totales.totalAuditorias}</div>
-          <div className="text-sm text-gray-600 mt-1">{totales.tiposAuditoria} tipos</div>
+          <div className="text-sm text-gray-600 mt-1">auditorías ejecutadas</div>
+          <div className="text-xs text-blue-600 mt-2">{totales.tiposAuditoria} tipos diferentes</div>
         </motion.div>
 
         <motion.div
@@ -86,17 +88,18 @@ export default function AuditoriaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Devolución Promedio 2025',
-            `El promedio de devoluciones en 2025 es de ${variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%, evaluado en ${totales.sedesEvaluadas} sedes. Este indicador mide la calidad del producto y la efectividad de los procesos de distribución.`
+            'Porcentaje de Devolución 2025',
+            `El porcentaje promedio de devoluciones en 2025 es de ${variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%, evaluado en ${totales.sedesEvaluadas} sedes de producción. Este indicador crítico mide la calidad del producto entregado y la efectividad de los procesos de distribución. Un porcentaje bajo indica alta calidad y buenos procesos. En 2024 el porcentaje fue de ${variacionDevoluciones ? variacionDevoluciones.pct_2024 : 'N/A'}%.`
           )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Devolución 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Devolución 2025</span>
             <TrendingDown className="w-5 h-5 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%</div>
-          <div className="text-sm text-gray-600 mt-1">{totales.sedesEvaluadas} sedes evaluadas</div>
+          <div className="text-sm text-gray-600 mt-1">porcentaje promedio</div>
+          <div className="text-xs text-gray-600 mt-2">{totales.sedesEvaluadas} sedes evaluadas</div>
         </motion.div>
 
         <motion.div
@@ -104,13 +107,13 @@ export default function AuditoriaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
-            'Variación vs 2024',
-            `La variación 2025 vs 2024 es de ${totales.variacion2025vs2024} puntos porcentuales, indicando ${totales.variacion2025vs2024 < 0 ? 'una mejora' : 'un deterioro'} en el indicador de devoluciones. ${totales.variacion2025vs2024 < 0 ? 'La reducción en devoluciones refleja mejoras en calidad y procesos.' : 'Se requieren acciones correctivas para reducir las devoluciones.'}`
+            'Variación de Devoluciones 2025 vs 2024',
+            `La variación 2025 vs 2024 es de ${totales.variacion2025vs2024} puntos porcentuales (pp). ${totales.variacion2025vs2024 < 0 ? `Una reducción de ${Math.abs(totales.variacion2025vs2024)}pp indica mejora en la calidad del producto y eficiencia en los procesos de distribución. Esto refleja el impacto positivo de las acciones correctivas implementadas.` : `Un incremento de ${totales.variacion2025vs2024}pp indica deterioro en el indicador. Se requieren acciones correctivas inmediatas para reducir las devoluciones y mejorar la calidad.`} Fórmula: 2025 (${variacionDevoluciones ? variacionDevoluciones.pct_2025 : 'N/A'}%) - 2024 (${variacionDevoluciones ? variacionDevoluciones.pct_2024 : 'N/A'}%) = ${totales.variacion2025vs2024}pp.`
           )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Variación vs 2024</span>
+            <span className="text-gray-600 text-sm font-medium">Variación vs 2024</span>
             {totales.variacion2025vs2024 < 0 ? (
               <TrendingDown className="w-5 h-5 text-green-400" />
             ) : (
@@ -120,8 +123,9 @@ export default function AuditoriaDashboard({ data }) {
           <div className={`text-3xl font-bold ${totales.variacion2025vs2024 < 0 ? 'text-green-600' : 'text-red-600'}`}>
             {totales.variacion2025vs2024 < 0 ? '↓' : '↑'} {Math.abs(totales.variacion2025vs2024)}pp
           </div>
-          <div className={`text-sm mt-1 font-medium ${totales.variacion2025vs2024 < 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {totales.variacion2025vs2024 < 0 ? 'Mejora' : 'Deterioro'}
+          <div className="text-sm text-gray-600 mt-1">puntos porcentuales</div>
+          <div className={`text-xs font-medium mt-2 ${totales.variacion2025vs2024 < 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {totales.variacion2025vs2024 < 0 ? '✓ Mejora continua' : '⚠ Requiere atención'}
           </div>
         </motion.div>
 
@@ -130,17 +134,18 @@ export default function AuditoriaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
-            'Registros Mensuales',
-            `Se han registrado ${totales.totalDevolucionesMensuales} datos mensuales de devoluciones. Este seguimiento mensual permite identificar tendencias, estacionalidad y tomar acciones correctivas oportunas para mejorar la calidad del producto y reducir las devoluciones.`
+            'Datos Mensuales Registrados',
+            `Se han registrado ${totales.totalDevolucionesMensuales} datos mensuales de devoluciones a lo largo del tiempo. Este seguimiento mensual detallado permite identificar tendencias estacionales, patrones de comportamiento, picos anormales y tomar acciones correctivas oportunas. El monitoreo continuo es fundamental para mantener y mejorar la calidad del producto entregado a los clientes.`
           )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Registros Mensuales</span>
-            <CheckCircle className="w-5 h-5 text-purple-400" />
+            <span className="text-gray-600 text-sm font-medium">Registros Mensuales</span>
+            <CheckCircle className="w-5 h-5 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{totales.totalDevolucionesMensuales}</div>
-          <div className="text-sm text-gray-600 mt-1">Devoluciones registradas</div>
+          <div className="text-sm text-gray-600 mt-1">datos registrados</div>
+          <div className="text-xs text-gray-600 mt-2">seguimiento continuo</div>
         </motion.div>
       </div>
 
@@ -216,13 +221,10 @@ export default function AuditoriaDashboard({ data }) {
 
       {/* Tabla de Auditorías Recientes */}
       {auditorias.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
+        <CollapsibleTable 
+          title="Auditorías Recientes"
+          defaultOpen={false}
         >
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Auditorías Recientes</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -257,7 +259,7 @@ export default function AuditoriaDashboard({ data }) {
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </CollapsibleTable>
       )}
 
       {/* Hallazgos y Planes de Acción */}

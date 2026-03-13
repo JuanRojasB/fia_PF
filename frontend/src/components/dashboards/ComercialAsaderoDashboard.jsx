@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Package, TrendingUp, DollarSign, X, Info, Percent, ArrowUpRight, ArrowDownRight, Building2 } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ComercialAsaderoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -124,8 +125,8 @@ export default function ComercialAsaderoDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
-            'Ventas Totales 2025',
-            `Total de kilos vendidos en 2025: ${formatNumber(total2025)} kg. Refrigerado: ${formatNumber(totalRefrig2025)} kg (${partRefrig}%), Congelado: ${formatNumber(totalCongel2025)} kg (${partCongel}%). La variación del ${variacionKilos}% vs 2024 refleja el crecimiento del canal institucional.`
+            'Ventas Totales 2025 en Kilogramos',
+            `Total de kilogramos vendidos en 2025: ${formatNumber(total2025)} kg. Refrigerado: ${formatNumber(totalRefrig2025)} kg (${partRefrig}%), Congelado: ${formatNumber(totalCongel2025)} kg (${partCongel}%). La variación del ${variacionKilos}% vs 2024 (${formatNumber(total2024)} kg) refleja el crecimiento del canal asadero. La diferencia absoluta es de ${formatNumber(Math.abs(total2025 - total2024))} kg ${parseFloat(variacionKilos) >= 0 ? 'más' : 'menos'}.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
@@ -133,7 +134,8 @@ export default function ComercialAsaderoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ventas Totales 2025</span>
             <Package className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(total2025)} kg</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(total2025)}</div>
+          <div className="text-sm text-gray-600 mb-1">kg vendidos</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionKilos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionKilos) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {variacionKilos > 0 ? '+' : ''}{variacionKilos}% vs 2024
@@ -145,8 +147,8 @@ export default function ComercialAsaderoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Ingresos Totales 2025',
-            `Ingresos totales en 2025: ${formatCurrency(ingresos2025)}. La variación del ${variacionIngresos}% vs 2024 refleja el comportamiento del canal institucional. El precio promedio es de ${formatCurrency(precioProm2025)}/kg.`
+            'Ingresos Totales 2025 - Canal Asadero (Sede 1)',
+            `Ingresos totales en 2025: ${formatCurrency(ingresos2025)}\nVariación vs 2024: ${variacionIngresos}%\n\nQUÉ INCLUYE:\n• Solo Canal Asadero - Sede 1\n• Productos refrigerados (100)\n• Productos congelados (105)\n\nNO INCLUYE:\n• Otros canales (Institucional, PDV)\n• Otras sedes\n• Pollo en Pie, Huevos\n\nEste ingreso es MENOR porque solo incluye un canal específico (Asadero).\n\nPrecio promedio: ${formatCurrency(precioProm2025)}/kg`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -154,7 +156,8 @@ export default function ComercialAsaderoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ingresos Totales 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(ingresos2025)}</div>
+          <div className="text-3xl font-bold text-gray-900">{formatCurrency(ingresos2025)}</div>
+          <div className="text-sm text-gray-600 mb-1">pesos colombianos</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionIngresos) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {variacionIngresos > 0 ? '+' : ''}{variacionIngresos}% vs 2024
@@ -166,8 +169,8 @@ export default function ComercialAsaderoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
-            'Precio Promedio 2025',
-            `Precio promedio por kilo en 2025: ${formatCurrency(precioProm2025)}/kg. La variación del ${variacionPrecio}% vs 2024 refleja la dinámica de precios del canal institucional.`
+            'Precio Promedio por Kilogramo 2025',
+            `Precio promedio por kilogramo en 2025: ${formatCurrency(precioProm2025)}/kg. La variación del ${variacionPrecio}% vs 2024 (${formatCurrency(precioProm2024)}/kg) refleja la dinámica de precios del canal asadero. La diferencia es de ${formatCurrency(Math.abs(precioProm2025 - precioProm2024))}/kg ${parseFloat(variacionPrecio) >= 0 ? 'más' : 'menos'}. Este precio promedio ponderado considera el volumen de ventas de cada línea de producto.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -175,7 +178,8 @@ export default function ComercialAsaderoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Precio Promedio 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(precioProm2025)}/kg</div>
+          <div className="text-3xl font-bold text-gray-900">{formatCurrency(precioProm2025)}/kg</div>
+          <div className="text-sm text-gray-600 mb-1">pesos por kilogramo</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionPrecio) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {variacionPrecio > 0 ? '+' : ''}{variacionPrecio}% vs 2024
@@ -187,8 +191,8 @@ export default function ComercialAsaderoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
-            'Participación Refrigerado',
-            `Refrigerado representa el ${partRefrig}% del volumen total con ${formatNumber(totalRefrig2025)} kg. Congelado aporta el ${partCongel}% con ${formatNumber(totalCongel2025)} kg.`
+            'Participación de Producto Refrigerado',
+            `Producto refrigerado representa el ${partRefrig}% del volumen total con ${formatNumber(totalRefrig2025)} kg vendidos en 2025. Producto congelado aporta el ${partCongel}% con ${formatNumber(totalCongel2025)} kg. En 2024, refrigerado fue ${formatNumber(totalRefrig2024)} kg y congelado ${formatNumber(totalCongel2024)} kg. La distribución entre temperaturas refleja las preferencias del canal asadero.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
@@ -196,7 +200,8 @@ export default function ComercialAsaderoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Participación Refrigerado</span>
             <Percent className="w-6 h-6 text-orange-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{partRefrig}%</div>
+          <div className="text-3xl font-bold text-gray-900">{partRefrig}%</div>
+          <div className="text-sm text-gray-600 mb-1">del volumen total</div>
           <div className="text-xs text-gray-600">
             vs {partCongel}% Congelado
           </div>
@@ -204,16 +209,12 @@ export default function ComercialAsaderoDashboard({ data }) {
       </div>
 
       {/* Tabla Detallada - Refrigerado */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+      <CollapsibleTable 
+        title="100 - REFRIGERADO"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
-          100 - REFRIGERADO
-        </h3>
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
           <thead>
             <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-gray-300">
               <th className="text-left py-3 px-4 text-white font-bold">Línea</th>
@@ -281,19 +282,16 @@ export default function ComercialAsaderoDashboard({ data }) {
             </tr>
           </tbody>
         </table>
-      </motion.div>
+        </div>
+      </CollapsibleTable>
 
       {/* Tabla Detallada - Congelado */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+      <CollapsibleTable 
+        title="105 - CONGELADO"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
-          105 - CONGELADO
-        </h3>
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
           <thead>
             <tr className="bg-gradient-to-r from-green-500 to-green-600 border-b-2 border-gray-300">
               <th className="text-left py-3 px-4 text-white font-bold">Línea</th>
@@ -361,7 +359,8 @@ export default function ComercialAsaderoDashboard({ data }) {
             </tr>
           </tbody>
         </table>
-      </motion.div>
+        </div>
+      </CollapsibleTable>
 
       {/* Total General */}
       <motion.div

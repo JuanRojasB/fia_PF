@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 import { Package, TrendingUp, Target, X, Info, Percent, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ComercialPolloEnteroDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -178,88 +179,85 @@ export default function ComercialPolloEnteroDashboard({ data }) {
 
 
       {/* Tabla Detallada */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+      <CollapsibleTable 
+        title="POLLO FIESTA S.A. - INGRESOS VS VTAS. POLLOS ENTEROS (Años 2025/2024/2023)"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-orange-500 to-red-600 text-white py-3 px-4 rounded">
-          POLLO FIESTA S.A. - INGRESOS VS VTAS. POLLOS ENTEROS (Años 2025/2024/2023)
-        </h3>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="bg-gradient-to-r from-orange-400 to-orange-500 border-b-2 border-gray-300">
-              <th className="text-left py-3 px-4 text-gray-900 font-bold">Año</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">Pollo entero planta Fiesta</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">Vta Un. Línea Asadero</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">% Part.</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b border-gray-200/30 hover:bg-gray-100/20">
-              <td className="py-2 px-4 text-gray-900 font-bold">2025</td>
-              <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
-                {formatNumber(datos2025.polloEnteroPlanta)}
-              </td>
-              <td className="py-2 px-4 text-right text-blue-600 tabular-nums">
-                {formatNumber(datos2025.ventaLineaAsadero)}
-              </td>
-              <td className="py-2 px-4 text-right tabular-nums">
-                <span className="inline-flex items-center gap-1 text-green-600 font-bold">
-                  {datos2025.participacionLograda}%
-                </span>
-              </td>
-            </tr>
-            <tr className="border-b border-gray-200/30 hover:bg-gray-100/20">
-              <td className="py-2 px-4 text-gray-900 font-bold">2024</td>
-              <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
-                {formatNumber(datos2024.polloEnteroPlanta)}
-              </td>
-              <td className="py-2 px-4 text-right text-blue-600 tabular-nums">
-                {formatNumber(datos2024.ventaLineaAsadero)}
-              </td>
-              <td className="py-2 px-4 text-right tabular-nums">
-                <span className="inline-flex items-center gap-1 text-blue-600 font-bold">
-                  {datos2024.participacionLograda}%
-                </span>
-              </td>
-            </tr>
-            <tr className="border-b border-gray-200/30 hover:bg-gray-100/20">
-              <td className="py-2 px-4 text-gray-900 font-bold">2023</td>
-              <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
-                {formatNumber(datos2023.polloEnteroPlanta)}
-              </td>
-              <td className="py-2 px-4 text-right text-blue-600 tabular-nums">
-                {formatNumber(datos2023.ventaLineaAsadero)}
-              </td>
-              <td className="py-2 px-4 text-right tabular-nums">
-                <span className="inline-flex items-center gap-1 text-cyan-600 font-bold">
-                  {datos2023.participacionLograda}%
-                </span>
-              </td>
-            </tr>
-            <tr className="bg-gray-50 border-t-2 border-gray-400 font-bold">
-              <td className="py-3 px-4 text-gray-900">Total general</td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
-                {formatNumber(totalPolloPlanta)}
-              </td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
-                {formatNumber(totalVentaAsadero)}
-              </td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
-                {participacionPromedio}%
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-gradient-to-r from-orange-400 to-orange-500 border-b-2 border-gray-300">
+                <th className="text-left py-3 px-4 text-gray-900 font-bold">Año</th>
+                <th className="text-right py-3 px-4 text-gray-900 font-bold">Pollo entero planta Fiesta</th>
+                <th className="text-right py-3 px-4 text-gray-900 font-bold">Vta Un. Línea Asadero</th>
+                <th className="text-right py-3 px-4 text-gray-900 font-bold">% Part.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                <td className="py-2 px-4 text-gray-900 font-bold">2025</td>
+                <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
+                  {formatNumber(datos2025.polloEnteroPlanta)}
+                </td>
+                <td className="py-2 px-4 text-right text-blue-600 tabular-nums">
+                  {formatNumber(datos2025.ventaLineaAsadero)}
+                </td>
+                <td className="py-2 px-4 text-right tabular-nums">
+                  <span className="inline-flex items-center gap-1 text-green-600 font-bold">
+                    {datos2025.participacionLograda}%
+                  </span>
+                </td>
+              </tr>
+              <tr className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                <td className="py-2 px-4 text-gray-900 font-bold">2024</td>
+                <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
+                  {formatNumber(datos2024.polloEnteroPlanta)}
+                </td>
+                <td className="py-2 px-4 text-right text-blue-600 tabular-nums">
+                  {formatNumber(datos2024.ventaLineaAsadero)}
+                </td>
+                <td className="py-2 px-4 text-right tabular-nums">
+                  <span className="inline-flex items-center gap-1 text-blue-600 font-bold">
+                    {datos2024.participacionLograda}%
+                  </span>
+                </td>
+              </tr>
+              <tr className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                <td className="py-2 px-4 text-gray-900 font-bold">2023</td>
+                <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
+                  {formatNumber(datos2023.polloEnteroPlanta)}
+                </td>
+                <td className="py-2 px-4 text-right text-blue-600 tabular-nums">
+                  {formatNumber(datos2023.ventaLineaAsadero)}
+                </td>
+                <td className="py-2 px-4 text-right tabular-nums">
+                  <span className="inline-flex items-center gap-1 text-cyan-600 font-bold">
+                    {datos2023.participacionLograda}%
+                  </span>
+                </td>
+              </tr>
+              <tr className="bg-gray-50 border-t-2 border-gray-400 font-bold">
+                <td className="py-3 px-4 text-gray-900">Total general</td>
+                <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
+                  {formatNumber(totalPolloPlanta)}
+                </td>
+                <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
+                  {formatNumber(totalVentaAsadero)}
+                </td>
+                <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
+                  {participacionPromedio}%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         
-        <div className="mt-6 bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
+        <div className="mt-4 bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
           <p className="text-sm text-gray-700 leading-relaxed">
             <span className="font-semibold text-gray-900">Análisis:</span> La participación de la línea Asadero ha mostrado una tendencia positiva, pasando de 45.82% en 2023 a 49.20% en 2025, con una mejora de {mejoraParticipacion} puntos porcentuales en el último año. La compañía se encuentra a solo {datos2025.puntosFaltantes} puntos de alcanzar la meta estratégica del 50% de participación. El volumen de ventas de la línea Asadero creció {variacionVenta2025vs2024}% en 2025, mientras que la producción total de pollo entero en planta varió {variacionPlanta2025vs2024}%, lo que refleja una mayor eficiencia en la comercialización de esta línea estratégica.
           </p>
         </div>
-      </motion.div>
+      </CollapsibleTable>
 
       {/* Gráfico Comparativo */}
       <motion.div

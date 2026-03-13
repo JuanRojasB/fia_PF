@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, X, Info, TrendingUp, Target, AlertTriangle, Award, Zap } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, Area, Cell } from 'recharts';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ProduccionIndicadoresDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -181,17 +182,10 @@ export default function ProduccionIndicadoresDashboard({ data }) {
 
           {/* TABLA COMPARATIVA COMPLETA 2025 vs 2024 */}
           {zootecniaPollo.length >= 2 && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.5 }}
-              className="bg-gradient-to-r from-cyan-500/10 to-cyan-600/5 backdrop-blur-xl rounded-xl p-6 border-2 border-cyan-500/30"
+            <CollapsibleTable 
+              title="COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS AVES 2025-2024"
+              defaultOpen={false}
             >
-              <div className="flex items-center gap-3 mb-6">
-                <Activity className="w-8 h-8 text-cyan-400" />
-                <h2 className="text-2xl font-bold text-gray-900">COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS AVES 2025-2024</h2>
-              </div>
-              
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -396,7 +390,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                   <span className="font-semibold text-gray-900">Análisis Comparativo:</span> Esta tabla muestra todos los indicadores zootécnicos de pollo de engorde comparando 2025 vs 2024. Los valores en verde indican mejoras, mientras que los rojos señalan áreas que requieren atención. La variación relativa permite identificar rápidamente los cambios porcentuales más significativos en cada indicador. Indicadores clave: conversión alimenticia (menor es mejor), mortalidad (menor es mejor), peso promedio (objetivo 2.4-2.6 kg), eficiencia alimenticia IP (mayor es mejor).
                 </p>
               </div>
-            </motion.div>
+            </CollapsibleTable>
           )}
 
           {/* Gráficos Comparativos de Pollo - 3 GRÁFICAS SENCILLAS */}

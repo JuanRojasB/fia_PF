@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Info, TrendingUp, TrendingDown } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function LogisticaDetalleDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);

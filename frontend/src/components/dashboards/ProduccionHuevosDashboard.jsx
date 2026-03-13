@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, Area } from 'recharts';
 import { Egg, TrendingUp, X, Info, Target, Award, Activity } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ProduccionHuevosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,18 +48,15 @@ export default function ProduccionHuevosDashboard({ data }) {
   const variacionHuevos = totalHuevos2024 > 0 ? (((totalHuevos2025 - totalHuevos2024) / totalHuevos2024) * 100).toFixed(1) : 0;
   
   const aves2025 = parseInt(resumenActual.saldo_inicial_aves) || 0;
+  const aves2024 = parseInt(resumenAnterior.saldo_inicial_aves) || 0;
   
   const productividadReal2025 = parseFloat(resumenActual.huevos_producidos_real_x_ave_mes) || 0;
+  const productividadReal2024 = parseFloat(resumenAnterior.huevos_producidos_real_x_ave_mes) || 0;
   const productividadTabla2025 = parseFloat(resumenActual.huevos_producidos_tabla_x_ave_mes) || 0;
   
-  // Parsear variaciones de la BD
-  let varRelActual = {};
-  try {
-    varRelActual = resumenActual.variacion_relativa_pct ? JSON.parse(resumenActual.variacion_relativa_pct) : {};
-  } catch (e) {
-    console.error('Error parsing variations:', e);
-  }
-  const mejoraVsEstandar = varRelActual.huevos_producidos_real_x_ave_mes || 0;
+  // Diferencia de productividad 2025 vs 2024
+  const diferenciaProductividad = productividadReal2025 - productividadReal2024;
+  const variacionProductividad = productividadReal2024 > 0 ? (((productividadReal2025 - productividadReal2024) / productividadReal2024) * 100).toFixed(1) : 0;
 
   // Preparar datos para gráficos comparativos - USAR ZOOTECNIA HUEVO
   const datosComparativos = zootecniaHuevo.map(r => {
@@ -96,7 +94,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Producción Total de Huevos 2025',
-            `Se produjeron ${formatNumber(totalHuevos2025)} huevos durante el año 2025 con ${formatNumber(aves2025)} aves en producción. La producción de huevos es el resultado de la eficiencia reproductiva de las gallinas ponedoras, influenciada por genética, nutrición, manejo, bioseguridad y condiciones ambientales. En 2024 se produjeron ${formatNumber(totalHuevos2024)} huevos.`
+            `Se produjeron ${formatNumber(totalHuevos2025)} huevos durante el año 2025 con ${formatNumber(aves2025)} aves en producción. La productividad real fue de ${formatDecimal(productividadReal2025)} huevos por gallina al mes. La producción de huevos es el resultado de la eficiencia reproductiva de las gallinas ponedoras, influenciada por genética, nutrición, manejo, bioseguridad y condiciones ambientales. El estándar de la industria es de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -115,21 +113,21 @@ export default function ProduccionHuevosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.1 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Productividad Real por Gallina',
-            `La productividad real es de ${formatDecimal(productividadReal2025)} huevos por gallina al mes. El estándar de la industria es de ${formatDecimal(productividadTabla2025)} huevos por gallina al mes. Este indicador mide la eficiencia reproductiva de las aves y es clave para evaluar el retorno de inversión en la operación de postura.`
+            'Producción Total de Huevos 2024',
+            `Se produjeron ${formatNumber(totalHuevos2024)} huevos durante el año 2024 con ${formatNumber(aves2024)} aves en producción. La productividad real fue de ${formatDecimal(productividadReal2024)} huevos por gallina al mes. Este valor sirve como base de comparación para evaluar el crecimiento y mejoras en la operación de postura entre años.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Huevos/Gallina/Mes Real</span>
-            <Activity className="w-5 h-5 text-blue-400" />
+            <span className="text-gray-600 text-sm">Huevos Producidos 2024</span>
+            <Egg className="w-5 h-5 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatDecimal(productividadReal2025)}</div>
-          <div className="text-sm text-gray-600 mt-1">huevos por gallina al mes</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(totalHuevos2024)}</div>
+          <div className="text-sm text-gray-600 mt-1">Total anual</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Estándar tabla</div>
-            <div className="text-lg font-semibold text-blue-400">{formatDecimal(productividadTabla2025)}</div>
+            <div className="text-xs text-gray-500">Aves en producción 2024</div>
+            <div className="text-lg font-semibold text-green-400">{formatNumber(aves2024)}</div>
           </div>
         </motion.div>
 
@@ -137,21 +135,23 @@ export default function ProduccionHuevosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.2 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Diferencia vs Estándar Industria',
-            `La productividad real es de ${formatDecimal(productividadReal2025)} huevos/gallina/mes, comparado con el estándar de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes. La diferencia absoluta es de ${formatDecimal(productividadReal2025 - productividadTabla2025)} huevos más por gallina al mes. ${productividadReal2025 > productividadTabla2025 ? 'Esta mejora indica excelencia en genética, nutrición, manejo y bioseguridad, traduciéndose en mayor rentabilidad por ave.' : 'Hay oportunidad de mejora para alcanzar el estándar de la industria.'}`
+            'Comparación Productividad 2025 vs 2024',
+            `La productividad por gallina ${diferenciaProductividad > 0 ? 'aumentó' : 'disminuyó'} ${formatDecimal(Math.abs(diferenciaProductividad))} huevos/gallina/mes entre 2025 y 2024. En 2025 se alcanzaron ${formatDecimal(productividadReal2025)} huevos/gallina/mes vs ${formatDecimal(productividadReal2024)} en 2024. Esto representa una variación del ${variacionProductividad > 0 ? '+' : ''}${variacionProductividad}%. Fórmula: (2025 - 2024) / 2024 × 100 = (${formatDecimal(productividadReal2025)} - ${formatDecimal(productividadReal2024)}) / ${formatDecimal(productividadReal2024)} × 100 = ${variacionProductividad}%. ${diferenciaProductividad > 0 ? 'Esta mejora indica avances en genética, nutrición y manejo.' : 'Hay oportunidad de recuperar niveles anteriores.'}`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Diferencia vs Estándar</span>
-            {productividadReal2025 > productividadTabla2025 ? <Award className="w-5 h-5 text-green-400" /> : <Target className="w-5 h-5 text-orange-400" />}
+            <span className="text-gray-600 text-sm">Comparación 2025 vs 2024</span>
+            <TrendingUp className="w-5 h-5 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{productividadReal2025 > productividadTabla2025 ? '+' : ''}{formatDecimal(productividadReal2025 - productividadTabla2025)}</div>
+          <div className="text-3xl font-bold text-gray-900">{diferenciaProductividad > 0 ? '+' : ''}{formatDecimal(diferenciaProductividad)}</div>
           <div className="text-sm text-gray-600 mt-1">huevos/gallina/mes</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Estándar industria</div>
-            <div className="text-lg font-semibold text-blue-400">{formatDecimal(productividadTabla2025)}</div>
+            <div className="text-xs text-gray-500">Variación porcentual</div>
+            <div className={`text-lg font-semibold ${variacionProductividad >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {variacionProductividad > 0 ? '+' : ''}{variacionProductividad}%
+            </div>
           </div>
         </motion.div>
 
@@ -159,38 +159,31 @@ export default function ProduccionHuevosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.3 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            '% Variación Anual 2025 vs 2024',
-            `La producción de huevos ${variacionHuevos > 0 ? 'creció' : 'disminuyó'} un ${Math.abs(variacionHuevos)}% respecto a 2024. Cálculo: ((2025 - 2024) / 2024) × 100 = ((${formatNumber(totalHuevos2025)} - ${formatNumber(totalHuevos2024)}) / ${formatNumber(totalHuevos2024)}) × 100 = ${variacionHuevos}%. La diferencia absoluta es de ${formatNumber(Math.abs(totalHuevos2025 - totalHuevos2024))} huevos ${variacionHuevos > 0 ? 'más' : 'menos'}. Esta variación refleja cambios en el tamaño del lote de aves, mejoras en productividad, o ajustes en la estrategia productiva.`
+            'Diferencia vs Estándar Industria 2025',
+            `La productividad real de 2025 es de ${formatDecimal(productividadReal2025)} huevos/gallina/mes, comparado con el estándar de la industria de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes. La diferencia absoluta es de ${formatDecimal(productividadReal2025 - productividadTabla2025)} huevos ${productividadReal2025 > productividadTabla2025 ? 'por encima' : 'por debajo'} del estándar. ${productividadReal2025 > productividadTabla2025 ? 'Esta mejora indica excelencia en genética, nutrición, manejo y bioseguridad, traduciéndose en mayor rentabilidad por ave.' : 'Hay oportunidad de mejora para alcanzar el estándar de la industria.'}`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">% Variación Anual</span>
-            <TrendingUp className="w-5 h-5 text-purple-400" />
+            <span className="text-gray-600 text-sm">Diferencia vs Estándar</span>
+            {productividadReal2025 > productividadTabla2025 ? <Award className="w-5 h-5 text-blue-400" /> : <Target className="w-5 h-5 text-orange-400" />}
           </div>
-          <div className="text-3xl font-bold text-gray-900">{variacionHuevos > 0 ? '+' : ''}{variacionHuevos}%</div>
-          <div className="text-sm text-gray-600 mt-1">Fórmula: (2025-2024)/2024×100</div>
+          <div className="text-3xl font-bold text-gray-900">{productividadReal2025 > productividadTabla2025 ? '+' : ''}{formatDecimal(productividadReal2025 - productividadTabla2025)}</div>
+          <div className="text-sm text-gray-600 mt-1">huevos/gallina/mes</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Diferencia (huevos)</div>
-            <div className="text-lg font-semibold text-purple-400">{variacionHuevos > 0 ? '+' : ''}{formatNumber(Math.abs(totalHuevos2025 - totalHuevos2024))}</div>
+            <div className="text-xs text-gray-500">Estándar industria 2025</div>
+            <div className="text-lg font-semibold text-blue-400">{formatDecimal(productividadTabla2025)}</div>
           </div>
         </motion.div>
       </div>
 
       {/* TABLA COMPARATIVA COMPLETA 2025 vs 2024 */}
       {zootecniaHuevo.length >= 2 && (
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ delay: 0.4 }}
-          className="bg-gradient-to-r from-green-500/10 to-green-600/5 backdrop-blur-xl rounded-xl p-6 border-2 border-green-500/30"
+        <CollapsibleTable 
+          title="COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS HUEVO 2025-2024"
+          defaultOpen={false}
         >
-          <div className="flex items-center gap-3 mb-6">
-            <Activity className="w-8 h-8 text-green-400" />
-            <h2 className="text-2xl font-bold text-gray-900">COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS HUEVO 2025-2024</h2>
-          </div>
-          
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -370,7 +363,7 @@ export default function ProduccionHuevosDashboard({ data }) {
               <span className="font-semibold text-gray-900">Análisis Comparativo:</span> Esta tabla muestra todos los indicadores zootécnicos de producción de huevo comparando 2025 vs 2024. Los valores en verde indican mejoras, mientras que los rojos señalan áreas que requieren atención. La variación relativa permite identificar rápidamente los cambios porcentuales más significativos en cada indicador.
             </p>
           </div>
-        </motion.div>
+        </CollapsibleTable>
       )}
 
       {/* Gráfica 1: Productividad Real vs Estándar */}

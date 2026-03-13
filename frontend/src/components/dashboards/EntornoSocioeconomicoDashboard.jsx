@@ -194,7 +194,7 @@ export default function EntornoSocioeconomicoDashboard() {
             {/* Explicación */}
             <div className="mt-4 p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
               <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-blue-700">Cómo leer esta gráfica:</span> Cada letra (A-L) representa un trimestre desde 2023 periodo-I hasta 2025 periodo-IV. 
+                <span className="font-semibold text-blue-700">Descripción:</span> Cada letra (A-L) representa un trimestre desde 2023 periodo-I hasta 2025 periodo-IV. 
                 Las barras verdes indican crecimiento positivo del PIB, mientras que las rojas muestran decrecimiento. 
                 La altura de cada barra representa el porcentaje de variación porcentual del PIB en ese trimestre.
               </p>
@@ -257,7 +257,7 @@ export default function EntornoSocioeconomicoDashboard() {
             {/* Explicación */}
             <div className="mt-4 p-4 rounded-lg bg-green-50 border-2 border-green-300">
               <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-green-700">Cómo leer esta gráfica:</span> Esta gráfica compara las tasas de crecimiento de diferentes sectores Económicos en tres períodos: 
+                <span className="font-semibold text-green-700">Descripción:</span> Esta gráfica compara las tasas de crecimiento de diferentes sectores Económicos en tres períodos: 
                 año completo 2025 periodo vs 2024 periodo (azul), comparación anual del cuarto trimestre (verde), y comparación trimestral (naranja). 
                 Las barras hacia la derecha indican crecimiento, mientras que las que van hacia la izquierda muestran decrecimiento en ese sector.
               </p>
@@ -331,7 +331,7 @@ export default function EntornoSocioeconomicoDashboard() {
             {/* Explicación */}
             <div className="mt-4 p-4 rounded-lg bg-purple-50 border-2 border-purple-300">
               <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-purple-700">Cómo leer esta gráfica:</span> El Índice de Precios al Consumidor (IPC) mide la variación de precios de bienes y servicios. 
+                <span className="font-semibold text-purple-700">Descripción:</span> El Índice de Precios al Consumidor (IPC) mide la variación de precios de bienes y servicios. 
                 Un IPC más alto indica mayor inflación. En 2022 se registró el pico más alto (13.12%), mientras que en 2025 se proyecta una estabilización en 5.1%, 
                 similar a los niveles de 2024 (5.2%).
               </p>
@@ -401,7 +401,7 @@ export default function EntornoSocioeconomicoDashboard() {
             {/* Explicación */}
             <div className="mt-4 p-4 rounded-lg bg-cyan-50 border-2 border-cyan-300">
               <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-cyan-700">Cómo leer esta gráfica:</span> La TRM (Tasa Representativa del Mercado) muestra el valor promedio anual del dólar en pesos colombianos. 
+                <span className="font-semibold text-cyan-700">Descripción:</span> La TRM (Tasa Representativa del Mercado) muestra el valor promedio anual del dólar en pesos colombianos. 
                 La tendencia lineal refleja claramente la desaceleración del dólar entre 2024 y 2026 (a la fecha), mostrando un movimiento descendente consistente en el promedio anual de la TRM, 
                 cayendo el <span className="font-semibold text-red-600">-9.21%</span> de 2023 a la fecha.
               </p>
@@ -526,7 +526,7 @@ export default function EntornoSocioeconomicoDashboard() {
             {/* Explicación */}
             <div className="mt-4 p-4 rounded-lg bg-teal-50 border-2 border-teal-300">
               <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-teal-700">Cómo leer esta gráfica:</span> El precio del pollo en el año 2025-2024 
+                <span className="font-semibold text-teal-700">Descripción:</span> El precio del pollo en el año 2025-2024 
                 aumentó de 1.9%. Mientras que lo que va corrido de 2026 versus 2025 el mercado registró una contracción de precios lo que 
                 arroja una disminución del -4%, respecto a promedio de precios del año anterior.
               </p>
@@ -650,7 +650,7 @@ export default function EntornoSocioeconomicoDashboard() {
             {/* Explicación */}
             <div className="mt-4 p-4 rounded-lg bg-rose-50 border-2 border-rose-300">
               <p className="text-sm text-gray-700 leading-relaxed">
-                <span className="font-semibold text-rose-700">Cómo leer esta gráfica:</span> Esta gráfica muestra tres indicadores clave del mercado laboral colombiano:
+                <span className="font-semibold text-rose-700">Descripción:</span> Esta gráfica muestra tres indicadores clave del mercado laboral colombiano:
                 <br/><br/>
                 • <span className="text-red-600 font-semibold">TGP (Línea roja)</span>: Tasa Global de Participación - porcentaje de la población en edad de trabajar que participa activamente en el mercado laboral.
                 <br/>

@@ -45,6 +45,7 @@ import {
   AXIS_STYLES, 
   GRID_STYLES 
 } from '../../utils/chartConfig';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ExampleDashboard() {
   const [modalOpen, setModalOpen] = useState(false);

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Truck, TrendingDown, Package, AlertCircle, X, Info } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ProduccionPolloEntregadoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
   const datos2025 = polloEntregado.find(p => p.anio === 2025) || {};
   const datos2024 = polloEntregado.find(p => p.anio === 2024) || {};
 
-  // Preparar datos para gráfico comparativo
+  // Preparar datos para gráfico comparativo - Real vs Programado
   const datosComparativo = [
     {
       categoria: 'Programado',
@@ -38,29 +39,30 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
       categoria: 'Real Granjas',
       '2024': parseInt(datos2024.real_granjas) || 0,
       '2025': parseInt(datos2025.real_granjas) || 0
-    },
-    {
-      categoria: 'Comprado',
-      '2024': parseInt(datos2024.comprado) || 0,
-      '2025': parseInt(datos2025.comprado) || 0
-    },
-    {
-      categoria: 'Total',
-      '2024': parseInt(datos2024.total) || 0,
-      '2025': parseInt(datos2025.total) || 0
     }
   ];
 
-  // Datos para composición porcentual
-  const composicion2024 = [
-    { name: 'Real Granjas', value: parseInt(datos2024.real_granjas) || 0, color: '#10b981' },
-    { name: 'Comprado', value: parseInt(datos2024.comprado) || 0, color: '#f59e0b' }
+  // Datos para el resumen completo (incluye todas las categorías)
+  const datosResumen = [
+    {
+      categoria: 'Programado',
+      diferencia: (parseInt(datos2025.programado) || 0) - (parseInt(datos2024.programado) || 0)
+    },
+    {
+      categoria: 'Real Granjas',
+      diferencia: (parseInt(datos2025.real_granjas) || 0) - (parseInt(datos2024.real_granjas) || 0)
+    },
+    {
+      categoria: 'Comprado',
+      diferencia: (parseInt(datos2025.comprado) || 0) - (parseInt(datos2024.comprado) || 0)
+    },
+    {
+      categoria: 'Total',
+      diferencia: (parseInt(datos2025.total) || 0) - (parseInt(datos2024.total) || 0)
+    }
   ];
 
-  const composicion2025 = [
-    { name: 'Real Granjas', value: parseInt(datos2025.real_granjas) || 0, color: '#10b981' },
-    { name: 'Comprado', value: parseInt(datos2025.comprado) || 0, color: '#f59e0b' }
-  ];
+
 
   return (
     <div className="space-y-6">
@@ -107,7 +109,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Programado 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Programado Aves 2025</span>
             <Package className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(Math.round(datos2025.programado / 1000000))}M</div>
@@ -125,7 +127,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Real 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Real Aves Entregadas en 2025</span>
             <Truck className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(Math.round(datos2025.real_granjas / 1000000))}M</div>
@@ -143,7 +145,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Comprado 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Comprado de Aves en 2025</span>
             <Package className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(datos2025.comprado)}</div>
@@ -161,7 +163,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Total de Aves en 2025</span>
             <TrendingDown className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(Math.round(datos2025.total / 1000000))}M</div>
@@ -170,13 +172,10 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
       </div>
 
       {/* Tabla Comparativa */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
+      <CollapsibleTable 
+        title="Comparativo de Aves Entregadas 2025 vs 2024"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Comparativo 2025 vs 2024</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -209,7 +208,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             </tbody>
           </table>
         </div>
-      </motion.div>
+      </CollapsibleTable>
 
       {/* Gráficos Mejorados */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -219,13 +218,13 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
           onClick={() => openModal(
-            'Comparativo Visual 2025 vs 2024',
-            'Gráfico de barras que compara las cuatro categorías principales entre 2024 (azul) y 2025 (verde). Permite visualizar fácilmente las diferencias absolutas en cada categoría.'
+            'Comparativo Real vs Programado',
+            'Gráfico de barras que compara el pollo Real recibido de granjas contra el Programado entre 2024 (azul) y 2025 (verde). Permite visualizar el cumplimiento del programa de producción y las diferencias entre lo planificado y lo ejecutado. El resumen debajo muestra las diferencias para todas las categorías incluyendo Comprado y Total.'
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Comparativo por Categoría</h3>
+            <h3 className="text-xl font-bold text-gray-900">Comparativo Aves Real vs Programado</h3>
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={350}>
@@ -280,15 +279,14 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             </BarChart>
           </ResponsiveContainer>
           
-          {/* Mini resumen debajo del gráfico */}
+          {/* Mini resumen debajo del gráfico - Muestra todas las categorías */}
           <div className="grid grid-cols-4 gap-2 mt-4">
-            {datosComparativo.map((item, idx) => {
-              const dif = item['2025'] - item['2024'];
+            {datosResumen.map((item, idx) => {
               return (
                 <div key={idx} className="bg-gray-50 rounded-lg p-2 text-center">
                   <div className="text-xs text-gray-600 mb-1">{item.categoria}</div>
-                  <div className={`text-sm font-bold ${dif >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {dif >= 0 ? '+' : ''}{formatNumber(dif)}
+                  <div className={`text-sm font-bold ${item.diferencia >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {item.diferencia >= 0 ? '+' : ''}{formatNumber(item.diferencia)}
                   </div>
                 </div>
               );
@@ -303,12 +301,12 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           transition={{ delay: 0.8 }}
           onClick={() => openModal(
             'Composición: Real vs Comprado',
-            'Muestra la proporción entre pollos de granjas propias (Real) y pollos comprados a terceros. La alta proporción de Real indica autosuficiencia en la producción.'
+            'Muestra la proporción entre pollos de granjas propias (Real) y pollos comprados a avi/cambulos. La alta proporción de Real indica autosuficiencia en la producción.'
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-green-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Composición: Real vs Comprado</h3>
+            <h3 className="text-xl font-bold text-gray-900">Composición: Real vs Comprado(Avi/Cambulos)</h3>
             <Info className="w-5 h-5 text-green-400 animate-pulse" />
           </div>
           
@@ -337,7 +335,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
                 </div>
                 <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">Comprado</span>
+                    <span className="text-sm font-medium text-gray-700">Comprado(Avi/cambulos)</span>
                     <span className="text-lg font-bold text-orange-600">
                       {((datos2024.comprado / datos2024.total) * 100).toFixed(1)}%
                     </span>
@@ -377,7 +375,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
                 </div>
                 <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">Comprado</span>
+                    <span className="text-sm font-medium text-gray-700">Comprado(Avi/cambulos)</span>
                     <span className="text-lg font-bold text-orange-600">
                       {((datos2025.comprado / datos2025.total) * 100).toFixed(1)}%
                     </span>
