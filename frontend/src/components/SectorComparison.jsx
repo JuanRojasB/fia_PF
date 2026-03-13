@@ -129,16 +129,17 @@ export default function SectorComparison() {
   };
 
   const formatNumber = (num, isDecimal = false) => {
-    if (Math.abs(num) >= 1000000) {
-      return isDecimal 
-        ? (num / 1000000).toFixed(2) + 'M'
-        : (num / 1000000).toFixed(0) + 'M';
-    } else if (Math.abs(num) >= 1000) {
-      return isDecimal 
-        ? (num / 1000).toFixed(1) + 'K'
-        : (num / 1000).toFixed(0) + 'K';
+    // Mostrar números completos sin abreviaturas
+    if (isDecimal) {
+      return num.toLocaleString('es-CO', { 
+        minimumFractionDigits: 1, 
+        maximumFractionDigits: 1 
+      });
     }
-    return isDecimal ? num.toFixed(1) : num.toFixed(0);
+    return num.toLocaleString('es-CO', { 
+      minimumFractionDigits: 0, 
+      maximumFractionDigits: 0 
+    });
   };
 
   const getTrendIcon = (val2024, val2025) => {

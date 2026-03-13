@@ -4,10 +4,10 @@ import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shiel
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 import orbImage from '../assets/pollo_fiesta_FIA.png';
 
-export default function Sidebar({ activeSection, setActiveSection, onLogout, onCollapsedChange }) {
+export default memo(function Sidebar({ activeSection, setActiveSection, onLogout, onCollapsedChange }) {
   const user = authService.getUser();
   const navigate = useNavigate();
   const [expandedSections, setExpandedSections] = useState({});
@@ -15,7 +15,7 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
 
-  const playSound = () => {
+  const playSound = useCallback(() => {
     try {
       const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
       audio.volume = 1.0;
@@ -30,31 +30,34 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
     } catch (error) {
       // Silently handle any audio errors
     }
-  };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
+      const newIsDesktop = window.innerWidth >= 1024;
+      if (newIsDesktop !== isDesktop) {
+        setIsDesktop(newIsDesktop);
+      }
     };
     
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [isDesktop]);
 
-  const toggleCollapse = () => {
+  const toggleCollapse = useCallback(() => {
     const newCollapsedState = !isCollapsed;
     setIsCollapsed(newCollapsedState);
     if (onCollapsedChange) {
       onCollapsedChange(newCollapsedState);
     }
-  };
+  }, [isCollapsed, onCollapsedChange]);
 
-  const toggleSection = (sectionId) => {
+  const toggleSection = useCallback((sectionId) => {
     setExpandedSections(prev => ({
       ...prev,
       [sectionId]: !prev[sectionId]
     }));
-  };
+  }, []);
 
   const menuItems = [
     { 
@@ -239,14 +242,15 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
           x: !isDesktop && !isMobileMenuOpen ? -sidebarWidth : 0,
           width: sidebarWidth
         }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed inset-y-0 left-0 backdrop-blur-xl z-50 lg:z-50"
+        transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+        className="fixed inset-y-0 left-0 backdrop-blur-xl z-50 lg:z-50 will-change-transform"
         style={{
           background: 'rgba(255, 255, 255, 0.98)',
           borderRight: '1px solid rgba(203, 213, 225, 0.5)',
           boxShadow: isCollapsed ? '2px 0 10px rgba(0, 0, 0, 0.05)' : 'none',
           overflowY: 'auto',
-          overflowX: 'visible'
+          overflowX: 'visible',
+          transform: 'translateZ(0)' // Force GPU acceleration
         }}
       >
         <div className="flex flex-col h-full" style={{ position: 'relative' }}>
@@ -548,4 +552,4 @@ export default function Sidebar({ activeSection, setActiveSection, onLogout, onC
     </motion.aside>
     </>
   );
-}
+});

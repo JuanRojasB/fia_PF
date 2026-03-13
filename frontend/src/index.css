@@ -2,76 +2,130 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
+/* Global font size increase - More balanced */
+@layer base {
+  html {
+    font-size: 18px; /* Base aumentada de 16px a 18px (1.125x) */
+  }
+  
+  @media (min-width: 640px) {
+    html {
+      font-size: 18px; /* Tablets */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    html {
+      font-size: 19px; /* Desktop */
+    }
+  }
+  
+  @media (min-width: 1536px) {
+    html {
+      font-size: 20px; /* Large screens */
+    }
+  }
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+/* Performance optimizations */
+* {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
-  color: #1e293b;
 }
 
-/* Scrollbar personalizado */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Force GPU acceleration for animations */
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(241, 245, 249, 0.8);
-  border-radius: 4px;
+/* Optimize sidebar transitions */
+aside {
+  contain: layout style paint;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.6);
-  border-radius: 4px;
+/* Optimize dashboard content */
+main {
+  contain: layout style;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.8);
+/* Prevent chart re-renders during sidebar transitions */
+.dashboard-content {
+  contain: layout style;
+  will-change: auto;
 }
 
-/* Animaciones personalizadas */
-@keyframes orbFloat {
-  0%, 100% {
-    transform: translateY(0px);
+.dashboard-content > * {
+  will-change: auto;
+}
+
+/* Reduce repaints during animations */
+.motion-safe\:transform-gpu {
+  transform: translateZ(0);
+}
+
+/* Optimize chart rendering - prevent re-animation */
+.recharts-wrapper {
+  will-change: auto !important;
+}
+
+.recharts-surface {
+  will-change: auto !important;
+}
+
+/* Disable Recharts animations during layout changes */
+.recharts-wrapper * {
+  transition: none !important;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize backdrop blur */
+.backdrop-blur-xl {
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  will-change: backdrop-filter;
+}
+
+/* Optimize margin transitions */
+[style*="margin-left"] {
+  contain: layout;
+}
+
+/* Toast notification styles */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
   }
-  50% {
-    transform: translateY(-12px);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
+  to {
+    transform: translateX(0);
     opacity: 1;
   }
-  50% {
-    opacity: 0.7;
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
+.toast-enter {
+  animation: slideInRight 0.3s ease-out;
 }
 
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(56, 189, 248, 0.15) 50%,
-    transparent 100%
-  );
-  background-size: 1000px 100%;
+.toast-exit {
+  animation: slideOutRight 0.3s ease-in;
 }
+
+

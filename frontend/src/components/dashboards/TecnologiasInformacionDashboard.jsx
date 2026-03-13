@@ -17,55 +17,55 @@ export default function TecnologiasInformacionDashboard({ data }) {
 
   const { proyectos } = data;
 
-  // Iniciativas principales con íconos (del texto original)
+  // Iniciativas principales con íconos (actualizado 2025)
   const iniciativas = [
     { 
       icono: FileText, 
-      titulo: 'Digitalización', 
-      descripcion: 'Digitalización con enfoque a las tablas de retención para la administración de áreas funcionales, la perpetuidad de los archivos laborales (90 años), sobre gestión documental por procesos misionales.',
+      titulo: 'Transformación Digital', 
+      descripcion: 'Digitalización con enfoque en tablas de retención documental, garantizando administración eficiente de áreas funcionales, cumplimiento normativo para la perpetuidad de archivos laborales (90 años) e implementación de criterios de gestión documental por procesos misionales, fortaleciendo la trazabilidad y control de información estratégica.',
       color: 'blue'
     },
     { 
       icono: Video, 
-      titulo: 'CCTV', 
-      descripcion: 'Sistemas de Circuito cerrado de televisión – CCTV, sede oficina principal, sedes, plantas de procesos, puntos de venta y granjas avícolas.',
+      titulo: 'Seguridad y CCTV', 
+      descripción: 'Consolidación de infraestructura de videovigilancia mediante implementación y mantenimiento del Sistema de Circuito Cerrado de Televisión (CCTV) en oficina principal, sedes administrativas, plantas de proceso, puntos de venta y granjas avícolas. Incremento de niveles de seguridad, control operativo y monitoreo preventivo en toda la cadena empresarial.',
       color: 'purple'
     },
     { 
-      icono: Shield, 
-      titulo: 'BOT Certificados', 
-      descripcion: 'Se cuenta el BOT para certificados de calidad.',
+      icono: Zap, 
+      titulo: 'Automatización', 
+      descripcion: 'Puesta en marcha del BOT para la emisión de certificados de calidad, reduciendo tiempos de respuesta y aumentando la eficiencia documental. Desarrollo continuo con Microsoft Power Apps para aplicaciones internas personalizadas según las necesidades de áreas operativas y administrativas.',
       color: 'green'
     },
     { 
       icono: Monitor, 
       titulo: 'Microsoft 365', 
-      descripcion: 'Se utiliza la herramienta de Microsoft Teams, Microsoft 365 para toda la organización.',
+      descripcion: 'Consolidación del uso institucional de Microsoft Teams como plataforma de reuniones, comunicación y trabajo colaborativo, y Microsoft 365 como suite principal de productividad, garantizando acceso seguro, licenciamiento formal y operación remota estable.',
       color: 'cyan'
     },
     { 
-      icono: Zap, 
-      titulo: 'Redes Estructuradas', 
-      descripcion: 'Se realizó el montaje de redes estructuradas con personal propio en la bodega ANGEL BLANCO, antes vanti.',
-      color: 'pink'
+      icono: Cloud, 
+      titulo: 'Backup y Continuidad', 
+      descripcion: 'Todos los usuarios cuentan con Backup en OneDrive (nube) con copia de respaldo automática, fortaleciendo la continuidad del negocio y la seguridad de la información.',
+      color: 'indigo'
     },
     { 
       icono: Database, 
       titulo: 'ERP ENTERPRISE', 
-      descripcion: 'El sistema de información con su nube (cloud) navega con el ERP ENTERPRISE, en sus aplicativos de nómina, comercial y finanzas. Se encuentra en proceso de Re-parametrización el área de: Compras, Almacén, inventarios y mantenimiento.',
+      descripcion: 'Mantenimiento de la operación del sistema empresarial basado en ERP ENTERPRISE, alojado en infraestructura cloud, con integración plena en Nómina, Comercial y Finanzas.',
       color: 'yellow'
     },
     { 
       icono: Code, 
-      titulo: 'Power Apps', 
-      descripcion: 'Powers apps para desarrollo de aplicaciones.',
+      titulo: 'Marketplace Corporativo', 
+      descripcion: 'Construcción del Marketplace corporativo, una plataforma orientada a fortalecer la visibilidad comercial, la interacción con clientes y la integración de canales digitales para ventas. Proyecto clave para la modernización digital y la expansión comercial.',
       color: 'orange'
     },
     { 
-      icono: Cloud, 
-      titulo: 'Backup OneDrive', 
-      descripcion: 'Backup en OneDrive (nube) con su copia de respaldo en un servidor propio autónomo para la información de la empresa.',
-      color: 'indigo'
+      icono: Shield, 
+      titulo: 'Seguridad Informática', 
+      descripcion: 'Fortalecimiento de la seguridad informática y física, consolidación de plataformas en cloud y continuidad operativa basada en buenas prácticas digitales.',
+      color: 'pink'
     }
   ];
 
@@ -87,7 +87,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
     <div className="space-y-6">
       {/* Descripción */}
       <div className="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-xl p-6 border border-blue-300">
-        <p className="text-gray-700">Ecosistema tecnológico integral que incluye digitalización de procesos, CCTV en todas las sedes, ERP ENTERPRISE en nube, Microsoft 365, Power Apps y sistemas de backup. Transformación digital continua para mejorar trazabilidad y control.</p>
+        <p className="text-gray-700">Durante el año 2025, el Departamento de Tecnologías de la Información desarrolló y fortaleció múltiples iniciativas orientadas a la transformación digital, la modernización operativa y la seguridad tecnológica. Se destacan: modernización tecnológica, automatización de procesos, seguridad informática y física fortalecida, consolidación de plataformas en cloud y continuidad operativa basada en buenas prácticas digitales.</p>
       </div>
 
       {/* Header */}
@@ -99,8 +99,8 @@ export default function TecnologiasInformacionDashboard({ data }) {
         <div className="flex items-center gap-3">
           <Monitor className="w-10 h-10 text-blue-600" />
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Ecosistema Tecnológico</h1>
-            <p className="text-gray-700 text-sm mt-1">Infraestructura y Aplicaciones</p>
+            <h1 className="text-2xl font-bold text-gray-900">Tecnologías de la Información 2025</h1>
+            <p className="text-gray-700 text-sm mt-1">Transformación Digital y Modernización Operativa</p>
           </div>
         </div>
       </motion.div>
@@ -112,8 +112,8 @@ export default function TecnologiasInformacionDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Proyectos Activos',
-            `Actualmente hay ${proyectos.filter(p => p.estado === 'Activo').length} proyectos tecnológicos operando de forma activa según el texto original: Digitalización con enfoque a las tablas de retención para la administración de áreas funcionales y la perpetuidad de los archivos laborales (90 años), Sistemas de Circuito cerrado de televisión (CCTV) en sede oficina principal, sedes, plantas de procesos, puntos de venta y granjas avícolas, BOT para certificados de calidad, Microsoft Teams y Microsoft 365 para toda la organización, Montaje de redes estructuradas con personal propio en la bodega ANGEL BLANCO, Power Apps para desarrollo de aplicaciones, y Backup en OneDrive (nube) con su copia de respaldo en un servidor propio autónomo para la información de la empresa.`
+            'Proyectos Activos 2025',
+            `Durante el año 2025 se consolidaron ${proyectos.filter(p => p.estado === 'Activo').length} proyectos tecnológicos activos: Transformación Digital y Gestión Documental (digitalización con tablas de retención, cumplimiento normativo 90 años), Fortalecimiento de Seguridad y Supervisión Tecnológica (CCTV en toda la cadena empresarial), Automatización y Eficiencia Operativa (BOT certificados de calidad, Power Apps), Uso Corporativo de Plataformas Microsoft (Teams, 365, OneDrive con backup automático), Gestión de Sistemas ERP ENTERPRISE (nómina, comercial, finanzas en cloud), y Desarrollo del Marketplace Corporativo (plataforma para visibilidad comercial y ventas digitales).`
           )}
           className="bg-white/95 rounded-xl p-5 border-4 border-green-500/30 shadow-lg cursor-pointer hover:border-green-500 transition-all"
         >
@@ -130,8 +130,8 @@ export default function TecnologiasInformacionDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
-            'Proyectos En Desarrollo',
-            `Actualmente hay ${proyectos.filter(p => p.estado === 'En Proceso').length} proyecto en desarrollo activo. El ERP ENTERPRISE está en proceso de re-parametrización para los módulos de Compras, Almacén, Inventarios y Mantenimiento. Este sistema en nube ya opera exitosamente para Nómina, Comercial y Finanzas. La re-parametrización busca integrar completamente todos los procesos operativos de la empresa en una sola plataforma, mejorando la trazabilidad, control y eficiencia en la gestión de recursos. Se espera completar esta fase durante el año en curso para tener un ERP completamente integrado.`
+            'Marketplace Corporativo - En Desarrollo',
+            `Durante el año 2025 se avanzó en la construcción del Marketplace corporativo, una plataforma orientada a fortalecer la visibilidad comercial, la interacción con clientes y la integración de canales digitales para ventas. Este proyecto es clave para la modernización digital y la expansión comercial de la organización. El Marketplace permitirá a los clientes acceder a productos, realizar pedidos en línea y gestionar sus compras de forma digital, integrándose con el ERP ENTERPRISE para una operación fluida. Se espera completar el desarrollo e implementación durante 2026.`
           )}
           className="bg-white/95 rounded-xl p-5 border-4 border-yellow-500/30 shadow-lg cursor-pointer hover:border-yellow-500 transition-all"
         >
@@ -140,7 +140,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
             <h3 className="text-lg font-bold text-gray-900">En Desarrollo</h3>
           </div>
           <div className="text-3xl font-bold text-yellow-600">{proyectos.filter(p => p.estado === 'En Proceso').length}</div>
-          <p className="text-xs text-gray-600 mt-1">Re-parametrización ERP</p>
+          <p className="text-xs text-gray-600 mt-1">Marketplace Corporativo</p>
         </motion.div>
 
         <motion.div
@@ -148,8 +148,8 @@ export default function TecnologiasInformacionDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
-            'Iniciativas Tecnológicas',
-            `El dashboard muestra ${iniciativas.length} iniciativas tecnológicas principales implementadas en la organización: Digitalización, CCTV, BOT Certificados, Microsoft 365, Redes Estructuradas, ERP ENTERPRISE, Power Apps y Backup OneDrive. Cada una de estas iniciativas contribuye a la transformación digital de la empresa, mejorando la eficiencia operativa, la trazabilidad de procesos y la seguridad de la información. Haga clic en cada iniciativa para ver su descripción completa.`
+            'Iniciativas Tecnológicas 2025',
+            `El año 2025 representó un periodo de importantes avances con ${iniciativas.length} iniciativas tecnológicas principales: Transformación Digital (gestión documental), Seguridad y CCTV (videovigilancia integral), Automatización (BOT y Power Apps), Microsoft 365 (Teams y suite de productividad), Backup y Continuidad (OneDrive automático), ERP ENTERPRISE (nómina, comercial, finanzas), Marketplace Corporativo (plataforma de ventas digitales) y Seguridad Informática (fortalecimiento integral). Los logros alcanzados contribuyen directamente a la eficiencia operativa, la mejora de procesos empresariales y la preparación de la organización para los retos tecnológicos del 2026.`
           )}
           className="bg-white/95 rounded-xl p-5 border-4 border-purple-500/30 shadow-lg cursor-pointer hover:border-purple-500 transition-all"
         >
