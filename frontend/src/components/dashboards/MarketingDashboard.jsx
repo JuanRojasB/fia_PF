@@ -29,7 +29,7 @@ export default function MarketingDashboard({ data }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal('ROI de Campañas', 'Inversión total 2025: $401.661.665. ROI promedio: 17.4% (3 puntos por debajo de 2024). Mejor desempeño: Enero 2025 con 41.01%. ROI diciembre: 11.07% (impactado por pauta extraordinaria medios masivos).')}
+          onClick={() => openModal('ROI de Campañas', 'El mejor mes fue Enero con 41.01%, mientras que Diciembre bajó a 11.07% debido a la pauta extraordinaria en medios masivos (TV y radio). La caída de 3 puntos vs 2024 sugiere necesidad de optimizar la inversión hacia canales de mayor retorno como Cencosud (29.9%).')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -45,7 +45,7 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          onClick={() => openModal('Campañas BTL', 'Resultado acumulado 2025: 82% vs meta 95% (13 puntos debajo). Crecimiento vs 2024: De 85% a 82% (disminución 3 puntos). Rango mensual: mínimo 78% (enero), máximo 90% (septiembre). Agosto: 73% (incapacidad activador Harol Alfonso).')}
+          onClick={() => openModal('Campañas BTL', 'El rango mensual varió entre 78% (enero) y 90% (septiembre). Agosto registró 73% debido a incapacidad del activador Harol Alfonso. La brecha de 13 puntos vs meta (95%) requiere reforzar la planificación y ejecución de activaciones en punto de venta.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -61,7 +61,7 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          onClick={() => openModal('Presupuesto', 'Presupuesto aprobado: $480.000.000 ($40M mensual). Ejecución real: $401.661.665 (83.7%). Ahorro: $78.338.000. Promedio mensual real: $33.471.000 vs $40.000.000 presupuestado. Octubre: $163.175.712 (obsequios corporativos). Diciembre: $123.995.310 (medios masivos). Junio: $5.297.343 (mínimo).')}
+          onClick={() => openModal('Presupuesto', 'El ahorro de $78.3M representa una gestión eficiente, aunque también puede indicar oportunidades perdidas. Los picos en Octubre (obsequios corporativos) y Diciembre (medios masivos) contrastan con Junio ($5.3M), evidenciando una brecha de continuidad en la pauta que debe corregirse.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -77,7 +77,7 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          onClick={() => openModal('Digital', 'CTR promedio: 2.7% (meta 3%, 0.3 puntos debajo). CPC promedio: $248 (meta $300). Efectividad: 3.7. Mejor mes: Noviembre CTR 5.3% (175.93% efectividad). Mayor costo: Junio CPC $435 (45.3% sobre meta). Agosto sin pauta activa. Seguidores: 4,175 (ene 2024) → 10,610 (dic 2025) = +154%.')}
+          onClick={() => openModal('Digital', 'Noviembre fue el mejor mes con CTR 5.3% (175.93% de efectividad), mientras que Junio tuvo el CPC más alto ($435, 45% sobre meta). Agosto no tuvo pauta activa. El crecimiento de seguidores (+154%) demuestra buena gestión de redes, pero el CTR debe mejorar 0.3 puntos para alcanzar la meta del 3%.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -95,16 +95,15 @@ export default function MarketingDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 shadow-lg"
+        onClick={() => openModal('Análisis de Gasto', 'Mes de menor inversión: Junio $5.297.343 (brecha de continuidad en pauta). Octubre: $163.175.712 (compra centralizada obsequios corporativos fin de año). Diciembre: $123.995.310 (pauta medios masivos RCN TV, Caracol TV, Red + TV y pauta radial).')}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 shadow-lg cursor-pointer hover:border-blue-500 transition-all"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-2xl font-bold text-gray-900">Inversión Publicitaria 2025</h3>
             <p className="text-sm text-gray-600 mt-1">Análisis de meses con mayor y menor gasto</p>
           </div>
-          <button onClick={() => openModal('Análisis de Gasto', 'Mes de menor inversión: Junio $5.297.343 (brecha de continuidad en pauta). Octubre: $163.175.712 (compra centralizada obsequios corporativos fin de año). Diciembre: $123.995.310 (pauta medios masivos RCN TV, Caracol TV, Red + TV y pauta radial).')} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <Info className="w-6 h-6 text-gray-600" />
-          </button>
+          <Info className="w-6 h-6 text-gray-600" />
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -156,16 +155,15 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-cyan-500/30 shadow-lg"
+          onClick={() => openModal('Seguidores Digitales', 'Crecimiento de seguidores: De 4,175 (enero 2024) a 10,610 (diciembre 2025) — incremento del 154%. Se destaca el crecimiento sostenido de seguidores durante el último semestre del año.')}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-cyan-500/30 shadow-lg cursor-pointer hover:border-cyan-500 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-xl font-bold text-gray-900">Crecimiento Redes Sociales</h3>
               <p className="text-xs text-gray-600 mt-1">Seguidores en plataformas digitales</p>
             </div>
-            <button onClick={() => openModal('Seguidores Digitales', 'Crecimiento de seguidores: De 4,175 (enero 2024) a 10,610 (diciembre 2025) — incremento del 154%. Se destaca el crecimiento sostenido de seguidores durante el último semestre del año.')} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <Info className="w-5 h-5 text-gray-600" />
-            </button>
+            <Info className="w-5 h-5 text-gray-600" />
           </div>
           
           <div className="grid grid-cols-2 gap-4 mb-4">
@@ -193,16 +191,15 @@ export default function MarketingDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 shadow-lg"
+          onClick={() => openModal('Análisis de Canales', 'Canal de mayor retorno: Cencosud con 29.9% promedio (canal con alto potencial). Canal Foco: PDV (Canal prioritario para 2026). Canal con mayor oportunidad: Asadero con 16.6%. Recomendación: Reforzar la inversión hacia Cencosud y PDV en 2026. Evaluar rentabilidad del canal Asadero y ajustar parámetros de activación.')}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 shadow-lg cursor-pointer hover:border-green-500 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-xl font-bold text-gray-900">Retorno por Canal de Venta</h3>
               <p className="text-xs text-gray-600 mt-1">ROI = Retorno sobre Inversión Publicitaria</p>
             </div>
-            <button onClick={() => openModal('Análisis de Canales', 'Canal de mayor retorno: Cencosud con 29.9% promedio (canal con alto potencial). Canal Foco: PDV (Canal prioritario para 2026). Canal con mayor oportunidad: Asadero con 16.6%. Recomendación: Reforzar la inversión hacia Cencosud y PDV en 2026. Evaluar rentabilidad del canal Asadero y ajustar parámetros de activación.')} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <Info className="w-5 h-5 text-gray-600" />
-            </button>
+            <Info className="w-5 h-5 text-gray-600" />
           </div>
           
           <div className="space-y-4">

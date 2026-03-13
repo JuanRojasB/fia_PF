@@ -17,84 +17,78 @@ export default function TecnologiasInformacionDashboard({ data }) {
 
   const { proyectos } = data;
 
-  // Iniciativas principales con íconos
+  // Iniciativas principales con íconos (del texto original)
   const iniciativas = [
     { 
       icono: FileText, 
       titulo: 'Digitalización', 
-      descripcion: 'Tablas de retención para administración de áreas funcionales y perpetuidad de archivos laborales (90 años)',
+      descripcion: 'Digitalización con enfoque a las tablas de retención para la administración de áreas funcionales, la perpetuidad de los archivos laborales (90 años), sobre gestión documental por procesos misionales.',
       color: 'blue'
     },
     { 
       icono: Video, 
       titulo: 'CCTV', 
-      descripcion: 'Circuito cerrado en oficina principal, sedes, plantas, puntos de venta y granjas avícolas',
+      descripcion: 'Sistemas de Circuito cerrado de televisión – CCTV, sede oficina principal, sedes, plantas de procesos, puntos de venta y granjas avícolas.',
       color: 'purple'
     },
     { 
       icono: Shield, 
       titulo: 'BOT Certificados', 
-      descripcion: 'Automatización para certificados de calidad',
+      descripcion: 'Se cuenta el BOT para certificados de calidad.',
       color: 'green'
     },
     { 
       icono: Monitor, 
       titulo: 'Microsoft 365', 
-      descripcion: 'Teams y herramientas de productividad para toda la organización',
+      descripcion: 'Se utiliza la herramienta de Microsoft Teams, Microsoft 365 para toda la organización.',
       color: 'cyan'
+    },
+    { 
+      icono: Zap, 
+      titulo: 'Redes Estructuradas', 
+      descripcion: 'Se realizó el montaje de redes estructuradas con personal propio en la bodega ANGEL BLANCO, antes vanti.',
+      color: 'pink'
     },
     { 
       icono: Database, 
       titulo: 'ERP ENTERPRISE', 
-      descripcion: 'Sistema en nube para nómina, comercial y finanzas. En re-parametrización: Compras, Almacén, inventarios y mantenimiento',
+      descripcion: 'El sistema de información con su nube (cloud) navega con el ERP ENTERPRISE, en sus aplicativos de nómina, comercial y finanzas. Se encuentra en proceso de Re-parametrización el área de: Compras, Almacén, inventarios y mantenimiento.',
       color: 'yellow'
     },
     { 
       icono: Code, 
       titulo: 'Power Apps', 
-      descripcion: 'Desarrollo de aplicaciones internas personalizadas',
+      descripcion: 'Powers apps para desarrollo de aplicaciones.',
       color: 'orange'
     },
     { 
       icono: Cloud, 
       titulo: 'Backup OneDrive', 
-      descripcion: 'Respaldo en nube con copia en servidor autónomo',
+      descripcion: 'Backup en OneDrive (nube) con su copia de respaldo en un servidor propio autónomo para la información de la empresa.',
       color: 'indigo'
     }
   ];
 
-  // Aplicaciones internas
-  const aplicaciones = [
-    'Manejo de agenda salas de capacitación',
-    'Seguimiento Producto Congelado Sede 2',
-    'Archivo Digital Versión 3.0',
-    'Digiturno Cartera',
-    'Verificador empleados activos e inactivos'
-  ];
-
-  // Sistemas principales
-  const sistemas = [
-    { nombre: 'CCTV', areas: ['POS', 'Proceso Procesados Despachos', 'Exteriores Bodega Angel Blanco'] },
-    { nombre: 'SIESA', areas: ['Atención a cliente final interno'] },
-    { nombre: 'Microsoft 365', areas: ['Backups One Drive', 'Power Apps', 'Power Automate'] },
-    { nombre: 'BOT', areas: ['Envío automático de tarjetas de cumpleaños'] }
-  ];
-
   const getColorClasses = (color) => {
     const colors = {
-      blue: 'bg-blue-500/20 border-blue-500/50 text-blue-400',
-      purple: 'bg-purple-500/20 border-purple-500/50 text-purple-400',
-      green: 'bg-green-500/20 border-green-500/50 text-green-400',
-      cyan: 'bg-cyan-500/20 border-cyan-500/50 text-cyan-400',
-      yellow: 'bg-yellow-500/20 border-yellow-500/50 text-yellow-400',
-      orange: 'bg-orange-500/20 border-orange-500/50 text-orange-400',
-      indigo: 'bg-indigo-500/20 border-indigo-500/50 text-indigo-400'
+      blue: 'border-blue-500/50 hover:border-blue-500',
+      purple: 'border-purple-500/50 hover:border-purple-500',
+      green: 'border-green-500/50 hover:border-green-500',
+      cyan: 'border-cyan-500/50 hover:border-cyan-500',
+      yellow: 'border-yellow-500/50 hover:border-yellow-500',
+      orange: 'border-orange-500/50 hover:border-orange-500',
+      indigo: 'border-indigo-500/50 hover:border-indigo-500',
+      pink: 'border-pink-500/50 hover:border-pink-500'
     };
     return colors[color] || colors.blue;
   };
 
   return (
     <div className="space-y-6">
+      {/* Descripción */}
+      <div className="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-xl p-6 border border-blue-300">
+        <p className="text-gray-700">Ecosistema tecnológico integral que incluye digitalización de procesos, CCTV en todas las sedes, ERP ENTERPRISE en nube, Microsoft 365, Power Apps y sistemas de backup. Transformación digital continua para mejorar trazabilidad y control.</p>
+      </div>
 
       {/* Header */}
       <motion.div
@@ -105,8 +99,8 @@ export default function TecnologiasInformacionDashboard({ data }) {
         <div className="flex items-center gap-3">
           <Monitor className="w-10 h-10 text-blue-600" />
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Tecnologías de la Información</h1>
-            <p className="text-gray-700 text-sm mt-1">Ecosistema Tecnológico Pollo Fiesta</p>
+            <h1 className="text-2xl font-bold text-gray-900">Ecosistema Tecnológico</h1>
+            <p className="text-gray-700 text-sm mt-1">Infraestructura y Aplicaciones</p>
           </div>
         </div>
       </motion.div>
@@ -117,7 +111,11 @@ export default function TecnologiasInformacionDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/95 rounded-xl p-5 border-4 border-green-500/30 shadow-lg"
+          onClick={() => openModal(
+            'Proyectos Activos',
+            `Actualmente hay ${proyectos.filter(p => p.estado === 'Activo').length} proyectos tecnológicos operando de forma activa según el texto original: Digitalización con enfoque a las tablas de retención para la administración de áreas funcionales y la perpetuidad de los archivos laborales (90 años), Sistemas de Circuito cerrado de televisión (CCTV) en sede oficina principal, sedes, plantas de procesos, puntos de venta y granjas avícolas, BOT para certificados de calidad, Microsoft Teams y Microsoft 365 para toda la organización, Montaje de redes estructuradas con personal propio en la bodega ANGEL BLANCO, Power Apps para desarrollo de aplicaciones, y Backup en OneDrive (nube) con su copia de respaldo en un servidor propio autónomo para la información de la empresa.`
+          )}
+          className="bg-white/95 rounded-xl p-5 border-4 border-green-500/30 shadow-lg cursor-pointer hover:border-green-500 transition-all"
         >
           <div className="flex items-center gap-3 mb-2">
             <CheckCircle2 className="w-7 h-7 text-green-600" />
@@ -131,7 +129,11 @@ export default function TecnologiasInformacionDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/95 rounded-xl p-5 border-4 border-yellow-500/30 shadow-lg"
+          onClick={() => openModal(
+            'Proyectos En Desarrollo',
+            `Actualmente hay ${proyectos.filter(p => p.estado === 'En Proceso').length} proyecto en desarrollo activo. El ERP ENTERPRISE está en proceso de re-parametrización para los módulos de Compras, Almacén, Inventarios y Mantenimiento. Este sistema en nube ya opera exitosamente para Nómina, Comercial y Finanzas. La re-parametrización busca integrar completamente todos los procesos operativos de la empresa en una sola plataforma, mejorando la trazabilidad, control y eficiencia en la gestión de recursos. Se espera completar esta fase durante el año en curso para tener un ERP completamente integrado.`
+          )}
+          className="bg-white/95 rounded-xl p-5 border-4 border-yellow-500/30 shadow-lg cursor-pointer hover:border-yellow-500 transition-all"
         >
           <div className="flex items-center gap-3 mb-2">
             <Clock className="w-7 h-7 text-yellow-600" />
@@ -145,18 +147,22 @@ export default function TecnologiasInformacionDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white/95 rounded-xl p-5 border-4 border-purple-500/30 shadow-lg"
+          onClick={() => openModal(
+            'Iniciativas Tecnológicas',
+            `El dashboard muestra ${iniciativas.length} iniciativas tecnológicas principales implementadas en la organización: Digitalización, CCTV, BOT Certificados, Microsoft 365, Redes Estructuradas, ERP ENTERPRISE, Power Apps y Backup OneDrive. Cada una de estas iniciativas contribuye a la transformación digital de la empresa, mejorando la eficiencia operativa, la trazabilidad de procesos y la seguridad de la información. Haga clic en cada iniciativa para ver su descripción completa.`
+          )}
+          className="bg-white/95 rounded-xl p-5 border-4 border-purple-500/30 shadow-lg cursor-pointer hover:border-purple-500 transition-all"
         >
           <div className="flex items-center gap-3 mb-2">
             <Database className="w-7 h-7 text-purple-600" />
-            <h3 className="text-lg font-bold text-gray-900">Aplicaciones</h3>
+            <h3 className="text-lg font-bold text-gray-900">Iniciativas</h3>
           </div>
-          <div className="text-3xl font-bold text-purple-600">{aplicaciones.length}</div>
-          <p className="text-xs text-gray-600 mt-1">Desarrollos internos</p>
+          <div className="text-3xl font-bold text-purple-600">{iniciativas.length}</div>
+          <p className="text-xs text-gray-600 mt-1">Proyectos tecnológicos</p>
         </motion.div>
       </div>
 
-      {/* Iniciativas Principales */}
+      {/* Iniciativas Tecnológicas */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -168,7 +174,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
           Iniciativas Tecnológicas
         </h2>
         
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {iniciativas.map((item, idx) => {
             const IconComponent = item.icono;
             return (
@@ -177,93 +183,16 @@ export default function TecnologiasInformacionDashboard({ data }) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.05 * idx }}
-                className={`flex items-start gap-4 p-4 rounded-lg border ${getColorClasses(item.color)} hover:scale-[1.02] transition-all cursor-pointer`}
+                className={`flex items-center gap-3 p-4 rounded-lg border-2 ${getColorClasses(item.color)} hover:scale-[1.02] transition-all cursor-pointer`}
                 onClick={() => openModal(item.titulo, item.descripcion)}
               >
                 <div className="p-2 bg-white/95 rounded-lg flex-shrink-0">
                   <IconComponent className="w-5 h-5" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-gray-900 mb-1">{item.titulo}</h3>
-                  <p className="text-sm text-gray-700">{item.descripcion}</p>
-                </div>
+                <h3 className="font-bold text-gray-900">{item.titulo}</h3>
               </motion.div>
             );
           })}
-        </div>
-      </motion.div>
-
-      {/* Sistemas del Ecosistema */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 shadow-xl"
-      >
-        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Database className="w-6 h-6 text-purple-600" />
-          Sistemas del Ecosistema
-        </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {sistemas.map((sistema, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 * idx }}
-              className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-lg p-4 border border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-              onClick={() => openModal(
-                sistema.nombre,
-                `Sistema ${sistema.nombre} con las siguientes funcionalidades: ${sistema.areas.join(', ')}.`
-              )}
-            >
-              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <Monitor className="w-5 h-5 text-blue-400" />
-                {sistema.nombre}
-              </h3>
-              <ul className="space-y-2">
-                {sistema.areas.map((area, areaIdx) => (
-                  <li key={areaIdx} className="text-sm text-gray-700 flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                    <span>{area}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Aplicaciones Internas */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 shadow-xl"
-      >
-        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Code className="w-6 h-6 text-orange-600" />
-          Aplicaciones Internas Desarrolladas
-        </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {aplicaciones.map((app, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.05 * idx }}
-              className="flex items-center gap-3 p-3 bg-gradient-to-r from-slate-700/50 to-slate-800/50 rounded-lg border border-slate-600 hover:border-orange-500 transition-all cursor-pointer"
-              onClick={() => openModal(
-                app,
-                `Aplicación interna desarrollada para ${app.toLowerCase()}. Esta herramienta facilita las operaciones diarias y mejora la eficiencia del proceso.`
-              )}
-            >
-              <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0" />
-              <span className="text-sm text-gray-700">{app}</span>
-            </motion.div>
-          ))}
         </div>
       </motion.div>
 
@@ -297,7 +226,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
                 {modalContent.description}
               </div>
               <div className="mt-6 flex justify-end">
-                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors font-semibold">
+                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-semibold">
                   Entendido
                 </button>
               </div>

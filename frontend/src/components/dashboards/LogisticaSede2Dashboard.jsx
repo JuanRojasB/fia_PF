@@ -81,6 +81,7 @@ export default function LogisticaSede2Dashboard({ data }) {
           <div className="bg-white/95 rounded-lg p-4 border border-gray-300">
             <div className="text-sm text-gray-600 mb-1">Responsable</div>
             <div className="text-xl font-bold text-green-400">Alexis Pérez</div>
+            <div className="text-xs text-gray-500 mt-1">A cargo de Sede 2</div>
           </div>
           <div className="bg-white/95 rounded-lg p-4 border border-gray-300">
             <div className="text-sm text-gray-600 mb-1">Colaboradores</div>
@@ -153,11 +154,86 @@ export default function LogisticaSede2Dashboard({ data }) {
         </motion.div>
       </div>
 
-      {/* Gráfico - Clickeable */}
+      {/* Tabla Detallada */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+      >
+        <h3 className="text-xl font-bold text-gray-900 mb-4">
+          GASTOS OPERACIONALES LOGÍSTICOS SEDE 2 AÑO 2024 VS 2025
+        </h3>
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-gradient-to-r from-green-500 to-green-600 border-b-2 border-gray-300">
+              <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
+              <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
+              <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
+              <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var 25/24</th>
+              <th className="text-center py-3 px-4 text-gray-900 font-bold">DIFERENCIA</th>
+            </tr>
+          </thead>
+          <tbody>
+            {conceptosArray.map((row, idx) => {
+              const esIncremento = row.diferencia > 0;
+              
+              return (
+                <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                  <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
+                  <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">
+                    $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  </td>
+                  <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
+                    $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  </td>
+                  <td className="py-2 px-4 text-right tabular-nums">
+                    <span className={`inline-flex items-center gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
+                        {esIncremento ? '↑' : '↓'}
+                      </span>
+                      {row.variacion}%
+                    </span>
+                  </td>
+                  <td className="py-2 px-4 text-center">
+                    <span className={esIncremento ? 'text-red-600' : 'text-green-600'}>
+                      $ {Math.abs(row.diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+            <tr className="bg-gray-50 border-t-2 border-gray-400 font-bold">
+              <td className="py-3 px-4 text-gray-900">TOTAL GASTOS LOGÍSTICOS 2024 VS 2025</td>
+              <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">
+                $ {total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              </td>
+              <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
+                $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              </td>
+              <td className="py-3 px-4 text-right tabular-nums">
+                <span className={`inline-flex items-center gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+                    {parseFloat(variacionTotal) > 0 ? '↑' : '↓'}
+                  </span>
+                  {variacionTotal}%
+                </span>
+              </td>
+              <td className="py-3 px-4 text-center">
+                <span className={parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}>
+                  $ {Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </motion.div>
+
+      {/* Gráfico - Clickeable */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
         onClick={() => openModal(
           'Detalle de Gastos Sede 2',
           `Análisis detallado de gastos operacionales logísticos Sede 2 para 2024 vs 2025. El incremento del ${variacionTotal}% en gastos totales está directamente relacionado con el crecimiento del 31.3% en ventas. Los principales aumentos se deben a arriendos y congelación (+43.01%) por mayor capacidad instalada, y personal de postproceso (+13.65%) para atender la demanda de D1 y ARA.`,
@@ -284,12 +360,12 @@ export default function LogisticaSede2Dashboard({ data }) {
                             <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
                               $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                             </td>
-                            <td className="py-2 px-4 text-right tabular-nums">
-                              <span className={`inline-flex items-center gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
-                                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
+                            <td className="py-2 px-4 text-right">
+                              <span className={`inline-flex items-center justify-end gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
+                                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
                                   {esIncremento ? '↑' : '↓'}
                                 </span>
-                                {row.variacion}%
+                                <span className="font-mono w-16 text-right">{row.variacion}%</span>
                               </span>
                             </td>
                             <td className="py-2 px-4 text-center">
@@ -308,12 +384,12 @@ export default function LogisticaSede2Dashboard({ data }) {
                         <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
                           $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </td>
-                        <td className="py-3 px-4 text-right tabular-nums">
-                          <span className={`inline-flex items-center gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+                        <td className="py-3 px-4 text-right">
+                          <span className={`inline-flex items-center justify-end gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500'}`}>
                               {parseFloat(variacionTotal) > 0 ? '↑' : '↓'}
                             </span>
-                            {variacionTotal}%
+                            <span className="font-mono w-16 text-right font-bold">{variacionTotal}%</span>
                           </span>
                         </td>
                         <td className="py-3 px-4 text-center">
@@ -324,12 +400,6 @@ export default function LogisticaSede2Dashboard({ data }) {
                       </tr>
                     </tbody>
                   </table>
-                  
-                  <div className="mt-6 bg-green-500/10 border border-green-500/30 rounded-lg p-4">
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                      <span className="font-semibold text-gray-900">Análisis Sede 2:</span> El incremento del {variacionTotal}% en gastos totales está directamente relacionado con el crecimiento del 31.3% en ventas. Los principales aumentos se deben a arriendos y congelación (+43.01%) por mayor capacidad instalada para atender la demanda de D1 y ARA, y personal de postproceso (+13.65%) para soportar el volumen de producción de productos congelados.
-                    </p>
-                  </div>
                 </div>
               )}
 

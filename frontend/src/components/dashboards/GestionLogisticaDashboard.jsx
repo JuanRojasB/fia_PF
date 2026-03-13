@@ -138,7 +138,7 @@ export default function GestionLogisticaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total Consolidado 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Total Gastos Operacionales 2025</span>
             <DollarSign className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(total2025)}</div>
@@ -158,7 +158,7 @@ export default function GestionLogisticaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Sede 1</span>
+            <span className="text-gray-600 text-sm font-medium">Sede 1 - Gastos Operacionales</span>
             <Building className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[0]?.total2025 || 0)}</div>
@@ -178,7 +178,7 @@ export default function GestionLogisticaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Sede 2</span>
+            <span className="text-gray-600 text-sm font-medium">Sede 2 - Gastos Operacionales</span>
             <Building className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[1]?.total2025 || 0)}</div>
@@ -198,7 +198,7 @@ export default function GestionLogisticaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Sede 3</span>
+            <span className="text-gray-600 text-sm font-medium">Sede 3 - Gastos Operacionales</span>
             <Building className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[2]?.total2025 || 0)}</div>
@@ -220,14 +220,20 @@ export default function GestionLogisticaDashboard({ data }) {
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Comparativa por Sede 2024 vs 2025</h3>
+          <h3 className="text-xl font-bold text-gray-900">Gastos Operacionales Logísticos por Sede 2024 vs 2025</h3>
           <Info className="w-5 h-5 text-purple-400 animate-pulse" />
         </div>
-        <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={sedesData}>
+        <ResponsiveContainer width="100%" height={450}>
+          <BarChart data={sedesData} margin={{ top: 20, right: 30, bottom: 20, left: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey="sede" stroke="#9ca3af" />
-            <YAxis stroke="#9ca3af" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
+            <XAxis 
+              dataKey="sede" 
+              stroke="#9ca3af"
+            />
+            <YAxis 
+              stroke="#9ca3af" 
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+            />
             <Tooltip content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 const data = payload[0].payload;
@@ -263,14 +269,24 @@ export default function GestionLogisticaDashboard({ data }) {
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Gastos Consolidados por Concepto</h3>
+          <h3 className="text-xl font-bold text-gray-900">Gastos Operacionales por Tipo de Gasto (Consolidado 3 Sedes)</h3>
           <Info className="w-5 h-5 text-purple-400 animate-pulse" />
         </div>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={consolidadoArray} layout="vertical" margin={{ left: 200, right: 30 }}>
+        <ResponsiveContainer width="100%" height={500}>
+          <BarChart data={consolidadoArray} layout="vertical" margin={{ left: 250, right: 40, top: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis type="number" stroke="#9ca3af" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-            <YAxis type="category" dataKey="concepto" stroke="#9ca3af" width={190} style={{ fontSize: '12px' }} />
+            <XAxis 
+              type="number" 
+              stroke="#9ca3af" 
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+            />
+            <YAxis 
+              type="category" 
+              dataKey="concepto" 
+              stroke="#9ca3af" 
+              width={240} 
+              style={{ fontSize: '11px' }}
+            />
             <Tooltip content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 const data = payload[0].payload;

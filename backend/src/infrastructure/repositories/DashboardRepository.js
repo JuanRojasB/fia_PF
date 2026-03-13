@@ -1102,7 +1102,7 @@ class DashboardRepository extends IDashboardRepository {
     // Calcular porcentajes de motivos
     const motivosConPorcentaje = motivos.map(m => ({
       ...m,
-      porcentaje: totalRetiros2025 > 0 ? ((m.cantidad / totalRetiros2025) * 100).toFixed(0) : 0
+      porcentaje: totalRetiros2025 > 0 ? parseFloat(((m.cantidad / totalRetiros2025) * 100).toFixed(2)) : 0
     }));
     
     return {

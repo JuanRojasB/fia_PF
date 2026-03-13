@@ -4,12 +4,15 @@ import EntornoSocioeconomicoDashboard from './EntornoSocioeconomicoDashboard';
 import EncasetamientoColombiaDashboard from './EncasetamientoColombiaDashboard';
 import NegocioMarchaDashboard from './NegocioMarchaDashboard';
 import GerenciaDashboard from './GerenciaDashboard';
+import Presupuesto2025Dashboard from './Presupuesto2025Dashboard';
 import SituacionEconomicaDashboard from './SituacionEconomicaDashboard';
 import CarteraDashboard from './CarteraDashboard';
 import FuentesUsosDashboard from './FuentesUsosDashboard';
 import HumanaDashboard from './HumanaDashboard';
 import HumanaCausasDashboard from './HumanaCausasDashboard';
 import MarketingDashboard from './MarketingDashboard';
+import MarketingIndicadoresDashboard from './MarketingIndicadoresDashboard';
+import MarketingDetalleDashboard from './MarketingDetalleDashboard';
 import LogisticaDashboard from './LogisticaDashboard';
 import LogisticaDetalleDashboard from './LogisticaDetalleDashboard';
 import LogisticaSede1Dashboard from './LogisticaSede1Dashboard';
@@ -106,6 +109,10 @@ export default function DashboardRenderer({ type, data }) {
     case 'marketing':
     case 'marketing-general':
       return <MarketingDashboard data={data} />;
+    case 'marketing-indicadores':
+      return <MarketingIndicadoresDashboard data={data} />;
+    case 'marketing-detalle':
+      return <MarketingDetalleDashboard data={data} />;
     case 'logistica':
       return <LogisticaDashboard data={data} />;
     case 'logistica-detalle':
@@ -142,6 +149,8 @@ export default function DashboardRenderer({ type, data }) {
       );
     case 'sagrilaft':
       return <SagrilaftDashboard data={data} />;
+    case 'presupuesto-2025':
+      return <Presupuesto2025Dashboard data={data} />;
     case 'gerencia':
       return <GerenciaDashboard data={data} />;
     case 'situacion-economica':
