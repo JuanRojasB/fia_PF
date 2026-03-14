@@ -6,651 +6,378 @@ import fiaLogo from '../assets/pollo_fiesta_FIA.png';
 export default function SplashScreen({ onComplete }) {
   const [progress, setProgress] = useState(0);
   const [started, setStarted] = useState(false);
-  const [logoPhase, setLogoPhase] = useState('orb'); // 'orb', 'exploding', 'fia'
+  const [logoPhase, setLogoPhase] = useState('initial');
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    // Animación inicial del logo - más rápida y suave
-    const logoTimer1 = setTimeout(() => setLogoPhase('exploding'), 1500);
-    const logoTimer2 = setTimeout(() => setLogoPhase('fia'), 2000);
-    const buttonTimer = setTimeout(() => setShowButton(true), 2400);
-
+    const timer1 = setTimeout(() => setLogoPhase('anticipation'), 2000);
+    const timer2 = setTimeout(() => setLogoPhase('flipping'), 2400);
+    const timer3 = setTimeout(() => setLogoPhase('landing'), 3000);
+    const timer4 = setTimeout(() => setLogoPhase('final'), 3300);
+    const timer5 = setTimeout(() => setShowButton(true), 3800);
     return () => {
-      clearTimeout(logoTimer1);
-      clearTimeout(logoTimer2);
-      clearTimeout(buttonTimer);
+      clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3);
+      clearTimeout(timer4); clearTimeout(timer5);
     };
   }, []);
 
   useEffect(() => {
     if (!started) return;
-
-    // Reproducir sonido
-    playSound();
-
-    const progressInterval = setInterval(() => {
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
+    audio.volume = 1.0; audio.playbackRate = 0.7; audio.preservesPitch = true;
+    audio.play().catch(() => {});
+    const interval = setInterval(() => {
       setProgress(prev => {
-        const next = prev + 2; // Más suave - incrementos más pequeños
-        if (next >= 100) {
-          clearInterval(progressInterval);
-          setTimeout(() => onComplete(), 300);
-          return 100;
-        }
+        const next = prev + 2;
+        if (next >= 100) { clearInterval(interval); setTimeout(() => onComplete(), 300); return 100; }
         return next;
       });
-    }, 60); // Más frecuente - actualiza cada 60ms
-
-    return () => {
-      clearInterval(progressInterval);
-    };
+    }, 60);
+    return () => clearInterval(interval);
   }, [started, onComplete]);
 
-  const playSound = () => {
-    // DEEP SLAM - Más rápido y menos grave, estilo inicio de Windows
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3');
-    audio.volume = 1.0;
-    audio.playbackRate = 0.7; // Más rápido, menos grave
-    audio.preservesPitch = true; // Mantiene el tono original
-    audio.play().catch(err => console.log('Audio blocked:', err));
-  };
-
+  const isYellow = logoPhase === 'initial' || logoPhase === 'anticipation';
+  const isBlue = logoPhase === 'landing' || logoPhase === 'final';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
-      {/* Fondo amarillo inicial */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(135deg, #fde047 0%, #facc15 50%, #eab308 100%)'
-        }}
-        animate={{
-          opacity: logoPhase === 'fia' ? 0 : 1
-        }}
-        transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
+    <div className="fixed inset-0 z-50 overflow-hidden">
+
+      {/* ── FONDO AMARILLO ── */}
+      <motion.div className="absolute inset-0"
+        style={{ background: 'linear-gradient(135deg, #fde047 0%, #facc15 50%, #eab308 100%)' }}
+        animate={{ opacity: isYellow ? 1 : 0 }}
+        transition={{ duration: 0.4 }}
       />
-      
-      {/* Fondo blanco que aparece gradualmente */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)'
-        }}
+
+      {/* ── FONDO AZUL/BLANCO ── */}
+      <motion.div className="absolute inset-0"
+        style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e0f2fe 100%)' }}
         initial={{ opacity: 0 }}
-        animate={{
-          opacity: logoPhase === 'fia' ? 1 : 0
-        }}
-        transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
+        animate={{ opacity: isBlue || logoPhase === 'flipping' ? 1 : 0 }}
+        transition={{ duration: 0.4 }}
       />
-      
+
+      {/* ── PATRÓN DE PUNTOS (fondo) ── */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: isYellow
+          ? 'radial-gradient(circle, rgba(180,120,0,0.15) 1px, transparent 1px)'
+          : 'radial-gradient(circle, rgba(56,189,248,0.12) 1px, transparent 1px)',
+        backgroundSize: '32px 32px',
+        opacity: 0.8
+      }} />
+
       {!started && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="relative z-50 flex flex-col items-center gap-8"
-        >
-          {/* Logo con animación de transformación */}
-          <div className="relative w-64 h-64 flex items-center justify-center">
-            {/* Efecto de pantalla rompiéndose - grietas simplificadas */}
-            <AnimatePresence>
-              {logoPhase === 'exploding' && (
-                <>
-                  {/* Grietas principales - reducidas de 12 a 8 */}
-                  {[...Array(8)].map((_, i) => {
-                    const angle = (i * 360) / 8;
-                    return (
-                      <motion.div
-                        key={`crack-${i}`}
-                        className="absolute"
-                        style={{
-                          width: '2px',
-                          height: '0px',
-                          left: '50%',
-                          top: '50%',
-                          transformOrigin: 'top center',
-                          rotate: `${angle}deg`,
-                          background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(56, 189, 248, 0.4), transparent)',
-                          boxShadow: '0 0 6px rgba(56, 189, 248, 0.5)'
-                        }}
-                        initial={{ height: '0px', opacity: 0 }}
-                        animate={{
-                          height: ['0px', '150px'],
-                          opacity: [0, 0.8, 0],
-                        }}
-                        transition={{
-                          duration: 0.4,
-                          delay: i * 0.02,
-                          ease: "easeOut"
-                        }}
-                      />
-                    );
-                  })}
-                </>
-              )}
-            </AnimatePresence>
-
-            {/* Anillos orbitales simplificados */}
-            <AnimatePresence>
-              {logoPhase === 'exploding' && (
-                <>
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={`ring-${i}`}
-                      className="absolute rounded-full"
-                      style={{
-                        width: `${120 + i * 50}px`,
-                        height: `${120 + i * 50}px`,
-                        border: `3px solid rgba(56, 189, 248, ${0.8 - i * 0.2})`,
-                        boxShadow: `0 0 20px rgba(56, 189, 248, ${0.6 - i * 0.15})`
-                      }}
-                      initial={{ 
-                        scale: 0, 
-                        opacity: 0
-                      }}
-                      animate={{ 
-                        scale: [0, 1.2, 1.4],
-                        opacity: [0, 0.8, 0]
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        delay: i * 0.05,
-                        ease: "easeOut"
-                      }}
-                    />
-                  ))}
-                </>
-              )}
-            </AnimatePresence>
-
-            {/* Fragmentos explosivos simplificados */}
-            <AnimatePresence>
-              {logoPhase === 'exploding' && (
-                <>
-                  {/* Fragmentos reducidos de 60 a 20 */}
-                  {[...Array(20)].map((_, i) => {
-                    const angle = (i * 360) / 20;
-                    const distance = 120 + (i % 3) * 20;
-                    const size = 3 + (i % 3);
-                    
-                    return (
-                      <motion.div
-                        key={`fragment-${i}`}
-                        className="absolute rounded-full"
-                        style={{
-                          width: `${size}px`,
-                          height: `${size}px`,
-                          left: '50%',
-                          top: '50%',
-                          marginLeft: `-${size/2}px`,
-                          marginTop: `-${size/2}px`,
-                          background: 'radial-gradient(circle, rgba(56, 189, 248, 1), rgba(29, 78, 216, 0.7))'
-                        }}
-                        initial={{ 
-                          x: 0, 
-                          y: 0, 
-                          opacity: 0, 
-                          scale: 0
-                        }}
-                        animate={{
-                          x: Math.cos(angle * Math.PI / 180) * distance,
-                          y: Math.sin(angle * Math.PI / 180) * distance,
-                          opacity: [0, 1, 0],
-                          scale: [0, 1.5, 0]
-                        }}
-                        transition={{
-                          duration: 0.6,
-                          delay: i * 0.01,
-                          ease: "easeOut"
-                        }}
-                      />
-                    );
-                  })}
-                </>
-              )}
-            </AnimatePresence>
-
-            {/* Ondas expansivas simplificadas */}
-            <AnimatePresence>
-              {logoPhase === 'exploding' && (
-                <>
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={`wave-${i}`}
-                      className="absolute rounded-full"
-                      style={{
-                        width: '80px',
-                        height: '80px',
-                        border: `${4 - i}px solid rgba(56, 189, 248, ${0.8 - i * 0.2})`
-                      }}
-                      initial={{ 
-                        scale: 0, 
-                        opacity: 1
-                      }}
-                      animate={{
-                        scale: [0, 3],
-                        opacity: [1, 0],
-                        borderWidth: [`${4 - i}px`, '1px']
-                      }}
-                      transition={{
-                        duration: 0.6,
-                        delay: i * 0.08,
-                        ease: "easeOut"
-                      }}
-                    />
-                  ))}
-                </>
-              )}
-            </AnimatePresence>
-
-            {/* Rayos de luz simplificados */}
-            <AnimatePresence>
-              {logoPhase === 'exploding' && (
-                <>
-                  {[...Array(8)].map((_, i) => (
-                    <motion.div
-                      key={`ray-${i}`}
+        <>
+          {/* ── RAYOS DE LUZ DESDE EL LOGO (fase inicial) ── */}
+          <AnimatePresence>
+            {isYellow && (
+              <div className="absolute inset-0 pointer-events-none flex items-center justify-center"
+                style={{ marginTop: '-60px' }}>
+                {[...Array(12)].map((_, i) => {
+                  const angle = (i * 360) / 12;
+                  return (
+                    <motion.div key={i}
                       className="absolute"
                       style={{
-                        width: '2px',
-                        height: '100px',
-                        transformOrigin: 'center',
+                        width: '3px',
+                        height: '55vw',
                         left: '50%',
                         top: '50%',
-                        marginLeft: '-1px',
-                        marginTop: '-50px',
-                        rotate: `${i * 45}deg`,
-                        background: 'linear-gradient(to top, transparent, rgba(56, 189, 248, 0.8), rgba(255, 255, 255, 0.9), rgba(56, 189, 248, 0.8), transparent)'
+                        marginLeft: '-1.5px',
+                        transformOrigin: 'top center',
+                        rotate: `${angle}deg`,
+                        background: 'linear-gradient(to bottom, rgba(251,191,36,0.7) 0%, rgba(251,191,36,0.2) 40%, transparent 100%)',
                       }}
                       initial={{ opacity: 0, scaleY: 0 }}
-                      animate={{
-                        opacity: [0, 1, 0],
-                        scaleY: [0, 1.2, 0]
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        delay: i * 0.03,
-                        ease: "easeOut"
-                      }}
+                      animate={{ opacity: [0, 0.6, 0.4], scaleY: [0, 1, 1] }}
+                      exit={{ opacity: 0, scaleY: 0 }}
+                      transition={{ duration: 0.8, delay: i * 0.05, ease: "easeOut" }}
                     />
-                  ))}
-                </>
+                  );
+                })}
+              </div>
+            )}
+          </AnimatePresence>
+
+
+
+          {/* ── FLASH DE PANTALLA COMPLETA al girar ── */}
+          <AnimatePresence>
+            {logoPhase === 'flipping' && (
+              <motion.div className="absolute inset-0 pointer-events-none"
+                style={{ background: 'white', zIndex: 20 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.85, 0] }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* ── ONDAS DE CHOQUE PANTALLA COMPLETA ── */}
+          <AnimatePresence>
+            {logoPhase === 'flipping' && (
+              <>
+                {[...Array(4)].map((_, i) => (
+                  <motion.div key={i}
+                    className="absolute rounded-full pointer-events-none"
+                    style={{
+                      top: '50%', left: '50%',
+                      width: '200px', height: '200px',
+                      marginTop: '-160px', marginLeft: '-100px',
+                      border: `${4 - i}px solid rgba(56,189,248,${0.8 - i * 0.15})`,
+                      boxShadow: `0 0 30px rgba(56,189,248,${0.5 - i * 0.1})`,
+                      zIndex: 15
+                    }}
+                    initial={{ scale: 0, opacity: 1 }}
+                    animate={{ scale: [0, 8], opacity: [1, 0] }}
+                    transition={{ duration: 0.9, delay: i * 0.1, ease: "easeOut" }}
+                  />
+                ))}
+              </>
+            )}
+          </AnimatePresence>
+
+
+
+          {/* ── MONEDA 3D - posición fija, nunca se mueve ── */}
+          <div style={{
+            position: 'absolute',
+            top: '50%', left: '50%',
+            width: '380px', height: '380px',
+            marginTop: '-240px', marginLeft: '-190px',
+            perspective: '1500px',
+            zIndex: 30
+          }}>
+            {/* Flash local al girar */}
+            <AnimatePresence>
+              {logoPhase === 'flipping' && (
+                <motion.div className="absolute rounded-full pointer-events-none"
+                  style={{
+                    width: '450px', height: '450px',
+                    top: '50%', left: '50%',
+                    marginTop: '-225px', marginLeft: '-225px',
+                    background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(56,189,248,0.6) 40%, transparent 70%)',
+                    zIndex: 10
+                  }}
+                  initial={{ opacity: 0, scale: 0.3 }}
+                  animate={{ opacity: [0, 1, 0], scale: [0.3, 1.3, 2] }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                />
               )}
             </AnimatePresence>
 
-            {/* Logos - ambos centrados en la misma posición con crossfade suave */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <AnimatePresence initial={false}>
-                {logoPhase === 'orb' && (
-                  <motion.div
-                    key="orb-container"
-                    className="absolute flex flex-col items-center justify-center gap-4"
-                    initial={{ opacity: 0, scale: 0.4 }}
-                    animate={{ 
-                      opacity: 1, 
-                      scale: 1
-                    }}
-                    exit={{ 
-                      opacity: 0,
-                      scale: 1.05,
-                      filter: 'brightness(2.5) blur(15px)'
-                    }}
-                    transition={{ 
-                      duration: 0.8,
-                      exit: { duration: 0.7, ease: [0.4, 0, 0.2, 1] }
-                    }}
-                  >
-                    <motion.img
-                      src={orbLogo}
-                      alt="ORB Logo"
-                      className="w-48 h-48 object-contain"
-                      animate={{
-                        filter: [
-                          'brightness(1.1) drop-shadow(0 0 20px rgba(251, 191, 36, 0.6))',
-                          'brightness(1.3) drop-shadow(0 0 40px rgba(251, 191, 36, 0.9))',
-                          'brightness(1.1) drop-shadow(0 0 20px rgba(251, 191, 36, 0.6))'
-                        ],
-                        scale: [1, 1.03, 1]
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    />
-                    <motion.h1
-                      className="text-6xl font-black tracking-wider"
+            {/* Partículas al aterrizar */}
+            <AnimatePresence>
+              {logoPhase === 'landing' && (
+                [...Array(20)].map((_, i) => {
+                  const angle = (i * 360) / 20;
+                  const dist = 100 + (i % 3) * 20;
+                  const size = 4 + (i % 3) * 2;
+                  return (
+                    <motion.div key={i} className="absolute rounded-full pointer-events-none"
                       style={{
-                        color: '#78350f',
-                        textShadow: '0 3px 6px rgba(0, 0, 0, 0.6), 0 0 30px rgba(217, 119, 6, 0.8), 0 0 50px rgba(217, 119, 6, 0.5)',
-                        letterSpacing: '0.15em'
+                        width: size, height: size,
+                        top: '50%', left: '50%',
+                        marginTop: -size / 2, marginLeft: -size / 2,
+                        background: 'rgba(56,189,248,1)',
+                        boxShadow: '0 0 8px rgba(56,189,248,0.9)',
+                        zIndex: 10
                       }}
+                      initial={{ x: 0, y: 0, opacity: 0, scale: 0 }}
                       animate={{
-                        textShadow: [
-                          '0 3px 6px rgba(0, 0, 0, 0.6), 0 0 30px rgba(217, 119, 6, 0.8), 0 0 50px rgba(217, 119, 6, 0.5)',
-                          '0 3px 6px rgba(0, 0, 0, 0.6), 0 0 40px rgba(217, 119, 6, 1), 0 0 70px rgba(217, 119, 6, 0.7)',
-                          '0 3px 6px rgba(0, 0, 0, 0.6), 0 0 30px rgba(217, 119, 6, 0.8), 0 0 50px rgba(217, 119, 6, 0.5)'
-                        ]
+                        x: Math.cos(angle * Math.PI / 180) * dist,
+                        y: Math.sin(angle * Math.PI / 180) * dist,
+                        opacity: [0, 1, 0], scale: [0, 1.5, 0]
                       }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    >
-                      POLLO FIESTA
-                    </motion.h1>
-                  </motion.div>
-                )}
+                      transition={{ duration: 0.6, delay: i * 0.015, ease: "easeOut" }}
+                    />
+                  );
+                })
+              )}
+            </AnimatePresence>
 
-                {(logoPhase === 'exploding' || logoPhase === 'fia') && (
-                  <>
-                    {logoPhase === 'exploding' && (
-                      <>
-                        {/* Flash central simplificado */}
-                        <motion.div
-                          key="explosion-flash"
-                          className="absolute w-64 h-64 rounded-full"
-                          initial={{ 
-                            scale: 0, 
-                            opacity: 1,
-                            background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(56, 189, 248, 0.8) 50%, transparent 100%)'
-                          }}
-                          animate={{ 
-                            scale: [0, 1.5],
-                            opacity: [1, 0]
-                          }}
-                          transition={{ 
-                            duration: 0.5, 
-                            ease: "easeOut"
-                          }}
-                        />
-                        
-                        {/* Anillo de impacto simplificado */}
-                        <motion.div
-                          key="explosion-ring"
-                          className="absolute w-32 h-32 rounded-full"
-                          style={{
-                            border: '6px solid rgba(56, 189, 248, 1)',
-                            boxShadow: '0 0 30px rgba(56, 189, 248, 0.8)'
-                          }}
-                          initial={{ scale: 1, opacity: 1 }}
-                          animate={{ 
-                            scale: [1, 2.5],
-                            opacity: [1, 0],
-                            borderWidth: ['6px', '2px']
-                          }}
-                          transition={{ 
-                            duration: 0.5, 
-                            ease: "easeOut"
-                          }}
-                        />
-                      </>
-                    )}
+            {/* Moneda - solo rotación Y */}
+            <motion.div
+              style={{
+                width: '100%', height: '100%',
+                transformStyle: 'preserve-3d',
+                position: 'relative'
+              }}
+              animate={{
+                rotateY: logoPhase === 'flipping' || logoPhase === 'landing' || logoPhase === 'final' ? 180 : 0
+              }}
+              transition={{ duration: 0.6, ease: [0.45, 0, 0.55, 1] }}
+            >
+              {/* Cara frontal - ORB */}
+              <div style={{
+                position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
+                transform: 'translateZ(5px)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}>
+                <div style={{
+                  width: '325px', height: '325px', borderRadius: '50%', position: 'absolute',
+                  background: 'radial-gradient(circle, #fde047, #eab308)',
+                  boxShadow: '0 4px 20px rgba(234,179,8,0.4)',
+                  opacity: 0.5
+                }} />
+                <img src={orbLogo} alt="ORB" style={{
+                  width: '360px', height: '360px', objectFit: 'contain',
+                  filter: 'brightness(1.15) drop-shadow(0 0 18px rgba(251,191,36,0.6))',
+                  position: 'relative'
+                }} />
+              </div>
 
-                    <motion.div
-                      key="fia-container"
-                      className="absolute flex items-center justify-center"
-                      initial={{ 
-                        opacity: 0,
-                        scale: 0.7,
-                        filter: 'brightness(3) blur(10px)'
-                      }}
-                      animate={{ 
-                        opacity: logoPhase === 'fia' ? 1 : 0,
-                        scale: logoPhase === 'fia' ? 1 : 0.7,
-                        filter: logoPhase === 'fia' 
-                          ? 'brightness(1.1) blur(0px) drop-shadow(0 0 30px rgba(56, 189, 248, 0.6))'
-                          : 'brightness(3) blur(10px)'
-                      }}
-                      transition={{
-                        duration: 0.6,
-                        ease: "easeOut"
-                      }}
-                    >
-                      <motion.img
-                        src={fiaLogo}
-                        alt="FIA Logo"
-                        className="w-48 h-48 object-contain"
-                        animate={{
-                          filter: logoPhase === 'fia' ? [
-                            'brightness(1.1) drop-shadow(0 0 30px rgba(56, 189, 248, 0.6))',
-                            'brightness(1.2) drop-shadow(0 0 40px rgba(56, 189, 248, 0.8))',
-                            'brightness(1.1) drop-shadow(0 0 30px rgba(56, 189, 248, 0.6))'
-                          ] : 'brightness(1.1) drop-shadow(0 0 30px rgba(56, 189, 248, 0.6))'
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: logoPhase === 'fia' ? Infinity : 0,
-                          ease: "easeInOut"
-                        }}
-                      />
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
-            </div>
+              {/* Cara trasera - FIA */}
+              <div style={{
+                position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
+                transform: 'rotateY(180deg) translateZ(5px)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}>
+                <div style={{
+                  width: '325px', height: '325px', borderRadius: '50%', position: 'absolute',
+                  background: 'radial-gradient(circle, #7dd3fc, #38bdf8)',
+                  boxShadow: '0 4px 20px rgba(56,189,248,0.4)',
+                  opacity: 0.5
+                }} />
+                <img src={fiaLogo} alt="FIA" style={{
+                  width: '360px', height: '360px', objectFit: 'contain',
+                  filter: 'brightness(1.1) drop-shadow(0 0 18px rgba(56,189,248,0.6))',
+                  position: 'relative'
+                }} />
+              </div>
+            </motion.div>
           </div>
 
-          {/* Título FIA y subtítulo */}
-          <AnimatePresence>
-            {showButton && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-center"
-              >
-                <h1
-                  className="text-6xl font-black mb-2"
-                  style={{
-                    background: 'linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1d4ed8 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
+          {/* ── TEXTO POLLO FIESTA - posición fija debajo del logo ── */}
+          <div style={{
+            position: 'absolute',
+            top: '50%', left: '50%',
+            transform: 'translateX(-50%)',
+            marginTop: '80px',
+            textAlign: 'center',
+            zIndex: 30
+          }}>
+            <AnimatePresence>
+              {isYellow && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
                 >
-                  FIA
-                </h1>
-                <p className="text-lg text-gray-600 font-medium">
-                  Fiesta Intelligence Assistant
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  {['POLLO', 'FIESTA'].map((word, wi) => (
+                    <div key={word} style={{ display: 'flex', justifyContent: 'center', gap: '4px' }}>
+                      {word.split('').map((letter, li) => (
+                        <motion.span key={li}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, delay: wi * 0.15 + li * 0.05 }}
+                          style={{
+                            fontSize: '4.5rem', fontWeight: 900, lineHeight: 1,
+                            color: '#78350f', letterSpacing: '0.05em',
+                            textShadow: '0 4px 8px rgba(0,0,0,0.5), 0 0 30px rgba(217,119,6,0.8)',
+                            display: 'inline-block'
+                          }}
+                        >{letter}</motion.span>
+                      ))}
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-          {/* Botón de inicio */}
-          <AnimatePresence>
-            {showButton && (
-              <motion.button
-                initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                onClick={() => setStarted(true)}
-                className="px-12 py-4 rounded-full text-xl font-bold transition-all"
-                style={{
-                  background: 'linear-gradient(135deg, #38bdf8, #1d4ed8)',
-                  color: 'white',
-                  boxShadow: '0 0 40px rgba(56, 189, 248, 0.6)',
-                  border: '2px solid rgba(56, 189, 248, 0.8)'
-                }}
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: '0 0 60px rgba(56, 189, 248, 0.9)'
-                }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                INICIAR SISTEMA
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          {/* Texto inferior */}
-          <AnimatePresence>
-            {showButton && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-gray-600 text-sm font-mono"
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                Presiona para comenzar
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </motion.div>
+            {/* ── TEXTO FIA + BOTÓN ── */}
+            <AnimatePresence>
+              {showButton && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <motion.h1
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, type: 'spring' }}
+                    style={{
+                      fontSize: '3.5rem', fontWeight: 900, marginBottom: '4px',
+                      background: 'linear-gradient(135deg, #1e293b, #3b82f6, #1d4ed8)',
+                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
+                    }}
+                  >FIA</motion.h1>
+                  <p style={{ color: '#4b5563', fontSize: '1rem', fontWeight: 500, marginBottom: '24px' }}>
+                    Fiesta Intelligence Assistant
+                  </p>
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    onClick={() => setStarted(true)}
+                    whileHover={{ scale: 1.08, boxShadow: '0 0 50px rgba(56,189,248,0.8)' }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                    style={{
+                      padding: '14px 48px', borderRadius: '9999px',
+                      fontSize: '1.1rem', fontWeight: 700, color: 'white', cursor: 'pointer',
+                      background: 'linear-gradient(135deg, #38bdf8, #1d4ed8)',
+                      boxShadow: '0 0 30px rgba(56,189,248,0.5)',
+                      border: '2px solid rgba(56,189,248,0.7)'
+                    }}
+                  >INICIAR SISTEMA</motion.button>
+                  <p style={{ color: '#6b7280', fontSize: '0.8rem', marginTop: '12px', fontFamily: 'monospace' }}>
+                    Presiona para comenzar
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </>
       )}
 
       {started && (
-        <div className="relative z-10 flex flex-col items-center w-full max-w-2xl px-8">
-          
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="relative mb-12 w-64 h-64 flex items-center justify-center"
-          >
+        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-8">
+          <div className="relative mb-12 w-40 h-40 flex items-center justify-center">
             {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute rounded-full"
+              <motion.div key={i} className="absolute rounded-full"
                 style={{
-                  width: `${120 + i * 50}px`,
-                  height: `${120 + i * 50}px`,
-                  border: `2px solid rgba(56, 189, 248, ${0.5 - i * 0.15})`,
+                  width: `${120 + i * 50}px`, height: `${120 + i * 50}px`,
+                  border: `2px solid rgba(56,189,248,${0.5 - i * 0.15})`
                 }}
-                animate={{
-                  rotate: i % 2 === 0 ? 360 : -360,
-                  scale: [1, 1.05, 1]
-                }}
-                transition={{
-                  rotate: { duration: 8 - i * 2, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                }}
+                animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
+                transition={{ duration: 8 - i * 2, repeat: Infinity, ease: "linear" }}
               />
             ))}
-
-            <motion.div
-              className="relative w-40 h-40 rounded-full flex items-center justify-center overflow-hidden z-10"
+            <div className="relative w-40 h-40 rounded-full flex items-center justify-center overflow-hidden z-10"
               style={{
-                background: 'radial-gradient(circle, rgba(56, 189, 248, 0.3), rgba(0, 0, 0, 0.9))',
-                border: '3px solid rgba(56, 189, 248, 0.8)',
-                boxShadow: '0 0 60px rgba(56, 189, 248, 0.6)'
-              }}
-              animate={{
-                boxShadow: [
-                  '0 0 60px rgba(56, 189, 248, 0.6)',
-                  '0 0 80px rgba(56, 189, 248, 0.8)',
-                  '0 0 60px rgba(56, 189, 248, 0.6)'
-                ]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <motion.img
-                src={fiaLogo}
-                alt="FIA Logo"
+                background: 'radial-gradient(circle, rgba(56,189,248,0.3), rgba(0,0,0,0.9))',
+                border: '3px solid rgba(56,189,248,0.8)',
+                boxShadow: '0 0 60px rgba(56,189,248,0.6)'
+              }}>
+              <img src={fiaLogo} alt="FIA"
                 className="absolute w-[130%] h-[130%] object-cover"
-                style={{
-                  filter: 'brightness(1.3) contrast(1.2)'
-                }}
+                style={{ filter: 'brightness(1.3) contrast(1.2)' }}
               />
-            </motion.div>
+            </div>
+          </div>
 
-            {[...Array(8)].map((_, i) => (
-              <motion.div
-                key={`particle-${i}`}
-                className="absolute w-2 h-2 rounded-full bg-sky-400"
-                style={{
-                  boxShadow: '0 0 10px rgba(56, 189, 248, 1)',
-                  left: '50%',
-                  top: '50%'
-                }}
-                animate={{
-                  x: [0, Math.cos(i * 45 * Math.PI / 180) * 100],
-                  y: [0, Math.sin(i * 45 * Math.PI / 180) * 100],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                  ease: "easeOut"
-                }}
-              />
-            ))}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="text-center mb-8"
-          >
-            <h1
-              className="text-7xl font-black mb-3"
-              style={{
-                background: 'linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1d4ed8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              FIA
-            </h1>
-            
-            <p
-              className="text-sm text-gray-600 font-light uppercase tracking-widest"
-              style={{
-                letterSpacing: '0.3em',
-              }}
-            >
+          <div className="text-center mb-8">
+            <h1 className="text-7xl font-black mb-3" style={{
+              background: 'linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1d4ed8 100%)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'
+            }}>FIA</h1>
+            <p className="text-sm text-gray-600 font-light uppercase" style={{ letterSpacing: '0.3em' }}>
               FIESTA INTELLIGENCE ASSISTANT
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="w-full max-w-md"
-          >
+          <div className="w-full max-w-md">
             <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
-              <motion.div
-                className="absolute inset-y-0 left-0 rounded-full"
+              <div className="absolute inset-y-0 left-0 rounded-full"
                 style={{
                   background: 'linear-gradient(90deg, #3b82f6, #1d4ed8)',
-                  boxShadow: '0 0 15px rgba(59, 130, 246, 0.4)',
-                  width: `${progress}%`
-                }}
-                animate={{
-                  boxShadow: [
-                    '0 0 15px rgba(56, 189, 248, 0.6)',
-                    '0 0 25px rgba(56, 189, 248, 0.9)',
-                    '0 0 15px rgba(56, 189, 248, 0.6)'
-                  ]
-                }}
-                transition={{
-                  duration: 1,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-              {/* Efecto de brillo que se mueve */}
-              <motion.div
-                className="absolute inset-y-0 left-0 w-20 rounded-full"
-                style={{
-                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
-                  width: '100px'
-                }}
-                animate={{
-                  x: ['-100px', '400px']
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "linear"
+                  boxShadow: '0 0 15px rgba(59,130,246,0.4)',
+                  width: `${progress}%`,
+                  transition: 'width 0.06s linear'
                 }}
               />
             </div>
@@ -658,7 +385,7 @@ export default function SplashScreen({ onComplete }) {
               <span>CARGANDO</span>
               <span>{Math.round(progress)}%</span>
             </div>
-          </motion.div>
+          </div>
         </div>
       )}
     </div>
