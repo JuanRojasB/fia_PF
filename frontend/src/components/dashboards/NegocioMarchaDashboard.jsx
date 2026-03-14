@@ -97,7 +97,7 @@ export default function NegocioMarchaDashboard() {
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-2">
                 Negocio en Marcha
               </h1>
-              <p className="text-xl text-emerald-600">Informe de Gestión 2025</p>
+              <p className="text-xl text-gray-600">Informe de Gestión 2025</p>
             </div>
           </div>
         </div>
@@ -131,31 +131,31 @@ export default function NegocioMarchaDashboard() {
                 let highlightedText = paragraph;
                 
                 // Resaltar +6.6%, +1.04%, 3.88%
-                highlightedText = highlightedText.replace(/6\.6%/g, '<span class="text-blue-600 font-bold text-xl bg-blue-50 px-2 py-1 rounded">6.6%</span>');
-                highlightedText = highlightedText.replace(/\+1\.04%/g, '<span class="text-blue-600 font-bold text-xl bg-blue-50 px-2 py-1 rounded">+1.04%</span>');
-                highlightedText = highlightedText.replace(/3\.88%/g, '<span class="text-green-600 font-bold text-xl bg-green-50 px-2 py-1 rounded">3.88%</span>');
+                highlightedText = highlightedText.replace(/6\.6%/g, '<span class="font-bold text-green-600">6.6%</span>');
+                highlightedText = highlightedText.replace(/\+1\.04%/g, '<span class="font-bold text-green-600">+1.04%</span>');
+                highlightedText = highlightedText.replace(/3\.88%/g, '<span class="font-bold text-green-600">3.88%</span>');
                 
                 // Resaltar 7.800 pollos/hora
-                highlightedText = highlightedText.replace(/7\.800 pollos por hora/g, '<span class="text-cyan-600 font-bold bg-cyan-50 px-2 py-1 rounded">7.800 pollos/hora</span>');
+                highlightedText = highlightedText.replace(/7\.800 pollos por hora/g, '<span class="font-bold">7.800 pollos/hora</span>');
                 
                 // Resaltar "cero paradas"
-                highlightedText = highlightedText.replace(/cero paradas/g, '<span class="text-green-600 font-bold text-lg bg-green-100 px-3 py-1 rounded-full">✓ CERO PARADAS</span>');
+                highlightedText = highlightedText.replace(/cero paradas/g, '<span class="font-bold text-green-600">✓ CERO PARADAS</span>');
                 
                 // Resaltar "OEE"
-                highlightedText = highlightedText.replace(/OEE \(Overall Equipment Effectiveness – Eficiencia Global Productiva\)/g, '<span class="text-cyan-600 font-bold">OEE (Overall Equipment Effectiveness – Eficiencia Global Productiva)</span>');
+                highlightedText = highlightedText.replace(/OEE \(Overall Equipment Effectiveness – Eficiencia Global Productiva\)/g, '<span class="font-bold">OEE (Overall Equipment Effectiveness – Eficiencia Global Productiva)</span>');
                 
                 // Resaltar "mejores precios"
-                highlightedText = highlightedText.replace(/mejores precios de ventas/g, '<span class="text-green-600 font-semibold">mejores precios de ventas</span>');
+                highlightedText = highlightedText.replace(/mejores precios de ventas/g, '<span class="font-bold">mejores precios de ventas</span>');
                 
                 // Resaltar "fortalece el control interno"
-                highlightedText = highlightedText.replace(/fortalece el control interno/g, '<span class="text-emerald-600 font-semibold">fortalece el control interno</span>');
+                highlightedText = highlightedText.replace(/fortalece el control interno/g, '<span class="font-bold">fortalece el control interno</span>');
                 
                 // Resaltar "menores costos" y "mayor cumplimiento"
-                highlightedText = highlightedText.replace(/menores costos/g, '<span class="text-green-600 font-semibold">menores costos</span>');
-                highlightedText = highlightedText.replace(/mayor cumplimiento/g, '<span class="text-green-600 font-semibold">mayor cumplimiento</span>');
+                highlightedText = highlightedText.replace(/menores costos/g, '<span class="font-bold text-green-600">menores costos</span>');
+                highlightedText = highlightedText.replace(/mayor cumplimiento/g, '<span class="font-bold text-green-600">mayor cumplimiento</span>');
                 
                 // Resaltar "indicadores ISO"
-                highlightedText = highlightedText.replace(/indicadores ISO/g, '<span class="text-purple-600 font-semibold">indicadores ISO</span>');
+                highlightedText = highlightedText.replace(/indicadores ISO/g, '<span class="font-bold">indicadores ISO</span>');
                 
                 const isEmoji = paragraph.startsWith('📍') || paragraph.startsWith('🎯');
                 const isBullet = paragraph.startsWith('•');
@@ -189,10 +189,10 @@ export default function NegocioMarchaDashboard() {
         
         <div className="space-y-4 text-gray-700 leading-relaxed">
           <p>
-            Las visitas del Invima IVC (Inspección de Vigilancia y Control), obtuvo en su última calificación en P.B. de <span className="font-bold text-2xl text-yellow-600">96.69%</span> frente al <span className="font-bold text-2xl text-yellow-500">97.55%</span>.
+            Las visitas del Invima IVC (Inspección de Vigilancia y Control), obtuvo en su última calificación en P.B. de <span className="font-bold text-orange-500">96.69%</span> frente al <span className="font-bold">97.55%</span>.
           </p>
           <p>
-            La calificación fue afectada por aspectos locativos, limpieza y desinfección, implementación y mantenimiento de las acciones encaminadas a la dirección de la gestión ambiental, Seguridad y Salud en el trabajo y el sistema de gestión de calidad; velando por el cumplimiento de la normatividad vigente y requisitos de la <span className="font-semibold text-blue-600">ISO 9001:2015</span>.
+            La calificación fue afectada por aspectos locativos, limpieza y desinfección, implementación y mantenimiento de las acciones encaminadas a la dirección de la gestión ambiental, Seguridad y Salud en el trabajo y el sistema de gestión de calidad; velando por el cumplimiento de la normatividad vigente y requisitos de la <span className="font-bold">ISO 9001:2015</span>.
           </p>
         </div>
 
@@ -243,7 +243,7 @@ export default function NegocioMarchaDashboard() {
             </li>
           </ul>
           <p>
-            Velando por el cumplimiento de la normatividad vigente y requisitos de la <span className="font-semibold text-green-400">ISO 9001:2015</span>.
+            Velando por el cumplimiento de la normatividad vigente y requisitos de la <span className="font-bold">ISO 9001:2015</span>.
           </p>
         </div>
       </motion.div>

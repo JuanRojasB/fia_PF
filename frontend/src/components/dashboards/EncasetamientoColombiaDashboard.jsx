@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useState } from 'react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function EncasetamientoColombiaDashboard() {
   const [selectedMonth, setSelectedMonth] = useState(null);
@@ -70,7 +71,7 @@ export default function EncasetamientoColombiaDashboard() {
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-2">
                 Encasetamiento en Colombia
               </h1>
-              <p className="text-xl text-violet-700">Análisis de Producción Avícola Nacional 2020-2025</p>
+              <p className="text-xl text-gray-600">Análisis de Producción Avícola Nacional 2020-2025</p>
             </div>
           </div>
         </div>
@@ -88,11 +89,12 @@ export default function EncasetamientoColombiaDashboard() {
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-4 border-violet-500/30 shadow-xl"
       >
         {/* Tabla de Encasetamiento por Mes y Año */}
-        <div className="mb-6 overflow-x-auto">
-          <div className="p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
-            <h3 className="text-lg font-bold text-violet-700 mb-4 text-center">
-              Encasetamiento Mensual por Año (Millones de Aves)
-            </h3>
+        <div className="mb-6">
+          <CollapsibleTable
+            title="Encasetamiento Mensual por Año (Millones de Aves)"
+            defaultOpen={true}
+            className="border-2 border-violet-300"
+          >
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-violet-600 text-white">
@@ -145,12 +147,12 @@ export default function EncasetamientoColombiaDashboard() {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </CollapsibleTable>
         </div>
 
         {/* Selector de Vista */}
         <div className="mb-6 p-4 rounded-lg bg-indigo-50 border-2 border-indigo-300">
-          <h4 className="text-lg font-bold text-indigo-700 mb-4 text-center">
+          <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
             🔍 Selecciona el tipo de análisis
           </h4>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -258,7 +260,7 @@ export default function EncasetamientoColombiaDashboard() {
 
         {/* Selector de Mes Interactivo */}
         <div className="mb-6 p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
-          <h4 className="text-lg font-bold text-violet-700 mb-4 text-center">
+          <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
             📊 Análisis por Mes - Selecciona un mes para ver comparativa detallada
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
@@ -414,7 +416,7 @@ export default function EncasetamientoColombiaDashboard() {
 
         {/* Totales Anuales */}
         <div className="mb-6 p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
-          <h4 className="text-lg font-bold text-violet-700 mb-4 text-center">Totales Anuales (millones de aves)</h4>
+          <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">Totales Anuales (millones de aves)</h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {Object.entries(totalesEncasetamiento).map(([año, total]) => (
               <div key={año} className="text-center p-3 rounded-lg bg-white border-2 border-gray-300">
@@ -434,7 +436,7 @@ export default function EncasetamientoColombiaDashboard() {
           {/* 2024 vs 2025 */}
           <div className="p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
             <div className="flex items-center justify-between mb-3">
-              <h5 className="text-base font-semibold text-violet-700">2024 vs 2025</h5>
+              <h5 className="text-base font-bold text-gray-900 mb-3">2024 vs 2025</h5>
               <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold">
                 +5.6% ↑
               </span>
@@ -461,7 +463,7 @@ export default function EncasetamientoColombiaDashboard() {
           {/* 2023 vs 2024 */}
           <div className="p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
             <div className="flex items-center justify-between mb-3">
-              <h5 className="text-base font-semibold text-blue-700">2023 vs 2024</h5>
+              <h5 className="text-base font-bold text-gray-900 mb-3">2023 vs 2024</h5>
               <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold">
                 +1.1% ↑
               </span>
@@ -488,7 +490,7 @@ export default function EncasetamientoColombiaDashboard() {
           {/* 2022 vs 2023 */}
           <div className="p-4 rounded-lg bg-purple-50 border-2 border-purple-300">
             <div className="flex items-center justify-between mb-3">
-              <h5 className="text-base font-semibold text-purple-700">2022 vs 2023</h5>
+              <h5 className="text-base font-bold text-gray-900 mb-3">2022 vs 2023</h5>
               <span className="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm font-semibold">
                 -0.9% ↓
               </span>
@@ -514,7 +516,7 @@ export default function EncasetamientoColombiaDashboard() {
 
           {/* Tendencia 2020-2025 */}
           <div className="p-4 rounded-lg bg-green-50 border-2 border-green-300">
-            <h5 className="text-base font-semibold text-green-700 mb-3">Tendencia General 2020-2025</h5>
+            <h5 className="text-base font-bold text-gray-900 mb-3">Tendencia General 2020-2025</h5>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-gray-600">Crecimiento Total</p>
@@ -529,7 +531,7 @@ export default function EncasetamientoColombiaDashboard() {
             </div>
             <div className="mt-4 pt-4 border-t border-green-300">
               <p className="text-sm text-gray-700">
-                <span className="font-semibold text-green-700">Conclusión:</span> El sector avícola colombiano muestra una tendencia 
+                <span className="font-bold">Conclusión:</span> El sector avícola colombiano muestra una tendencia 
                 de crecimiento sostenido con un incremento promedio anual de aproximadamente 4.3%, destacando especialmente el 
                 crecimiento del 5.6% en 2025, el más alto del período analizado.
               </p>
@@ -538,7 +540,7 @@ export default function EncasetamientoColombiaDashboard() {
 
           {/* Participación Pollo Fiesta */}
           <div className="p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
-            <h5 className="text-base font-semibold text-violet-700 mb-3">Participación Pollo Fiesta 2025</h5>
+            <h5 className="text-base font-bold text-gray-900 mb-3">Participación Pollo Fiesta 2025</h5>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="text-center p-3 rounded-lg bg-white border-2 border-gray-300">
                 <p className="text-xs text-gray-600 mb-1">Encasetamiento PF</p>
@@ -563,7 +565,7 @@ export default function EncasetamientoColombiaDashboard() {
           <div className="space-y-6">
             {/* Selector de Año */}
             <div className="p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
-              <h4 className="text-lg font-bold text-blue-700 mb-4 text-center">
+              <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
                 Selecciona un año para ver análisis detallado
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -653,7 +655,7 @@ export default function EncasetamientoColombiaDashboard() {
           <div className="space-y-6">
             {/* Selector de Mes */}
             <div className="p-4 rounded-lg bg-purple-50 border-2 border-purple-300">
-              <h4 className="text-lg font-bold text-purple-700 mb-4 text-center">
+              <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
                 Selecciona un mes para ver evolución a través de los años
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
@@ -745,7 +747,7 @@ export default function EncasetamientoColombiaDashboard() {
           <div className="space-y-6">
             {/* Selector de Años a Comparar */}
             <div className="p-4 rounded-lg bg-orange-50 border-2 border-orange-300">
-              <h4 className="text-lg font-bold text-orange-700 mb-4 text-center">
+              <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
                 Selecciona dos años para comparar (actualmente: {compareYears[0]} vs {compareYears[1]})
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">

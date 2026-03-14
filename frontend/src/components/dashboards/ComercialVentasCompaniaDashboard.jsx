@@ -306,6 +306,12 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
       <CollapsibleTable 
         title="VENTAS TOTAL COMPAÑÍA - DETALLE PIE / CANAL"
         defaultOpen={false}
+        totalRow={[
+          { label: 'TOTAL COMPAÑÍA 2025' },
+          { label: `${formatNumber(datos2025.totalKilos)} kg`, color: 'text-blue-600' },
+          { label: `Var: ${variacionKilosTotal > 0 ? '+' : ''}${variacionKilosTotal}%`, color: parseFloat(variacionKilosTotal) >= 0 ? 'text-green-500' : 'text-red-500', badge: true, badgeColor: parseFloat(variacionKilosTotal) >= 0 ? 'bg-green-500' : 'bg-red-500', badgeIcon: parseFloat(variacionKilosTotal) >= 0 ? '↑' : '↓' },
+          { label: `Ingresos: ${formatCurrency(datos2025.totalIngresos)}`, color: 'text-green-600' },
+        ]}
       >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

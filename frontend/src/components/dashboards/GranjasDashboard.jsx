@@ -449,6 +449,13 @@ export default function GranjasDashboard({ data }) {
       <CollapsibleTable 
         title="Detalle Completo por Granja - Participación Porcentual"
         defaultOpen={false}
+        totalRow={[
+          { label: 'TOTAL GRANJAS' },
+          { label: `${totalGranjas} granjas`, color: 'text-blue-600' },
+          { label: `${formatNumber(totalMetros)} m²`, color: 'text-gray-700' },
+          { label: `${formatNumber(totalAves)} aves`, color: 'text-green-600' },
+          { label: '100%', color: 'text-blue-600' },
+        ]}
       >
         <div className="overflow-x-auto">
           <table className="w-full text-xs border-collapse">

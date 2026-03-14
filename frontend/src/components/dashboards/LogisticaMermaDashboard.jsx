@@ -168,14 +168,17 @@ export default function LogisticaMermaDashboard({ data }) {
       </div>
 
       {/* Tabla Comparativa por Sede y Año */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
+      <CollapsibleTable
+        title="Comparativo Histórico de Mermas por Sede"
+        defaultOpen={false}
+        totalRow={[
+          { label: 'Merma 2025 por sede' },
+          { label: `General: ${general2025.merma_2025}%`, color: 'text-red-500' },
+          { label: `Sede 1: ${u01_2025.merma_2025}%`, color: 'text-green-600' },
+          { label: `Sede 2: ${u02_2025.merma_2025}%`, color: 'text-blue-600' },
+          { label: `Sede 3: ${u03_2025.merma_2025}%`, color: 'text-orange-500' },
+        ]}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Comparativo Histórico por Sede</h3>
-        <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b-2 border-gray-300">
@@ -223,8 +226,7 @@ export default function LogisticaMermaDashboard({ data }) {
               })}
             </tbody>
           </table>
-        </div>
-      </motion.div>
+      </CollapsibleTable>
 
       {/* Gráficos Comparativos - Separados para mejor visualización */}
       <div className="grid grid-cols-1 gap-6">

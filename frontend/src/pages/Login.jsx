@@ -6,6 +6,7 @@ import { ROUTES } from '../routes/paths';
 import { User, Lock, LogIn } from 'lucide-react';
 import { OrdenDelDiaModal } from '../components/ui/OrdenDelDiaModal';
 import orbImage from '../assets/pollo_fiesta_FIA.png';
+import asambleaImg from '../assets/asamblea_gemeral.jpg';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -50,44 +51,37 @@ export default function Login() {
       background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)'
     }}>
       
-      {/* Modal 1: Consideraciones */}
+      {/* Modal 1: Imagen convocatoria */}
       <AnimatePresence>
         {showWelcomeModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/90 overflow-y-auto">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90" style={{ padding: '16px' }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-4xl w-full p-4 sm:p-6 lg:p-12 text-center my-4 sm:my-8"
+              className="flex flex-col items-center"
+              style={{ maxHeight: '95vh', width: '100%', maxWidth: '700px' }}
             >
-              <p className="text-xs sm:text-sm lg:text-base text-gray-800 mb-1 sm:mb-2">Bogotá, D.C. República de Colombia.</p>
-              <p className="text-xs sm:text-sm lg:text-base text-gray-800 mb-3 sm:mb-6">Miércoles 19 de Marzo de 2.026</p>
-              <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-6">POLLO FIESTA S.A.</h1>
-              <h2 className="text-lg sm:text-xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-6">INFORME DE GESTIÓN AÑO 2025</h2>
-              <p className="text-sm sm:text-base lg:text-xl font-bold text-gray-900 mb-3 sm:mb-5">A LA HONORABLE ASAMBLEA GENERAL DE ACCIONISTAS</p>
-              <div className="w-20 sm:w-24 lg:w-32 h-0.5 sm:h-1 bg-gray-300 mx-auto mb-3 sm:mb-5"></div>
-              <p className="text-base sm:text-lg lg:text-2xl font-bold text-gray-900 mb-3 sm:mb-5">Consideraciones</p>
-              <div className="text-left space-y-2 sm:space-y-3 lg:space-y-4 mb-4 sm:mb-6 lg:mb-8 text-gray-700 max-w-3xl mx-auto px-2 sm:px-4">
-                <p className="text-xs sm:text-sm lg:text-lg text-justify leading-relaxed">
-                  En cumplimiento con las disposiciones estatutarias de la sociedad Pollo Fiesta S.A. y de conformidad con lo 
-                  previsto en los artículos 38, 45, 46 y 47 de la ley 222 de 1995; art. 1 de la ley 603 de 2000, y demás normas 
-                  concordantes contempladas en la legislación vigente sobre la materia.
-                </p>
-                <p className="text-xs sm:text-sm lg:text-lg text-justify leading-relaxed">
-                  A continuación, se presenta el informe anual por la gestión desarrollada durante el ejercicio económico del 
-                  año 2.025, el cual contiene una exposición fiel sobre la evolución del negocio, la situación jurídica, la situación 
-                  económica y la situación administrativa de la sociedad en cumplimiento con el ordenamiento legal.
-                </p>
+              {/* Imagen sin contenedor blanco extra */}
+              <div className="overflow-hidden rounded-2xl w-full" style={{ maxHeight: 'calc(95vh - 80px)' }}>
+                <img
+                  src={asambleaImg}
+                  alt="Convocatoria Asamblea General de Accionistas"
+                  className="w-full block"
+                />
               </div>
-              <button
-                onClick={() => {
-                  setShowWelcomeModal(false);
-                  setShowAgendaModal(true);
-                }}
-                className="px-6 sm:px-8 lg:px-12 py-2 sm:py-3 lg:py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base lg:text-lg font-semibold rounded-lg transition-colors"
-              >
-                Continuar
-              </button>
+              {/* Botón flotante debajo */}
+              <div className="mt-4 flex justify-center flex-shrink-0">
+                <button
+                  onClick={() => {
+                    setShowWelcomeModal(false);
+                    setShowAgendaModal(true);
+                  }}
+                  className="px-14 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all shadow-lg text-base"
+                >
+                  Continuar
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

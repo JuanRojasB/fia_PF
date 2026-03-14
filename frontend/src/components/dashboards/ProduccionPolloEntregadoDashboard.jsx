@@ -179,6 +179,13 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
       <CollapsibleTable 
         title="Comparativo de Aves Entregadas 2025 vs 2024"
         defaultOpen={false}
+        totalRow={[
+          { label: 'TOTAL 2025 vs 2024' },
+          { label: `Real Granjas: ${formatNumber(datos2025.real_granjas)}`, color: 'text-green-600' },
+          { label: `Comprado: ${formatNumber(datos2025.comprado)}`, color: 'text-orange-500' },
+          { label: `Total: ${formatNumber(Math.round(datos2025.total / 1000000))}M`, color: 'text-blue-600' },
+          { label: `Var: ${datos2025.var_pct}%`, color: parseFloat(datos2025.var_pct) >= 0 ? 'text-green-500' : 'text-red-500', badge: true, badgeColor: parseFloat(datos2025.var_pct) >= 0 ? 'bg-green-500' : 'bg-red-500', badgeIcon: parseFloat(datos2025.var_pct) >= 0 ? '↑' : '↓' },
+        ]}
       >
         <StandardTable
           headers={[

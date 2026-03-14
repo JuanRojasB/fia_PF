@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Info, CheckCircle, AlertTriangle, TrendingUp, Target, DollarSign, Zap } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function MarketingIndicadoresDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -172,8 +173,21 @@ export default function MarketingIndicadoresDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        onClick={() => openModal(
-          'Resumen de Indicadores 2025',
+      >
+        <CollapsibleTable
+          title="Resumen de Indicadores"
+          defaultOpen={false}
+          totalRow={[
+            { label: 'Indicadores 2025' },
+            { label: 'ROI: 17.4%', color: 'text-green-600' },
+            { label: 'BTL: 82%', color: 'text-yellow-600' },
+            { label: 'Presupuesto: 83.7%', color: 'text-blue-600' },
+            { label: 'Digital: 3.7', color: 'text-purple-600' },
+          ]}
+        >
+        <div
+          onClick={() => openModal(
+            'Resumen de Indicadores 2025',
           <div className="text-gray-700">
             <p className="mb-4">Análisis consolidado de los 4 indicadores estratégicos del área de Mercadeo y Publicidad.</p>
             
@@ -271,6 +285,8 @@ export default function MarketingIndicadoresDashboard({ data }) {
             </tbody>
           </table>
         </div>
+        </div>
+        </CollapsibleTable>
       </motion.div>
 
       {/* Modal */}

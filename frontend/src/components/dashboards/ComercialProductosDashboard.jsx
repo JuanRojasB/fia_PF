@@ -202,6 +202,12 @@ export default function ComercialProductosDashboard({ data }) {
       <CollapsibleTable 
         title="VENTAS POR LÍNEA DE PRODUCTO - DETALLE"
         defaultOpen={false}
+        totalRow={[
+          { label: 'TOTAL LÍNEAS 2025' },
+          { label: `${formatNumber(total2025)} kg`, color: 'text-blue-600' },
+          { label: `Var: ${variacionKilos > 0 ? '+' : ''}${variacionKilos}%`, color: parseFloat(variacionKilos) >= 0 ? 'text-green-500' : 'text-red-500', badge: true, badgeColor: parseFloat(variacionKilos) >= 0 ? 'bg-green-500' : 'bg-red-500', badgeIcon: parseFloat(variacionKilos) >= 0 ? '↑' : '↓' },
+          { label: `Ingresos: ${formatCurrency(ingresos2025)}`, color: 'text-green-600' },
+        ]}
       >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -386,16 +392,26 @@ export default function ComercialProductosDashboard({ data }) {
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <div className="flex items-center justify-center">
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={380}>
               <PieChart>
                 <Pie
                   data={datosParticipacion}
                   cx="50%"
                   cy="50%"
-                  labelLine={true}
-                  label={({ value }) => `${value.toFixed(1)}%`}
-                  outerRadius={130}
-                  fill="#8884d8"
+                  labelLine={(props) => props.value >= 1}
+                  label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                    if (value < 1) return null;
+                    const RADIAN = Math.PI / 180;
+                    const radius = outerRadius + 28;
+                    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                    return (
+                      <text x={x} y={y} fill="#1f2937" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize={13} fontWeight="600">
+                        {`${value.toFixed(1)}%`}
+                      </text>
+                    );
+                  }}
+                  outerRadius={120}
                   dataKey="value"
                 >
                   {datosParticipacion.map((_, index) => (
@@ -404,18 +420,18 @@ export default function ComercialProductosDashboard({ data }) {
                 </Pie>
                 <Tooltip content={({ active, payload }) => {
                   if (active && payload && payload.length) {
-                    const data = payload[0].payload;
+                    const d = payload[0].payload;
                     return (
                       <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl">
-                        <p className="font-bold text-gray-900 mb-3 text-lg">{data.name}</p>
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center gap-4">
-                            <span className="text-gray-600 font-medium">Kilos:</span>
-                            <span className="font-bold text-gray-900">{formatNumber(data.kilos)} kg</span>
+                        <p className="font-bold text-gray-900 mb-2">{d.name}</p>
+                        <div className="space-y-1 text-sm">
+                          <div className="flex justify-between gap-4">
+                            <span className="text-gray-600">Kilos:</span>
+                            <span className="font-bold">{formatNumber(d.kilos)} kg</span>
                           </div>
-                          <div className="flex justify-between items-center gap-4">
-                            <span className="text-blue-600 font-medium">Participación:</span>
-                            <span className="font-bold text-gray-900">{data.value.toFixed(2)}%</span>
+                          <div className="flex justify-between gap-4">
+                            <span className="text-blue-600">Participación:</span>
+                            <span className="font-bold">{d.value.toFixed(2)}%</span>
                           </div>
                         </div>
                       </div>
@@ -426,11 +442,15 @@ export default function ComercialProductosDashboard({ data }) {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="grid grid-cols-2 gap-3 mt-4">
+          {/* Leyenda con porcentajes */}
+          <div className="grid grid-cols-2 gap-2 mt-2">
             {datosParticipacion.map((d, idx) => (
-              <div key={idx} className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></div>
-                <span className="text-sm text-gray-700 truncate">{d.name}</span>
+              <div key={idx} className="flex items-center justify-between gap-2 px-2 py-1 rounded-lg hover:bg-gray-50">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></div>
+                  <span className="text-xs text-gray-700 truncate">{d.name}</span>
+                </div>
+                <span className="text-xs font-bold text-gray-900 flex-shrink-0">{d.value.toFixed(1)}%</span>
               </div>
             ))}
           </div>

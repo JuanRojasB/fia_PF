@@ -279,7 +279,13 @@ export default function ComprasDashboard({ data }) {
       >
         <CollapsibleTable
           title="Detalle de Compras por Mes 2023-2025"
-          defaultOpen={true}
+          defaultOpen={false}
+          totalRow={[
+            { label: 'TOTAL COMPRAS 2025' },
+            { label: `${formatCurrency(totales.total2025)}`, color: 'text-blue-600' },
+            { label: `Var: +${totales.variacion2025vs2024}%`, color: 'text-green-500', badge: true, badgeColor: 'bg-green-500', badgeIcon: '↑' },
+            { label: `vs 2024: ${formatCurrency(totales.total2024)}`, color: 'text-gray-500' },
+          ]}
         >
           <p className="text-sm text-gray-600 mb-4">Valores en pesos colombianos y variaciones porcentuales</p>
           <div className="overflow-x-auto">

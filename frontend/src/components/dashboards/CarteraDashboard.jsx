@@ -506,7 +506,13 @@ export default function CarteraDashboard({ data }) {
       >
         <CollapsibleTable
           title="Detalle Mensual de Gestión de Cartera 2025"
-          defaultOpen={true}
+          defaultOpen={false}
+          totalRow={[
+            { label: 'CARTERA DIC 2025' },
+            { label: `$${formatNumber(resumenAnual.cartera_dic_2025)}M`, color: 'text-purple-600' },
+            { label: `Rotación: ${resumenAnual.rotacion_dic_2025} días`, color: 'text-green-600' },
+            { label: `Morosidad: ${resumenAnual.morosidad_promedio}%`, color: 'text-yellow-600' },
+          ]}
         >
           <p className="text-sm text-gray-600 mb-4">Valores en pesos colombianos y porcentajes</p>
           <div className="overflow-x-auto">

@@ -56,7 +56,7 @@ export default function LogisticaSede2Dashboard({ data }) {
     ...c,
     variacion: c.valor2024 > 0 ? (((c.valor2025 - c.valor2024) / c.valor2024) * 100).toFixed(2) : 0,
     diferencia: c.valor2025 - c.valor2024
-  }));
+  })).sort((a, b) => b.valor2025 - a.valor2025);
 
   const total2024 = conceptosArray.reduce((sum, c) => sum + c.valor2024, 0);
   const total2025 = conceptosArray.reduce((sum, c) => sum + c.valor2025, 0);
@@ -164,7 +164,14 @@ export default function LogisticaSede2Dashboard({ data }) {
       >
         <CollapsibleTable
           title="GASTOS OPERACIONALES LOGÍSTICOS SEDE 2 AÑO 2024 VS 2025"
-          defaultOpen={true}
+          defaultOpen={false}
+          totalRow={[
+            { label: 'TOTAL GASTOS LOGÍSTICOS 2024 VS 2025' },
+            { label: `$ ${total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-cyan-600' },
+            { label: `$ ${total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
+            { label: `${variacionTotal}%`, color: parseFloat(variacionTotal) > 0 ? 'text-red-500' : 'text-green-500', badge: true, badgeColor: parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500', badgeIcon: parseFloat(variacionTotal) > 0 ? '↑' : '↓' },
+            { label: `$ ${Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
+          ]}
         >
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

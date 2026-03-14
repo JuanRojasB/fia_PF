@@ -197,6 +197,13 @@ export default function ProduccionEncasetadoDashboard({ data }) {
         <CollapsibleTable 
           title="Detalle Mensual de Encasetamiento"
           defaultOpen={false}
+          totalRow={[
+            { label: 'TOTAL ANUAL' },
+            { label: `Prog 2025: ${formatNumber(totalProgramado2025)}`, color: 'text-gray-600' },
+            { label: `Real 2025: ${formatNumber(totalEncasetado2025)}`, color: 'text-blue-500' },
+            { label: `Real 2024: ${formatNumber(totalEncasetado2024)}`, color: 'text-gray-600' },
+            { label: `Var: ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}%`, color: parseFloat(variacionEncasetado) >= 0 ? 'text-green-500' : 'text-red-500' },
+          ]}
         >
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

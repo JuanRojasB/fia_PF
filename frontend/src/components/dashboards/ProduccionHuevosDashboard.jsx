@@ -183,6 +183,13 @@ export default function ProduccionHuevosDashboard({ data }) {
         <CollapsibleTable 
           title="COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS HUEVO 2025-2024"
           defaultOpen={false}
+          totalRow={[
+            { label: 'Indicadores Clave 2025' },
+            { label: `Huevos: ${formatNumber(totalHuevos2025)}`, color: 'text-yellow-500' },
+            { label: `Aves: ${formatNumber(aves2025)}`, color: 'text-blue-500' },
+            { label: `Productividad: ${formatDecimal(productividadReal2025)} h/g/mes`, color: 'text-green-500' },
+            { label: `Var: ${variacionHuevos > 0 ? '+' : ''}${variacionHuevos}%`, color: parseFloat(variacionHuevos) >= 0 ? 'text-green-500' : 'text-red-500' },
+          ]}
         >
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

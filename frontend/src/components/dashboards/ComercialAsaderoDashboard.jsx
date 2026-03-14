@@ -212,6 +212,12 @@ export default function ComercialAsaderoDashboard({ data }) {
       <CollapsibleTable 
         title="100 - REFRIGERADO"
         defaultOpen={false}
+        totalRow={[
+          { label: 'REFRIGERADO 2025' },
+          { label: `${formatNumber(totalRefrig2025)} kg`, color: 'text-blue-600' },
+          { label: `Var: ${totalRefrig2024 > 0 ? (((totalRefrig2025 - totalRefrig2024) / totalRefrig2024) * 100).toFixed(2) : 0}%`, color: (totalRefrig2025 - totalRefrig2024) >= 0 ? 'text-green-500' : 'text-red-500', badge: true, badgeColor: (totalRefrig2025 - totalRefrig2024) >= 0 ? 'bg-green-500' : 'bg-red-500', badgeIcon: (totalRefrig2025 - totalRefrig2024) >= 0 ? '↑' : '↓' },
+          { label: `Part: ${partRefrig}%`, color: 'text-purple-600' },
+        ]}
       >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -289,6 +295,12 @@ export default function ComercialAsaderoDashboard({ data }) {
       <CollapsibleTable 
         title="105 - CONGELADO"
         defaultOpen={false}
+        totalRow={[
+          { label: 'CONGELADO 2025' },
+          { label: `${formatNumber(totalCongel2025)} kg`, color: 'text-green-600' },
+          { label: `Var: ${totalCongel2024 > 0 ? (((totalCongel2025 - totalCongel2024) / totalCongel2024) * 100).toFixed(2) : 0}%`, color: (totalCongel2025 - totalCongel2024) >= 0 ? 'text-green-500' : 'text-red-500', badge: true, badgeColor: (totalCongel2025 - totalCongel2024) >= 0 ? 'bg-green-500' : 'bg-red-500', badgeIcon: (totalCongel2025 - totalCongel2024) >= 0 ? '↑' : '↓' },
+          { label: `Part: ${partCongel}%`, color: 'text-purple-600' },
+        ]}
       >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

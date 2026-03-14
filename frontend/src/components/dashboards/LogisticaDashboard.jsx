@@ -101,15 +101,6 @@ export default function LogisticaDashboard({ data }) {
     .map(sede => sedesMap[sede])
     .filter(Boolean);
 
-  const topConceptos = conceptosData
-    .sort((a, b) => b.valor2025 - a.valor2025)
-    .slice(0, 8)
-    .map(d => ({
-      ...d,
-      nombre: `${d.sede || 'Sin sede'} - ${(d.concepto || 'Sin concepto').substring(0, 20)}`,
-      variacion: d.valor2024 > 0 ? (((d.valor2025 - d.valor2024) / d.valor2024) * 100) : 0
-    }));
-
   const COLORS = ['#38bdf8', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
   return (
@@ -268,11 +259,18 @@ export default function LogisticaDashboard({ data }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 + idx * 0.1 }}
-            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+            className="rounded-xl overflow-hidden"
           >
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
-              GASTOS OPERACIONALES LOGÍSTICOS {sede} AÑO 2024 VS 2025
-            </h3>
+            <CollapsibleTable
+              title={`GASTOS OPERACIONALES LOGÍSTICOS ${sede} AÑO 2024 VS 2025`}
+              defaultOpen={false}
+              totalRow={[
+                { label: `TOTAL GASTOS LOGÍSTICOS ${sede}` },
+                { label: `$ ${totalSede2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-cyan-600' },
+                { label: `$ ${totalSede2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
+                { label: `${variacionSede.toFixed(2)}%`, color: variacionSede > 0 ? 'text-red-500' : 'text-green-500', badge: true, badgeColor: variacionSede > 0 ? 'bg-red-500' : 'bg-green-500', badgeIcon: variacionSede > 0 ? '↑' : '↓' },
+              ]}
+            >
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-gray-300">
@@ -326,6 +324,7 @@ export default function LogisticaDashboard({ data }) {
                 </tr>
               </tbody>
             </table>
+            </CollapsibleTable>
           </motion.div>
         );
       })}
@@ -335,11 +334,19 @@ export default function LogisticaDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+        className="rounded-xl overflow-hidden"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
-          GASTOS OPERACIONALES LOGÍSTICOS SEDES 2024 VS 2025
-        </h3>
+        <CollapsibleTable
+          title="GASTOS OPERACIONALES LOGÍSTICOS SEDES 2024 VS 2025 - CONSOLIDADO"
+          defaultOpen={true}
+          totalRow={[
+            { label: 'TOTAL CONSOLIDADO TODAS LAS SEDES' },
+            { label: `$ ${total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-cyan-600' },
+            { label: `$ ${total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
+            { label: `${variacionTotal}%`, color: parseFloat(variacionTotal) > 0 ? 'text-red-500' : 'text-green-500', badge: true, badgeColor: parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500', badgeIcon: parseFloat(variacionTotal) > 0 ? '↑' : '↓' },
+            { label: `$ ${Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
+          ]}
+        >
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-gray-300">
@@ -434,6 +441,7 @@ export default function LogisticaDashboard({ data }) {
             })()}
           </tbody>
         </table>
+        </CollapsibleTable>
       </motion.div>
 
       {/* Modal */}

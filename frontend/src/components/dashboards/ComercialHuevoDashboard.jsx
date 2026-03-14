@@ -65,11 +65,22 @@ export default function ComercialHuevoDashboard({ data }) {
     : 0;
 
   // Preparar datos para el gráfico
-  const datosGrafico = datosOrdenados.reverse().map(v => ({
-    año: v.anio.toString(),
-    unidades: parseInt(v.unidades_vendidas),
-    precio: parseInt(v.precio_promedio_unidad)
-  }));
+  const datosOrdenadosAsc = datosOrdenados.reverse();
+  const datosGrafico = datosOrdenadosAsc.map((v, idx) => {
+    const prev = datosOrdenadosAsc[idx - 1];
+    const ingresosActual = parseFloat(v.ingresos_totales_calculados) || 0;
+    const ingresosPrev = prev ? (parseFloat(prev.ingresos_totales_calculados) || 0) : 0;
+    const varVentas = ingresosPrev > 0
+      ? (((ingresosActual - ingresosPrev) / ingresosPrev) * 100).toFixed(2)
+      : null;
+    return {
+      año: v.anio.toString(),
+      unidades: parseInt(v.unidades_vendidas),
+      precio: parseInt(v.precio_promedio_unidad),
+      ingresos: ingresosActual,
+      varVentas
+    };
+  });
 
   return (
     <div className="space-y-6">
@@ -266,9 +277,7 @@ export default function ComercialHuevoDashboard({ data }) {
             <Tooltip 
               content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
-                  const unidades = payload[0].payload.unidades;
-                  const precio = payload[0].payload.precio;
-                  
+                  const { unidades, precio, ingresos, varVentas } = payload[0].payload;
                   return (
                     <div className="bg-white border-2 border-yellow-500 rounded-xl p-4 shadow-xl">
                       <p className="font-bold text-gray-900 mb-3 text-lg">Año {label}</p>
@@ -281,6 +290,18 @@ export default function ComercialHuevoDashboard({ data }) {
                           <span className="text-orange-600 font-medium">Precio:</span>
                           <span className="font-bold text-gray-900">{formatCurrency(precio)}</span>
                         </div>
+                        <div className="flex justify-between items-center gap-4">
+                          <span className="text-green-600 font-medium">Ventas:</span>
+                          <span className="font-bold text-gray-900">{formatCurrency(ingresos)}</span>
+                        </div>
+                        {varVentas !== null && (
+                          <div className="border-t border-gray-200 pt-2 flex justify-between items-center gap-4">
+                            <span className="text-gray-600 font-medium">Var. Ventas:</span>
+                            <span className={`font-bold ${parseFloat(varVentas) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                              {parseFloat(varVentas) >= 0 ? '+' : ''}{varVentas}% vs año ant.
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   );

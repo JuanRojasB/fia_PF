@@ -121,15 +121,7 @@ export default function EntornoSocioeconomicoDashboard() {
       </div>
 
       {/* Graphs Section */}
-      <div className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-4 border-cyan-500/30 shadow-xl">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
-            <TrendingUp className="w-6 h-6 text-white" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900">Indicadores Económicos</h2>
-        </div>
-
-        <div className="space-y-8">
+      <div className="space-y-8">
           {/* PIB Chart */}
           <div className="rounded-xl overflow-hidden border-2 border-blue-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
@@ -172,12 +164,16 @@ export default function EntornoSocioeconomicoDashboard() {
                 <LineChart data={tendenciaData} margin={{ bottom: 65, top: 20, left: 50, right: 30 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                   <XAxis 
-                    dataKey="trimestre" 
+                    dataKey="index"
                     stroke="#94a3b8"
                     tick={{ fontSize: 13, fill: '#64748b' }}
                     angle={0}
                     interval={0}
                     height={20}
+                    tickFormatter={(value) => {
+                      const item = tendenciaData[value];
+                      return item ? item.trimestre : '';
+                    }}
                   />
                   <YAxis 
                     stroke="#94a3b8" 
@@ -306,7 +302,7 @@ export default function EntornoSocioeconomicoDashboard() {
             )}
             
             <div className="w-full">
-              <ResponsiveContainer width="100%" aspect={1.5}>
+              <ResponsiveContainer width="100%" height={400}>
                 <BarChart 
                     data={[
                       { año: '2021', ipc: 5.62, color: '#6366f1' },
@@ -315,7 +311,7 @@ export default function EntornoSocioeconomicoDashboard() {
                       { año: '2024', ipc: 5.2, color: '#10b981' },
                       { año: '2025', ipc: 5.1, color: '#84cc16' }
                     ]} 
-                    margin={{ bottom: 60, top: 50, left: 20, right: 20 }}
+                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                     <XAxis 
@@ -337,7 +333,7 @@ export default function EntornoSocioeconomicoDashboard() {
                         borderRadius: '8px',
                         fontSize: '17px'
                       }}
-                      labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
+                      labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold' }}
                       formatter={(value) => [`${value}%`, 'IPC']}
                     />
                     <Bar dataKey="ipc" name="IPC (%)" radius={[8, 8, 0, 0]} maxBarSize={80} label={{ 
@@ -411,14 +407,14 @@ export default function EntornoSocioeconomicoDashboard() {
             )}
             
             <div className="w-full">
-              <ResponsiveContainer width="100%" aspect={1.5}>
+              <ResponsiveContainer width="100%" height={400}>
                 <BarChart 
                     data={[
                       { año: '2024', trm: 4071.28, tendencia: 4071.28 },
                       { año: '2025', trm: 4052.86, tendencia: 4000 },
                       { año: '2026 (YTD)', trm: 3640.27, tendencia: 3640.27 }
                     ]} 
-                    margin={{ bottom: 60, top: 80, left: 60, right: 60 }}
+                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                     <XAxis 
@@ -440,13 +436,19 @@ export default function EntornoSocioeconomicoDashboard() {
                         borderRadius: '8px',
                         fontSize: '17px'
                       }}
-                      labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
+                      labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold' }}
                       formatter={(value, name) => {
                         if (name === 'Línea de Tendencia') return [`$${value.toLocaleString()}`, 'Línea de Tendencia'];
                         return [`$${value.toLocaleString()}`, 'TRM Promedio'];
                       }}
                     />
-                    <Bar dataKey="trm" name="TRM Promedio" radius={[8, 8, 0, 0]} maxBarSize={180}>
+                    <Bar dataKey="trm" name="TRM Promedio" radius={[8, 8, 0, 0]} maxBarSize={180} label={{
+                      position: 'top',
+                      fill: '#1e40af',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      formatter: (value) => `$${value.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                    }}>
                       <Cell fill="#1e40af" />
                       <Cell fill="#3b82f6" />
                       <Cell fill="#60a5fa" />
@@ -463,14 +465,6 @@ export default function EntornoSocioeconomicoDashboard() {
                     />
                   </BarChart>
                 </ResponsiveContainer>
-                
-                {/* Custom overlay con valores */}
-                <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '500px', pointerEvents: 'none' }}>
-                  {/* Valores encima de cada barra */}
-                  <text x="29%" y="60" fill="#1e40af" fontSize="18" fontWeight="bold" textAnchor="middle">$4,071.28</text>
-                  <text x="54%" y="60" fill="#3b82f6" fontSize="18" fontWeight="bold" textAnchor="middle">$4,052.86</text>
-                  <text x="78%" y="60" fill="#60a5fa" fontSize="18" fontWeight="bold" textAnchor="middle">$3,640.27</text>
-                </svg>
               </div>
             
             <p className="text-xs text-gray-600 text-center mt-4">
@@ -519,79 +513,64 @@ export default function EntornoSocioeconomicoDashboard() {
                 </p>
               </div>
             )}
-            
-            <div className="w-full" style={{ position: 'relative' }}>
-              <ResponsiveContainer width="100%" height={500}>
-                <BarChart 
+            {/* Variación entre años */}
+            <div className="flex justify-center gap-8 mb-4">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 border-2 border-green-400">
+                <span className="text-sm font-semibold text-gray-600">2024 → 2025</span>
+                <span className="text-base font-bold text-green-600">+1.9%</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 border-2 border-red-400">
+                <span className="text-sm font-semibold text-gray-600">2025 → 2026</span>
+                <span className="text-base font-bold text-red-600">-0.4%</span>
+              </div>
+            </div>
+
+            <div className="w-full">
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart
                     data={[
                       { año: '2024', precio: 10500 },
                       { año: '2025', precio: 10700 },
                       { año: '2026', precio: 10660 }
-                    ]} 
-                    margin={{ bottom: 60, top: 100, left: 70, right: 70 }}
+                    ]}
+                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis 
-                      dataKey="año" 
+                    <XAxis
+                      dataKey="año"
                       stroke="#94a3b8"
                       tick={{ fontSize: 16 }}
                     />
-                    <YAxis 
-                      stroke="#94a3b8" 
+                    <YAxis
+                      stroke="#94a3b8"
                       tick={{ fontSize: 16 }}
                       domain={[0, 11000]}
                       ticks={[0, 2000, 4000, 6000, 8000, 10000]}
-                      tickFormatter={(value) => `$${value.toLocaleString()}`}
+                      tickFormatter={(value) => `${value.toLocaleString()}`}
                     />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#ffffff', 
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#ffffff',
                         border: '2px solid #14b8a6',
                         borderRadius: '8px',
                         fontSize: '15px'
                       }}
-                      formatter={(value) => [`$${value.toLocaleString()} miles de millones de pesos`, 'Precio por Kg']}
+                      labelStyle={{ color: '#1f2937', fontWeight: 'bold' }}
+                      formatter={(value) => [`${value.toLocaleString()} / kg`, 'Precio promedio']}
                     />
-                    <Bar dataKey="precio" name="Precio por Kg" radius={[8, 8, 0, 0]} maxBarSize={180}>
+                    <Bar dataKey="precio" name="Precio por Kg" radius={[8, 8, 0, 0]} maxBarSize={180} label={{
+                      position: 'top',
+                      fill: '#0f766e',
+                      fontSize: 15,
+                      fontWeight: 'bold',
+                      formatter: (value) => `${value.toLocaleString()}`
+                    }}>
                       <Cell fill="#14b8a6" />
-                      <Cell fill="#14b8a6" />
-                      <Cell fill="#14b8a6" />
+                      <Cell fill="#0d9488" />
+                      <Cell fill="#0f766e" />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
-                
-                {/* Custom lines and labels overlay */}
-                <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '500px', pointerEvents: 'none' }}>
-                  {/* Línea horizontal ENCIMA de las barras */}
-                  <line x1="15%" y1="80" x2="88%" y2="80" stroke="#64748b" strokeWidth="3" />
-                  
-                  {/* Etiquetas de porcentaje encima de la línea horizontal */}
-                  <rect x="36%" y="50" width="70" height="32" fill="#14b8a6" stroke="#0d9488" strokeWidth="2" rx="16" />
-                  <text x="39.5%" y="72" fill="#fff" fontSize="16" fontWeight="bold" textAnchor="middle">1,9%</text>
-                  
-                  <rect x="59%" y="50" width="70" height="32" fill="#14b8a6" stroke="#0d9488" strokeWidth="2" rx="16" />
-                  <text x="62.5%" y="72" fill="#fff" fontSize="16" fontWeight="bold" textAnchor="middle">-,4%</text>
-                  
-                  {/* Líneas verticales desde la línea horizontal hasta los puntos de la línea punteada */}
-                  {/* Primera barra (2024): punto más alto en la tendencia */}
-                  <line x1="29%" y1="80" x2="29%" y2="210" stroke="#64748b" strokeWidth="2.5" />
-                  {/* Segunda barra (2025): punto medio en la tendencia descendente */}
-                  <line x1="54%" y1="80" x2="54%" y2="250" stroke="#64748b" strokeWidth="2.5" />
-                  {/* Tercera barra (2026): punto más bajo en la tendencia */}
-                  <line x1="78%" y1="80" x2="78%" y2="265" stroke="#64748b" strokeWidth="2.5" />
-                  
-                  {/* Línea punteada DESCENDENTE continua */}
-                  <line x1="29%" y1="210" x2="54%" y2="250" stroke="#1e293b" strokeWidth="2.5" strokeDasharray="6 6" />
-                  <line x1="54%" y1="250" x2="78%" y2="265" stroke="#1e293b" strokeWidth="2.5" strokeDasharray="6 6" />
-                  
-                  {/* Puntos en la línea punteada descendente */}
-                  <circle cx="29%" cy="210" r="6" fill="#1e293b" />
-                  <circle cx="54%" cy="250" r="6" fill="#1e293b" />
-                  <circle cx="78%" cy="265" r="6" fill="#1e293b" />
-                  
-                  {/* Etiqueta adicional -0.4% cerca de la tercera barra */}
-                  <text x="82%" y="290" fill="#fff" fontSize="15" fontWeight="bold" textAnchor="middle">-0.4%</text>
-                </svg>
               </div>
             
             <p className="text-xs text-gray-600 text-center mt-4">
@@ -639,17 +618,20 @@ export default function EntornoSocioeconomicoDashboard() {
             )}
             
             <div className="w-full">
-              <ResponsiveContainer width="100%" aspect={1.6}>
+              <ResponsiveContainer width="100%" height={400}>
                 <LineChart 
                     data={desempleoData} 
-                    margin={{ bottom: 60, top: 40, left: 20, right: 40 }}
+                    margin={{ bottom: 60, top: 40, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                     <XAxis 
                       dataKey="periodo" 
                       stroke="#94a3b8"
-                      tick={{ fontSize: 17 }}
-                      angle={0}
+                      tick={{ fontSize: 14, fill: '#374151' }}
+                      angle={-30}
+                      textAnchor="end"
+                      height={60}
+                      interval={0}
                     />
                     <YAxis 
                       yAxisId="left"
@@ -675,7 +657,7 @@ export default function EntornoSocioeconomicoDashboard() {
                         borderRadius: '8px',
                         fontSize: '17px'
                       }}
-                      labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
+                      labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold' }}
                       formatter={(value, name) => {
                         const labels = {
                           tgp: 'TGP',
@@ -783,7 +765,7 @@ export default function EntornoSocioeconomicoDashboard() {
                         borderRadius: '8px',
                         fontSize: '17px'
                       }}
-                      labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
+                      labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold' }}
                       formatter={(value, name) => {
                         const labels = {
                           soya: 'Soya',
@@ -873,7 +855,7 @@ export default function EntornoSocioeconomicoDashboard() {
                         borderRadius: '8px',
                         fontSize: '17px'
                       }}
-                      labelStyle={{ color: '#f1f5f9', fontSize: '17px' }}
+                      labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold' }}
                       formatter={(value, name) => {
                         const labels = {
                           maizAmarillo: 'Maíz amarillo',
@@ -960,7 +942,6 @@ export default function EntornoSocioeconomicoDashboard() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }

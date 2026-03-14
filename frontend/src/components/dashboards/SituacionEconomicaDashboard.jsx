@@ -247,6 +247,13 @@ export default function SituacionEconomicaDashboard() {
       <CollapsibleTable
         title="Composición Accionaria - 31 de Diciembre 2025"
         defaultOpen={false}
+        totalRow={[
+          { label: 'TOTALES' },
+          { label: `${formatNumber(totalAcciones)} acciones`, color: 'text-gray-700' },
+          { label: `Capital: $${formatNumber(totalCapital)}`, color: 'text-blue-600' },
+          { label: '13 accionistas', color: 'text-gray-600' },
+          { label: '100.00%', color: 'text-blue-600' },
+        ]}
       >
         <div className="flex items-center justify-between mb-4">
           <div className="text-sm text-gray-600">

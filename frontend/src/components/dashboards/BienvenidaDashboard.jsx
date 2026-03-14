@@ -14,7 +14,7 @@ export default function BienvenidaDashboard() {
               <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-2">
                 Pollo Fiesta S.A.
               </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-blue-600">Sistema de Gestión Empresarial</p>
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600">Sistema de Gestión Empresarial</p>
             </div>
           </div>
           
@@ -44,19 +44,19 @@ export default function BienvenidaDashboard() {
           <div className="p-4 sm:p-5 rounded-xl bg-white/95 backdrop-blur-xl border border-blue-500/30">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-              <h3 className="text-base sm:text-lg font-bold text-blue-600">Contexto Mundial</h3>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Contexto Mundial</h3>
             </div>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-1">•</span>
-                <span>Crecimiento global proyectado: <span className="font-semibold text-gray-900">2.6%</span></span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Crecimiento global proyectado: <span className="font-bold">2.6%</span></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-1">•</span>
-                <span>Sector avícola mundial: <span className="font-semibold text-gray-900">+2.5%</span> en producción</span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Sector avícola mundial: <span className="font-bold text-green-600">+2.5%</span> en producción</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-1">•</span>
+                <span className="text-gray-400 mt-1">•</span>
                 <span>Estabilización de costos de alimentación (soya y maíz)</span>
               </li>
             </ul>
@@ -66,24 +66,24 @@ export default function BienvenidaDashboard() {
           <div className="p-4 sm:p-5 rounded-xl bg-white/95 backdrop-blur-xl border border-cyan-500/30">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 rounded-full bg-cyan-600"></div>
-              <h3 className="text-base sm:text-lg font-bold text-cyan-600">Entorno Socioeconómico Nacional</h3>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Entorno Socioeconómico Nacional</h3>
             </div>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
               <li className="flex items-start gap-2">
-                <span className="text-cyan-600 mt-1">•</span>
-                <span>PIB Colombia 2025: Crecimiento del <span className="font-semibold text-gray-900">2.3%</span></span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>PIB Colombia 2025: Crecimiento del <span className="font-bold">2.3%</span></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyan-600 mt-1">•</span>
-                <span>IPC: Estabilización en <span className="font-semibold text-gray-900">5.1%</span></span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>IPC: Estabilización en <span className="font-bold">5.1%</span></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyan-600 mt-1">•</span>
-                <span>TRM: Desaceleración del dólar <span className="font-semibold text-gray-900">-9.21%</span></span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>TRM: Desaceleración del dólar <span className="font-bold text-green-600">-9.21%</span></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyan-600 mt-1">•</span>
-                <span>Desempleo: Reducción a <span className="font-semibold text-gray-900">10.9%</span></span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Desempleo: Reducción a <span className="font-bold">10.9%</span></span>
               </li>
             </ul>
           </div>
@@ -92,24 +92,24 @@ export default function BienvenidaDashboard() {
           <div className="p-4 sm:p-5 rounded-xl bg-white/95 backdrop-blur-xl border border-violet-500/30">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 rounded-full bg-violet-600"></div>
-              <h3 className="text-base sm:text-lg font-bold text-violet-600">Encasetamiento en Colombia</h3>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Encasetamiento en Colombia</h3>
             </div>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
               <li className="flex items-start gap-2">
-                <span className="text-violet-600 mt-1">•</span>
-                <span>Total 2025: <span className="font-semibold text-gray-900">963.3 millones</span> de aves</span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Total 2025: <span className="font-bold">963.3 millones</span> de aves</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-violet-600 mt-1">•</span>
-                <span>Crecimiento: <span className="font-semibold text-green-600">+5.6%</span> vs 2024</span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Crecimiento: <span className="font-bold text-green-600">+5.6%</span> vs 2024</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-violet-600 mt-1">•</span>
-                <span>Incremento: <span className="font-semibold text-gray-900">+51 millones</span> de aves</span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Incremento: <span className="font-bold">+51 millones</span> de aves</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-violet-600 mt-1">•</span>
-                <span>Pollo Fiesta: <span className="font-semibold text-gray-900">3.3%</span> participación nacional</span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Pollo Fiesta: <span className="font-bold">3.3%</span> participación nacional</span>
               </li>
             </ul>
           </div>
@@ -118,23 +118,23 @@ export default function BienvenidaDashboard() {
           <div className="p-4 sm:p-5 rounded-xl bg-white/95 backdrop-blur-xl border border-emerald-500/30">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
-              <h3 className="text-base sm:text-lg font-bold text-emerald-600">Negocio en Marcha</h3>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Negocio en Marcha</h3>
             </div>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
               <li className="flex items-start gap-2">
-                <span className="text-emerald-600 mt-1">•</span>
-                <span>Rentabilidad neta: <span className="font-semibold text-green-600">2.84%</span></span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Rentabilidad neta: <span className="font-bold text-green-600">2.84%</span></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-emerald-600 mt-1">•</span>
-                <span>Calificación INVIMA: <span className="font-semibold text-gray-900">97.55%</span> (+0.86%)</span>
+                <span className="text-gray-400 mt-1">•</span>
+                <span>Calificación INVIMA: <span className="font-bold">97.55%</span> (+0.86%)</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-emerald-600 mt-1">•</span>
+                <span className="text-gray-400 mt-1">•</span>
                 <span>Mejoras en planta de beneficio y red de frío</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-emerald-600 mt-1">•</span>
+                <span className="text-gray-400 mt-1">•</span>
                 <span>Campañas publicitarias 360° exitosas</span>
               </li>
             </ul>
@@ -145,13 +145,13 @@ export default function BienvenidaDashboard() {
         <div className="mt-4 sm:mt-6 p-4 sm:p-5 rounded-xl bg-white/95 backdrop-blur-xl border border-green-500/30">
           <div className="flex items-center gap-2 mb-3">
             <Award className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-            <h3 className="text-base sm:text-lg font-bold text-green-600">Resumen Ejecutivo</h3>
+            <h3 className="text-base sm:text-lg font-bold text-gray-900">Resumen Ejecutivo</h3>
           </div>
           <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
-            El año 2024-2025 se caracterizó por un <span className="font-semibold text-green-600">crecimiento sostenido</span> del sector avícola colombiano, 
+            El año 2024-2025 se caracterizó por un <span className="font-bold text-green-600">crecimiento sostenido</span> del sector avícola colombiano, 
             con mejoras significativas en rentabilidad, calidad y participación de mercado. Pollo Fiesta S.A. logró mantener 
-            márgenes positivos a pesar de la reducción del 4% en producción, gracias a la <span className="font-semibold text-gray-900">optimización de procesos</span> y 
-            el <span className="font-semibold text-gray-900">fortalecimiento de la red comercial</span>. El contexto macroeconómico favorable, con estabilización 
+            márgenes positivos a pesar de la reducción del 4% en producción, gracias a la <span className="font-bold">optimización de procesos</span> y 
+            el <span className="font-bold">fortalecimiento de la red comercial</span>. El contexto macroeconómico favorable, con estabilización 
             de materias primas y mejora en indicadores nacionales, contribuyó al desempeño positivo de la compañía.
           </p>
         </div>

@@ -62,19 +62,13 @@ export default function LogisticaDetalleDashboard({ data }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 overflow-x-auto"
+            className="bg-white/95 backdrop-blur-xl rounded-xl border border-gray-200"
           >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900">
-                GASTOS OPERACIONALES LOGÍSTICOS {sede} AÑO 2024 VS 2025
-              </h3>
-              <button
-                onClick={() => openModal(`Gastos ${sede}`, `Detalle de gastos operacionales logísticos para ${sede}.`)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <Info className="w-5 h-5 text-gray-600" />
-              </button>
-            </div>
+            <CollapsibleTable
+              title={`GASTOS OPERACIONALES LOGÍSTICOS ${sede} AÑO 2024 VS 2025`}
+              defaultOpen={false}
+            >
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-gray-300">
@@ -122,6 +116,8 @@ export default function LogisticaDetalleDashboard({ data }) {
                 </tr>
               </tbody>
             </table>
+            </div>
+            </CollapsibleTable>
           </motion.div>
         );
       })}

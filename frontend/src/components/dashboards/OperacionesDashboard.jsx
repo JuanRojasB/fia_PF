@@ -128,16 +128,19 @@ export default function OperacionesDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30"
+        className="bg-white/95 backdrop-blur-xl rounded-xl border-4 border-blue-500/30"
       >
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">1. Indicadores Clave de Desempeño TPM</h3>
-            <p className="text-sm text-gray-600 mt-1">Comparativa detallada 2024-2025</p>
-          </div>
-          <Info className="w-6 h-6 text-blue-600" />
-        </div>
-
+        <CollapsibleTable
+          title="1. Indicadores Clave de Desempeño TPM - Comparativa 2024-2025"
+          defaultOpen={false}
+          totalRow={[
+            { label: 'Indicadores TPM 2025' },
+            { label: 'Disponibilidad: 95,70%', color: 'text-orange-500' },
+            { label: 'OEE: 86,4%', color: 'text-green-600' },
+            { label: 'MTBF: 10,42 hrs', color: 'text-red-500' },
+            { label: 'MTTR: 0,47 hrs', color: 'text-yellow-600' },
+          ]}
+        >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -194,6 +197,7 @@ export default function OperacionesDashboard({ data }) {
             </div>
           </div>
         </div>
+        </CollapsibleTable>
       </motion.div>
 
       {/* Equipos Ofensores */}
@@ -339,7 +343,7 @@ export default function OperacionesDashboard({ data }) {
         </ResponsiveContainer>
 
         {/* Tabla Detallada */}
-        <div className="mt-6 overflow-x-auto">
+
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b-2 border-gray-300">
@@ -374,7 +378,7 @@ export default function OperacionesDashboard({ data }) {
               </tr>
             </tbody>
           </table>
-        </div>
+      
 
         <div className="mt-4 bg-green-50 rounded-lg p-4 border border-green-300">
           <div className="flex items-start gap-2">

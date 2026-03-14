@@ -138,6 +138,12 @@ export default function ComercialEstructuraDashboard({ data }) {
       <CollapsibleTable 
         title="ASIGNACIÓN DE POLLO MAYORISTA - Distribución de unidades procesadas 2024 vs 2025"
         defaultOpen={false}
+        totalRow={[
+          { label: 'TOTAL MAYORISTA 2025' },
+          { label: `${formatNumber(total2025)} und`, color: 'text-blue-600' },
+          { label: `Var: ${total2024 > 0 ? (((total2025 - total2024) / total2024) * 100).toFixed(2) : 0}%`, color: (total2025 - total2024) >= 0 ? 'text-green-500' : 'text-red-500', badge: true, badgeColor: (total2025 - total2024) >= 0 ? 'bg-green-500' : 'bg-red-500', badgeIcon: (total2025 - total2024) >= 0 ? '↑' : '↓' },
+          { label: `vs 2024: ${formatNumber(total2024)}`, color: 'text-gray-500' },
+        ]}
       >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

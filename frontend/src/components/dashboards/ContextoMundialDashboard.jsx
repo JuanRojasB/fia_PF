@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Globe, DollarSign, TrendingUp, Target, AlertTriangle } from 'lucide-react';
+import CollapsibleTable from '../CollapsibleTable';
 
 export default function ContextoMundialDashboard() {
   const sections = [
@@ -63,8 +64,7 @@ export default function ContextoMundialDashboard() {
         'Prioridades estratégicas:',
         '  - Fortalecer bioseguridad.',
         '  - Gestionar insumos con estrategias de cobertura y diversificación.',
-        '  - Incrementar eficiencia y automatización.',
-        '  - Profundizar en nutrición de precisión para mejorar conversión alimenticia.'
+        '  - Incrementar eficiencia y automatización.'
       ]
     }
   ];
@@ -86,7 +86,7 @@ export default function ContextoMundialDashboard() {
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-2">
                 Contexto Mundial 2026
               </h1>
-              <p className="text-xl text-blue-600">Análisis del Sector Avícola Global</p>
+              <p className="text-xl text-gray-600">Análisis del Sector Avícola Global</p>
             </div>
           </div>
         </div>
@@ -120,25 +120,25 @@ export default function ContextoMundialDashboard() {
                 let highlightedText = paragraph;
                 
                 // Resaltar porcentajes
-                highlightedText = highlightedText.replace(/2,6%/g, '<span class="text-blue-600 font-bold text-lg bg-blue-50 px-2 py-1 rounded">2.6%</span>');
-                highlightedText = highlightedText.replace(/2,5%/g, '<span class="text-purple-600 font-bold text-lg bg-purple-50 px-2 py-1 rounded">2.5%</span>');
-                highlightedText = highlightedText.replace(/5,4%/g, '<span class="text-orange-600 font-bold text-lg bg-orange-50 px-2 py-1 rounded">5.4%</span>');
-                highlightedText = highlightedText.replace(/4,8 millones de acres/g, '<span class="text-green-600 font-semibold">4.8 millones de acres</span>');
+                highlightedText = highlightedText.replace(/2,6%/g, '<span class="font-bold">2.6%</span>');
+                highlightedText = highlightedText.replace(/2,5%/g, '<span class="font-bold text-green-600">+2.5%</span>');
+                highlightedText = highlightedText.replace(/5,4%/g, '<span class="font-bold">5.4%</span>');
+                highlightedText = highlightedText.replace(/4,8 millones de acres/g, '<span class="font-bold">4.8 millones de acres</span>');
                 
                 // Resaltar conceptos clave
-                highlightedText = highlightedText.replace(/costos de alimentación muestran tendencia a la estabilidad/g, '<span class="text-green-600 font-semibold">costos de alimentación muestran tendencia a la estabilidad</span>');
-                highlightedText = highlightedText.replace(/cosecha récord de soya/g, '<span class="text-green-600 font-semibold">cosecha récord de soya</span>');
-                highlightedText = highlightedText.replace(/mejorando la rentabilidad productiva/g, '<span class="text-green-600 font-semibold">mejorando la rentabilidad productiva</span>');
+                highlightedText = highlightedText.replace(/costos de alimentación muestran tendencia a la estabilidad/g, '<span class="font-bold">costos de alimentación muestran tendencia a la estabilidad</span>');
+                highlightedText = highlightedText.replace(/cosecha récord de soya/g, '<span class="font-bold">cosecha récord de soya</span>');
+                highlightedText = highlightedText.replace(/mejorando la rentabilidad productiva/g, '<span class="font-bold text-green-600">mejorando la rentabilidad productiva</span>');
                 highlightedText = highlightedText.replace(/influenza aviar/g, '<span class="text-red-600 font-bold">influenza aviar</span>');
-                highlightedText = highlightedText.replace(/proteína de mayor crecimiento/g, '<span class="text-purple-600 font-semibold">proteína de mayor crecimiento</span>');
-                highlightedText = highlightedText.replace(/máximos históricos en 2025/g, '<span class="text-orange-600 font-bold">máximos históricos en 2025</span>');
-                highlightedText = highlightedText.replace(/bioseguridad/g, '<span class="text-red-600 font-semibold">bioseguridad</span>');
-                highlightedText = highlightedText.replace(/nutrición de precisión/g, '<span class="text-blue-600 font-semibold">nutrición de precisión</span>');
+                highlightedText = highlightedText.replace(/proteína de mayor crecimiento/g, '<span class="font-bold">proteína de mayor crecimiento</span>');
+                highlightedText = highlightedText.replace(/máximos históricos en 2025/g, '<span class="font-bold">máximos históricos en 2025</span>');
+                highlightedText = highlightedText.replace(/bioseguridad/g, '<span class="font-bold">bioseguridad</span>');
+                highlightedText = highlightedText.replace(/nutrición de precisión/g, '<span class="font-bold">nutrición de precisión</span>');
                 
                 // Resaltar riesgos
-                highlightedText = highlightedText.replace(/alta inestabilidad geopolítica/g, '<span class="text-red-600 font-semibold">alta inestabilidad geopolítica</span>');
-                highlightedText = highlightedText.replace(/conflicto Rusia–Ucrania/g, '<span class="text-red-600 font-semibold">conflicto Rusia–Ucrania</span>');
-                highlightedText = highlightedText.replace(/conflicto Israel–Irán/g, '<span class="text-red-600 font-semibold">conflicto Israel–Irán</span>');
+                highlightedText = highlightedText.replace(/alta inestabilidad geopolítica/g, '<span class="text-red-600 font-bold">alta inestabilidad geopolítica</span>');
+                highlightedText = highlightedText.replace(/conflicto Rusia–Ucrania/g, '<span class="text-red-600 font-bold">conflicto Rusia–Ucrania</span>');
+                highlightedText = highlightedText.replace(/conflicto Israel–Irán/g, '<span class="text-red-600 font-bold">conflicto Israel–Irán</span>');
                 
                 const isBullet = paragraph.startsWith('•') || paragraph.startsWith('  -');
                 
@@ -170,10 +170,11 @@ export default function ContextoMundialDashboard() {
         </div>
 
         <p className="text-gray-700 mb-6 leading-relaxed">
-          Las barreras a la entrada en el negocio avícola son <span className="text-indigo-600 font-bold">normativas</span> y requieren cumplimiento estricto para operar en el sector:
+          Las barreras a la entrada en el negocio avícola son <span className="font-bold">normativas</span> y requieren cumplimiento estricto para operar en el sector:
         </p>
 
         <div className="overflow-x-auto">
+          <CollapsibleTable title="Barreras a la Entrada en el Negocio Avícola" defaultOpen={true}>
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-indigo-600 text-white">
@@ -188,10 +189,10 @@ export default function ContextoMundialDashboard() {
                 </td>
                 <td className="border-2 border-indigo-200 p-4">
                   <p className="mb-2">
-                    <span className="text-blue-600 font-semibold">Certificación de granja biosegura</span>, protocolos estrictos de ingreso, manejo de mortalidades, limpieza, control de plagas, trazabilidad y movilización de animales.
+                    <span className="font-bold">Certificación de granja biosegura</span>, protocolos estrictos de ingreso, manejo de mortalidades, limpieza, control de plagas, trazabilidad y movilización de animales.
                   </p>
                   <p className="text-sm text-gray-600 italic mt-2">
-                    <span className="font-semibold text-indigo-600">Inversión en infraestructura</span>
+                    <span className="font-bold">Inversión en infraestructura</span>
                   </p>
                 </td>
               </tr>
@@ -201,10 +202,10 @@ export default function ContextoMundialDashboard() {
                 </td>
                 <td className="border-2 border-indigo-200 p-4">
                   <p className="mb-2">
-                    Cumplimiento del <span className="text-blue-600 font-semibold">Decreto 1500</span> y normativa sanitaria para plantas de beneficio, desprese, almacenamiento y comercialización.
+                    Cumplimiento del <span className="font-bold">Decreto 1500</span> y normativa sanitaria para plantas de beneficio, desprese, almacenamiento y comercialización.
                   </p>
                   <p className="text-sm text-gray-600 italic mt-2">
-                    <span className="font-semibold text-indigo-600">Inversión en infraestructura</span>
+                    <span className="font-bold">Inversión en infraestructura</span>
                   </p>
                 </td>
               </tr>
@@ -214,7 +215,7 @@ export default function ContextoMundialDashboard() {
                 </td>
                 <td className="border-2 border-indigo-200 p-4">
                   <p>
-                    Inversión en <span className="text-green-600 font-semibold">galpones, equipos, silos, energía, logística y capital de trabajo</span> para sostener ciclos productivos.
+                    Inversión en <span className="font-bold">galpones, equipos, silos, energía, logística y capital de trabajo</span> para sostener ciclos productivos.
                   </p>
                 </td>
               </tr>
@@ -224,12 +225,13 @@ export default function ContextoMundialDashboard() {
                 </td>
                 <td className="border-2 border-indigo-200 p-4">
                   <p>
-                    Uso de suelo, manejo de residuos (<span className="text-orange-600 font-semibold">gallinaza/pollinaza</span>), olores, vectores, cumplimiento ambiental y aceptación comunitaria.
+                    Uso de suelo, manejo de residuos (<span className="font-bold">gallinaza/pollinaza</span>), olores, vectores, cumplimiento ambiental y aceptación comunitaria.
                   </p>
                 </td>
               </tr>
             </tbody>
           </table>
+          </CollapsibleTable>
         </div>
 
         <div className="mt-6 p-4 rounded-lg bg-indigo-50 border-2 border-indigo-300">

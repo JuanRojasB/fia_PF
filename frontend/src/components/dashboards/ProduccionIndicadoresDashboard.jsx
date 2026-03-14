@@ -185,6 +185,13 @@ export default function ProduccionIndicadoresDashboard({ data }) {
             <CollapsibleTable 
               title="COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS AVES 2025-2024"
               defaultOpen={false}
+              totalRow={[
+                { label: 'Indicadores Clave 2025' },
+                { label: `Conversión: ${formatDecimal(conversionPollo)}`, color: conversionPollo <= 1.8 ? 'text-green-500' : 'text-orange-500' },
+                { label: `Mortalidad: ${formatDecimal(mortalidadPollo)}%`, color: mortalidadPollo < 5 ? 'text-green-500' : 'text-red-500' },
+                { label: `Peso: ${formatDecimal(pesoPromedioPollo)} kg`, color: 'text-blue-500' },
+                { label: `IP: ${formatDecimal(efiAlimPollo)}`, color: efiAlimPollo > 300 ? 'text-green-500' : 'text-yellow-500' },
+              ]}
             >
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">

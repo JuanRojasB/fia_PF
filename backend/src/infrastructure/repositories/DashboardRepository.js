@@ -1653,11 +1653,146 @@ class DashboardRepository extends IDashboardRepository {
     // Impuestos y tributación
     const tributacion = {
       tasa_minima: 15,
-      incremento_tributacion_2025: 36, // % respecto a 2024
+      incremento_tributacion_2025: 36, // % respecto al impuesto neto de renta del año 2023
       impuestos_saludables: [
         { anio: 2023, tasa: 10 },
         { anio: 2024, tasa: 15 },
         { anio: 2025, tasa: 20 }
+      ]
+    };
+
+    // Estado de Resultado Integral
+    const estadoResultado = {
+      empresa: 'POLLO FIESTA S.A.',
+      nit: '860.032.450-9',
+      titulo: 'Estado de Resultado Integral',
+      periodo: 'De 1 de enero al 31 de Diciembre por los años de: 2025',
+      unidad: 'Expresados en Pesos',
+      filas: [
+        {
+          actividad: 'Ingresos de actividades ordinarias',
+          notas: 24,
+          valor_2025: 29802421000,
+          pct_2025: 100.0,
+          valor_2024: 27801234000,
+          pct_2024: 100.0,
+          variacion_abs: 2001187000,
+          variacion_pct: 7.2
+        },
+        {
+          actividad: 'Otros ingresos de operación',
+          notas: 25,
+          valor_2025: 312450000,
+          pct_2025: 1.0,
+          valor_2024: 289100000,
+          pct_2024: 1.0,
+          variacion_abs: 23350000,
+          variacion_pct: 8.1
+        },
+        {
+          actividad: 'Costo de venta',
+          notas: 26,
+          valor_2025: -24156780000,
+          pct_2025: -81.1,
+          valor_2024: -22543210000,
+          pct_2024: -81.1,
+          variacion_abs: -1613570000,
+          variacion_pct: 7.2
+        },
+        {
+          actividad: '(Pérdida) Utilidad Bruta',
+          notas: null,
+          valor_2025: 5958091000,
+          pct_2025: 20.0,
+          valor_2024: 5547124000,
+          pct_2024: 20.0,
+          variacion_abs: 410967000,
+          variacion_pct: 7.4,
+          esSubtotal: true
+        },
+        {
+          actividad: 'Gastos de administración',
+          notas: 27,
+          valor_2025: -1890340000,
+          pct_2025: -6.3,
+          valor_2024: -1754210000,
+          pct_2024: -6.3,
+          variacion_abs: -136130000,
+          variacion_pct: 7.8
+        },
+        {
+          actividad: 'Gastos de ventas',
+          notas: 28,
+          valor_2025: -2134560000,
+          pct_2025: -7.2,
+          valor_2024: -1987430000,
+          pct_2024: -7.1,
+          variacion_abs: -147130000,
+          variacion_pct: 7.4
+        },
+        {
+          actividad: '(Pérdida) Utilidad Operacional',
+          notas: null,
+          valor_2025: 1933191000,
+          pct_2025: 6.5,
+          valor_2024: 1805484000,
+          pct_2024: 6.5,
+          variacion_abs: 127707000,
+          variacion_pct: 7.1,
+          esSubtotal: true
+        },
+        {
+          actividad: 'Ingresos financieros',
+          notas: 29,
+          valor_2025: 145230000,
+          pct_2025: 0.5,
+          valor_2024: 132100000,
+          pct_2024: 0.5,
+          variacion_abs: 13130000,
+          variacion_pct: 9.9
+        },
+        {
+          actividad: 'Gastos financieros',
+          notas: 30,
+          valor_2025: -312450000,
+          pct_2025: -1.0,
+          valor_2024: -289340000,
+          pct_2024: -1.0,
+          variacion_abs: -23110000,
+          variacion_pct: 8.0
+        },
+        {
+          actividad: '(Pérdida) Utilidad antes de impuestos',
+          notas: null,
+          valor_2025: 1765971000,
+          pct_2025: 5.9,
+          valor_2024: 1648244000,
+          pct_2024: 5.9,
+          variacion_abs: 117727000,
+          variacion_pct: 7.1,
+          esSubtotal: true
+        },
+        {
+          actividad: 'Impuesto de renta y complementarios',
+          notas: 31,
+          valor_2025: -636949560,
+          pct_2025: -2.1,
+          valor_2024: -527437000,
+          pct_2024: -1.9,
+          variacion_abs: -109512560,
+          variacion_pct: 20.8
+        },
+        {
+          actividad: '(Pérdida) Utilidad Neta del Ejercicio',
+          notas: null,
+          valor_2025: 1129021440,
+          pct_2025: 3.8,
+          valor_2024: 1120807000,
+          pct_2024: 4.0,
+          variacion_abs: 8214440,
+          variacion_pct: 0.7,
+          esTotal: true
+        }
       ]
     };
 
@@ -1676,6 +1811,7 @@ class DashboardRepository extends IDashboardRepository {
     return {
       variablesMacro,
       presupuestoCaja,
+      estadoResultado,
       ejecucionTrimestral: {
         totalPF: {
           data: totalPF,
