@@ -41,6 +41,7 @@ export default function SplashScreen({ onComplete }) {
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
+      <AnimatePresence mode="wait">
 
       {/* ── FONDO AMARILLO ── */}
       <motion.div className="absolute inset-0"
@@ -67,7 +68,11 @@ export default function SplashScreen({ onComplete }) {
       }} />
 
       {!started && (
-        <>
+        <motion.div
+          key="splash"
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
           {/* ── RAYOS DE LUZ DESDE EL LOGO (fase inicial) ── */}
           <AnimatePresence>
             {isYellow && (
@@ -331,36 +336,73 @@ export default function SplashScreen({ onComplete }) {
               )}
             </AnimatePresence>
           </div>
-        </>
+        </motion.div>
       )}
 
       {started && (
-        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-8">
-          <div className="relative mb-12 w-40 h-40 flex items-center justify-center">
+        <motion.div
+          key="loading"
+          className="relative z-10 flex flex-col items-center justify-center w-full h-full px-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
+          {/* Logo con entrada */}
+          <motion.div
+            className="relative mb-10 flex items-center justify-center"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            {/* Anillos giratorios */}
             {[...Array(3)].map((_, i) => (
               <motion.div key={i} className="absolute rounded-full"
                 style={{
-                  width: `${120 + i * 50}px`, height: `${120 + i * 50}px`,
+                  width: `${160 + i * 55}px`, height: `${160 + i * 55}px`,
                   border: `2px solid rgba(56,189,248,${0.5 - i * 0.15})`
                 }}
-                animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-                transition={{ duration: 8 - i * 2, repeat: Infinity, ease: "linear" }}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1, rotate: i % 2 === 0 ? 360 : -360 }}
+                transition={{
+                  opacity: { duration: 0.4, delay: 0.3 + i * 0.1 },
+                  scale: { duration: 0.4, delay: 0.3 + i * 0.1 },
+                  rotate: { duration: 8 - i * 2, repeat: Infinity, ease: "linear" }
+                }}
               />
             ))}
-            <div className="relative w-40 h-40 rounded-full flex items-center justify-center overflow-hidden z-10"
+
+            {/* Logo central */}
+            <motion.div
+              className="relative rounded-full flex items-center justify-center overflow-hidden z-10"
               style={{
+                width: '150px', height: '150px',
                 background: 'radial-gradient(circle, rgba(56,189,248,0.3), rgba(0,0,0,0.9))',
                 border: '3px solid rgba(56,189,248,0.8)',
                 boxShadow: '0 0 60px rgba(56,189,248,0.6)'
-              }}>
+              }}
+              animate={{
+                boxShadow: [
+                  '0 0 40px rgba(56,189,248,0.5)',
+                  '0 0 70px rgba(56,189,248,0.9)',
+                  '0 0 40px rgba(56,189,248,0.5)'
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
               <img src={fiaLogo} alt="FIA"
                 className="absolute w-[130%] h-[130%] object-cover"
                 style={{ filter: 'brightness(1.3) contrast(1.2)' }}
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="text-center mb-8">
+          {/* Texto FIA con entrada */}
+          <motion.div
+            className="text-center mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <h1 className="text-7xl font-black mb-3" style={{
               background: 'linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1d4ed8 100%)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'
@@ -368,26 +410,44 @@ export default function SplashScreen({ onComplete }) {
             <p className="text-sm text-gray-600 font-light uppercase" style={{ letterSpacing: '0.3em' }}>
               FIESTA INTELLIGENCE ASSISTANT
             </p>
-          </div>
+          </motion.div>
 
-          <div className="w-full max-w-md">
+          {/* Barra de progreso con entrada */}
+          <motion.div
+            className="w-full max-w-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
             <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div className="absolute inset-y-0 left-0 rounded-full"
+              <motion.div
+                className="absolute inset-y-0 left-0 rounded-full"
                 style={{
-                  background: 'linear-gradient(90deg, #3b82f6, #1d4ed8)',
-                  boxShadow: '0 0 15px rgba(59,130,246,0.4)',
+                  background: 'linear-gradient(90deg, #38bdf8, #3b82f6, #1d4ed8)',
+                  boxShadow: '0 0 15px rgba(59,130,246,0.6)',
                   width: `${progress}%`,
                   transition: 'width 0.06s linear'
                 }}
               />
+              {/* Brillo que corre */}
+              <motion.div
+                className="absolute inset-y-0 rounded-full"
+                style={{
+                  width: '60px',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
+                }}
+                animate={{ x: ['-60px', '500px'] }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: "linear", repeatDelay: 0.3 }}
+              />
             </div>
             <div className="flex justify-between mt-2 text-xs text-gray-600 font-mono">
-              <span>CARGANDO</span>
+              <span>CARGANDO SISTEMA</span>
               <span>{Math.round(progress)}%</span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 }
