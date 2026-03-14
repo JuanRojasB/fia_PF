@@ -1,5 +1,5 @@
 ﻿import { TrendingUp, Info } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, LineChart, Line } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, LineChart, Line, ComposedChart, ReferenceLine } from 'recharts';
 import SectorComparison from '../SectorComparison';
 import { useState } from 'react';
 
@@ -92,8 +92,8 @@ export default function EntornoSocioeconomicoDashboard() {
   // Datos de Precios en Colombia - Maíz, Soya y Torta (miles de pesos por tonelada)
   const preciosColombiaData = [
     { año: '2023', maizAmarillo: 1567, soyaGrano: 1576, tortaSoya: 1133 },
-    { año: '2024', maizAmarillo: 1735, soyaGrano: 1248, tortaSoya: 1248 },
-    { año: '2025', maizAmarillo: 1806, soyaGrano: 1313, tortaSoya: 1313 },
+    { año: '2024', maizAmarillo: 1735, soyaGrano: 1635, tortaSoya: 1248 },
+    { año: '2025', maizAmarillo: 1806, soyaGrano: 1675, tortaSoya: 1313 },
     { año: '2026', maizAmarillo: 1904, soyaGrano: 1923, tortaSoya: 1382 }
   ];
 
@@ -303,67 +303,86 @@ export default function EntornoSocioeconomicoDashboard() {
             
             <div className="w-full">
               <ResponsiveContainer width="100%" height={400}>
-                <BarChart 
+                <ComposedChart
                     data={[
-                      { año: '2021', ipc: 5.62, color: '#6366f1' },
-                      { año: '2022', ipc: 13.12, color: '#0891b2' },
-                      { año: '2023', ipc: 9.28, color: '#14b8a6' },
-                      { año: '2024', ipc: 5.2, color: '#10b981' },
-                      { año: '2025', ipc: 5.1, color: '#84cc16' }
-                    ]} 
-                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
+                      { año: '2021', ipc: 5.62,  variacion: null,   color: '#6366f1' },
+                      { año: '2022', ipc: 13.12, variacion: 7.50,   color: '#0891b2' },
+                      { año: '2023', ipc: 9.28,  variacion: -3.84,  color: '#14b8a6' },
+                      { año: '2024', ipc: 5.2,   variacion: -4.08,  color: '#10b981' },
+                      { año: '2025', ipc: 5.1,   variacion: -0.10,  color: '#84cc16' }
+                    ]}
+                    margin={{ bottom: 40, top: 60, left: 70, right: 70 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                    <XAxis 
-                      dataKey="año" 
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis
+                      dataKey="año"
                       stroke="#94a3b8"
                       tick={{ fontSize: 17 }}
                     />
-                    <YAxis 
-                      stroke="#94a3b8" 
+                    <YAxis
+                      stroke="#94a3b8"
                       tick={{ fontSize: 17 }}
-                      domain={[0, 14]}
+                      domain={[0, 15]}
                       ticks={[0, 2, 4, 6, 8, 10, 12, 14]}
                       tickFormatter={(value) => `${value}%`}
                     />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#ffffff', 
-                        border: '2px solid #3b82f6',
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#ffffff',
+                        border: '2px solid #6366f1',
                         borderRadius: '8px',
-                        fontSize: '17px'
+                        fontSize: '14px'
                       }}
                       labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold' }}
-                      formatter={(value) => [`${value}%`, 'IPC']}
+                      formatter={(value, name, props) => {
+                        if (name === '_tendencia') return null;
+                        const v = props.payload.variacion;
+                        const varStr = v !== null ? (v > 0 ? ` (+${v}pp)` : ` (${v}pp)`) : ' (base)';
+                        return [`${value}%${varStr}`, 'IPC'];
+                      }}
                     />
-                    <Bar dataKey="ipc" name="IPC (%)" radius={[8, 8, 0, 0]} maxBarSize={80} label={{ 
-                      position: 'top', 
-                      fill: '#1f2937',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      formatter: (value) => `${value}%`
-                    }}>
+                    <Bar dataKey="ipc" name="IPC" radius={[8, 8, 0, 0]} maxBarSize={80}
+                      label={(props) => {
+                        const { x, y, width, value, index } = props;
+                        const variaciones = [null, 7.50, -3.84, -4.08, -0.10];
+                        const v = variaciones[index];
+                        const varStr = v !== null ? (v > 0 ? `+${v}pp` : `${v}pp`) : '';
+                        const varColor = v !== null ? (v > 0 ? '#16a34a' : '#dc2626') : 'transparent';
+                        return (
+                          <g>
+                            <text x={x + width / 2} y={y - 22} textAnchor="middle" fill="#1f2937" fontSize={15} fontWeight="bold">
+                              {`${value}%`}
+                            </text>
+                            {v !== null && (
+                              <text x={x + width / 2} y={y - 6} textAnchor="middle" fill={varColor} fontSize={12} fontWeight="bold">
+                                {varStr}
+                              </text>
+                            )}
+                          </g>
+                        );
+                      }}
+                    >
                       {[
-                        { año: '2021', ipc: 5.62, color: '#6366f1' },
-                        { año: '2022', ipc: 13.12, color: '#0891b2' },
-                        { año: '2023', ipc: 9.28, color: '#14b8a6' },
-                        { año: '2024', ipc: 5.2, color: '#10b981' },
-                        { año: '2025', ipc: 5.1, color: '#84cc16' }
+                        { color: '#6366f1' },
+                        { color: '#0891b2' },
+                        { color: '#14b8a6' },
+                        { color: '#10b981' },
+                        { color: '#84cc16' }
                       ].map((entry, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
-                          fill={entry.color}
-                        />
+                        <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Bar>
-                    <Line 
-                      type="monotone" 
-                      dataKey="ipc" 
-                      stroke="#1f2937" 
+                    <Line
+                      type="monotone"
+                      dataKey="ipc"
+                      name="_tendencia"
+                      stroke="#1f2937"
                       strokeWidth={2}
                       dot={{ r: 4, fill: '#1f2937', strokeWidth: 0 }}
+                      legendType="none"
+                      tooltipType="none"
                     />
-                  </BarChart>
+                  </ComposedChart>
                 </ResponsiveContainer>
               </div>
             
@@ -377,7 +396,7 @@ export default function EntornoSocioeconomicoDashboard() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex-1">
                 <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center">
-                  TRM Promedio Anual con Línea de Tendencia - 2024, 2025, 2026 (YTD)
+                  TRM Promedio Anual con Línea de Tendencia - 2023, 2024, 2025, 2026 (YTD)
                 </h3>
               </div>
               <button
@@ -408,62 +427,81 @@ export default function EntornoSocioeconomicoDashboard() {
             
             <div className="w-full">
               <ResponsiveContainer width="100%" height={400}>
-                <BarChart 
+                <ComposedChart
                     data={[
-                      { año: '2024', trm: 4071.28, tendencia: 4071.28 },
-                      { año: '2025', trm: 4052.86, tendencia: 4000 },
-                      { año: '2026 (YTD)', trm: 3640.27, tendencia: 3640.27 }
-                    ]} 
-                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
+                      { año: '2023', trm: 4000.71, variacion: null },
+                      { año: '2024', trm: 4071.28, variacion: 1.76 },
+                      { año: '2025', trm: 4052.86, variacion: -0.45 },
+                      { año: '2026 (YTD)', trm: 3640.27, variacion: -10.18 }
+                    ]}
+                    margin={{ bottom: 40, top: 60, left: 70, right: 70 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                    <XAxis 
-                      dataKey="año" 
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis
+                      dataKey="año"
                       stroke="#94a3b8"
                       tick={{ fontSize: 17 }}
                     />
-                    <YAxis 
-                      stroke="#94a3b8" 
+                    <YAxis
+                      stroke="#94a3b8"
                       tick={{ fontSize: 17 }}
-                      domain={[0, 4500]}
-                      ticks={[0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500]}
-                      tickFormatter={(value) => `$${value.toLocaleString()}`}
+                      domain={[3400, 4300]}
+                      ticks={[3400, 3600, 3800, 4000, 4200, 4300]}
+                      tickFormatter={(value) => `${value.toLocaleString()}`}
                     />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#ffffff', 
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#ffffff',
                         border: '2px solid #3b82f6',
                         borderRadius: '8px',
-                        fontSize: '17px'
+                        fontSize: '14px'
                       }}
                       labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold' }}
-                      formatter={(value, name) => {
-                        if (name === 'Línea de Tendencia') return [`$${value.toLocaleString()}`, 'Línea de Tendencia'];
-                        return [`$${value.toLocaleString()}`, 'TRM Promedio'];
+                      formatter={(value, name, props) => {
+                        if (name === 'Tendencia') return null;
+                        const v = props.payload.variacion;
+                        const varStr = v !== null ? (v > 0 ? ` (+${v}%)` : ` (${v}%)`) : ' (base)';
+                        return [`${value.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${varStr}`, 'TRM Promedio'];
                       }}
                     />
-                    <Bar dataKey="trm" name="TRM Promedio" radius={[8, 8, 0, 0]} maxBarSize={180} label={{
-                      position: 'top',
-                      fill: '#1e40af',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      formatter: (value) => `$${value.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-                    }}>
+                    <Bar dataKey="trm" name="TRM Promedio" radius={[8, 8, 0, 0]} maxBarSize={180}
+                      label={(props) => {
+                        const { x, y, width, value, index } = props;
+                        const variaciones = [null, 1.76, -0.45, -10.18];
+                        const v = variaciones[index];
+                        const valStr = value.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        const varStr = v !== null ? (v > 0 ? `+${v}%` : `${v}%`) : '';
+                        const varColor = v !== null ? (v > 0 ? '#16a34a' : '#dc2626') : 'transparent';
+                        return (
+                          <g>
+                            <text x={x + width / 2} y={y - 22} textAnchor="middle" fill="#1e40af" fontSize={15} fontWeight="bold">
+                              {`$${valStr}`}
+                            </text>
+                            {v !== null && (
+                              <text x={x + width / 2} y={y - 6} textAnchor="middle" fill={varColor} fontSize={13} fontWeight="bold">
+                                {varStr}
+                              </text>
+                            )}
+                          </g>
+                        );
+                      }}
+                    >
+                      <Cell fill="#1e3a8a" />
                       <Cell fill="#1e40af" />
                       <Cell fill="#3b82f6" />
                       <Cell fill="#60a5fa" />
                     </Bar>
-                    <Line 
-                      type="linear" 
-                      dataKey="trm" 
-                      name="Línea de Tendencia"
-                      stroke="#ef4444" 
+                    <Line
+                      type="linear"
+                      dataKey="trm"
+                      name="Tendencia"
+                      stroke="#ef4444"
                       strokeWidth={3}
                       strokeDasharray="8 4"
                       dot={{ r: 6, fill: '#ef4444', strokeWidth: 2, stroke: '#fff' }}
                       activeDot={{ r: 8 }}
                     />
-                  </BarChart>
+                  </ComposedChart>
                 </ResponsiveContainer>
               </div>
             
@@ -527,13 +565,13 @@ export default function EntornoSocioeconomicoDashboard() {
 
             <div className="w-full">
               <ResponsiveContainer width="100%" height={400}>
-                <BarChart
+                <ComposedChart
                     data={[
-                      { año: '2024', precio: 10500 },
-                      { año: '2025', precio: 10700 },
-                      { año: '2026', precio: 10660 }
+                      { año: '2024', precio: 10500, variacion: null },
+                      { año: '2025', precio: 10700, variacion: 1.9 },
+                      { año: '2026', precio: 10660, variacion: -0.4 }
                     ]}
-                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
+                    margin={{ bottom: 40, top: 60, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis
@@ -544,8 +582,8 @@ export default function EntornoSocioeconomicoDashboard() {
                     <YAxis
                       stroke="#94a3b8"
                       tick={{ fontSize: 16 }}
-                      domain={[0, 11000]}
-                      ticks={[0, 2000, 4000, 6000, 8000, 10000]}
+                      domain={[10000, 11000]}
+                      ticks={[10000, 10200, 10400, 10600, 10800, 11000]}
                       tickFormatter={(value) => `${value.toLocaleString()}`}
                     />
                     <Tooltip
@@ -553,23 +591,57 @@ export default function EntornoSocioeconomicoDashboard() {
                         backgroundColor: '#ffffff',
                         border: '2px solid #14b8a6',
                         borderRadius: '8px',
-                        fontSize: '15px'
+                        fontSize: '14px'
                       }}
                       labelStyle={{ color: '#1f2937', fontWeight: 'bold' }}
-                      formatter={(value) => [`${value.toLocaleString()} / kg`, 'Precio promedio']}
+                      formatter={(value, name, props) => {
+                        if (name === '_tendencia') return null;
+                        const v = props.payload.variacion;
+                        const varStr = v !== null ? (v > 0 ? ` (+${v}%)` : ` (${v}%)`) : ' (base)';
+                        const varColor = v !== null ? (v > 0 ? '#16a34a' : '#dc2626') : '#6b7280';
+                        return [
+                          <span style={{ color: varColor }}>`$${value.toLocaleString()}/kg${varStr}`</span>,
+                          'Precio promedio'
+                        ];
+                      }}
                     />
-                    <Bar dataKey="precio" name="Precio por Kg" radius={[8, 8, 0, 0]} maxBarSize={180} label={{
-                      position: 'top',
-                      fill: '#0f766e',
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      formatter: (value) => `${value.toLocaleString()}`
-                    }}>
+                    <Bar dataKey="precio" name="Precio por Kg" radius={[8, 8, 0, 0]} maxBarSize={180}
+                      label={(props) => {
+                        const { x, y, width, value, index } = props;
+                        const variaciones = [null, 1.9, -0.4];
+                        const v = variaciones[index];
+                        const varStr = v !== null ? (v > 0 ? `+${v}%` : `${v}%`) : '';
+                        const varColor = v !== null ? (v > 0 ? '#16a34a' : '#dc2626') : 'transparent';
+                        return (
+                          <g>
+                            <text x={x + width / 2} y={y - 22} textAnchor="middle" fill="#0f766e" fontSize={15} fontWeight="bold">
+                              {`$${value.toLocaleString()}`}
+                            </text>
+                            {v !== null && (
+                              <text x={x + width / 2} y={y - 6} textAnchor="middle" fill={varColor} fontSize={13} fontWeight="bold">
+                                {varStr}
+                              </text>
+                            )}
+                          </g>
+                        );
+                      }}
+                    >
                       <Cell fill="#14b8a6" />
                       <Cell fill="#0d9488" />
                       <Cell fill="#0f766e" />
                     </Bar>
-                  </BarChart>
+                    <Line
+                      type="linear"
+                      dataKey="precio"
+                      name="_tendencia"
+                      stroke="#ef4444"
+                      strokeWidth={3}
+                      strokeDasharray="8 4"
+                      dot={{ r: 6, fill: '#ef4444', strokeWidth: 2, stroke: '#fff' }}
+                      activeDot={{ r: 8 }}
+                      legendType="none"
+                    />
+                  </ComposedChart>
                 </ResponsiveContainer>
               </div>
             
@@ -740,10 +812,10 @@ export default function EntornoSocioeconomicoDashboard() {
 
             {/* gráfica de Granos */}
             <div className="w-full mb-6">
-              <ResponsiveContainer width="100%" aspect={1.6}>
+              <ResponsiveContainer width="100%" height={400}>
                 <LineChart 
                     data={granosData} 
-                    margin={{ bottom: 60, top: 40, left: 60, right: 60 }}
+                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                     <XAxis 
@@ -829,10 +901,10 @@ export default function EntornoSocioeconomicoDashboard() {
 
             {/* gráfica de Precios Colombia */}
             <div className="w-full mb-6">
-              <ResponsiveContainer width="100%" aspect={1.6}>
+              <ResponsiveContainer width="100%" height={400}>
                 <LineChart 
                     data={preciosColombiaData} 
-                    margin={{ bottom: 60, top: 40, left: 60, right: 60 }}
+                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                     <XAxis 

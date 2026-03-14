@@ -209,9 +209,7 @@ export default function Login() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
           className="text-center text-gray-700 text-sm sm:text-base lg:text-lg font-light tracking-wide"
-          style={{
-            textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-          }}
+          style={{ textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}
         >
           Fiesta Intelligence Assistant
         </motion.p>
@@ -222,30 +220,30 @@ export default function Login() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="w-full max-w-md backdrop-blur-xl rounded-2xl shadow-2xl p-6 sm:p-8"
+        className="w-full max-w-sm backdrop-blur-xl rounded-3xl shadow-2xl p-8"
         style={{
-          background: 'rgba(255, 255, 255, 0.95)',
-          border: '2px solid rgba(56, 189, 248, 0.3)',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
+          background: 'rgba(255, 255, 255, 0.92)',
+          border: '1.5px solid rgba(56, 189, 248, 0.25)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255,255,255,0.5)'
         }}
       >
         {/* Title */}
-        <div className="text-center mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Acceso al Sistema</h1>
-          <p className="text-sm text-gray-600">Ingresa tus credenciales</p>
+        <div className="text-center mb-7">
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">Acceso al Sistema</h1>
+          <p className="text-sm text-gray-500">Ingresa tus credenciales</p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           
           {/* Username */}
-          <div className="space-y-2">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+          <div className="space-y-1.5">
+            <label htmlFor="username" className="block text-sm font-semibold text-gray-600">
               Usuario
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <User className="h-5 w-5 text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <User className="h-4 w-4 text-gray-400" />
               </div>
               <input 
                 type="text" 
@@ -253,10 +251,10 @@ export default function Login() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full pl-11 pr-4 py-3 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition text-sm"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  border: '2px solid rgba(203, 213, 225, 0.8)'
+                  background: 'rgba(248, 250, 252, 0.9)',
+                  border: '1.5px solid rgba(203, 213, 225, 0.7)'
                 }}
                 placeholder="Ingresa tu usuario"
               />
@@ -264,13 +262,13 @@ export default function Login() {
           </div>
 
           {/* Password */}
-          <div className="space-y-2">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <div className="space-y-1.5">
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-600">
               Contraseña
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Lock className="h-4 w-4 text-gray-400" />
               </div>
               <input 
                 type="password" 
@@ -278,10 +276,10 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full pl-11 pr-4 py-3 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition text-sm"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  border: '2px solid rgba(203, 213, 225, 0.8)'
+                  background: 'rgba(248, 250, 252, 0.9)',
+                  border: '1.5px solid rgba(203, 213, 225, 0.7)'
                 }}
                 placeholder="Ingresa tu contraseña"
               />
@@ -296,7 +294,7 @@ export default function Login() {
               className="px-4 py-3 rounded-xl text-sm font-medium"
               style={{
                 background: 'rgba(254, 226, 226, 0.9)',
-                border: '2px solid rgba(239, 68, 68, 0.5)',
+                border: '1.5px solid rgba(239, 68, 68, 0.4)',
                 color: '#dc2626'
               }}
             >
@@ -305,27 +303,29 @@ export default function Login() {
           )}
 
           {/* Submit Button */}
-          <button 
-            type="submit"
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              background: 'linear-gradient(135deg, #1d4ed8, #38bdf8)',
-              boxShadow: '0 10px 15px -3px rgba(30, 64, 175, 0.8), 0 4px 6px -4px rgba(30, 64, 175, 0.7)'
-            }}
-          >
-            {loading ? (
-              <>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Autenticando...</span>
-              </>
-            ) : (
-              <>
-                <LogIn className="w-5 h-5" />
-                <span>Acceder al Dashboard</span>
-              </>
-            )}
-          </button>
+          <div className="pt-2">
+            <button 
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl font-bold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              style={{
+                background: 'linear-gradient(135deg, #1d4ed8, #38bdf8)',
+                boxShadow: '0 8px 20px -4px rgba(30, 64, 175, 0.6)'
+              }}
+            >
+              {loading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Autenticando...</span>
+                </>
+              ) : (
+                <>
+                  <LogIn className="w-4 h-4" />
+                  <span>Acceder al Dashboard</span>
+                </>
+              )}
+            </button>
+          </div>
 
         </form>
       </motion.div>

@@ -162,70 +162,52 @@ export default function SectorComparison() {
           onClick={() => setZoomedImage(null)}
           style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'rgba(0, 0, 0, 0.95)',
+            top: 0, left: 0,
+            width: '100vw', height: '100vh',
+            backgroundColor: 'rgba(0,0,0,0.95)',
             zIndex: 999999,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '40px',
-            cursor: 'zoom-out',
-            margin: 0
+            cursor: 'zoom-out'
           }}
         >
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setZoomedImage(null);
-            }}
+            onClick={(e) => { e.stopPropagation(); setZoomedImage(null); }}
             style={{
-              position: 'fixed',
-              top: '30px',
-              right: '30px',
-              backgroundColor: 'white',
-              border: 'none',
-              borderRadius: '50%',
-              width: '50px',
-              height: '50px',
-              cursor: 'pointer',
-              zIndex: 1000000,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              position: 'fixed', top: '20px', right: '20px',
+              backgroundColor: 'white', border: 'none', borderRadius: '50%',
+              width: '44px', height: '44px', cursor: 'pointer',
+              zIndex: 1000000, display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
             }}
           >
-            <X style={{ width: '28px', height: '28px', color: '#000' }} />
+            <X style={{ width: '24px', height: '24px', color: '#000' }} />
           </button>
-          
-          <div style={{
-            maxWidth: '98%',
-            maxHeight: '98%',
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            padding: '20px',
-            boxShadow: '0 0 60px rgba(255,255,255,0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
+
+          {/* Contenedor fijo igual para ambas imágenes: aspect 16/9 */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: 'min(95vw, calc(95vh * 16 / 9))',
+              height: 'min(95vh, calc(95vw * 9 / 16))',
+              backgroundColor: 'white',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             <img
               src={zoomedImage}
               alt="Sector en Cifras"
-              onClick={(e) => e.stopPropagation()}
               style={{
-                maxWidth: '100%',
-                maxHeight: '90vh',
-                width: 'auto',
-                height: 'auto',
+                width: '100%',
+                height: '100%',
                 objectFit: 'contain',
                 display: 'block'
               }}
-              onError={(e) => console.error('Error cargando imagen:', e)}
-              onLoad={() => console.log('Imagen cargada correctamente')}
             />
           </div>
         </div>,
@@ -280,7 +262,7 @@ export default function SectorComparison() {
               Avicultura 2024
             </h3>
           </div>
-          <div className="aspect-[16/9] flex items-center justify-center bg-white">
+          <div className="flex items-center justify-center bg-white" style={{ height: '280px' }}>
             <img 
               src={sector2024} 
               alt="Sector Avícola 2024" 
@@ -304,7 +286,7 @@ export default function SectorComparison() {
               Avicultura 2025
             </h3>
           </div>
-          <div className="aspect-[16/9] flex items-center justify-center bg-white">
+          <div className="flex items-center justify-center bg-white" style={{ height: '280px' }}>
             <img 
               src={sector2025} 
               alt="Sector Avícola 2025" 

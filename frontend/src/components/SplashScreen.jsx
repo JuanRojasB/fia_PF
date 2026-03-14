@@ -77,7 +77,7 @@ export default function SplashScreen({ onComplete }) {
           <AnimatePresence>
             {isYellow && (
               <div className="absolute inset-0 pointer-events-none flex items-center justify-center"
-                style={{ marginTop: '-60px' }}>
+                style={{ marginTop: '-190px' }}>
                 {[...Array(12)].map((_, i) => {
                   const angle = (i * 360) / 12;
                   return (
@@ -144,14 +144,24 @@ export default function SplashScreen({ onComplete }) {
 
 
 
-          {/* ── MONEDA 3D - posición fija, nunca se mueve ── */}
+          {/* ── CONTENEDOR FLEX: logo + texto centrados juntos ── */}
           <div style={{
             position: 'absolute',
-            top: '50%', left: '50%',
+            inset: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0px',
+            zIndex: 30,
+            pointerEvents: 'none'
+          }}>
+          {/* ── MONEDA 3D ── */}
+          <div style={{
             width: '380px', height: '380px',
-            marginTop: '-240px', marginLeft: '-190px',
             perspective: '1500px',
-            zIndex: 30
+            flexShrink: 0,
+            pointerEvents: 'auto'
           }}>
             {/* Flash local al girar */}
             <AnimatePresence>
@@ -255,14 +265,11 @@ export default function SplashScreen({ onComplete }) {
             </motion.div>
           </div>
 
-          {/* ── TEXTO POLLO FIESTA - posición fija debajo del logo ── */}
+          {/* ── TEXTO debajo del logo ── */}
           <div style={{
-            position: 'absolute',
-            top: '50%', left: '50%',
-            transform: 'translateX(-50%)',
-            marginTop: '80px',
             textAlign: 'center',
-            zIndex: 30
+            pointerEvents: 'auto',
+            marginTop: '-20px'
           }}>
             <AnimatePresence>
               {isYellow && (
@@ -280,7 +287,7 @@ export default function SplashScreen({ onComplete }) {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: wi * 0.15 + li * 0.05 }}
                           style={{
-                            fontSize: '4.5rem', fontWeight: 900, lineHeight: 1,
+                            fontSize: '5.5rem', fontWeight: 900, lineHeight: 1,
                             color: '#78350f', letterSpacing: '0.05em',
                             textShadow: '0 4px 8px rgba(0,0,0,0.5), 0 0 30px rgba(217,119,6,0.8)',
                             display: 'inline-block'
@@ -336,6 +343,7 @@ export default function SplashScreen({ onComplete }) {
               )}
             </AnimatePresence>
           </div>
+          </div>{/* ── FIN CONTENEDOR FLEX ── */}
         </motion.div>
       )}
 

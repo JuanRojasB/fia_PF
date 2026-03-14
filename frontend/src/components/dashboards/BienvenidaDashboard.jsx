@@ -145,7 +145,7 @@ export default function BienvenidaDashboard() {
         <div className="mt-4 sm:mt-6 p-4 sm:p-5 rounded-xl bg-white/95 backdrop-blur-xl border border-green-500/30">
           <div className="flex items-center gap-2 mb-3">
             <Award className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-            <h3 className="text-base sm:text-lg font-bold text-gray-900">Resumen Ejecutivo</h3>
+            <h3 className="text-base sm:text-lg font-bold text-gray-900">Conclusión</h3>
           </div>
           <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
             El año 2024-2025 se caracterizó por un <span className="font-bold text-green-600">crecimiento sostenido</span> del sector avícola colombiano, 

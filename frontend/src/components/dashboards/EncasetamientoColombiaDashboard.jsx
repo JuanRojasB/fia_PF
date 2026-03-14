@@ -14,15 +14,15 @@ export default function EncasetamientoColombiaDashboard() {
   const encasetamientoData = [
     { mes: 'Enero', 2020: 73.562888, 2021: 67.177991, 2022: 73.814052, 2023: 77.780694, 2024: 76.570535, 2025: 81.468535 },
     { mes: 'Febrero', 2020: 65.151532, 2021: 63.691276, 2022: 68.281496, 2023: 67.768356, 2024: 71.155094, 2025: 73.456151 },
-    { mes: 'Marzo', 2020: 68.425009, 2021: 73.968776, 2022: 76.313153, 2023: 75.103872, 2024: 73.537564, 2025: 77.721409 },
+    { mes: 'Marzo', 2020: 68.425009, 2021: 75.958776, 2022: 76.315153, 2023: 75.103872, 2024: 73.537564, 2025: 77.721409 },
     { mes: 'Abril', 2020: 51.700998, 2021: 72.385209, 2022: 74.444922, 2023: 66.963648, 2024: 76.996233, 2025: 79.950675 },
-    { mes: 'Mayo', 2020: 49.907000, 2021: 60.846094, 2022: 78.773148, 2023: 73.497077, 2024: 78.696556, 2025: 81.060166 },
+    { mes: 'Mayo', 2020: 49.907000, 2021: 60.846094, 2022: 76.724748, 2023: 73.497077, 2024: 78.696556, 2025: 81.060166 },
     { mes: 'Junio', 2020: 62.715400, 2021: 65.832403, 2022: 73.988602, 2023: 76.035025, 2024: 72.097334, 2025: 76.063317 },
-    { mes: 'Julio', 2020: 71.248323, 2021: 72.504945, 2022: 77.755554, 2023: 75.228863, 2024: 77.151480, 2025: 82.034723 },
-    { mes: 'Agosto', 2020: 70.922275, 2021: 73.586423, 2022: 79.446614, 2023: 81.311122, 2024: 77.028631, 2025: 79.901057 },
+    { mes: 'Julio', 2020: 71.248323, 2021: 72.504945, 2022: 74.763961, 2023: 75.228863, 2024: 77.151480, 2025: 82.034723 },
+    { mes: 'Agosto', 2020: 70.922275, 2021: 75.886423, 2022: 79.446614, 2023: 81.311122, 2024: 77.028631, 2025: 79.901057 },
     { mes: 'Septiembre', 2020: 71.152570, 2021: 73.806860, 2022: 79.859780, 2023: 77.119645, 2024: 74.706219, 2025: 83.531101 },
     { mes: 'Octubre', 2020: 74.531194, 2021: 75.653586, 2022: 79.011016, 2023: 81.726509, 2024: 80.406617, 2025: 87.041058 },
-    { mes: 'Noviembre', 2020: 68.043264, 2021: 76.920167, 2022: 77.439680, 2023: 76.813697, 2024: 76.793286, 2025: 80.544846 },
+    { mes: 'Noviembre', 2020: 68.043264, 2021: 76.920167, 2022: 77.439680, 2023: 76.813697, 2024: 76.793286, 2025: 80.844846 },
     { mes: 'Diciembre', 2020: 66.082593, 2021: 73.135987, 2022: 75.664394, 2023: 71.740785, 2024: 75.402893, 2025: 80.299750 }
   ];
 
@@ -111,10 +111,13 @@ export default function EncasetamientoColombiaDashboard() {
               </thead>
               <tbody>
                 {encasetamientoData.map((row, index) => {
-                  const incrementoPorcentual = ((row[2025] - row[2024]) / row[2024] * 100).toFixed(1);
-                  const incrementoMesAnterior = index > 0 
-                    ? ((row[2025] - encasetamientoData[index - 1][2025]) / encasetamientoData[index - 1][2025] * 100).toFixed(1)
-                    : ((row[2025] - encasetamientoData[11][2025]) / encasetamientoData[11][2025] * 100).toFixed(1);
+                  const incrementoPorcentual = ((row[2025] - row[2024]) / row[2024] * 100).toFixed(2);
+                  // INCR. MES ANTER: cada mes 2025 vs mes anterior 2025
+                  // Enero 2025 vs Diciembre 2024
+                  const mesAnteriorVal = index > 0 
+                    ? encasetamientoData[index - 1][2025]
+                    : encasetamientoData[11][2024]; // Enero vs Dic 2024
+                  const incrementoMesAnterior = ((row[2025] - mesAnteriorVal) / mesAnteriorVal * 100).toFixed(2);
                   
                   return (
                     <tr key={row.mes} className="hover:bg-violet-100 transition-colors">
@@ -134,16 +137,17 @@ export default function EncasetamientoColombiaDashboard() {
                     </tr>
                   );
                 })}
-                <tr className="bg-violet-600 text-white font-bold">
-                  <td className="border-2 border-violet-700 p-2">TOTAL</td>
-                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2020])}</td>
-                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2021])}</td>
-                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2022])}</td>
-                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2023])}</td>
-                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2024])}</td>
-                  <td className="border-2 border-violet-700 p-2 text-right">{formatNumber(totalesEncasetamiento[2025])}</td>
-                  <td className="border-2 border-violet-700 p-2 text-right">-</td>
-                  <td className="border-2 border-violet-700 p-2 text-right">-</td>
+                <tr className="h-4"><td colSpan={9}></td></tr>
+                <tr className="font-bold border-t-4 border-blue-600 border-b-4">
+                  <td className="border border-gray-300 p-3 text-blue-700 text-sm">TOTAL</td>
+                  <td className="border border-gray-300 p-3 text-right text-blue-700 text-sm">{formatNumber(totalesEncasetamiento[2020])}</td>
+                  <td className="border border-gray-300 p-3 text-right text-blue-700 text-sm">{formatNumber(totalesEncasetamiento[2021])}</td>
+                  <td className="border border-gray-300 p-3 text-right text-blue-700 text-sm">{formatNumber(totalesEncasetamiento[2022])}</td>
+                  <td className="border border-gray-300 p-3 text-right text-blue-700 text-sm">{formatNumber(totalesEncasetamiento[2023])}</td>
+                  <td className="border border-gray-300 p-3 text-right text-blue-700 text-sm">{formatNumber(totalesEncasetamiento[2024])}</td>
+                  <td className="border border-gray-300 p-3 text-right text-blue-700 text-sm">{formatNumber(totalesEncasetamiento[2025])}</td>
+                  <td className="border border-gray-300 p-3"></td>
+                  <td className="border border-gray-300 p-3"></td>
                 </tr>
               </tbody>
             </table>
@@ -429,134 +433,102 @@ export default function EncasetamientoColombiaDashboard() {
           </div>
         </div>
 
-        {/* Análisis Comparativo Detallado */}
-        <div className="space-y-4">
-          <h4 className="text-lg font-bold text-gray-900 mb-4">Análisis Comparativo entre Años</h4>
+        {/* Análisis Comparativo Detallado — cálculos dinámicos */}
+        {(() => {
+          const t = totalesEncasetamiento;
+          const pct = (a, b) => ((b - a) / a * 100).toFixed(1);
+          const dif = (a, b) => (b - a).toFixed(2);
+          const comparaciones = [
+            { label: '2024 vs 2025', a: 2024, b: 2025, color: 'violet', textB: 'text-violet-600', desc: 'Crecimiento sostenido impulsado por mayor demanda nacional y mejora en condiciones de producción.' },
+            { label: '2023 vs 2024', a: 2023, b: 2024, color: 'blue', textB: 'text-blue-600', desc: 'Recuperación moderada después de la ligera caída en 2023.' },
+            { label: '2022 vs 2023', a: 2022, b: 2023, color: 'purple', textB: 'text-purple-600', desc: 'Ligera contracción debido a ajustes en el mercado y factores económicos.' },
+          ];
+          const crecTotal = pct(t[2020], t[2025]);
+          const difTotal = dif(t[2020], t[2025]);
+          const pfEnc = 32.4;
+          const participacion = (pfEnc / t[2025] * 100).toFixed(1);
 
-          {/* 2024 vs 2025 */}
-          <div className="p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
-            <div className="flex items-center justify-between mb-3">
-              <h5 className="text-base font-bold text-gray-900 mb-3">2024 vs 2025</h5>
-              <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold">
-                +5.6% ↑
-              </span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-              <div>
-                <p className="text-gray-600">2024 Total</p>
-                <p className="text-lg font-bold text-gray-900">911.54M</p>
-              </div>
-              <div>
-                <p className="text-gray-600">2025 Total</p>
-                <p className="text-lg font-bold text-violet-600">963.37M</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Diferencia</p>
-                <p className="text-lg font-bold text-green-600">+51.83M aves</p>
-              </div>
-            </div>
-            <p className="text-xs text-gray-700 mt-3">
-              Crecimiento sostenido impulsado por mayor demanda nacional y mejora en condiciones de producción.
-            </p>
-          </div>
+          return (
+            <div className="space-y-4">
+              <h4 className="text-lg font-bold text-gray-900 mb-4">Análisis Comparativo entre Años</h4>
 
-          {/* 2023 vs 2024 */}
-          <div className="p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
-            <div className="flex items-center justify-between mb-3">
-              <h5 className="text-base font-bold text-gray-900 mb-3">2023 vs 2024</h5>
-              <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold">
-                +1.1% ↑
-              </span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-              <div>
-                <p className="text-gray-600">2023 Total</p>
-                <p className="text-lg font-bold text-gray-900">901.48M</p>
-              </div>
-              <div>
-                <p className="text-gray-600">2024 Total</p>
-                <p className="text-lg font-bold text-blue-600">911.54M</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Diferencia</p>
-                <p className="text-lg font-bold text-green-600">+10.06M aves</p>
-              </div>
-            </div>
-            <p className="text-xs text-gray-700 mt-3">
-              Recuperación moderada después de la ligera caída en 2023.
-            </p>
-          </div>
+              {comparaciones.map(({ label, a, b, color, textB, desc }) => {
+                const p = parseFloat(pct(t[a], t[b]));
+                const d = parseFloat(dif(t[a], t[b]));
+                return (
+                  <div key={label} className={`p-4 rounded-lg bg-${color}-50 border-2 border-${color}-300`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <h5 className="text-base font-bold text-gray-900">{label}</h5>
+                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${p >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        {p >= 0 ? '+' : ''}{p}% {p >= 0 ? '↑' : '↓'}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">{a} Total</p>
+                        <p className="text-lg font-bold text-gray-900">{t[a].toFixed(2)}M</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">{b} Total</p>
+                        <p className={`text-lg font-bold ${textB}`}>{t[b].toFixed(2)}M</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Diferencia</p>
+                        <p className={`text-lg font-bold ${d >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                          {d >= 0 ? '+' : ''}{d}M aves
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-700 mt-3">{desc}</p>
+                  </div>
+                );
+              })}
 
-          {/* 2022 vs 2023 */}
-          <div className="p-4 rounded-lg bg-purple-50 border-2 border-purple-300">
-            <div className="flex items-center justify-between mb-3">
-              <h5 className="text-base font-bold text-gray-900 mb-3">2022 vs 2023</h5>
-              <span className="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm font-semibold">
-                -0.9% ↓
-              </span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-              <div>
-                <p className="text-gray-600">2022 Total</p>
-                <p className="text-lg font-bold text-gray-900">909.73M</p>
+              {/* Tendencia 2020-2025 */}
+              <div className="p-4 rounded-lg bg-green-50 border-2 border-green-300">
+                <h5 className="text-base font-bold text-gray-900 mb-3">Tendencia General 2020-2025</h5>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-gray-600">Crecimiento Total</p>
+                    <p className="text-2xl font-bold text-green-600">+{crecTotal}%</p>
+                    <p className="text-xs text-gray-600 mt-1">De {t[2020].toFixed(2)}M a {t[2025].toFixed(2)}M</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Incremento Absoluto</p>
+                    <p className="text-2xl font-bold text-green-600">+{difTotal}M</p>
+                    <p className="text-xs text-gray-600 mt-1">Aves adicionales en 5 años</p>
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-green-300">
+                  <p className="text-sm text-gray-700">
+                    <span className="font-bold">Conclusión:</span> El sector avícola colombiano muestra una tendencia
+                    de crecimiento sostenido con un incremento promedio anual de aproximadamente {(parseFloat(crecTotal) / 5).toFixed(1)}%, destacando especialmente el
+                    crecimiento del {pct(t[2024], t[2025])}% en 2025, el más alto del período analizado.
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-gray-600">2023 Total</p>
-                <p className="text-lg font-bold text-purple-600">901.48M</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Diferencia</p>
-                <p className="text-lg font-bold text-red-400">-8.25M aves</p>
-              </div>
-            </div>
-            <p className="text-xs text-gray-700 mt-3">
-              Ligera contracción debido a ajustes en el mercado y factores económicos.
-            </p>
-          </div>
 
-          {/* Tendencia 2020-2025 */}
-          <div className="p-4 rounded-lg bg-green-50 border-2 border-green-300">
-            <h5 className="text-base font-bold text-gray-900 mb-3">Tendencia General 2020-2025</h5>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div>
-                <p className="text-gray-600">Crecimiento Total</p>
-                <p className="text-2xl font-bold text-green-600">+21.4%</p>
-                <p className="text-xs text-gray-600 mt-1">De 793.44M a 963.37M</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Incremento Absoluto</p>
-                <p className="text-2xl font-bold text-green-600">+169.93M</p>
-                <p className="text-xs text-gray-600 mt-1">Aves adicionales en 5 años</p>
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t border-green-300">
-              <p className="text-sm text-gray-700">
-                <span className="font-bold">Conclusión:</span> El sector avícola colombiano muestra una tendencia 
-                de crecimiento sostenido con un incremento promedio anual de aproximadamente 4.3%, destacando especialmente el 
-                crecimiento del 5.6% en 2025, el más alto del período analizado.
-              </p>
-            </div>
-          </div>
-
-          {/* Participación Pollo Fiesta */}
-          <div className="p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
-            <h5 className="text-base font-bold text-gray-900 mb-3">Participación Pollo Fiesta 2025</h5>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="text-center p-3 rounded-lg bg-white border-2 border-gray-300">
-                <p className="text-xs text-gray-600 mb-1">Encasetamiento PF</p>
-                <p className="text-xl font-bold text-violet-600">32.4M</p>
-              </div>
-              <div className="text-center p-3 rounded-lg bg-white border-2 border-gray-300">
-                <p className="text-xs text-gray-600 mb-1">Total Nacional</p>
-                <p className="text-xl font-bold text-gray-900">963.37M</p>
-              </div>
-              <div className="text-center p-3 rounded-lg bg-white border-2 border-gray-300">
-                <p className="text-xs text-gray-600 mb-1">Participación</p>
-                <p className="text-xl font-bold text-green-600">3.3%</p>
+              {/* Participación Pollo Fiesta */}
+              <div className="p-4 rounded-lg bg-violet-50 border-2 border-violet-300">
+                <h5 className="text-base font-bold text-gray-900 mb-3">Participación Pollo Fiesta 2025</h5>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="text-center p-3 rounded-lg bg-white border-2 border-gray-300">
+                    <p className="text-xs text-gray-600 mb-1">Encasetamiento PF</p>
+                    <p className="text-xl font-bold text-violet-600">{pfEnc}M</p>
+                  </div>
+                  <div className="text-center p-3 rounded-lg bg-white border-2 border-gray-300">
+                    <p className="text-xs text-gray-600 mb-1">Total Nacional</p>
+                    <p className="text-xl font-bold text-gray-900">{t[2025].toFixed(2)}M</p>
+                  </div>
+                  <div className="text-center p-3 rounded-lg bg-white border-2 border-gray-300">
+                    <p className="text-xs text-gray-600 mb-1">Participación</p>
+                    <p className="text-xl font-bold text-green-600">{participacion}%</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          );
+        })()}
           </>
         )}
 
