@@ -66,7 +66,7 @@ export default function OperacionesDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Disponibilidad</span>
+            <span className="text-gray-600 text-xs font-medium">Disponibilidad Mantenimiento 2025 vs 2024</span>
             <TrendingDown className="w-5 h-5 text-orange-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">95,70%</div>
@@ -82,7 +82,7 @@ export default function OperacionesDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">OEE Global</span>
+            <span className="text-gray-600 text-xs font-medium">OEE Global Planta 2025 vs Meta</span>
             <Activity className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">86,4%</div>
@@ -98,7 +98,7 @@ export default function OperacionesDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-red-500/30 cursor-pointer hover:border-red-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">MTBF</span>
+            <span className="text-gray-600 text-xs font-medium">MTBF Tiempo Entre Fallas 2025 vs 2024</span>
             <AlertTriangle className="w-5 h-5 text-red-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">10,42 hrs</div>
@@ -114,7 +114,7 @@ export default function OperacionesDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-yellow-500/30 cursor-pointer hover:border-yellow-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">MTTR</span>
+            <span className="text-gray-600 text-xs font-medium">MTTR Tiempo de Reparación 2025 vs 2024</span>
             <Clock className="w-5 h-5 text-yellow-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">0,47 hrs</div>
@@ -599,9 +599,9 @@ export default function OperacionesDashboard({ data }) {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-cyan-400" />
-                  <h3 className="text-xl font-bold text-white">{modalContent.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
-                <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-white transition-colors">
+                <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
@@ -614,9 +614,9 @@ export default function OperacionesDashboard({ data }) {
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-gray-300">
+                        <tr className="bg-gradient-to-r from-cyan-500 to-blue-600 border-b-2 border-gray-300">
                           {Object.keys(modalContent.table[0]).map((key) => (
-                            <th key={key} className="text-left py-3 px-4 text-cyan-600 font-semibold">
+                            <th key={key} className="text-left py-3 px-4 text-white font-bold">
                               {key}
                             </th>
                           ))}
@@ -624,14 +624,27 @@ export default function OperacionesDashboard({ data }) {
                       </thead>
                       <tbody>
                         {modalContent.table.map((row, idx) => {
-                          const isTotal = row['Área'] === 'Total general';
+                          const isTotal = row['Área'] === 'Total general' || row['Mes'] === 'Total general';
+                          const keys = Object.keys(row);
                           return (
-                            <tr key={idx} className={`border-b border-gray-200 ${isTotal ? 'bg-blue-50 font-bold' : 'hover:bg-gray-50'}`}>
-                              {Object.values(row).map((value, i) => (
-                                <td key={i} className={`py-3 px-4 ${isTotal ? 'text-gray-900 font-bold' : 'text-gray-700'}`}>
-                                  {value}
-                                </td>
-                              ))}
+                            <tr key={idx} className={`border-b border-gray-200 ${isTotal ? 'bg-gray-100 font-bold border-t-2 border-gray-400' : idx % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100'}`}>
+                              {Object.entries(row).map(([key, value], i) => {
+                                const isCorrectiva = key === 'OT Correctiva' || key === 'Correctivas';
+                                const isPreventiva = key === 'OT Preventiva' || key === 'Preventivas';
+                                const isPct = key === '% Correctivas';
+                                const pctVal = isPct ? parseFloat(value) : 0;
+                                return (
+                                  <td key={i} className={`py-2 px-4 ${
+                                    isTotal ? 'text-gray-900 font-bold' :
+                                    isCorrectiva ? 'text-red-600 font-semibold text-right' :
+                                    isPreventiva ? 'text-green-600 text-right' :
+                                    isPct ? `text-right font-bold ${pctVal > 15 ? 'text-red-600' : 'text-green-600'}` :
+                                    i > 0 ? 'text-right text-gray-700' : 'text-gray-900 font-semibold'
+                                  }`}>
+                                    {value}
+                                  </td>
+                                );
+                              })}
                             </tr>
                           );
                         })}

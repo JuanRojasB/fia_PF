@@ -24,12 +24,14 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
     );
   }
 
+  // Abreviado para KPIs: $1.234M / $1.23B
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
-    return '$' + new Intl.NumberFormat('es-CO', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
+    const v = parseFloat(value);
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
   const formatNumber = (value) => {
@@ -165,7 +167,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Ventas Totales 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Ventas Totales Compañía 2025 (kg)</span>
             <Package className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.totalKilos)} kg</div>
@@ -186,7 +188,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Ingresos Totales 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Ingresos Totales Compañía 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(datos2025.totalIngresos)}</div>
@@ -207,7 +209,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Precio Promedio 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Precio Promedio $/kg Compañía 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(precioProm2025)}/kg</div>
@@ -228,7 +230,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Variación Total</span>
+            <span className="text-gray-600 text-sm font-medium">Variación Volumen 2025 vs 2024</span>
             <Percent className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.totalKilos - datos2024.totalKilos)} kg</div>
@@ -252,7 +254,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Pollo en Pie (Mayorista)</h3>
+            <h3 className="text-xl font-bold text-gray-900">Pollo en Pie (Mayorista) - Kilos y Precio 2025</h3>
             <Info className="w-5 h-5 text-blue-400" />
           </div>
           <div className="space-y-3">
@@ -282,7 +284,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Pollo en Canal</h3>
+            <h3 className="text-xl font-bold text-gray-900">Pollo en Canal - Kilos y Precio 2025</h3>
             <Info className="w-5 h-5 text-green-400" />
           </div>
           <div className="space-y-3">
@@ -555,71 +557,6 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           </table>
         </div>
       </CollapsibleTable>
-      {/* Gráfico Comparativo */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        onClick={() => openModal(
-          'Comparativa de Ventas 2024 vs 2025',
-          `Este gráfico muestra la evolución de ventas en kilos por categoría. Pollo en Pie (Mayorista) creció +6.05% con ${formatNumber(datos2025.pie.kilos)} kg en 2025. Pollo en Canal mostró un incremento marginal de +0.03% con ${formatNumber(datos2025.canal.kilos)} kg. El crecimiento total de la compañía fue de ${variacionKilosTotal}%, impulsado principalmente por el dinamismo del canal Mayorista.`
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Comparativa de Ventas 2024 vs 2025 (Kilos)</h3>
-          <Info className="w-5 h-5 text-blue-400 animate-pulse" />
-        </div>
-        <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={datosComparativa}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-            <XAxis dataKey="categoria" stroke="#64748b" />
-            <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`} />
-            <Tooltip content={({ active, payload, label }) => {
-              if (active && payload && payload.length) {
-                const val2024 = payload.find(p => p.dataKey === '2024')?.value || 0;
-                const val2025 = payload.find(p => p.dataKey === '2025')?.value || 0;
-                const diferencia = val2025 - val2024;
-                const variacion = val2024 > 0 ? ((diferencia / val2024) * 100).toFixed(1) : 0;
-                
-                return (
-                  <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl">
-                    <p className="font-bold text-gray-900 mb-3 text-lg">{label}</p>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center gap-4">
-                        <span className="text-blue-600 font-medium">2024:</span>
-                        <span className="font-bold text-gray-900">{formatNumber(val2024)} kg</span>
-                      </div>
-                      <div className="flex justify-between items-center gap-4">
-                        <span className="text-green-600 font-medium">2025:</span>
-                        <span className="font-bold text-gray-900">{formatNumber(val2025)} kg</span>
-                      </div>
-                      <div className="border-t border-gray-200 pt-2 mt-2">
-                        <div className="flex justify-between items-center gap-4">
-                          <span className="text-gray-600 font-medium">Diferencia:</span>
-                          <span className={`font-bold ${diferencia >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {diferencia >= 0 ? '+' : ''}{formatNumber(diferencia)} kg
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center gap-4 mt-1">
-                          <span className="text-gray-600 font-medium">Variación:</span>
-                          <span className={`font-bold ${variacion >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {variacion >= 0 ? '+' : ''}{variacion}%
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-              return null;
-            }} />
-            <Bar dataKey="2024" fill="#3b82f6" name="2024" radius={[8, 8, 0, 0]} />
-            <Bar dataKey="2025" fill="#10b981" name="2025" radius={[8, 8, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </motion.div>
-
 
       {/* Gráficos de Participación */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -634,7 +571,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-green-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Participación en Kilos 2025</h3>
+            <h3 className="text-xl font-bold text-gray-900">Participación en Kilos por Canal Comercial 2025</h3>
             <Info className="w-5 h-5 text-green-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={300}>
@@ -699,7 +636,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-cyan-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Participación en Kilos 2024</h3>
+            <h3 className="text-xl font-bold text-gray-900">Participación en Kilos por Canal Comercial 2024</h3>
             <Info className="w-5 h-5 text-cyan-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={300}>
@@ -799,6 +736,72 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           </motion.div>
         )}
       </AnimatePresence>
+            {/* Gráfico Comparativo */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        onClick={() => openModal(
+          'Comparativa de Ventas 2024 vs 2025',
+          `Este gráfico muestra la evolución de ventas en kilos por categoría. Pollo en Pie (Mayorista) creció +6.05% con ${formatNumber(datos2025.pie.kilos)} kg en 2025. Pollo en Canal mostró un incremento marginal de +0.03% con ${formatNumber(datos2025.canal.kilos)} kg. El crecimiento total de la compañía fue de ${variacionKilosTotal}%, impulsado principalmente por el dinamismo del canal Mayorista.`
+        )}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900">Ventas en Kilos por Canal Comercial 2024 vs 2025</h3>
+          <Info className="w-5 h-5 text-blue-400 animate-pulse" />
+        </div>
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart data={datosComparativa}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis dataKey="categoria" stroke="#64748b" />
+            <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`} />
+            <Tooltip content={({ active, payload, label }) => {
+              if (active && payload && payload.length) {
+                const val2024 = payload.find(p => p.dataKey === '2024')?.value || 0;
+                const val2025 = payload.find(p => p.dataKey === '2025')?.value || 0;
+                const diferencia = val2025 - val2024;
+                const variacion = val2024 > 0 ? ((diferencia / val2024) * 100).toFixed(1) : 0;
+                
+                return (
+                  <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl">
+                    <p className="font-bold text-gray-900 mb-3 text-lg">{label}</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center gap-4">
+                        <span className="text-blue-600 font-medium">2024:</span>
+                        <span className="font-bold text-gray-900">{formatNumber(val2024)} kg</span>
+                      </div>
+                      <div className="flex justify-between items-center gap-4">
+                        <span className="text-green-600 font-medium">2025:</span>
+                        <span className="font-bold text-gray-900">{formatNumber(val2025)} kg</span>
+                      </div>
+                      <div className="border-t border-gray-200 pt-2 mt-2">
+                        <div className="flex justify-between items-center gap-4">
+                          <span className="text-gray-600 font-medium">Diferencia:</span>
+                          <span className={`font-bold ${diferencia >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {diferencia >= 0 ? '+' : ''}{formatNumber(diferencia)} kg
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center gap-4 mt-1">
+                          <span className="text-gray-600 font-medium">Variación:</span>
+                          <span className={`font-bold ${variacion >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {variacion >= 0 ? '+' : ''}{variacion}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            }} />
+            <Bar dataKey="2024" fill="#3b82f6" name="2024" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="2025" fill="#10b981" name="2025" radius={[8, 8, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </motion.div>
+
+
     </div>
   );
 }

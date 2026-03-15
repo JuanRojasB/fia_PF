@@ -27,7 +27,7 @@ export default function CalidadDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Accidentes Laborales</span>
+            <span className="text-gray-600 text-xs font-medium">Accidentes Laborales 2025</span>
             <AlertTriangle className="w-5 h-5 text-orange-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">112</div>
@@ -43,7 +43,7 @@ export default function CalidadDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Reducción PQRs</span>
+            <span className="text-gray-600 text-xs font-medium">Reducción PQRs 2025 vs 2024</span>
             <TrendingDown className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">-28.45%</div>
@@ -59,7 +59,7 @@ export default function CalidadDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Planes de Acción</span>
+            <span className="text-gray-600 text-xs font-medium">Planes de Acción Ejecutados 2025</span>
             <FileCheck className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">154</div>
@@ -75,7 +75,7 @@ export default function CalidadDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Auditorías ISO</span>
+            <span className="text-gray-600 text-xs font-medium">Procesos Auditados ISO 9001:2015</span>
             <Shield className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">14</div>
@@ -185,7 +185,7 @@ export default function CalidadDashboard({ data }) {
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold text-gray-900">Seguridad y Salud en el Trabajo</h3>
+            <h3 className="text-xl font-bold text-gray-900">Seguridad y Salud en el Trabajo SST 2025</h3>
             <p className="text-sm text-gray-600 mt-1">Actividades y capacitaciones SST 2025</p>
           </div>
           <Info className="w-6 h-6 text-orange-600" />
@@ -226,7 +226,7 @@ export default function CalidadDashboard({ data }) {
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-bold text-gray-900">Sistema de Gestión ISO</h3>
+              <h3 className="text-xl font-bold text-gray-900">Sistema de Gestión ISO 9001 - Transición 2025-2026</h3>
               <p className="text-xs text-gray-600 mt-1">Transición a ISO 9001:2026</p>
             </div>
             <Info className="w-5 h-5 text-blue-600" />
@@ -266,7 +266,7 @@ export default function CalidadDashboard({ data }) {
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-bold text-gray-900">Encuestas de Satisfacción</h3>
+              <h3 className="text-xl font-bold text-gray-900">Encuestas de Satisfacción al Cliente 2025</h3>
               <p className="text-xs text-gray-600 mt-1">Medición experiencia del cliente</p>
             </div>
             <Info className="w-5 h-5 text-cyan-600" />

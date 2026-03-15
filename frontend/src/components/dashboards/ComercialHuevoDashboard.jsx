@@ -23,12 +23,14 @@ export default function ComercialHuevoDashboard({ data }) {
     );
   }
 
+  // Abreviado para KPIs: $1.234M / $1.23B
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
-    return '$' + new Intl.NumberFormat('es-CO', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
+    const v = parseFloat(value);
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
   const formatNumber = (value) => {
@@ -114,7 +116,7 @@ export default function ComercialHuevoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Unidades 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Unidades Huevo Vendidas 2025</span>
             <Package className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.unidades_vendidas)}</div>
@@ -135,7 +137,7 @@ export default function ComercialHuevoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Precio Promedio 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Precio Promedio/Unidad Huevo 2025</span>
             <TrendingDown className="w-6 h-6 text-red-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(datos2025.precio_promedio_unidad)}</div>
@@ -156,7 +158,7 @@ export default function ComercialHuevoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Ingresos 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Ingresos Huevo 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(datos2025.ingresos_totales_calculados)}</div>
@@ -177,7 +179,7 @@ export default function ComercialHuevoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Caída Precio 3 Años</span>
+            <span className="text-gray-600 text-sm font-medium">Caída Precio Huevo 2023→2025</span>
             <AlertTriangle className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-red-600 mb-1">{Math.abs(varPrecio3años)}%</div>
@@ -254,7 +256,7 @@ export default function ComercialHuevoDashboard({ data }) {
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-yellow-400 transition-all"
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Evolución de Ventas de Huevo (2023-2025)</h3>
+          <h3 className="text-xl font-bold text-gray-900">Evolución Unidades y Precio Promedio Huevo 2023-2025</h3>
           <Info className="w-5 h-5 text-yellow-400 animate-pulse" />
         </div>
         <ResponsiveContainer width="100%" height={400}>

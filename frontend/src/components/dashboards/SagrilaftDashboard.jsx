@@ -124,7 +124,7 @@ export default function SagrilaftDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Stakeholders Validados</span>
+            <span className="text-gray-600 text-sm">Stakeholders Validados SAGRILAFT 2025</span>
             <CheckCircle className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(resumen.total_validados)}</div>
@@ -180,7 +180,7 @@ export default function SagrilaftDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Stakeholders Rechazados</span>
+            <span className="text-gray-600 text-sm">Stakeholders Rechazados SAGRILAFT 2025</span>
             <AlertTriangle className="w-5 h-5 text-red-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(resumen.total_rechazados)}</div>
@@ -217,7 +217,7 @@ export default function SagrilaftDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Meta Documentación</span>
+            <span className="text-gray-600 text-sm">Cumplimiento Meta Documentación SAGRILAFT</span>
             <Target className="w-5 h-5 text-orange-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">24% → 10%</div>
@@ -272,7 +272,7 @@ export default function SagrilaftDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 cursor-pointer hover:border-red-500 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Stakeholders Rechazados por Contraparte</h3>
+            <h3 className="text-xl font-bold text-gray-900">Stakeholders Rechazados por Contraparte SAGRILAFT 2025</h3>
             <Info className="w-5 h-5 text-blue-600" />
           </div>
           <ResponsiveContainer width="100%" height={400}>
@@ -376,7 +376,7 @@ export default function SagrilaftDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Motivos de Rechazo</h3>
+            <h3 className="text-xl font-bold text-gray-900">Motivos de Rechazo SAGRILAFT 2025</h3>
             <Info className="w-5 h-5 text-blue-600" />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
@@ -433,7 +433,7 @@ export default function SagrilaftDashboard({ data }) {
       >
         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
           <FileCheck className="w-6 h-6 text-green-600" />
-          Acciones Implementadas por Área
+          Acciones Implementadas por Área SAGRILAFT 2025
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {hallazgos.map((h, idx) => (
@@ -495,7 +495,7 @@ export default function SagrilaftDashboard({ data }) {
         transition={{ delay: 0.8 }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-300"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Marco Normativo y Plataforma</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Marco Normativo SAGRILAFT y Plataforma de Gestión</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div 
             className="bg-gradient-to-br from-cyan-100 to-cyan-50 rounded-xl p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"

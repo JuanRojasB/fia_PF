@@ -33,7 +33,7 @@ export default function MarketingDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Retorno de Inversión</span>
+            <span className="text-gray-600 text-xs font-medium">ROI Promedio Campañas 2025</span>
             <TrendingUp className="w-5 h-5 text-green-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">17.4%</div>
@@ -49,7 +49,7 @@ export default function MarketingDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Campañas BTL</span>
+            <span className="text-gray-600 text-xs font-medium">Efectividad Campañas BTL 2025</span>
             <Target className="w-5 h-5 text-orange-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">82%</div>
@@ -65,7 +65,7 @@ export default function MarketingDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Ejecución Presupuestal</span>
+            <span className="text-gray-600 text-xs font-medium">Ejecución Presupuestal Marketing 2025</span>
             <DollarSign className="w-5 h-5 text-blue-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">83.7%</div>
@@ -81,7 +81,7 @@ export default function MarketingDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Pauta Digital</span>
+            <span className="text-gray-600 text-xs font-medium">CTR Pauta Digital 2025</span>
             <Zap className="w-5 h-5 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">CTR 2.7%</div>
@@ -160,7 +160,7 @@ export default function MarketingDashboard({ data }) {
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-bold text-gray-900">Crecimiento Redes Sociales</h3>
+              <h3 className="text-xl font-bold text-gray-900">Crecimiento de Seguidores en Redes Sociales 2025</h3>
               <p className="text-xs text-gray-600 mt-1">Seguidores en plataformas digitales</p>
             </div>
             <Info className="w-5 h-5 text-gray-600" />
@@ -196,7 +196,7 @@ export default function MarketingDashboard({ data }) {
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-bold text-gray-900">Retorno por Canal de Venta</h3>
+              <h3 className="text-xl font-bold text-gray-900">ROI por Canal de Venta - Campañas 2025</h3>
               <p className="text-xs text-gray-600 mt-1">ROI = Retorno sobre Inversión Publicitaria</p>
             </div>
             <Info className="w-5 h-5 text-gray-600" />

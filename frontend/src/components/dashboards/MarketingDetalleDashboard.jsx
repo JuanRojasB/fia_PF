@@ -51,7 +51,7 @@ export default function MarketingDetalleDashboard({ data }) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <TrendingUp className="w-6 h-6 text-green-600" />
-            <h3 className="text-xl font-bold text-gray-900">ROI de Campañas</h3>
+            <h3 className="text-xl font-bold text-gray-900">ROI de Campañas Publicitarias 2025</h3>
           </div>
           <Info className="w-5 h-5 text-green-600 animate-pulse" />
         </div>
@@ -109,7 +109,7 @@ export default function MarketingDetalleDashboard({ data }) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <Target className="w-6 h-6 text-yellow-600" />
-            <h3 className="text-xl font-bold text-gray-900">Campañas BTL</h3>
+            <h3 className="text-xl font-bold text-gray-900">Efectividad Campañas BTL 2025 vs Meta</h3>
           </div>
           <Info className="w-5 h-5 text-yellow-600 animate-pulse" />
         </div>
@@ -160,7 +160,7 @@ export default function MarketingDetalleDashboard({ data }) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <DollarSign className="w-6 h-6 text-blue-600" />
-            <h3 className="text-xl font-bold text-gray-900">Cumplimiento Presupuesto</h3>
+            <h3 className="text-xl font-bold text-gray-900">Cumplimiento Presupuesto Marketing 2025</h3>
           </div>
           <Info className="w-5 h-5 text-blue-600 animate-pulse" />
         </div>
@@ -219,7 +219,7 @@ export default function MarketingDetalleDashboard({ data }) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <Zap className="w-6 h-6 text-purple-600" />
-            <h3 className="text-xl font-bold text-gray-900">Efectividad Digital</h3>
+            <h3 className="text-xl font-bold text-gray-900">Efectividad Digital CTR/CPC Pauta 2025</h3>
           </div>
           <Info className="w-5 h-5 text-purple-600 animate-pulse" />
         </div>

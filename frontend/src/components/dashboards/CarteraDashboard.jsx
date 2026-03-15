@@ -47,9 +47,14 @@ export default function CarteraDashboard({ data }) {
     return new Intl.NumberFormat('es-CO').format(value);
   };
 
+  // Abreviado para KPIs: $1.234M / $1.23B
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
-    return `$${new Intl.NumberFormat('es-CO').format(value)}`;
+    const v = parseFloat(value);
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    return `$${new Intl.NumberFormat('es-CO').format(v)}`;
   };
 
   return (
@@ -89,7 +94,7 @@ export default function CarteraDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Rotación Dic 2025</span>
+            <span className="text-gray-600 text-sm">Rotación Cartera Dic 2025 vs Meta</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumenAnual.rotacion_dic_2025} días</div>
@@ -126,7 +131,7 @@ export default function CarteraDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Ventas Contado</span>
+            <span className="text-gray-600 text-sm">Ventas Contado 2025 vs 2024</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumenAnual.ventas_contado_promedio}%</div>
@@ -165,7 +170,7 @@ export default function CarteraDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Morosidad Promedio</span>
+            <span className="text-gray-600 text-sm">Morosidad Promedio Cartera 2025 vs Meta</span>
             <AlertTriangle className="w-5 h-5 text-yellow-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumenAnual.morosidad_promedio}%</div>
@@ -200,7 +205,7 @@ export default function CarteraDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Cartera Dic 2025</span>
+            <span className="text-gray-600 text-sm">Saldo Cartera Dic 2025 vs Dic 2024</span>
             <CreditCard className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">${formatNumber(resumenAnual.cartera_dic_2025)}M</div>
@@ -255,7 +260,7 @@ export default function CarteraDashboard({ data }) {
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">Saldo Total de Cartera por Cobrar</h3>
+            <h3 className="text-xl font-bold text-gray-900">Saldo Total de Cartera por Cobrar 2025 vs 2024</h3>
             <p className="text-sm text-gray-600 mt-1">Comparación 2025 vs 2024 (millones de pesos)</p>
           </div>
           <Info className="w-5 h-5 text-blue-600 animate-pulse" />
@@ -372,7 +377,7 @@ export default function CarteraDashboard({ data }) {
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">Tiempo Promedio de Cobro</h3>
+            <h3 className="text-xl font-bold text-gray-900">Tiempo Promedio de Cobro 2025 (Días - Meta ≤15)</h3>
             <p className="text-sm text-gray-600 mt-1">Días que tardan los clientes en pagar (Meta: ≤15 días)</p>
           </div>
           <Info className="w-5 h-5 text-blue-600 animate-pulse" />
@@ -463,7 +468,7 @@ export default function CarteraDashboard({ data }) {
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">Cartera Vencida</h3>
+            <h3 className="text-xl font-bold text-gray-900">Cartera Vencida 2025 - % Facturas No Pagadas a Tiempo</h3>
             <p className="text-sm text-gray-600 mt-1">Porcentaje de facturas no pagadas a tiempo</p>
           </div>
           <Info className="w-5 h-5 text-blue-600 animate-pulse" />
@@ -589,7 +594,7 @@ export default function CarteraDashboard({ data }) {
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">Forma de Pago de los Clientes</h3>
+            <h3 className="text-xl font-bold text-gray-900">Forma de Pago de Clientes 2025 (Contado vs Crédito)</h3>
             <p className="text-sm text-gray-600 mt-1">Porcentaje de ventas al contado vs crédito</p>
           </div>
           <Info className="w-5 h-5 text-blue-600 animate-pulse" />

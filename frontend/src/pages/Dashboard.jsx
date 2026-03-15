@@ -364,7 +364,7 @@ export default function Dashboard() {
           }}
         >
           {/* Header con botones de navegación */}
-          <div className="mb-6 lg:mb-8 sticky top-0 z-30 bg-gradient-to-b from-white via-white to-transparent pb-4 pt-2">
+          <div className="mb-6 lg:mb-8 sticky top-0 z-30 pb-4 pt-2" style={{ background: 'linear-gradient(to bottom, rgba(248,250,252,1) 0%, rgba(248,250,252,0.97) 45%, rgba(241,245,249,0.75) 75%, rgba(241,245,249,0) 100%)' }}>
             <div className="flex items-center justify-between gap-4">
               <div className="flex-1">
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">

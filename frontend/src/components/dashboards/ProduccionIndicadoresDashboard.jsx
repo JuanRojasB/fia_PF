@@ -84,7 +84,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 )}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Conversión Alimenticia</span>
+                  <span className="text-gray-600 text-sm">Conversión Alimenticia Real vs Meta 2025</span>
                   <Target className="w-5 h-5 text-cyan-400" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900">{formatDecimal(conversionPollo)}</div>
@@ -105,7 +105,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 )}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Mortalidad</span>
+                  <span className="text-gray-600 text-sm">Mortalidad Real vs Meta 2025</span>
                   <AlertTriangle className="w-5 h-5 text-red-400" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900">{formatDecimal(mortalidadPollo)}%</div>
@@ -126,7 +126,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 )}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Peso Promedio</span>
+                  <span className="text-gray-600 text-sm">Peso Promedio Real vs Meta 2025</span>
                   <Award className="w-5 h-5 text-yellow-400" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900">{formatDecimal(pesoPromedioPollo, 2)}</div>
@@ -147,7 +147,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 )}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Días de Engorde</span>
+                  <span className="text-gray-600 text-sm">Días de Engorde Real vs Meta 2025</span>
                   <TrendingUp className="w-5 h-5 text-orange-400" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900">{formatDecimal(diasEngordePollo)}</div>
@@ -168,7 +168,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 )}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Índice Productivo</span>
+                  <span className="text-gray-600 text-sm">Índice Productivo Real vs Meta 2025</span>
                   <Zap className="w-5 h-5 text-purple-400" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900">{formatDecimal(efiAlimPollo)}</div>
@@ -461,7 +461,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 `Mortalidad ideal: <5%. Peso promedio objetivo: 2.4-2.6 kg. Baja mortalidad indica buen manejo sanitario. Peso consistente facilita comercialización y procesamiento. Ambos indicadores son clave para rentabilidad.`
               )}
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Mortalidad % y Peso Promedio</h3>
+            <h3 className="text-xl font-bold text-gray-900">Mortalidad % y Peso Promedio por Lote 2025</h3>
               <p className="text-sm text-gray-600 mb-6">Indicadores de sanidad y calidad</p>
               <ResponsiveContainer width="100%" height={400}>
                 <ComposedChart data={datosPolloChart} margin={{ left: 20, right: 20 }}>
@@ -520,7 +520,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 `Número total de pollos procesados (sacrificados) por año. Este indicador muestra el crecimiento o reducción de la operación. Mayor volumen procesado indica expansión del negocio.`
               )}
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Pollo Procesado 2024 vs 2025</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Pollo Procesado en Planta de Beneficio 2024 vs 2025</h3>
               <p className="text-sm text-gray-600 mb-6">Volumen total de producción</p>
               <ResponsiveContainer width="100%" height={400}>
                 <ComposedChart data={datosPolloChart} margin={{ left: 20, right: 20, bottom: 20 }}>

@@ -20,9 +20,11 @@ export default function ComprasDashboard({ data }) {
   const { comprasMensuales, totales, mesesMayorCrecimiento, mesesCaidas2024 } = data;
 
   const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const millones = parseFloat(value) / 1000000;
-    return `$${millones.toFixed(1)}M`;
+    if (!value || isNaN(value)) return "$0";
+    const v = parseFloat(value);
+    if (v >= 1000000000) return "$" + (v / 1000000000).toFixed(2) + " mil M";
+    const millones = v / 1000000;
+    return "$" + millones.toFixed(1) + "M";
   };
 
   const formatCurrencyFull = (value) => {
@@ -463,4 +465,3 @@ export default function ComprasDashboard({ data }) {
     </div>
   );
 }
-

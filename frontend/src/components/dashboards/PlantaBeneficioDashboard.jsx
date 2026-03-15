@@ -91,7 +91,7 @@ export default function PlantaBeneficioDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Total Aves 2025</span>
+            <span className="text-gray-600 text-sm">Total Aves Beneficiadas 2025</span>
             <Factory className="w-5 h-5 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{(totales.totalAves2025 / 1000000).toFixed(2)}M</div>
@@ -113,7 +113,7 @@ export default function PlantaBeneficioDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Peso Promedio 2025</span>
+            <span className="text-gray-600 text-sm">Peso Promedio Canal 2025 vs Meta</span>
             <Activity className="w-5 h-5 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{totales.promedioPeso2025}g</div>
@@ -135,7 +135,7 @@ export default function PlantaBeneficioDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Merma Planta 2025</span>
+            <span className="text-gray-600 text-sm">Merma Planta Beneficio 2025 vs Meta</span>
             <TrendingDown className="w-5 h-5 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">5,38%</div>
@@ -157,7 +157,7 @@ export default function PlantaBeneficioDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Canal + Víscera</span>
+            <span className="text-gray-600 text-sm">Rendimiento Canal + Víscera 2025</span>
             <Award className="w-5 h-5 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">94,68%</div>
@@ -248,7 +248,7 @@ export default function PlantaBeneficioDashboard({ data }) {
           );
         }}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Promedio de Peso por Ave Mensual</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Promedio de Peso por Ave Mensual 2024 vs 2025 (g)</h3>
         <p className="text-sm text-gray-600 mb-6">Peso en gramos • Más estable en 2025</p>
         <ResponsiveContainer width="100%" height={450}>
           <LineChart data={datosPesosMensuales} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
@@ -307,7 +307,7 @@ export default function PlantaBeneficioDashboard({ data }) {
           );
         }}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Participación por Rangos de Peso</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Participación por Rangos de Peso 2024 vs 2025 (%)</h3>
         <p className="text-sm text-gray-600 mb-6">Distribución de aves por categoría de peso</p>
         <ResponsiveContainer width="100%" height={450}>
           <LineChart data={datosRangos} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
@@ -423,7 +423,7 @@ export default function PlantaBeneficioDashboard({ data }) {
           );
         }}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Participación Canal y Vísceras - Histórico 2021-2025</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Participación Canal y Vísceras - Histórico Rendimientos 2021-2025 (%)</h3>
         <p className="text-sm text-gray-600 mb-6">Evolución de rendimientos operativos</p>
         <ResponsiveContainer width="100%" height={450}>
           <BarChart data={datosCanal} margin={{ top: 5, right: 30, left: 20, bottom: 20 }}>

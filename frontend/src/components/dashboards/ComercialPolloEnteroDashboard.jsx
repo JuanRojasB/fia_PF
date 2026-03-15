@@ -104,7 +104,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Pollo Entero Planta 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Producción Pollo Entero Planta 2025</span>
             <Package className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.polloEnteroPlanta)}</div>
@@ -125,7 +125,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Vta Un. Línea Asadero 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Ventas Línea Asadero 2025 (und)</span>
             <TrendingUp className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.ventaLineaAsadero)}</div>
@@ -146,7 +146,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">% Participación 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Participación Asadero vs Planta 2025</span>
             <Percent className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{datos2025.participacionLograda}%</div>
@@ -167,7 +167,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Puntos Faltantes</span>
+            <span className="text-gray-600 text-sm font-medium">Puntos Faltantes para Meta 50%</span>
             <Target className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{datos2025.puntosFaltantes} pts</div>
@@ -277,7 +277,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-orange-500 transition-all cursor-pointer"
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Evolución Histórica 2023-2025</h3>
+          <h3 className="text-xl font-bold text-gray-900">Evolución Histórica Ventas Pollo Entero 2023-2025</h3>
           <Info className="w-5 h-5 text-orange-400 animate-pulse" />
         </div>
         <ResponsiveContainer width="100%" height={350}>
@@ -338,7 +338,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-green-500 transition-all cursor-pointer"
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Evolución de Participación vs Meta</h3>
+          <h3 className="text-xl font-bold text-gray-900">Evolución de Participación Pollo Entero vs Meta 2025</h3>
           <Info className="w-5 h-5 text-green-400 animate-pulse" />
         </div>
         <ResponsiveContainer width="100%" height={300}>

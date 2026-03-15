@@ -24,12 +24,14 @@ export default function ComercialProductosDashboard({ data }) {
     );
   }
 
+  // Abreviado para KPIs: $1.234M / $1.23B
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
-    return '$' + new Intl.NumberFormat('es-CO', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
+    const v = parseFloat(value);
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
   const formatNumber = (value) => {
@@ -121,7 +123,7 @@ export default function ComercialProductosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Ventas Totales 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Ventas Pollo Canal 2025 (kg)</span>
             <Package className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(total2025)}</div>
@@ -143,7 +145,7 @@ export default function ComercialProductosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Ingresos Totales 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Ingresos Pollo Canal 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatCurrency(ingresos2025)}</div>
@@ -165,7 +167,7 @@ export default function ComercialProductosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Precio Promedio 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Precio Promedio $/kg Canal 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatCurrency(precioProm2025)}/kg</div>
@@ -187,7 +189,7 @@ export default function ComercialProductosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Líneas en Crecimiento</span>
+            <span className="text-gray-600 text-sm font-medium">Líneas de Producto en Crecimiento 2025</span>
             <Percent className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{lineasCrecimiento.length}</div>
@@ -323,7 +325,7 @@ export default function ComercialProductosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Comparativa 2024 vs 2025</h3>
+            <h3 className="text-xl font-bold text-gray-900">Ventas en Kilos por Línea de Producto 2024 vs 2025</h3>
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={400}>
@@ -388,7 +390,7 @@ export default function ComercialProductosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Participación en Ventas 2025</h3>
+            <h3 className="text-xl font-bold text-gray-900">Participación en Ventas por Línea de Producto 2025 (%)</h3>
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <div className="flex items-center justify-center">

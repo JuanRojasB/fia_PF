@@ -69,7 +69,7 @@ export default function Presupuesto2025Dashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Crecimiento 2025</span>
+            <span className="text-gray-600 text-sm">Crecimiento Ventas Presupuesto 2025 vs 2024</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{variablesMacro.crecimiento}%</div>
@@ -88,7 +88,7 @@ export default function Presupuesto2025Dashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Efectivo 2025</span>
+            <span className="text-gray-600 text-sm">Flujo de Efectivo Presupuestado 2025</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">${formatNumber(presupuestoCaja.efectivo_2025)}</div>
@@ -110,7 +110,7 @@ export default function Presupuesto2025Dashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Mortalidad 2025</span>
+            <span className="text-gray-600 text-sm">Mortalidad Presupuestada 2025 vs Meta</span>
             <AlertCircle className="w-5 h-5 text-yellow-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{variablesMacro.mortalidad_2025}%</div>
@@ -126,7 +126,7 @@ export default function Presupuesto2025Dashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Inflación 2025</span>
+            <span className="text-gray-600 text-sm">Inflación Proyectada 2025 vs 2024</span>
             <PieChartIcon className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{variablesMacro.inflacion_2025}%</div>
@@ -364,7 +364,7 @@ export default function Presupuesto2025Dashboard({ data }) {
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Situación Jurídica y Tecnológica</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Situación Jurídica y Tecnológica Pollo Fiesta 2025</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div
             className="bg-white/95 rounded-xl p-4 border-2 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"

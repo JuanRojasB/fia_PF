@@ -24,12 +24,14 @@ export default function ComercialInstitucionalDashboard({ data }) {
     );
   }
 
+  // Abreviado para KPIs: $1.234M / $1.23B
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
-    return '$' + new Intl.NumberFormat('es-CO', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
+    const v = parseFloat(value);
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
   const formatNumber = (value) => {
@@ -47,15 +49,17 @@ export default function ComercialInstitucionalDashboard({ data }) {
     codigo: v.codigo_linea,
     kilos2025: parseFloat(v.kilos_2025) || 0,
     kilos2024: parseFloat(v.kilos_2024) || 0,
-    precio2025: parseFloat(v.precio_2025) || 0,
-    precio2024: parseFloat(v.precio_2024) || 0
+    precio2025: v.precio_2025 != null && v.precio_2025 !== '' ? parseFloat(v.precio_2025) : null,
+    precio2024: v.precio_2024 != null && v.precio_2024 !== '' ? parseFloat(v.precio_2024) : null,
   }));
 
   // Calcular variaciones
   datosTabla.forEach(d => {
     d.variacion = d.kilos2025 - d.kilos2024;
     d.varPct = d.kilos2024 > 0 ? (((d.kilos2025 - d.kilos2024) / d.kilos2024) * 100).toFixed(2) : 0;
-    d.varPrecio = d.precio2024 > 0 ? (((d.precio2025 - d.precio2024) / d.precio2024) * 100).toFixed(2) : 0;
+    d.varPrecio = (d.precio2024 != null && d.precio2024 > 0 && d.precio2025 != null)
+      ? (((d.precio2025 - d.precio2024) / d.precio2024) * 100).toFixed(2)
+      : 'N/D';
   });
 
   // Agrupar por temperatura
@@ -73,14 +77,16 @@ export default function ComercialInstitucionalDashboard({ data }) {
   const total2024 = totalRefrig2024 + totalCongel2024;
   const variacionKilos = total2024 > 0 ? (((total2025 - total2024) / total2024) * 100).toFixed(2) : 0;
 
-  // Calcular ingresos
-  const ingresos2025 = datosTabla.reduce((sum, d) => sum + (d.kilos2025 * d.precio2025), 0);
-  const ingresos2024 = datosTabla.reduce((sum, d) => sum + (d.kilos2024 * d.precio2024), 0);
+  // Calcular ingresos — solo líneas con precio válido
+  const ingresos2025 = datosTabla.reduce((sum, d) => sum + (d.precio2025 != null ? d.kilos2025 * d.precio2025 : 0), 0);
+  const ingresos2024 = datosTabla.reduce((sum, d) => sum + (d.precio2024 != null ? d.kilos2024 * d.precio2024 : 0), 0);
   const variacionIngresos = ingresos2024 > 0 ? (((ingresos2025 - ingresos2024) / ingresos2024) * 100).toFixed(2) : 0;
 
-  // Precio promedio
-  const precioProm2025 = total2025 > 0 ? (ingresos2025 / total2025).toFixed(0) : 0;
-  const precioProm2024 = total2024 > 0 ? (ingresos2024 / total2024).toFixed(0) : 0;
+  // Precio promedio ponderado — números, no strings
+  const kilosCon2025 = datosTabla.reduce((sum, d) => sum + (d.precio2025 != null ? d.kilos2025 : 0), 0);
+  const kilosCon2024 = datosTabla.reduce((sum, d) => sum + (d.precio2024 != null ? d.kilos2024 : 0), 0);
+  const precioProm2025 = kilosCon2025 > 0 ? Math.round(ingresos2025 / kilosCon2025) : 0;
+  const precioProm2024 = kilosCon2024 > 0 ? Math.round(ingresos2024 / kilosCon2024) : 0;
   const variacionPrecio = precioProm2024 > 0 ? (((precioProm2025 - precioProm2024) / precioProm2024) * 100).toFixed(2) : 0;
 
   // Participación por temperatura
@@ -131,7 +137,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Ventas Totales 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Ventas Institucional 2025 (kg)</span>
             <Package className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(total2025)}</div>
@@ -153,7 +159,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Ingresos Totales 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Ingresos Canal Institucional 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatCurrency(ingresos2025)}</div>
@@ -175,7 +181,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Precio Promedio 2025</span>
+            <span className="text-gray-600 text-sm font-medium">Precio Promedio $/kg Institucional 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatCurrency(precioProm2025)}/kg</div>
@@ -197,7 +203,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Participación Refrigerado</span>
+            <span className="text-gray-600 text-sm font-medium">Participación Refrigerado vs Congelado 2025</span>
             <Percent className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{partRefrig}%</div>
@@ -237,8 +243,8 @@ export default function ComercialInstitucionalDashboard({ data }) {
           </thead>
           <tbody>
             {refrigerado.map((d, idx) => {
-              const part2025 = totalRefrig2025 > 0 ? ((d.kilos2025 / totalRefrig2025) * 100).toFixed(2) : 0;
-              const part2024 = totalRefrig2024 > 0 ? ((d.kilos2024 / totalRefrig2024) * 100).toFixed(2) : 0;
+              const part2025 = total2025 > 0 ? ((d.kilos2025 / total2025) * 100).toFixed(2) : 0;
+              const part2024 = total2024 > 0 ? ((d.kilos2024 / total2024) * 100).toFixed(2) : 0;
               return (
                 <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
                   <td className="py-2 px-4 text-gray-900">{d.linea}</td>
@@ -257,15 +263,19 @@ export default function ComercialInstitucionalDashboard({ data }) {
                       {d.varPct}%
                     </span>
                   </td>
-                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{formatCurrency(d.precio2025)}</td>
-                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{formatCurrency(d.precio2024)}</td>
+                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2025 != null ? formatCurrency(d.precio2025) : 'N/D'}</td>
+                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2024 != null ? formatCurrency(d.precio2024) : 'N/D'}</td>
                   <td className="py-2 px-4 text-right tabular-nums">
+                    {d.varPrecio === 'N/D' ? (
+                      <span className="text-gray-400">N/D</span>
+                    ) : (
                     <span className={`inline-flex items-center gap-1 ${parseFloat(d.varPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                       <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(d.varPrecio) >= 0 ? 'bg-green-500' : 'bg-red-500'}`}>
                         ●
                       </span>
                       {d.varPrecio}%
                     </span>
+                    )}
                   </td>
                 </tr>
               );
@@ -273,9 +283,9 @@ export default function ComercialInstitucionalDashboard({ data }) {
             <tr className="bg-blue-50 border-t-2 border-blue-400 font-bold">
               <td className="py-3 px-4 text-gray-900">Total Refrigerado</td>
               <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{formatNumber(totalRefrig2025)}</td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">100.00%</td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{total2025 > 0 ? ((totalRefrig2025 / total2025) * 100).toFixed(2) : '0.00'}%</td>
               <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{formatNumber(totalRefrig2024)}</td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">100.00%</td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{total2024 > 0 ? ((totalRefrig2024 / total2024) * 100).toFixed(2) : '0.00'}%</td>
               <td className={`py-3 px-4 text-right tabular-nums ${(totalRefrig2025 - totalRefrig2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 {formatNumber(totalRefrig2025 - totalRefrig2024)}
               </td>
@@ -320,8 +330,8 @@ export default function ComercialInstitucionalDashboard({ data }) {
           </thead>
           <tbody>
             {congelado.map((d, idx) => {
-              const part2025 = totalCongel2025 > 0 ? ((d.kilos2025 / totalCongel2025) * 100).toFixed(2) : 0;
-              const part2024 = totalCongel2024 > 0 ? ((d.kilos2024 / totalCongel2024) * 100).toFixed(2) : 0;
+              const part2025 = total2025 > 0 ? ((d.kilos2025 / total2025) * 100).toFixed(2) : 0;
+              const part2024 = total2024 > 0 ? ((d.kilos2024 / total2024) * 100).toFixed(2) : 0;
               return (
                 <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
                   <td className="py-2 px-4 text-gray-900">{d.linea}</td>
@@ -340,15 +350,19 @@ export default function ComercialInstitucionalDashboard({ data }) {
                       {d.varPct}%
                     </span>
                   </td>
-                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{formatCurrency(d.precio2025)}</td>
-                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{formatCurrency(d.precio2024)}</td>
+                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2025 != null ? formatCurrency(d.precio2025) : 'N/D'}</td>
+                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2024 != null ? formatCurrency(d.precio2024) : 'N/D'}</td>
                   <td className="py-2 px-4 text-right tabular-nums">
+                    {d.varPrecio === 'N/D' ? (
+                      <span className="text-gray-400">N/D</span>
+                    ) : (
                     <span className={`inline-flex items-center gap-1 ${parseFloat(d.varPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                       <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(d.varPrecio) >= 0 ? 'bg-green-500' : 'bg-red-500'}`}>
                         ●
                       </span>
                       {d.varPrecio}%
                     </span>
+                    )}
                   </td>
                 </tr>
               );
@@ -356,9 +370,9 @@ export default function ComercialInstitucionalDashboard({ data }) {
             <tr className="bg-green-50 border-t-2 border-green-400 font-bold">
               <td className="py-3 px-4 text-gray-900">Total Congelado</td>
               <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{formatNumber(totalCongel2025)}</td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">100.00%</td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{total2025 > 0 ? ((totalCongel2025 / total2025) * 100).toFixed(2) : '0.00'}%</td>
               <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{formatNumber(totalCongel2024)}</td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">100.00%</td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{total2024 > 0 ? ((totalCongel2024 / total2024) * 100).toFixed(2) : '0.00'}%</td>
               <td className={`py-3 px-4 text-right tabular-nums ${(totalCongel2025 - totalCongel2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 {formatNumber(totalCongel2025 - totalCongel2024)}
               </td>
@@ -418,7 +432,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Comparativa 2024 vs 2025</h3>
+            <h3 className="text-xl font-bold text-gray-900">Ventas Canal Institucional en Kilos 2024 vs 2025</h3>
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={300}>
@@ -483,7 +497,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Participación por Temperatura 2025</h3>
+            <h3 className="text-xl font-bold text-gray-900">Participación Refrigerado vs Congelado Canal Institucional 2025</h3>
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <div className="flex items-center justify-center">

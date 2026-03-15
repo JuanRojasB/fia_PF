@@ -493,15 +493,38 @@ class DashboardRepository extends IDashboardRepository {
         console.log('⚠️ Tabla log_control_mermas no existe, continuando sin mermas');
       }
       
-      // Vista de cumplimiento 2025 - con manejo de errores
+      // Vista de cumplimiento 2025 - construir desde log_control_mermas si la vista está vacía
       let cumplimiento2025 = [];
       try {
-        const [result] = await pool.query(`
-          SELECT * FROM vista_log_cumplimiento_mermas_2025
-        `);
+        const [result] = await pool.query(`SELECT * FROM vista_log_cumplimiento_mermas_2025`);
         cumplimiento2025 = result;
       } catch (error) {
         console.log('⚠️ Vista vista_log_cumplimiento_mermas_2025 no existe, continuando sin cumplimiento');
+      }
+
+      // Si la vista está vacía, construir desde log_control_mermas
+      if (cumplimiento2025.length === 0) {
+        const mermas2025 = mermas.filter(m => parseInt(m.anio) === 2025);
+        const mermas2024 = mermas.filter(m => parseInt(m.anio) === 2024);
+        cumplimiento2025 = mermas2025.map(m => {
+          const m2024 = mermas2024.find(x => x.sede === m.sede);
+          const mermaReal = parseFloat(m.porcentaje_merma_real);
+          const meta = parseFloat(m.porcentaje_meta);
+          const merma2024 = m2024 ? parseFloat(m2024.porcentaje_merma_real) : null;
+          const brecha = (mermaReal - meta).toFixed(2);
+          const mejora = m2024 ? (mermaReal - merma2024).toFixed(2) : null;
+          return {
+            sede: m.sede,
+            merma_2025: mermaReal.toFixed(2),
+            meta_establecida: meta.toFixed(2),
+            brecha_puntos_porcentuales: brecha,
+            merma_2024: merma2024 ? merma2024.toFixed(2) : null,
+            mejora_vs_2024: mejora,
+            cumple_meta: mermaReal <= meta ? 'Sí' : 'No',
+            estado_auditoria: mermaReal <= meta ? 'Cumple meta' : `Brecha ${brecha}pp`
+          };
+        });
+        console.log('✅ cumplimiento2025 construido desde log_control_mermas:', cumplimiento2025.length, 'registros');
       }
       
       // Calcular promedios por sede

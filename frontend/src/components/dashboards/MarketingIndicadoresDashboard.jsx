@@ -45,7 +45,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
           className="bg-white rounded-xl p-6 border-4 border-green-200 hover:border-green-400 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">ROI de Campañas</span>
+            <span className="text-gray-600 text-sm">ROI Campañas Marketing 2025 vs Meta</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">17.4%</div>
@@ -81,7 +81,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
           className="bg-white rounded-xl p-6 border-4 border-yellow-200 hover:border-yellow-400 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Campañas BTL</span>
+            <span className="text-gray-600 text-sm">Campañas BTL Ejecutadas 2025 vs Programadas</span>
             <Target className="w-5 h-5 text-yellow-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">82%</div>
@@ -117,7 +117,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
           className="bg-white rounded-xl p-6 border-4 border-blue-200 hover:border-blue-400 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Cumplimiento Presupuesto</span>
+            <span className="text-gray-600 text-sm">Cumplimiento Presupuesto Marketing 2025</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">83.7%</div>
@@ -154,7 +154,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
           className="bg-white rounded-xl p-6 border-4 border-purple-200 hover:border-purple-400 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Efectividad Digital</span>
+            <span className="text-gray-600 text-sm">Efectividad Campañas Digitales 2025</span>
             <Zap className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">3.7</div>
@@ -217,7 +217,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
         className="bg-white rounded-xl p-6 border border-gray-200 hover:border-purple-400 transition-all cursor-pointer"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-gray-900">Resumen de Indicadores</h3>
+          <h3 className="text-xl font-bold text-gray-900">Resumen de Indicadores Estratégicos Marketing 2025</h3>
           <Info className="w-5 h-5 text-purple-600 animate-pulse" />
         </div>
         <div className="overflow-x-auto">

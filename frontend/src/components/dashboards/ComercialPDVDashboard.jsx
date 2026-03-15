@@ -23,9 +23,14 @@ export default function ComercialPDVDashboard({ data }) {
     return new Intl.NumberFormat('es-CO').format(value);
   };
 
+  // Abreviado para KPIs: $1.234M / $1.23B
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
-    return `$${new Intl.NumberFormat('es-CO').format(value)}`;
+    const v = parseFloat(value);
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    return `$${new Intl.NumberFormat('es-CO').format(v)}`;
   };
 
   return (
@@ -63,7 +68,7 @@ export default function ComercialPDVDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Total PDV</span>
+            <span className="text-gray-600 text-sm">Total Puntos de Venta Activos 2025</span>
             <Store className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumen.total_pdv}</div>
@@ -93,7 +98,7 @@ export default function ComercialPDVDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Coordinadores</span>
+            <span className="text-gray-600 text-sm">Coordinadores PDV Activos 2025</span>
             <Users className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumen.total_coordinadores}</div>
@@ -128,7 +133,7 @@ export default function ComercialPDVDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Crecimiento Bogotá</span>
+            <span className="text-gray-600 text-sm">Crecimiento Ventas PDV Bogotá 2025 vs 2024</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">+{crecimientoBogota.crecimiento_kilos_pct}%</div>
@@ -165,7 +170,7 @@ export default function ComercialPDVDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Ventas Bogotá 2025</span>
+            <span className="text-gray-600 text-sm">Ventas PDV Bogotá 2025 vs 2024</span>
             <Package className="w-5 h-5 text-orange-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{crecimientoBogota.kilos_2025_ton} ton</div>
@@ -187,7 +192,7 @@ export default function ComercialPDVDashboard({ data }) {
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">Distribución de Puntos de Venta por Coordinador</h3>
+            <h3 className="text-xl font-bold text-gray-900">Distribución de Puntos de Venta por Coordinador 2025</h3>
             <p className="text-sm text-gray-600 mt-1">Organización de la red comercial</p>
           </div>
         </div>

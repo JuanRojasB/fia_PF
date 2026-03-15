@@ -101,7 +101,7 @@ export default function ComercialEstructuraDashboard({ data }) {
           className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
           onClick={() => openModal(
             'Estructura del Equipo Comercial',
-            'El equipo comercial está organizado en 3 categorías de negocio (Pollo en Pie, Pollo en Canal, Huevos) con 7 agrupaciones especializadas por canal de venta, lideradas por 10 profesionales comerciales. Esta estructura permite atención especializada y enfoque estratégico en cada segmento de mercado: Mayorista (José Rodríguez), Institucional (Hernán Benito), Asadero (German Rodríguez), Sede 5 (Yenny Alvarado), PDV (Elmira González & Michael Arias), Yopal (Julián Mora), y Huevos (Margarita Roa Barrera).'
+            'El equipo comercial está organizado en 3 categorías de negocio (Pollo en Pie, Pollo en Canal, Huevos) con 7 agrupaciones especializadas por canal de venta, lideradas por 10 asesores comerciales. Esta estructura permite atención especializada y enfoque estratégico en cada segmento de mercado: Mayorista (José Rodríguez), Institucional (Hernán Benito), Asadero (German Rodríguez), Sede 5 (Yenny Alvarado), PDV (Elmira González & Michael Arias), Yopal (Julián Mora), y Huevos (Margarita Roa Barrera).'
           )}
         >
           <div className="flex items-center justify-between mb-4">
@@ -174,7 +174,7 @@ export default function ComercialEstructuraDashboard({ data }) {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-blue-600" />
-              Comparativa 2024 vs 2025
+              Unidades Procesadas por Sede 2024 vs 2025
             </h3>
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
@@ -241,7 +241,7 @@ export default function ComercialEstructuraDashboard({ data }) {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
               <Package className="w-5 h-5 text-green-600" />
-              Participación 2025
+              Participación de Unidades Procesadas por Sede 2025 (%)
             </h3>
             <Info className="w-5 h-5 text-green-400 animate-pulse" />
           </div>
@@ -303,7 +303,7 @@ export default function ComercialEstructuraDashboard({ data }) {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-purple-600" />
-            Variación Porcentual 2024 a 2025
+            Variación Porcentual de Unidades Procesadas 2024 a 2025
           </h3>
           <Info className="w-5 h-5 text-purple-400 animate-pulse" />
         </div>

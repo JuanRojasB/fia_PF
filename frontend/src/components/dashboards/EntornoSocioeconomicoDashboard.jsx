@@ -10,42 +10,45 @@ export default function EntornoSocioeconomicoDashboard() {
   const [showPrecioPolloInfo, setShowPrecioPolloInfo] = useState(false);
   const [showDesempleoInfo, setShowDesempleoInfo] = useState(false);
   // Datos PIB - Gasto en alimentos (Millones de pesos constantes)
-  const pibData = [
+const pibData = [
     { trimestre: 'I', año: '2019', valor: 25000, index: 0 },
-    { trimestre: 'II', año: '2019', valor: 25200, index: 1 },
+    { trimestre: 'II', año: '2019', valor: 25500, index: 1 },
     { trimestre: 'III', año: '2019', valor: 25800, index: 2 },
     { trimestre: 'IV', año: '2019', valor: 26300, index: 3 },
-    { trimestre: 'I', año: '2020', valor: 28200, index: 4 },
+    { trimestre: 'I', año: '2020', valor: 28300, index: 4 },
     { trimestre: 'II', año: '2020', valor: 27500, index: 5 },
-    { trimestre: 'III', año: '2020', valor: 27800, index: 6 },
-    { trimestre: 'IV', año: '2020', valor: 28500, index: 7 },
-    { trimestre: 'I', año: '2021', valor: 28300, index: 8 },
-    { trimestre: 'II', año: '2021', valor: 30400, index: 9 },
-    { trimestre: 'III', año: '2021', valor: 30500, index: 10 },
-    { trimestre: 'IV', año: '2021', valor: 30600, index: 11 },
+    { trimestre: 'III', año: '2020', valor: 27500, index: 6 },
+    { trimestre: 'IV', año: '2020', valor: 28400, index: 7 },
+    { trimestre: 'I', año: '2021', valor: 28500, index: 8 },
+    { trimestre: 'II', año: '2021', valor: 28200, index: 9 },
+    { trimestre: 'III', año: '2021', valor: 29100, index: 10 },
+    { trimestre: 'IV', año: '2021', valor: 29600, index: 11 },
     { trimestre: 'I', año: '2022', valor: 30400, index: 12 },
-    { trimestre: 'II', año: '2022', valor: 30200, index: 13 },
+    { trimestre: 'II', año: '2022', valor: 30400, index: 13 },
     { trimestre: 'III', año: '2022', valor: 30500, index: 14 },
-    { trimestre: 'IV', año: '2022', valor: 30800, index: 15 },
-    { trimestre: 'I', año: '2023p', valor: 31000, index: 16 },
-    { trimestre: 'II', año: '2023p', valor: 31200, index: 17 },
-    { trimestre: 'III', año: '2023p', valor: 31800, index: 18 },
-    { trimestre: 'IV', año: '2023p', valor: 31200, index: 19 },
-    { trimestre: 'I', año: '2024pr', valor: 31500, index: 20 },
-    { trimestre: 'II', año: '2024pr', valor: 32000, index: 21 },
-    { trimestre: 'III', año: '2024pr', valor: 32100, index: 22 },
+    { trimestre: 'IV', año: '2022', valor: 30200, index: 15 },
+    { trimestre: 'I', año: '2023p', valor: 30200, index: 16 },
+    { trimestre: 'II', año: '2023p', valor: 30300, index: 17 },
+    { trimestre: 'III', año: '2023p', valor: 30600, index: 18 },
+    { trimestre: 'IV', año: '2023p', valor: 31000, index: 19 },
+    { trimestre: 'I', año: '2024pr', valor: 31300, index: 20 },
+    { trimestre: 'II', año: '2024pr', valor: 31000, index: 21 },
+    { trimestre: 'III', año: '2024pr', valor: 31900, index: 22 },
     { trimestre: 'IV', año: '2024pr', valor: 32000, index: 23 },
-    { trimestre: 'I', año: '2025pr', valor: 31800, index: 24 },
-    { trimestre: 'II', año: '2025pr', valor: 31500, index: 25 },
-    { trimestre: 'III', año: '2025pr', valor: 31200, index: 26 }
-  ];
+    { trimestre: 'I', año: '2025pr', valor: 32100, index: 24 },
+    { trimestre: 'II', año: '2025pr', valor: 32150, index: 25 },
+    { trimestre: 'III', año: '2025pr', valor: 32200, index: 26 }
+];
 
-  // Datos para la línea de tendencia (línea roja)
+  // Tendencia recta: sube de 25000 (index 0) a 32000 (index 26), luego cierra a 25000
   const tendenciaData = pibData.map((item, index) => ({
     ...item,
-    tendencia: 25000 + (index * 250) // Línea de tendencia ascendente
+    tendencia: Math.round(25000 + ((32000 - 25000) / 26) * index)
   }));
-
+  const tendenciaConCierre = [
+    ...tendenciaData,
+    { trimestre: '', año: '', valor: null, index: 26.01, tendencia: 25000 }
+  ];
   // Datos de Tasas de Crecimiento por Actividad Económica
   const actividadesData = [
     { actividad: 'Agricultura, ganadería, caza, silvicultura y pesca', anual2025: 3.1, anual2025_IV: -0.4, trim2025_III: -2.6 },
@@ -79,16 +82,15 @@ export default function EntornoSocioeconomicoDashboard() {
   ];
 
   // Datos de Granos - Soya y Maíz (US$ por tonelada)
-  const granosData = [
-    { año: '2019', soya: 350, maiz: 180 },
-    { año: '2020', soya: 380, maiz: 200 },
-    { año: '2021', soya: 550, maiz: 280 },
-    { año: '2022', soya: 700, maiz: 350 },
-    { año: '2023', soya: 450, maiz: 250 },
-    { año: '2024', soya: 420, maiz: 220 },
-    { año: '2025', soya: 440, maiz: 230 }
-  ];
-
+const granosData = [
+  { año: '2019', soya: 360, maiz: 190 },
+  { año: '2020', soya: 380, maiz: 195 },
+  { año: '2021', soya: 580, maiz: 300 },
+  { año: '2022', soya: 640, maiz: 350 },
+  { año: '2023', soya: 590, maiz: 280 },
+  { año: '2024', soya: 490, maiz: 230 },
+  { año: '2025', soya: 480, maiz: 240 }
+];
   // Datos de Precios en Colombia - Maíz, Soya y Torta (miles de pesos por tonelada)
   const preciosColombiaData = [
     { año: '2023', maizAmarillo: 1567, soyaGrano: 1576, tortaSoya: 1133 },
@@ -123,11 +125,11 @@ export default function EntornoSocioeconomicoDashboard() {
       {/* Graphs Section */}
       <div className="space-y-8">
           {/* PIB Chart */}
-          <div className="rounded-xl overflow-hidden border-2 border-blue-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
+          <div className="rounded-xl border-2 border-blue-500/30 bg-white/95 p-4 sm:p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
               <div className="flex-1">
                 <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center">
-                  Gasto en alimentos
+                  Gasto en Alimentos de Hogares Colombianos 2020-2025
                 </h3>
                 <p className="text-sm text-gray-600 text-center">
                   Millones de pesos constantes
@@ -159,9 +161,9 @@ export default function EntornoSocioeconomicoDashboard() {
               </div>
             )}
             
-            <div className="w-full">
+            <div className="w-full" style={{ overflow: "visible", paddingLeft: "0px" }}>
               <ResponsiveContainer width="100%" height={450}>
-                <LineChart data={tendenciaData} margin={{ bottom: 65, top: 20, left: 50, right: 30 }}>
+                <LineChart data={tendenciaConCierre} margin={{ bottom: 65, top: 20, left: 80, right: 30 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                   <XAxis 
                     dataKey="index"
@@ -177,19 +179,11 @@ export default function EntornoSocioeconomicoDashboard() {
                   />
                   <YAxis 
                     stroke="#94a3b8" 
-                    tick={{ fontSize: 14, fill: '#64748b' }}
-                    domain={[24000, 33000]}
-                    ticks={[24000, 25000, 26000, 27000, 28000, 29000, 30000, 31000, 32000, 33000]}
-                    tickFormatter={(value) => `${value.toLocaleString('es-CO')}`}
-                    width={55}
-                  />
-                  <YAxis 
-                    stroke="#94a3b8" 
-                    tick={{ fontSize: 15, fill: '#64748b' }}
-                    domain={[24000, 33000]}
-                    ticks={[24000, 25000, 26000, 27000, 28000, 29000, 30000, 31000, 32000, 33000]}
-                    tickFormatter={(value) => `$${value.toLocaleString('es-CO')}`}
-                    width={75}
+                    tick={{ fontSize: 13, fill: '#64748b' }}
+                    domain={[24000, 33500]}
+                    ticks={[25000, 26000, 27000, 28000, 29000, 30000, 31000, 32000, 33000]}
+                    tickFormatter={(value) => String(value).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                    width={70}
                   />
                   <Tooltip 
                     contentStyle={{ 
@@ -224,13 +218,13 @@ export default function EntornoSocioeconomicoDashboard() {
                     activeDot={{ r: 6, fill: '#f59e0b', strokeWidth: 2, stroke: '#fff' }}
                   />
                   <Line 
-                    type="monotone" 
+                    type="linear" 
                     dataKey="tendencia" 
                     name="Tendencia" 
                     stroke="#ef4444" 
-                    strokeWidth={2.5}
-                    strokeDasharray="6 3"
+                    strokeWidth={3}
                     dot={false}
+                    connectNulls={false}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -896,7 +890,7 @@ export default function EntornoSocioeconomicoDashboard() {
               Estimación de precios en Colombia (2023-2026)
             </h3>
             <p className="text-sm text-gray-700 text-center mb-6">
-              Maíz, Soya y Torta - miles de pesos por tonelada
+              Maíz, Soya y Torta - miles de millones de pesos por tonelada
             </p>
 
             {/* gráfica de Precios Colombia */}
@@ -904,7 +898,7 @@ export default function EntornoSocioeconomicoDashboard() {
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart 
                     data={preciosColombiaData} 
-                    margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
+                    margin={{ bottom: 40, top: 40, left: 90, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                     <XAxis 
@@ -915,10 +909,11 @@ export default function EntornoSocioeconomicoDashboard() {
                     />
                     <YAxis 
                       stroke="#94a3b8" 
-                      tick={{ fontSize: 17 }}
+                      tick={{ fontSize: 14 }}
+                      width={70}
                       domain={[1000, 2000]}
                       ticks={[1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000]}
-                      label={{ value: 'Miles de pesos por tonelada', angle: -90, position: 'insideLeft', style: { fontSize: 17, fill: '#94a3b8' } }}
+                      label={{ value: 'Miles MM$ / ton', angle: -90, position: 'insideLeft', dx: -10, style: { fontSize: 13, fill: '#94a3b8' } }}
                     />
                     <Tooltip 
                       contentStyle={{ 
@@ -934,7 +929,7 @@ export default function EntornoSocioeconomicoDashboard() {
                           soyaGrano: 'Soya grano',
                           tortaSoya: 'Torta de soya'
                         };
-                        return [`${value.toLocaleString()} miles de millones de pesos`, labels[name] || name];
+                        return [`${value.toLocaleString()}  MM$/ton`, labels[name] || name];
                       }}
                     />
                     <Legend 

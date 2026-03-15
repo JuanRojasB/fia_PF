@@ -75,7 +75,7 @@ export default function AuditoriaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total Auditorías</span>
+            <span className="text-gray-600 text-sm font-medium">Total Auditorías Ejecutadas 2025</span>
             <FileText className="w-5 h-5 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{totales.totalAuditorias}</div>
@@ -94,7 +94,7 @@ export default function AuditoriaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Devolución 2025</span>
+            <span className="text-gray-600 text-sm font-medium">% Devolución Promedio 2025</span>
             <TrendingDown className="w-5 h-5 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%</div>
@@ -113,7 +113,7 @@ export default function AuditoriaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Variación vs 2024</span>
+            <span className="text-gray-600 text-sm font-medium">Variación Devoluciones 2025 vs 2024</span>
             {totales.variacion2025vs2024 < 0 ? (
               <TrendingDown className="w-5 h-5 text-green-400" />
             ) : (
@@ -140,7 +140,7 @@ export default function AuditoriaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Registros Mensuales</span>
+            <span className="text-gray-600 text-sm font-medium">Registros Mensuales de Devoluciones</span>
             <CheckCircle className="w-5 h-5 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{totales.totalDevolucionesMensuales}</div>
@@ -273,7 +273,7 @@ export default function AuditoriaDashboard({ data }) {
               transition={{ delay: 0.8 }}
               className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Hallazgos Recientes</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Hallazgos de Auditoría Recientes 2025</h3>
               <div className="space-y-3">
                 {hallazgos.slice(0, 5).map((hall, idx) => (
                   <div key={idx} className="bg-gray-100/30 rounded-lg p-3 border border-gray-300">
@@ -303,7 +303,7 @@ export default function AuditoriaDashboard({ data }) {
               transition={{ delay: 0.9 }}
               className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Planes de Acción</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Planes de Acción Correctiva 2025</h3>
               <div className="space-y-3">
                 {planesAccion.slice(0, 5).map((plan, idx) => (
                   <div key={idx} className="bg-gray-100/30 rounded-lg p-3 border border-gray-300">

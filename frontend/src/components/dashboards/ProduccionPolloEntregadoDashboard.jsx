@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Truck, TrendingDown, Package, AlertCircle, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
-import StandardTable from '../StandardTable';
 import { getValueColor } from '../../utils/colorUtils';
 
 export default function ProduccionPolloEntregadoDashboard({ data }) {
@@ -175,47 +174,77 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
         </motion.div>
       </div>
 
-      {/* Tabla Comparativa */}
-      <CollapsibleTable 
-        title="Comparativo de Aves Entregadas 2025 vs 2024"
-        defaultOpen={false}
+      {/* Tabla Histórica Pollo Entregado */}
+      <CollapsibleTable
+        title="Pollo Entregado — Cantidad en Unidades (Histórico 2018-2025)"
+        defaultOpen={true}
         totalRow={[
-          { label: 'TOTAL 2025 vs 2024' },
-          { label: `Real Granjas: ${formatNumber(datos2025.real_granjas)}`, color: 'text-green-600' },
-          { label: `Comprado: ${formatNumber(datos2025.comprado)}`, color: 'text-orange-500' },
-          { label: `Total: ${formatNumber(Math.round(datos2025.total / 1000000))}M`, color: 'text-blue-600' },
-          { label: `Var: ${datos2025.var_pct}%`, color: parseFloat(datos2025.var_pct) >= 0 ? 'text-green-500' : 'text-red-500', badge: true, badgeColor: parseFloat(datos2025.var_pct) >= 0 ? 'bg-green-500' : 'bg-red-500', badgeIcon: parseFloat(datos2025.var_pct) >= 0 ? '↑' : '↓' },
+          { label: 'Histórico 2018-2025' },
+          { label: 'Real 2025: 29.435.711', color: 'text-green-600' },
+          { label: 'Total 2025: 29.674.213', color: 'text-blue-600' },
+          { label: 'Var 2025: +2.7%', color: 'text-green-600' },
         ]}
       >
-        <StandardTable
-          headers={[
-            { label: 'Año', key: 'año', align: 'left', bold: true },
-            { label: 'Programado', key: 'programado', align: 'right' },
-            { label: 'REAL', key: 'real_granjas', align: 'right', bold: true, bgColor: 'rgba(240, 253, 244, 0.5)' },
-            { label: 'Comprado', key: 'comprado', align: 'right', bold: true, bgColor: 'rgba(255, 251, 235, 0.5)' },
-            { label: 'Total', key: 'total', align: 'right', bold: true, bgColor: 'rgba(239, 246, 255, 0.5)' },
-            { label: '%Var', key: 'var_pct', align: 'right', type: 'variation' }
-          ]}
-          rows={[
-            {
-              año: '2025',
-              programado: formatNumber(datos2025.programado),
-              real_granjas: formatNumber(datos2025.real_granjas),
-              comprado: formatNumber(datos2025.comprado),
-              total: formatNumber(datos2025.total),
-              var_pct: `${datos2025.var_pct}%`
-            },
-            {
-              año: '2024',
-              programado: formatNumber(datos2024.programado),
-              real_granjas: formatNumber(datos2024.real_granjas),
-              comprado: formatNumber(datos2024.comprado),
-              total: formatNumber(datos2024.total),
-              var_pct: `${datos2024.var_pct}%`
-            }
-          ]}
-          highlightVariations={true}
-        />
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr>
+                <th colSpan={6} className="text-center py-2 text-blue-600 font-bold text-base border-b-2 border-blue-200">
+                  Cantidad en Unidades
+                </th>
+              </tr>
+              <tr className="border-b-2 border-blue-300">
+                <th className="text-left py-3 px-4 text-blue-600 font-bold">Año</th>
+                <th className="text-right py-3 px-4 text-blue-600 font-bold">Programado</th>
+                <th className="text-right py-3 px-4 text-blue-600 font-bold">REAL</th>
+                <th className="text-right py-3 px-4 text-blue-600 font-bold">Comprado</th>
+                <th className="text-right py-3 px-4 text-blue-600 font-bold">Total</th>
+                <th className="text-right py-3 px-4 text-blue-600 font-bold">%Var Vertical<br/>sobre Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(polloEntregado.length > 0 ? polloEntregado.map(p => ({
+                anio: p.anio,
+                programado: parseInt(p.programado) || 0,
+                real: parseInt(p.real_granjas) || 0,
+                comprado: parseInt(p.comprado) || 0,
+                total: parseInt(p.total) || 0,
+                var: p.var_pct !== null ? parseFloat(p.var_pct) : null
+              })) : [
+                { anio: 2018, programado: 26617724, real: 26353497, comprado: 664575,  total: 27018072, var: null },
+                { anio: 2019, programado: 27353834, real: 27201661, comprado: 618577,  total: 27820238, var: 3.0  },
+                { anio: 2020, programado: 27816195, real: 23666296, comprado: 659756,  total: 24326052, var: -12.5 },
+                { anio: 2021, programado: 31212400, real: 28303721, comprado: 398578,  total: 28702299, var: 18.0 },
+                { anio: 2022, programado: 33632300, real: 30042350, comprado: 582264,  total: 30624614, var: 6.7  },
+                { anio: 2023, programado: 30805997, real: 29171431, comprado: 427670,  total: 29599101, var: -3.3 },
+                { anio: 2024, programado: 30581067, real: 28604260, comprado: 274229,  total: 28878489, var: -2.4 },
+                { anio: 2025, programado: 30872786, real: 29435711, comprado: 238502,  total: 29674213, var: 2.7  },
+              ]).sort((a, b) => a.anio - b.anio).map((row, idx) => {
+                const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-blue-50/30';
+                const es2025 = row.anio === 2025;
+                return (
+                  <tr key={row.anio} className={`${rowBg} hover:bg-blue-100/40 transition-colors border-b border-gray-100`}>
+                    <td className="py-2 px-4 font-bold text-gray-800">
+                      {es2025 ? (
+                        <span className="inline-block bg-blue-600 text-white px-2 py-0.5 rounded font-bold">{row.anio}</span>
+                      ) : row.anio}
+                    </td>
+                    <td className="py-2 px-4 text-right text-gray-700">{formatNumber(row.programado)}</td>
+                    <td className="py-2 px-4 text-right text-gray-800 font-medium">{formatNumber(row.real)}</td>
+                    <td className="py-2 px-4 text-right text-gray-700">{formatNumber(row.comprado)}</td>
+                    <td className="py-2 px-4 text-right text-blue-700 font-bold">{formatNumber(row.total)}</td>
+                    <td className={`py-2 px-4 text-right font-bold ${
+                      row.var === null ? 'text-gray-400' :
+                      row.var >= 0 ? 'text-gray-800' : 'text-red-600'
+                    }`}>
+                      {row.var === null ? '' : `${row.var > 0 ? '' : ''}${row.var.toFixed(1)}%`}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </CollapsibleTable>
 
       {/* Gráficos Mejorados */}
@@ -232,7 +261,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Comparativo Aves Real vs Programado</h3>
+            <h3 className="text-xl font-bold text-gray-900">Aves Entregadas Real vs Programado por Mes 2025</h3>
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={350}>
@@ -314,7 +343,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-green-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Composición: Real vs Comprado(Avi/Cambulos)</h3>
+            <h3 className="text-xl font-bold text-gray-900">Composición Aves Entregadas: Granjas Propias vs Comprado (Avi/Cambulos) 2025</h3>
             <Info className="w-5 h-5 text-green-400 animate-pulse" />
           </div>
           

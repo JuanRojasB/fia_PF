@@ -119,7 +119,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
         >
           <div className="flex items-center gap-3 mb-2">
             <CheckCircle2 className="w-7 h-7 text-green-600" />
-            <h3 className="text-lg font-bold text-gray-900">Activos</h3>
+            <h3 className="text-lg font-bold text-gray-900">Proyectos TI Activos 2025</h3>
           </div>
           <div className="text-3xl font-bold text-green-600">{proyectos.filter(p => p.estado === 'Activo').length}</div>
           <p className="text-xs text-gray-600 mt-1">Proyectos operando</p>
@@ -137,7 +137,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
         >
           <div className="flex items-center gap-3 mb-2">
             <Clock className="w-7 h-7 text-yellow-600" />
-            <h3 className="text-lg font-bold text-gray-900">En Desarrollo</h3>
+            <h3 className="text-lg font-bold text-gray-900">Proyectos TI en Desarrollo 2025</h3>
           </div>
           <div className="text-3xl font-bold text-yellow-600">{proyectos.filter(p => p.estado === 'En Proceso').length}</div>
           <p className="text-xs text-gray-600 mt-1">Marketplace Corporativo</p>
@@ -155,7 +155,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
         >
           <div className="flex items-center gap-3 mb-2">
             <Database className="w-7 h-7 text-purple-600" />
-            <h3 className="text-lg font-bold text-gray-900">Iniciativas</h3>
+            <h3 className="text-lg font-bold text-gray-900">Iniciativas Tecnológicas 2025</h3>
           </div>
           <div className="text-3xl font-bold text-purple-600">{iniciativas.length}</div>
           <p className="text-xs text-gray-600 mt-1">Proyectos tecnológicos</p>

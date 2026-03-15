@@ -9,11 +9,11 @@ export default function NegocioMarchaDashboard() {
       title: 'Rentabilidad y Mercado 2025',
       color: 'from-green-500 to-green-600',
       highlights: [
-        { text: 'mejores precios de ventas', color: 'text-green-600 font-bold' },
+        { text: '-2.19%', color: 'text-red-600 font-bold' },
         { text: 'fortalece el control interno', color: 'text-emerald-600 font-bold' }
       ],
       content: [
-        'Durante el año 2025, el mercado de oferta y demanda generó mejores precios de ventas.',
+        'Durante el año 2025, el mercado de oferta y demanda se contrajo en el -2.19% en el precio de venta.',
         'La revisión de procesos de control con niveles de autorizaciones escalonados para la proveeduría de bienes y servicios fortalece el control interno en los procesos misionales de la compañía.'
       ]
     },
@@ -145,7 +145,7 @@ export default function NegocioMarchaDashboard() {
                 highlightedText = highlightedText.replace(/OEE \(Overall Equipment Effectiveness – Eficiencia Global Productiva\)/g, '<span class="font-bold">OEE (Overall Equipment Effectiveness – Eficiencia Global Productiva)</span>');
                 
                 // Resaltar "mejores precios"
-                highlightedText = highlightedText.replace(/mejores precios de ventas/g, '<span class="font-bold">mejores precios de ventas</span>');
+                highlightedText = highlightedText.replace(/-2\.19%/g, '<span class="font-bold text-red-600">-2.19%</span>');
                 
                 // Resaltar "fortalece el control interno"
                 highlightedText = highlightedText.replace(/fortalece el control interno/g, '<span class="font-bold">fortalece el control interno</span>');

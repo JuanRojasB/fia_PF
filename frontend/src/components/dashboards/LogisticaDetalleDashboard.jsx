@@ -75,7 +75,18 @@ export default function LogisticaDetalleDashboard({ data }) {
                   <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
                   <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
                   <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
-                  <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var 25/24</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">
+                    <span className="inline-flex items-center gap-1 justify-end">
+                      % Var 25/24
+                      <span className="relative group cursor-help">
+                        <span className="w-4 h-4 rounded-full bg-white/30 text-gray-900 text-xs flex items-center justify-center font-bold">?</span>
+                        <span className="absolute right-0 top-6 z-50 hidden group-hover:block w-56 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl leading-relaxed">
+                          🟢 Verde = reducción de gasto (positivo para la empresa)<br/>
+                          🔴 Rojo = incremento de gasto (requiere atención)
+                        </span>
+                      </span>
+                    </span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -94,8 +105,10 @@ export default function LogisticaDetalleDashboard({ data }) {
                       </td>
                       <td className="py-2 px-4 text-right tabular-nums">
                         <span className={`flex items-center justify-end gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
-                          {esIncremento ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                          {Math.abs(variacion).toFixed(2)}%
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs text-white ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
+                            {esIncremento ? '↑' : '↓'}
+                          </span>
+                          {variacion.toFixed(2)}%
                         </span>
                       </td>
                     </tr>
@@ -110,8 +123,19 @@ export default function LogisticaDetalleDashboard({ data }) {
                   <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
                     $ {totalSede2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </td>
-                  <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
-                    {totalSede2024 > 0 ? (((totalSede2025 - totalSede2024) / totalSede2024) * 100).toFixed(2) : 0}%
+                  <td className="py-3 px-4 text-right tabular-nums">
+                    {(() => {
+                      const varTotal = totalSede2024 > 0 ? (((totalSede2025 - totalSede2024) / totalSede2024) * 100) : 0;
+                      const esInc = varTotal > 0;
+                      return (
+                        <span className={`inline-flex items-center justify-end gap-1 ${esInc ? 'text-red-600' : 'text-green-600'}`}>
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs text-white ${esInc ? 'bg-red-500' : 'bg-green-500'}`}>
+                            {esInc ? '↑' : '↓'}
+                          </span>
+                          {varTotal.toFixed(2)}%
+                        </span>
+                      );
+                    })()}
                   </td>
                 </tr>
               </tbody>

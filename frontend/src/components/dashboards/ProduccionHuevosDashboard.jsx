@@ -98,7 +98,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Huevos Producidos 2025</span>
+            <span className="text-gray-600 text-sm">Huevos Producidos 2025 vs Programado</span>
             <Egg className="w-5 h-5 text-yellow-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(totalHuevos2025)}</div>
@@ -120,7 +120,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Huevos Producidos 2024</span>
+            <span className="text-gray-600 text-sm">Huevos Producidos 2024 vs Programado</span>
             <Egg className="w-5 h-5 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(totalHuevos2024)}</div>
@@ -142,7 +142,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Comparación 2025 vs 2024</span>
+            <span className="text-gray-600 text-sm">Comparación Huevos Producidos 2025 vs 2024</span>
             <TrendingUp className="w-5 h-5 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{diferenciaProductividad > 0 ? '+' : ''}{formatDecimal(diferenciaProductividad)}</div>
@@ -166,7 +166,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Diferencia vs Estándar</span>
+            <span className="text-gray-600 text-sm">Productividad Real vs Estándar 2025</span>
             {productividadReal2025 > productividadTabla2025 ? <Award className="w-5 h-5 text-blue-400" /> : <Target className="w-5 h-5 text-orange-400" />}
           </div>
           <div className="text-3xl font-bold text-gray-900">{productividadReal2025 > productividadTabla2025 ? '+' : ''}{formatDecimal(productividadReal2025 - productividadTabla2025)}</div>
@@ -384,7 +384,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           `Comparación de la productividad real (huevos/gallina/mes) contra el estándar de la industria. Las barras verdes muestran el desempeño real y las azules el estándar. Superar el estándar demuestra excelencia operativa y genética superior.`
         )}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Productividad Real vs Estándar</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Productividad Real vs Estándar Sector - Huevos 2025</h3>
         <p className="text-sm text-gray-600 mb-6">Comparación de desempeño contra benchmarks del sector</p>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>
@@ -450,7 +450,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           `Análisis de la relación entre mortalidad y consumo de alimento. La mortalidad real vs tabla indica la calidad del manejo sanitario. El consumo de alimento por ave muestra la eficiencia alimenticia. Una mortalidad baja con consumo controlado indica excelente manejo integral.`
         )}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Mortalidad Real vs Tabla + Consumo de Alimento</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Mortalidad Real vs Tabla + Consumo de Alimento 2025</h3>
         <p className="text-sm text-gray-600 mb-6">Análisis de sanidad y eficiencia alimenticia</p>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>
@@ -512,7 +512,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           `Comparación entre el número de aves en producción (barras azules) y la productividad por ave (línea verde). Esta gráfica muestra si el aumento o reducción de aves afecta la productividad individual. Idealmente, se busca mantener alta productividad independientemente del tamaño del lote.`
         )}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Población de Aves vs Productividad por Ave</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Población de Aves vs Productividad por Ave 2025</h3>
         <p className="text-sm text-gray-600 mb-6">Relación entre tamaño del lote y eficiencia individual</p>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>

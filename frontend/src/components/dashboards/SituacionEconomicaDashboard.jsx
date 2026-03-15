@@ -52,7 +52,7 @@ export default function SituacionEconomicaDashboard() {
       >
         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Scale className="w-6 h-6 text-blue-600" />
-          Bases de Contabilización y Preparación
+          Bases de Contabilización y Preparación - Estados Financieros 2025
         </h3>
         <div className="space-y-4">
           <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
@@ -75,7 +75,7 @@ export default function SituacionEconomicaDashboard() {
           onClick={() => openModal('Utilidad Neta 2025', 'La utilidad neta después de impuestos para el año 2025 se determinó en $16,714 MM y de $12,129 MM para el año 2024, arrojando un incremento de $4,585 MM, que corresponde a un 37.8%.')}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Utilidad Neta 2025</span>
+            <span className="text-gray-600 text-sm">Utilidad Neta 2025 vs 2024</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">${formatNumber(16714)}</div>
@@ -94,7 +94,7 @@ export default function SituacionEconomicaDashboard() {
           onClick={() => openModal('Ingresos Operacionales 2025', 'Los ingresos netos por actividades ordinarias devengados durante el año 2025 fueron por $431 MM, frente a $426 MM del año 2024, presentaron un crecimiento de $4.451 MM, es decir, +1.04%.')}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Ingresos 2025</span>
+            <span className="text-gray-600 text-sm">Ingresos Operacionales 2025 vs 2024</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">$431 MM</div>
@@ -113,7 +113,7 @@ export default function SituacionEconomicaDashboard() {
           onClick={() => openModal('Patrimonio 2025', 'El Patrimonio Contable al 31 de diciembre del año 2025 quedó valorado en $245,333 MM y, para el año 2024 en $83,530 MM; diferencia de $161,802 MM un fortalecimiento al incrementar el 194%.')}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Patrimonio 2025</span>
+            <span className="text-gray-600 text-sm">Patrimonio Total 2025 vs 2024</span>
             <Building className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">${formatNumber(245333)}</div>
@@ -132,7 +132,7 @@ export default function SituacionEconomicaDashboard() {
           onClick={() => openModal('Activos Totales 2025', 'Los activos totales a 31 de diciembre del ejercicio económico del año 2025 cerraron en $311,430 MM para el año 2024 quedaron en $137,287 MM, variación de $174,143 MM, determinando un aumento del 127%.')}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Activos Totales 2025</span>
+            <span className="text-gray-600 text-sm">Activos Totales 2025 vs 2024</span>
             <FileText className="w-5 h-5 text-cyan-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">${formatNumber(311430)}</div>
@@ -151,7 +151,7 @@ export default function SituacionEconomicaDashboard() {
         transition={{ delay: 0.4 }}
         className="bg-white/95 rounded-xl p-6 border-4 border-green-500/30"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Estado de Resultados</h3>
+            <h3 className="text-xl font-bold text-gray-900">Estado de Resultados Pollo Fiesta 2025</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 cursor-pointer hover:border-blue-500 transition-all"
             onClick={() => openModal('Utilidad Bruta', 'La utilidad bruta por los años de 2025 y 2024 se determinaron en: $64,781 y $58,309 MM respectivamente, generando un incremento $6,472 MM correspondiente al 11.1%.')}>
@@ -193,7 +193,7 @@ export default function SituacionEconomicaDashboard() {
         transition={{ delay: 0.5 }}
         className="bg-white/95 rounded-xl p-6 border-4 border-orange-500/30"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Gastos Generales</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Gastos Generales Pollo Fiesta 2025</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
             <p className="text-sm text-gray-600 mb-2">Gastos de Administración</p>
@@ -220,7 +220,7 @@ export default function SituacionEconomicaDashboard() {
         transition={{ delay: 0.6 }}
         className="bg-white/95 rounded-xl p-6 border-4 border-blue-500/30"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Estado de Activos, Pasivos y Capital Contable</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Estado de Activos, Pasivos y Capital Contable 2025</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300">
             <p className="text-sm text-gray-600 mb-2">Activos Totales 2025</p>
@@ -301,7 +301,7 @@ export default function SituacionEconomicaDashboard() {
       >
         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Briefcase className="w-6 h-6 text-orange-600" />
-          Transacciones con Accionistas
+          Transacciones con Accionistas Pollo Fiesta 2025
         </h3>
         <div className="space-y-4">
           <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">

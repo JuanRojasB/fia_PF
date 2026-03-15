@@ -31,12 +31,14 @@ export default function LogisticaDashboard({ data }) {
     return <div className="text-gray-600">No hay datos disponibles</div>;
   }
 
+  // Abreviado para KPIs: $1.234M / $1.23B
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
-    return '$' + new Intl.NumberFormat('es-CO', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
+    const v = parseFloat(value);
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
   const conceptosMap = {};
@@ -110,7 +112,7 @@ export default function LogisticaDashboard({ data }) {
           onClick={() => openModal('Gastos Logísticos', '3M kg/mes, 12 muelles, 197 colaboradores.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total Gastos 2025 ($)</span>
+            <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos 2025</span>
             <Truck className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrency(total2025)}</div>
@@ -123,7 +125,7 @@ export default function LogisticaDashboard({ data }) {
           onClick={() => openModal('Variación Anual', 'Diferencia en gastos 2025 vs 2024.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Variación Anual ($)</span>
+            <span className="text-gray-600 text-sm font-medium">Variación Gastos Logísticos 2025 vs 2024</span>
             <TrendingUp className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrency(Math.abs(total2025 - total2024))}</div>
@@ -136,7 +138,7 @@ export default function LogisticaDashboard({ data }) {
           onClick={() => openModal('Sedes Activas', 'Centros de distribución operativos.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Sedes</span>
+            <span className="text-gray-600 text-sm font-medium">Sedes Logísticas Activas 2025</span>
             <Building className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">{sedesData.length}</div>
@@ -277,7 +279,18 @@ export default function LogisticaDashboard({ data }) {
                   <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
                   <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
                   <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
-                  <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var 25/24</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">
+                    <span className="inline-flex items-center gap-1 justify-end">
+                      % Var 25/24
+                      <span className="relative group cursor-help">
+                        <span className="w-4 h-4 rounded-full bg-white/30 text-gray-900 text-xs flex items-center justify-center font-bold">?</span>
+                        <span className="absolute right-0 top-6 z-50 hidden group-hover:block w-56 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl leading-relaxed">
+                          🟢 Verde = reducción de gasto (positivo para la empresa)<br/>
+                          🔴 Rojo = incremento de gasto (requiere atención)
+                        </span>
+                      </span>
+                    </span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -353,7 +366,18 @@ export default function LogisticaDashboard({ data }) {
               <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
               <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
               <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var 25/24</th>
+              <th className="text-right py-3 px-4 text-gray-900 font-bold">
+                <span className="inline-flex items-center gap-1 justify-end">
+                  % Var 25/24
+                  <span className="relative group cursor-help">
+                    <span className="w-4 h-4 rounded-full bg-white/30 text-gray-900 text-xs flex items-center justify-center font-bold">?</span>
+                    <span className="absolute right-0 top-6 z-50 hidden group-hover:block w-56 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl leading-relaxed">
+                      🟢 Verde = reducción de gasto (positivo para la empresa)<br/>
+                      🔴 Rojo = incremento de gasto (requiere atención)
+                    </span>
+                  </span>
+                </span>
+              </th>
               <th className="text-center py-3 px-4 text-gray-900 font-bold">DISMINUCIÓN O INCREMENTO</th>
               <th className="text-right py-3 px-4 text-gray-900 font-bold">INCREMENTO 2025 EN $</th>
             </tr>

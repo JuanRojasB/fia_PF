@@ -110,7 +110,7 @@ export default function GerenciaDashboard({ data }) {
           onClick={() => openModal('Secciones Estratégicas', 'Áreas clave del plan: Introducción, Líneas de Acción, Acciones por Proceso, Conclusiones.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Secciones</span>
+            <span className="text-gray-600 text-sm font-medium">Secciones Estratégicas Plan 2025</span>
             <Briefcase className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">{seccionesUnicas.length}</div>
@@ -121,7 +121,7 @@ export default function GerenciaDashboard({ data }) {
           onClick={() => openModal('Procesos en Gestión', 'Áreas operativas: Calidad, SST, Ambiental, Compras, Bienestar Animal, etc.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Procesos</span>
+            <span className="text-gray-600 text-sm font-medium">Procesos en Gestión 2025</span>
             <Target className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">{Object.keys(procesoCount).length}</div>
@@ -132,7 +132,7 @@ export default function GerenciaDashboard({ data }) {
           onClick={() => openModal('Iniciativas 2025', 'Acciones concretas implementadas en cada proceso durante el año.')}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Iniciativas</span>
+            <span className="text-gray-600 text-sm font-medium">Iniciativas Ejecutadas 2025</span>
             <CheckCircle className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">{accionesReales}</div>
@@ -213,7 +213,7 @@ export default function GerenciaDashboard({ data }) {
         onClick={() => openModal('Acciones por Proceso', 'Número de iniciativas implementadas en cada área. Identifica procesos con mayor actividad.')}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Acciones por Proceso</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Iniciativas Estratégicas por Proceso Gerencial 2025</h3>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={procesoData} layout="vertical" margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -243,7 +243,7 @@ export default function GerenciaDashboard({ data }) {
         transition={{ delay: 0.5 }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Detalle de Acciones por Proceso</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Detalle de Iniciativas por Proceso Gerencial 2025</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {(() => {
             const accionesPorProceso = uniqueData.filter(d => d.seccion === 'Acciones por Proceso');

@@ -166,7 +166,7 @@ export default function GranjasDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total Granjas</span>
+            <span className="text-gray-600 text-sm font-medium">Total Granjas Activas 2025</span>
             <Home className="w-6 h-6 text-blue-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900">{totalGranjas}</div>
@@ -185,7 +185,7 @@ export default function GranjasDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Densidad Promedio</span>
+            <span className="text-gray-600 text-sm font-medium">Densidad Promedio Aves/m² 2025</span>
             <Layers className="w-6 h-6 text-green-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900">{Math.round(totalAves / totalMetros)}</div>
@@ -204,7 +204,7 @@ export default function GranjasDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Capacidad por Ciclo</span>
+            <span className="text-gray-600 text-sm font-medium">Capacidad Aves por Ciclo 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900">{formatNumber(totalAves)}</div>
@@ -223,7 +223,7 @@ export default function GranjasDashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Capacidad Anual</span>
+            <span className="text-gray-600 text-sm font-medium">Capacidad Anual Estimada 2025</span>
             <TrendingUp className="w-6 h-6 text-orange-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900">{formatNumber(Math.round(avesEstimadasSalida))}</div>
@@ -245,7 +245,7 @@ export default function GranjasDashboard({ data }) {
             `Aves agrupadas por zona climática:\n\n${tipoData.map(t => `${t.tipo}: ${formatNumber(t.aves)} (${((t.aves / totalAves) * 100).toFixed(1)}%)`).join('\n')}`
           )}
         >
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Distribución de Aves por Tipo de Clima</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Distribución de Aves por Zona Climática 2025</h3>
           <ResponsiveContainer width="100%" height={350} key="pie-chart-clima">
             <PieChart>
               <Pie 
@@ -282,7 +282,7 @@ export default function GranjasDashboard({ data }) {
             `${tipoData.map(t => `${t.tipo}: ${t.granjas} granjas (${((t.granjas / totalGranjas) * 100).toFixed(1)}%)`).join('\n')}`
           )}
         >
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Número de Granjas por Tipo de Clima</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Número de Granjas por Zona Climática 2025</h3>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={tipoData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />

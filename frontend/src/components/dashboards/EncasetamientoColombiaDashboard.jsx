@@ -81,6 +81,35 @@ export default function EncasetamientoColombiaDashboard() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
       </motion.div>
 
+      {/* KPI Summary Cards */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-4"
+      >
+        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-violet-500/30 shadow-lg text-center">
+          <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1">Total Encasetamiento Nacional Colombia 2025</p>
+          <p className="text-3xl font-bold text-violet-700">963.3M</p>
+          <p className="text-xs text-gray-500 mt-1">millones de aves encasetadas en el año</p>
+        </div>
+        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 shadow-lg text-center">
+          <p className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">Crecimiento Sector Avícola Colombia 2025 vs 2024</p>
+          <p className="text-3xl font-bold text-green-600">+5.6%</p>
+          <p className="text-xs text-gray-500 mt-1">variación porcentual anual en aves encasetadas</p>
+        </div>
+        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 shadow-lg text-center">
+          <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-1">Incremento Absoluto Aves Encasetadas 2025 vs 2024</p>
+          <p className="text-3xl font-bold text-purple-700">+51M</p>
+          <p className="text-xs text-gray-500 mt-1">aves adicionales encasetadas respecto a 2024</p>
+        </div>
+        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-violet-500/30 shadow-lg text-center">
+          <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1">Participación Pollo Fiesta en Encasetamiento Nacional 2025</p>
+          <p className="text-3xl font-bold text-violet-700">3.3%</p>
+          <p className="text-xs text-gray-500 mt-1">del total nacional de aves encasetadas en Colombia</p>
+        </div>
+      </motion.div>
+
       {/* Main Content */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
