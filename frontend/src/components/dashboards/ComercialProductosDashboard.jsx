@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
 import { Package, TrendingUp, DollarSign, X, Info, Percent, ArrowUpRight, ArrowDownRight, ShoppingBag } from 'lucide-react';
-import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleTable, { fmt as formatNumber } from '../CollapsibleTable';
 import { formatCurrencyFull } from './CustomTooltip';
 
 export default function ComercialProductosDashboard({ data }) {
@@ -36,27 +36,39 @@ export default function ComercialProductosDashboard({ data }) {
     return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
-  const formatNumber = (value) => {
-    if (!value || isNaN(value)) return '0';
-    return new Intl.NumberFormat('es-CO', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
+  // Procesar datos - la tabla ya tiene los datos calculados por año
+  const ORDEN_LINEAS = {
+    'POLLO ENTERO': 1,
+    'POLLO CAMPESINO': 2,
+    'PRESA': 3,
+    'MENUDENCIA': 4,
+    'GALLOS': 5,
+    'GALLINAS': 5,
+    'CARNES': 6,
+    'COMBOS': 7,
+    'MAYORISTA': 8,
   };
 
-  // Procesar datos - la tabla ya tiene los datos calculados por año
+  const getOrden = (linea) => {
+    const upper = linea.toUpperCase();
+    for (const [key, val] of Object.entries(ORDEN_LINEAS)) {
+      if (upper.includes(key)) return val;
+    }
+    return 99;
+  };
+
   const datosTabla = ventasResumenLinea.map(v => ({
     linea: v.nombre_linea,
     kilos2025: parseFloat(v.kilos_2025) || 0,
     part2025: parseFloat(v.participacion_pct_2025) || 0,
     kilos2024: parseFloat(v.kilos_2024) || 0,
-    part2024: 0, // Calcularemos después
+    part2024: 0,
     variacion: parseFloat(v.variacion_kilos) || 0,
     varPct: parseFloat(v.variacion_kilos_pct) || 0,
     precio2025: parseFloat(v.precio_promedio_2025) || 0,
     precio2024: parseFloat(v.precio_promedio_2024) || 0,
     varPrecio: parseFloat(v.variacion_precio_pct) || 0
-  }));
+  })).sort((a, b) => getOrden(a.linea) - getOrden(b.linea));
 
   // Calcular totales
   const total2025 = datosTabla.reduce((sum, d) => sum + d.kilos2025, 0);
@@ -92,7 +104,25 @@ export default function ComercialProductosDashboard({ data }) {
     kilos: d.kilos2025
   }));
 
-  const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6'];
+  const COLOR_MAP = {
+    'POLLO ENTERO':    '#2563eb', // azul
+    'POLLO CAMPESINO': '#16a34a', // verde oscuro
+    'PRESA':           '#f59e0b', // naranja
+    'MENUDENCIA':      '#ef4444', // rojo
+    'GALLOS':          '#7c3aed', // violeta
+    'GALLINAS':        '#7c3aed', // violeta (mismo grupo)
+    'CARNES':          '#ec4899', // rosa
+    'COMBOS':          '#0891b2', // cyan
+    'MAYORISTA':       '#1e3a5f', // azul marino oscuro
+  };
+
+  const getColor = (linea) => {
+    const upper = linea.toUpperCase();
+    for (const [key, color] of Object.entries(COLOR_MAP)) {
+      if (upper.includes(key)) return color;
+    }
+    return '#94a3b8';
+  };
 
   return (
     <div className="space-y-6">
@@ -248,8 +278,8 @@ export default function ComercialProductosDashboard({ data }) {
                     {d.varPct}%
                   </span>
                 </td>
-                <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{formatCurrency(d.precio2025)}</td>
-                <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{formatCurrency(d.precio2024)}</td>
+                <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{formatNumber(d.precio2025)}</td>
+                <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{formatNumber(d.precio2024)}</td>
                 <td className="py-2 px-4 text-right tabular-nums">
                   <span className={`inline-flex items-center gap-1 ${parseFloat(d.varPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(d.varPrecio) >= 0 ? 'bg-green-500' : 'bg-red-500'}`}>
@@ -277,8 +307,8 @@ export default function ComercialProductosDashboard({ data }) {
                   {variacionKilos}%
                 </span>
               </td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{formatCurrency(precioProm2025)}</td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{formatCurrency(precioProm2024)}</td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{formatNumber(precioProm2025)}</td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{formatNumber(precioProm2024)}</td>
               <td className="py-3 px-4 text-right tabular-nums">
                 <span className={`inline-flex items-center gap-1 ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                   <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(variacionPrecio) >= 0 ? 'bg-green-500' : 'bg-red-500'}`}>
@@ -313,6 +343,56 @@ export default function ComercialProductosDashboard({ data }) {
         </div>
       </CollapsibleTable>
 
+      {/* Total General */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        onClick={() => openModal(
+          'Total General — Ventas Pollo en Canal',
+          `Kilos 2025: ${formatNumber(total2025)} kg\nKilos 2024: ${formatNumber(total2024)} kg\nVariación: ${formatNumber(total2025-total2024)} kg (${variacionKilos}%)\nPrecio prom. 2025: $${formatNumber(precioProm2025)}/kg\nPrecio prom. 2024: $${formatNumber(precioProm2024)}/kg\nVar. precio: ${variacionPrecio}%`
+        )}
+        className="bg-gradient-to-r from-blue-500/20 to-purple-600/10 backdrop-blur-xl rounded-xl p-6 border-2 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-gray-900">TOTAL GENERAL — VENTAS POLLO EN CANAL</h3>
+          <Info className="w-5 h-5 text-blue-400 animate-pulse" />
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div className="bg-blue-50 rounded-lg p-4">
+            <p className="text-xs text-gray-500 mb-1">Kls. 2025</p>
+            <p className="text-xl font-bold text-gray-900">{formatNumber(total2025)}</p>
+            <p className="text-xs text-gray-500 mt-1">100,00%</p>
+          </div>
+          <div className="bg-blue-50 rounded-lg p-4">
+            <p className="text-xs text-gray-500 mb-1">Kls. 2024</p>
+            <p className="text-xl font-bold text-gray-900">{formatNumber(total2024)}</p>
+            <p className="text-xs text-gray-500 mt-1">100,00%</p>
+          </div>
+          <div className="bg-blue-50 rounded-lg p-4">
+            <p className="text-xs text-gray-500 mb-1">Variación</p>
+            <p className={`text-xl font-bold ${parseFloat(variacionKilos)>=0?'text-green-600':'text-red-600'}`}>{formatNumber(total2025-total2024)}</p>
+            <span className={`inline-flex items-center gap-1 text-xs ${parseFloat(variacionKilos)>=0?'text-green-600':'text-red-600'}`}>
+              <span className={`w-4 h-4 rounded-full flex items-center justify-center text-white ${parseFloat(variacionKilos)>=0?'bg-green-500':'bg-red-500'}`}>{parseFloat(variacionKilos)>=0?'↑':'↓'}</span>
+              {variacionKilos}%
+            </span>
+          </div>
+          <div className="bg-purple-50 rounded-lg p-4">
+            <p className="text-xs text-gray-500 mb-1">$/p 2025</p>
+            <p className="text-xl font-bold text-gray-900">{formatNumber(precioProm2025)}</p>
+            <p className="text-xs text-gray-500 mt-1">precio prom.</p>
+          </div>
+          <div className="bg-purple-50 rounded-lg p-4">
+            <p className="text-xs text-gray-500 mb-1">$/p 2024 / Var</p>
+            <p className="text-lg font-bold text-gray-900">{formatNumber(precioProm2024)}</p>
+            <span className={`inline-flex items-center gap-1 text-xs ${parseFloat(variacionPrecio)>=0?'text-green-600':'text-red-600'}`}>
+              <span className={`w-4 h-4 rounded-full flex items-center justify-center text-white ${parseFloat(variacionPrecio)>=0?'bg-green-500':'bg-red-500'}`}>●</span>
+              {variacionPrecio}%
+            </span>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Gráficos - Solo 2 gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Gráfico Comparativo */}
@@ -333,7 +413,7 @@ export default function ComercialProductosDashboard({ data }) {
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={datosComparativa} layout="vertical" margin={{ left: 120, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis type="number" stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`} />
+              <XAxis type="number" stroke="#64748b" tickFormatter={(value) => formatNumber(value)} />
               <YAxis type="category" dataKey="linea" stroke="#64748b" width={110} style={{ fontSize: '12px' }} />
               <Tooltip content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
@@ -423,7 +503,7 @@ export default function ComercialProductosDashboard({ data }) {
                   dataKey="value"
                 >
                   {datosParticipacion.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={getColor(datosParticipacion[index].name)} />
                   ))}
                 </Pie>
                 <Tooltip content={({ active, payload }) => {
@@ -455,7 +535,7 @@ export default function ComercialProductosDashboard({ data }) {
             {datosParticipacion.map((d, idx) => (
               <div key={idx} className="flex items-center justify-between gap-2 px-2 py-1 rounded-lg hover:bg-gray-50">
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></div>
+                  <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: getColor(d.name) }}></div>
                   <span className="text-xs text-gray-700 truncate">{d.name}</span>
                 </div>
                 <span className="text-xs font-bold text-gray-900 flex-shrink-0">{d.value.toFixed(1)}%</span>

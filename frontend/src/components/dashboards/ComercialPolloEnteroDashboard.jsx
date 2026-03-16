@@ -199,10 +199,10 @@ export default function ComercialPolloEnteroDashboard({ data }) {
         title="POLLO FIESTA S.A. - INGRESOS VS VTAS. POLLOS ENTEROS (Años 2025/2024/2023)"
         defaultOpen={false}
         totalRow={[
-          { label: 'POLLO ENTERO 2025' },
-          { label: `Planta: ${formatNumber(datos2025.polloEnteroPlanta)}`, color: 'text-orange-600' },
-          { label: `Asadero: ${formatNumber(datos2025.ventaLineaAsadero)}`, color: 'text-blue-600' },
-          { label: `Part: ${datos2025.participacionLograda}%`, color: parseFloat(mejoraParticipacion) >= 0 ? 'text-green-500' : 'text-red-500', badge: true, badgeColor: parseFloat(mejoraParticipacion) >= 0 ? 'bg-green-500' : 'bg-red-500', badgeIcon: parseFloat(mejoraParticipacion) >= 0 ? '↑' : '↓' },
+          { label: 'TOTAL GENERAL (2023-2025)' },
+          { label: `Planta: ${formatNumber(totalPolloPlanta)}`, color: 'text-orange-600' },
+          { label: `Asadero: ${formatNumber(totalVentaAsadero)}`, color: 'text-blue-600' },
+          { label: `Part: ${participacionPromedio}%`, color: 'text-green-600' },
         ]}
       >
         <div className="overflow-x-auto">

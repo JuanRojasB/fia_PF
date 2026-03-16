@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, X, Info, TrendingUp, Target, AlertTriangle, Award, Zap } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, Area, Cell, LabelList } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell, ComposedChart, Line, Legend } from 'recharts';
 import CollapsibleTable from '../CollapsibleTable';
 
 export default function ProduccionIndicadoresDashboard({ data }) {
@@ -75,109 +75,44 @@ export default function ProduccionIndicadoresDashboard({ data }) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-cyan-500/30 hover:border-cyan-500 transition-all cursor-pointer"
-                onClick={() => openModal(
-                  'Conversión Alimenticia',
-                  `La conversión alimenticia actual es de ${formatDecimal(conversionPollo)} kg de alimento por kg de carne producida. Este es el indicador más importante de eficiencia productiva. Un valor ideal está entre 1.6-1.8. Factores que influyen: genética de las aves, calidad del alimento, manejo, temperatura, sanidad. Una conversión baja significa mayor rentabilidad.`
-                )}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Conversión Alimenticia Real vs Meta 2025</span>
-                  <Target className="w-5 h-5 text-cyan-400" />
-                </div>
-                <div className="text-3xl font-bold text-gray-900">{formatDecimal(conversionPollo)}</div>
-                <div className="text-sm text-gray-600 mt-1">kg alimento/kg carne</div>
-                <div className={`mt-3 pt-3 border-t border-gray-200 text-xs ${conversionPollo <= 1.8 ? 'text-green-400' : 'text-orange-400'}`}>
-                  {conversionPollo <= 1.8 ? '✓ Excelente eficiencia' : '⚠ Por encima del ideal'}
-                </div>
-              </motion.div>
+              {(() => {
+                let varRel = {};
+                try { varRel = polloReciente.variacion_relativa_pct ? JSON.parse(polloReciente.variacion_relativa_pct) : {}; } catch(e) {}
+                const anterior = zootecniaPollo[1] || {};
 
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ delay: 0.1 }}
-                className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
-                onClick={() => openModal(
-                  'Mortalidad Pollo',
-                  `La mortalidad actual es del ${formatDecimal(mortalidadPollo)}%. El estándar de la industria es <5%. Una mortalidad baja indica buena bioseguridad, manejo adecuado, calidad de pollitos BB y condiciones ambientales óptimas. Mortalidad alta puede deberse a enfermedades, estrés térmico, problemas de agua/alimento o deficiencias en bioseguridad.`
-                )}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Mortalidad Real vs Meta 2025</span>
-                  <AlertTriangle className="w-5 h-5 text-red-400" />
-                </div>
-                <div className="text-3xl font-bold text-gray-900">{formatDecimal(mortalidadPollo)}%</div>
-                <div className="text-sm text-gray-600 mt-1">Tasa de mortalidad</div>
-                <div className={`mt-3 pt-3 border-t border-gray-200 text-xs ${mortalidadPollo < 5 ? 'text-green-400' : 'text-red-400'}`}>
-                  {mortalidadPollo < 5 ? '✓ Dentro del estándar' : '⚠ Por encima del ideal'}
-                </div>
-              </motion.div>
+                const cards = [
+                  { label: 'Conversión Alimenticia 2025', value: formatDecimal(conversionPollo), sub: 'kg alimento/kg carne', icon: <Target className="w-5 h-5 text-cyan-400" />, border: 'border-cyan-500/30 hover:border-cyan-500', varKey: 'conversion', invertir: true, modal: { title: 'Conversión Alimenticia', desc: `Actual: ${formatDecimal(conversionPollo)} · 2024: ${formatDecimal(anterior.conversion)}. Mide kg de alimento por kg de carne producida. Menor valor = mayor eficiencia.` } },
+                  { label: 'Mortalidad 2025', value: `${formatDecimal(mortalidadPollo)}%`, sub: 'Tasa de mortalidad', icon: <AlertTriangle className="w-5 h-5 text-red-400" />, border: 'border-red-500/30 hover:border-red-500', varKey: 'mortalidad_pct', invertir: true, modal: { title: 'Mortalidad Pollo', desc: `Actual: ${formatDecimal(mortalidadPollo)}% · 2024: ${formatDecimal(anterior.mortalidad_pct)}%. Una mortalidad baja indica buena bioseguridad y manejo adecuado.` } },
+                  { label: 'Peso Promedio 2025', value: formatDecimal(pesoPromedioPollo, 2), sub: 'kg por ave', icon: <Award className="w-5 h-5 text-yellow-400" />, border: 'border-yellow-500/30 hover:border-yellow-500', varKey: 'peso_promedio', invertir: false, modal: { title: 'Peso Promedio al Sacrificio', desc: `Actual: ${formatDecimal(pesoPromedioPollo, 3)} kg · 2024: ${formatDecimal(anterior.peso_promedio, 3)} kg. Determina el rendimiento en canal y la presentación del producto.` } },
+                  { label: 'Días de Engorde 2025', value: formatDecimal(diasEngordePollo), sub: 'días promedio', icon: <TrendingUp className="w-5 h-5 text-orange-400" />, border: 'border-orange-500/30 hover:border-orange-500', varKey: 'dias_promedio_engorde', invertir: true, modal: { title: 'Días de Engorde', desc: `Actual: ${formatDecimal(diasEngordePollo)} días · 2024: ${formatDecimal(anterior.dias_promedio_engorde)} días. Un ciclo más corto con buen peso indica excelente genética y manejo.` } },
+                  { label: 'Índice Productivo (IP) 2025', value: formatDecimal(efiAlimPollo), sub: 'IP (Eficiencia)', icon: <Zap className="w-5 h-5 text-purple-400" />, border: 'border-purple-500/30 hover:border-purple-500', varKey: 'efi_alim_ip', invertir: false, modal: { title: 'Índice Productivo (IP)', desc: `Actual: ${formatDecimal(efiAlimPollo)} · 2024: ${formatDecimal(anterior.efi_alim_ip)}. Integra peso, conversión, mortalidad y días de engorde. Mayor IP = mejor eficiencia global.` } },
+                ];
 
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ delay: 0.2 }}
-                className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
-                onClick={() => openModal(
-                  'Peso Promedio al Sacrificio',
-                  `El peso promedio al sacrificio es de ${formatDecimal(pesoPromedioPollo, 3)} kg. El objetivo comercial típico es 2.4-2.6 kg. Este peso determina el rendimiento en canal y la presentación del producto. Factores: genética, nutrición, días de engorde, manejo. Un peso consistente facilita la comercialización y optimiza el procesamiento.`
-                )}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Peso Promedio Real vs Meta 2025</span>
-                  <Award className="w-5 h-5 text-yellow-400" />
-                </div>
-                <div className="text-3xl font-bold text-gray-900">{formatDecimal(pesoPromedioPollo, 2)}</div>
-                <div className="text-sm text-gray-600 mt-1">kg por ave</div>
-                <div className={`mt-3 pt-3 border-t border-gray-200 text-xs ${pesoPromedioPollo >= 2.4 && pesoPromedioPollo <= 2.6 ? 'text-green-400' : 'text-orange-400'}`}>
-                  {pesoPromedioPollo >= 2.4 && pesoPromedioPollo <= 2.6 ? '✓ Peso objetivo' : '⚠ Fuera del rango ideal'}
-                </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ delay: 0.3 }}
-                className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
-                onClick={() => openModal(
-                  'Días de Engorde',
-                  `El ciclo de engorde promedio es de ${formatDecimal(diasEngordePollo)} días. El estándar de la industria es 42-45 días. Un ciclo más corto con buen peso indica excelente genética y manejo. Ciclos más largos aumentan costos de alimento y reducen rotación de galpones. El objetivo es alcanzar el peso objetivo en el menor tiempo posible.`
-                )}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Días de Engorde Real vs Meta 2025</span>
-                  <TrendingUp className="w-5 h-5 text-orange-400" />
-                </div>
-                <div className="text-3xl font-bold text-gray-900">{formatDecimal(diasEngordePollo)}</div>
-                <div className="text-sm text-gray-600 mt-1">días promedio</div>
-                <div className={`mt-3 pt-3 border-t border-gray-200 text-xs ${diasEngordePollo >= 42 && diasEngordePollo <= 45 ? 'text-green-400' : 'text-orange-400'}`}>
-                  {diasEngordePollo >= 42 && diasEngordePollo <= 45 ? '✓ Ciclo estándar' : '⚠ Fuera del rango típico'}
-                </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ delay: 0.4 }}
-                className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-                onClick={() => openModal(
-                  'Índice Productivo (IP)',
-                  `El Índice Productivo (IP) o Eficiencia Alimenticia es de ${formatDecimal(efiAlimPollo)}. Este indicador integra peso, conversión, mortalidad y días de engorde en una sola métrica. Un IP >300 es excelente, 250-300 es bueno, <250 requiere mejoras. Fórmula: IP = (Peso promedio × Viabilidad) / (Conversión × Días) × 100. Es el mejor indicador global de eficiencia.`
-                )}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600 text-sm">Índice Productivo Real vs Meta 2025</span>
-                  <Zap className="w-5 h-5 text-purple-400" />
-                </div>
-                <div className="text-3xl font-bold text-gray-900">{formatDecimal(efiAlimPollo)}</div>
-                <div className="text-sm text-gray-600 mt-1">IP (Eficiencia)</div>
-                <div className={`mt-3 pt-3 border-t border-gray-200 text-xs ${efiAlimPollo > 300 ? 'text-green-400' : efiAlimPollo > 250 ? 'text-yellow-400' : 'text-red-400'}`}>
-                  {efiAlimPollo > 300 ? '✓ Excelente' : efiAlimPollo > 250 ? '⚠ Bueno' : '⚠ Requiere mejora'}
-                </div>
-              </motion.div>
+                return cards.map((c, i) => {
+                  const vr = parseFloat(varRel[c.varKey] || 0);
+                  const esBueno = c.invertir ? vr <= 0 : vr >= 0;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      className={`bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 ${c.border} transition-all cursor-pointer`}
+                      onClick={() => openModal(c.modal.title, c.modal.desc)}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-gray-600 text-sm">{c.label}</span>
+                        {c.icon}
+                      </div>
+                      <div className="text-3xl font-bold text-gray-900">{c.value}</div>
+                      <div className="text-sm text-gray-600 mt-1">{c.sub}</div>
+                      <div className={`mt-3 pt-3 border-t border-gray-200 text-xs font-semibold ${esBueno ? 'text-green-500' : 'text-red-500'}`}>
+                        vs 2024: {vr >= 0 ? '+' : ''}{formatDecimal(vr)}%
+                      </div>
+                    </motion.div>
+                  );
+                });
+              })()}
             </div>
           </div>
 
@@ -185,7 +120,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
           {zootecniaPollo.length >= 2 && (
             <CollapsibleTable 
               title="COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS AVES 2025-2024"
-              defaultOpen={false}
+              defaultOpen={true}
               totalRow={[
                 { label: 'Indicadores Clave 2025' },
                 { label: `Conversión: ${formatDecimal(conversionPollo)}`, color: conversionPollo <= 1.8 ? 'text-green-500' : 'text-orange-500' },
@@ -395,128 +330,124 @@ export default function ProduccionIndicadoresDashboard({ data }) {
 
               <div className="mt-6 bg-gray-100/30 rounded-lg p-4 border border-gray-300">
                 <p className="text-sm text-gray-700">
-                  <span className="font-semibold text-gray-900">Análisis Comparativo:</span> Esta tabla muestra todos los indicadores zootécnicos de pollo de engorde comparando 2025 vs 2024. Los valores en verde indican mejoras, mientras que los rojos señalan áreas que requieren atención. La variación relativa permite identificar rápidamente los cambios porcentuales más significativos en cada indicador. Indicadores clave: conversión alimenticia (menor es mejor), mortalidad (menor es mejor), peso promedio (objetivo 2.4-2.6 kg), eficiencia alimenticia IP (mayor es mejor).
+                  <span className="font-semibold text-gray-900">Análisis Comparativo:</span> Esta tabla muestra todos los indicadores zootécnicos de pollo de engorde comparando 2025 vs 2024. Los valores en verde indican mejoras, mientras que los rojos señalan áreas que requieren atención. La variación relativa permite identificar rápidamente los cambios porcentuales más significativos en cada indicador. Indicadores clave: conversión alimenticia (menor es mejor), mortalidad (menor es mejor), peso promedio (valor de tabla 2.4-2.6 kg), eficiencia alimenticia IP (mayor es mejor).
                 </p>
               </div>
             </CollapsibleTable>
           )}
 
-          {/* Gráficos Comparativos de Pollo - 3 GRÁFICAS SENCILLAS */}
+          {/* Gráficos Comparativos de Pollo */}
           <div className="grid grid-cols-1 gap-6">
-            {/* Gráfica 1: Conversión Alimenticia 2024 vs 2025 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
+            {/* Gráfica 1: Tendencia indicadores zootécnicos históricos */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-cyan-500 transition-all cursor-pointer"
               onClick={() => openModal(
-                'Conversión Alimenticia',
-                `La conversión alimenticia mide cuántos kg de alimento se necesitan para producir 1 kg de carne. Ideal: <1.8. Menor conversión = mayor eficiencia y rentabilidad. Cada 0.1 de mejora representa ahorros significativos en costos de alimento.`
+                'Tendencia Indicadores Zootécnicos',
+                'Evolución histórica de mortalidad %, peso promedio e índice productivo (IP). Permite identificar tendencias de mejora o deterioro en el desempeño de las granjas a lo largo del tiempo.'
               )}
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Conversión Alimenticia 2024 vs 2025</h3>
-              <p className="text-sm text-gray-600 mb-6">kg alimento / kg carne (menor es mejor)</p>
-              <ResponsiveContainer width="100%" height={400}>
-                <ComposedChart data={datosPolloChart} margin={{ left: 20, right: 20 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="anio" stroke="#9ca3af" />
-                  <YAxis stroke="#9ca3af" width={70} label={{ value: 'Conversión', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} />
-                  <Tooltip 
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        const conversion = payload[0].value;
-                        
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Tendencia Indicadores Zootécnicos — Histórico</h3>
+              <p className="text-sm text-gray-500 mb-4">Mortalidad % · Peso promedio (kg) · IP (Eficiencia)</p>
+              {(() => {
+                const d2024 = datosPolloChart.find(d => d.anio === 2024);
+                const d2025 = datosPolloChart.find(d => d.anio === 2025);
+                const varMort = d2024?.mortalidad > 0 ? (((d2025?.mortalidad - d2024?.mortalidad) / d2024.mortalidad) * 100).toFixed(1) : 0;
+                const varPeso = d2024?.peso > 0 ? (((d2025?.peso - d2024?.peso) / d2024.peso) * 100).toFixed(1) : 0;
+                const varIP = d2024?.efiAlim > 0 ? (((d2025?.efiAlim - d2024?.efiAlim) / d2024.efiAlim) * 100).toFixed(1) : 0;
+                return (
+                  <>
+                    <ResponsiveContainer width="100%" height={320}>
+                      <ComposedChart data={datosPolloChart} margin={{ top: 10, right: 30, left: 10, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis dataKey="anio" stroke="#6b7280" tick={{ fontSize: 12 }} />
+                        <YAxis yAxisId="left" stroke="#ef4444" width={45} tick={{ fontSize: 11 }} label={{ value: 'Mort %', angle: -90, position: 'insideLeft', fill: '#ef4444', fontSize: 11 }} />
+                        <YAxis yAxisId="right" orientation="right" stroke="#8b5cf6" width={50} tick={{ fontSize: 11 }} label={{ value: 'IP', angle: 90, position: 'insideRight', fill: '#8b5cf6', fontSize: 11 }} />
+                        <Tooltip
+                          contentStyle={{ backgroundColor: 'white', border: '2px solid #e5e7eb', borderRadius: '10px', padding: '10px' }}
+                          formatter={(v, name) => {
+                            if (name === 'Mortalidad %') return [`${formatDecimal(v)}%`, name];
+                            if (name === 'Peso (kg)') return [`${formatDecimal(v, 3)} kg`, name];
+                            if (name === 'IP') return [formatDecimal(v), name];
+                            return [v, name];
+                          }}
+                        />
+                        <Legend />
+                        <Bar yAxisId="left" dataKey="mortalidad" name="Mortalidad %" fill="#fca5a5" radius={[4, 4, 0, 0]} opacity={0.8} />
+                        <Line yAxisId="left" type="monotone" dataKey="peso" name="Peso (kg)" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 5, fill: '#f59e0b' }} />
+                        <Line yAxisId="right" type="monotone" dataKey="efiAlim" name="IP" stroke="#8b5cf6" strokeWidth={2.5} dot={{ r: 5, fill: '#8b5cf6' }} />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                    <div className="mt-4 grid grid-cols-3 gap-3">
+                      {[
+                        { label: 'Mortalidad', vr: varMort, invertir: true, color: '#ef4444' },
+                        { label: 'Peso promedio', vr: varPeso, invertir: false, color: '#f59e0b' },
+                        { label: 'IP (Eficiencia)', vr: varIP, invertir: false, color: '#8b5cf6' },
+                      ].map((item, i) => {
+                        const esBueno = item.invertir ? parseFloat(item.vr) <= 0 : parseFloat(item.vr) >= 0;
                         return (
-                          <div className="bg-white border-2 border-cyan-500 rounded-xl p-4 shadow-xl">
-                            <p className="font-bold text-gray-900 mb-3 text-lg">Año {label}</p>
-                            <div className="space-y-2">
-                              <div className="flex justify-between items-center gap-4">
-                                <span className="text-cyan-600 font-medium">Conversión:</span>
-                                <span className="font-bold text-gray-900">{formatDecimal(conversion)}</span>
-                              </div>
-                              <div className="border-t border-gray-200 pt-2 mt-2">
-                                <div className="text-xs text-gray-600">
-                                  {conversion <= 1.8 ? '✓ Excelente eficiencia' : '⚠ Por encima del ideal (1.8)'}
-                                </div>
-                              </div>
+                          <div key={i} className="bg-gray-50 rounded-lg p-3 text-center">
+                            <div className="text-xs mb-1 font-semibold" style={{ color: item.color }}>{item.label}</div>
+                            <div className={`text-sm font-bold ${esBueno ? 'text-green-600' : 'text-red-600'}`}>
+                              {parseFloat(item.vr) >= 0 ? '+' : ''}{item.vr}% vs 2024
+                            </div>
+                            <div className={`text-xs mt-0.5 ${esBueno ? 'text-green-500' : 'text-red-500'}`}>
+                              {esBueno ? '↑ mejora' : '↓ desmejora'}
                             </div>
                           </div>
                         );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Legend />
-                  <Bar dataKey="conversion" fill="#06b6d4" name="Conversión Alimenticia" radius={[8, 8, 0, 0]}>
-                    <LabelList dataKey="anio" position="top" style={{ fontSize: '11px', fontWeight: 'bold', fill: '#374151' }} />
-                  </Bar>
-                </ComposedChart>
-              </ResponsiveContainer>
+                      })}
+                    </div>
+                  </>
+                );
+              })()}
             </motion.div>
 
-            {/* Gráfica 3: Pollo Procesado (Volumen de Producción) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
+            {/* Gráfica 2: Pollo Procesado 2024 vs 2025 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-green-500 transition-all cursor-pointer"
               onClick={() => openModal(
                 'Volumen de Producción',
-                `Número total de pollos procesados (sacrificados) por año. Este indicador muestra el crecimiento o reducción de la operación. Mayor volumen procesado indica expansión del negocio.`
+                'Número total de pollos procesados (sacrificados) por año. Este indicador muestra el crecimiento o reducción de la operación. Mayor volumen procesado indica expansión del negocio.'
               )}
             >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Pollo Procesado en Planta de Beneficio 2024 vs 2025</h3>
-              <p className="text-sm text-gray-600 mb-6">Volumen total de producción</p>
-              <ResponsiveContainer width="100%" height={400}>
-                <ComposedChart data={datosPolloChart} margin={{ left: 20, right: 20, bottom: 20 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="anio" stroke="#9ca3af" />
-                  <YAxis stroke="#9ca3af" tickFormatter={(value) => formatNumber(value)} width={90} />
-                  <Tooltip 
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        const procesado = payload[0].value;
-                        const data2024 = datosPolloChart.find(d => d.anio === 2024);
-                        const data2025 = datosPolloChart.find(d => d.anio === 2025);
-                        
-                        return (
-                          <div className="bg-white border-2 border-green-500 rounded-xl p-4 shadow-xl">
-                            <p className="font-bold text-gray-900 mb-3 text-lg">Año {label}</p>
-                            <div className="space-y-2">
-                              <div className="flex justify-between items-center gap-4">
-                                <span className="text-green-600 font-medium">Procesado:</span>
-                                <span className="font-bold text-gray-900">{formatNumber(procesado)} pollos</span>
-                              </div>
-                              {data2024 && data2025 && label == 2025 && (
-                                <div className="border-t border-gray-200 pt-2 mt-2">
-                                  <div className="flex justify-between items-center gap-4">
-                                    <span className="text-gray-600 font-medium">vs 2024:</span>
-                                    <span className={`font-bold ${data2025.procesado >= data2024.procesado ? 'text-green-600' : 'text-red-600'}`}>
-                                      {data2025.procesado >= data2024.procesado ? '+' : ''}{formatNumber(data2025.procesado - data2024.procesado)}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center gap-4 mt-1">
-                                    <span className="text-gray-600 font-medium">Variación:</span>
-                                    <span className={`font-bold ${data2025.procesado >= data2024.procesado ? 'text-green-600' : 'text-red-600'}`}>
-                                      {data2024.procesado > 0 ? (((data2025.procesado - data2024.procesado) / data2024.procesado) * 100).toFixed(1) : 0}%
-                                    </span>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Bar dataKey="procesado" radius={[8, 8, 0, 0]}>
-                    {datosPolloChart.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.anio === 2024 ? '#3b82f6' : '#10b981'} />
-                    ))}
-                    <LabelList dataKey="anio" position="top" style={{ fontSize: '11px', fontWeight: 'bold', fill: '#374151' }} />
-                  </Bar>
-                </ComposedChart>
-              </ResponsiveContainer>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Pollo Procesado en Planta de Beneficio — 2024 vs 2025</h3>
+              <p className="text-sm text-gray-500 mb-6">Unidades totales procesadas</p>
+              {(() => {
+                const d2024 = datosPolloChart.find(d => d.anio === 2024);
+                const d2025 = datosPolloChart.find(d => d.anio === 2025);
+                const chartData = [
+                  { label: '2024', value: d2024?.procesado || 0 },
+                  { label: '2025', value: d2025?.procesado || 0 },
+                ];
+                const dif = d2025 && d2024 ? (d2025.procesado - d2024.procesado) : 0;
+                const varPct = d2024?.procesado > 0 ? ((dif / d2024.procesado) * 100).toFixed(1) : 0;
+                return (
+                  <>
+                    <ResponsiveContainer width="100%" height={280}>
+                      <BarChart data={chartData} margin={{ top: 30, right: 30, left: 10, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 14, fontWeight: 'bold' }} />
+                        <YAxis stroke="#6b7280" tickFormatter={(v) => formatNumber(v)} width={80} />
+                        <Tooltip formatter={(v) => [formatNumber(v), 'Procesado']} />
+                        <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+                          {chartData.map((entry, i) => <Cell key={i} fill={i === 0 ? '#3b82f6' : '#10b981'} />)}
+                          <LabelList dataKey="value" position="top" style={{ fontSize: '13px', fontWeight: 'bold', fill: '#111827' }} formatter={(v) => formatNumber(v)} />
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                    <div className="mt-3 flex justify-center">
+                      <span className={`text-sm font-bold px-3 py-1 rounded-full ${dif >= 0 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                        Variación: {dif >= 0 ? '+' : ''}{formatNumber(dif)} ({dif >= 0 ? '+' : ''}{varPct}%)
+                      </span>
+                    </div>
+                  </>
+                );
+              })()}
             </motion.div>
           </div>
         </>

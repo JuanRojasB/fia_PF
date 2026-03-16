@@ -2,6 +2,15 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
+const fmt = (value) => {
+  if (value === null || value === undefined || value === '') return '0';
+  const v = parseFloat(value);
+  if (isNaN(v)) return String(value);
+  return new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
+};
+
+export { fmt };
+
 /**
  * totalRow: array de celdas a mostrar cuando la tabla está cerrada
  * Cada celda: { label: string, color?: string (tailwind text class) }
@@ -53,9 +62,9 @@ export default function CollapsibleTable({ title, children, defaultOpen = false,
                       <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs text-white ${cell.badgeColor || 'bg-gray-500'}`}>
                         {cell.badgeIcon || '•'}
                       </span>
-                      {cell.label}
+                      {cell.type === 'number' ? fmt(cell.label) : cell.label}
                     </span>
-                  ) : cell.label}
+                  ) : cell.type === 'number' ? fmt(cell.label) : cell.label}
                 </span>
               ))}
             </div>

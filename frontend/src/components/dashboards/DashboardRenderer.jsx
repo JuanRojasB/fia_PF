@@ -41,11 +41,12 @@ import OperacionesDashboard from './OperacionesDashboard';
 import PlantaBeneficioDashboard from './PlantaBeneficioDashboard';
 import TecnologiasInformacionDashboard from './TecnologiasInformacionDashboard';
 import SituacionJuridicaDashboard from './SituacionJuridicaDashboard';
+import AgradecimientosDashboard from './AgradecimientosDashboard';
 import EnDesarrollo from './EnDesarrollo';
 
-export default function DashboardRenderer({ type, data }) {
+export default function DashboardRenderer({ type, data, onNavigate }) {
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica'];
+  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos'];
   
   if (!data || (Array.isArray(data) && data.length === 0)) {
     // Si el dashboard no requiere datos, continuar normalmente
@@ -157,7 +158,9 @@ export default function DashboardRenderer({ type, data }) {
     case 'situacion-juridica':
       return <SituacionJuridicaDashboard />;
     case 'situacion-economica':
-      return <SituacionEconomicaDashboard />;
+      return <SituacionEconomicaDashboard onNavigate={onNavigate} />;
+    case 'agradecimientos':
+      return <AgradecimientosDashboard onBack={() => onNavigate && onNavigate('situacion-economica')} />;
     default:
       return (
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700">

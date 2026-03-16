@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart, Area, Cell, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart, Area, Cell, ReferenceLine, Customized } from 'recharts';
 import { Factory, TrendingUp, Calendar, X, Info, Target, AlertCircle, CheckCircle2 } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 
@@ -373,9 +373,9 @@ export default function ProduccionEncasetadoDashboard({ data }) {
         )}
       >
         <h3 className="text-xl font-bold text-gray-900 mb-2">Cumplimiento del Programado de Encasetamiento 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Pollitos programados vs real mensual + % cumplimiento acumulado</p>
+        <p className="text-sm text-gray-600 mb-4">Pollitos programados vs real mensual + % cumplimiento acumulado</p>
         <ResponsiveContainer width="100%" height={400}>
-          <ComposedChart data={encasetadoMeses} margin={{ left: 20, right: 40 }}>
+          <ComposedChart data={encasetadoMeses} margin={{ left: 20, right: 40, bottom: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis dataKey="mes" stroke="#6b7280" height={60} style={{ fontSize: '12px' }} />
             <YAxis yAxisId="left" stroke="#6b7280" width={80} style={{ fontSize: '12px' }} tickFormatter={(value) => formatNumber(value)} />
@@ -390,7 +390,6 @@ export default function ProduccionEncasetadoDashboard({ data }) {
                   const real = payload.find(p => p.dataKey === 'real2025')?.value || 0;
                   const cumpl = payload.find(p => p.dataKey === 'cumplPct')?.value;
                   const diferencia = real - prog;
-                  
                   return (
                     <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl">
                       <p className="font-bold text-gray-900 mb-3 text-lg">{label}</p>
@@ -430,30 +429,23 @@ export default function ProduccionEncasetadoDashboard({ data }) {
             <Line yAxisId="right" type="monotone" dataKey="cumplPct" stroke="#f59e0b" strokeWidth={3} dot={{ r: 5, fill: '#f59e0b' }} name="% Cumplimiento" connectNulls={false} />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
 
-      {/* Totales de la gráfica de cumplimiento */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.45 }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4"
-      >
-        {[
-          { label: 'Total Programado 2025', value: totalProgramado2025, color: 'border-blue-400', textColor: 'text-blue-700' },
-          { label: 'Total Real 2025', value: totalEncasetado2025, color: 'border-green-400', textColor: 'text-green-700' },
-          { label: '% Cumplimiento 2025', value: null, pct: cumplimiento2025, color: parseFloat(cumplimiento2025) >= 100 ? 'border-green-400' : 'border-orange-400', textColor: parseFloat(cumplimiento2025) >= 100 ? 'text-green-700' : 'text-orange-700' },
-          { label: 'Diferencia Real vs Prog', value: totalEncasetado2025 - totalProgramado2025, color: (totalEncasetado2025 - totalProgramado2025) >= 0 ? 'border-green-400' : 'border-red-400', textColor: (totalEncasetado2025 - totalProgramado2025) >= 0 ? 'text-green-700' : 'text-red-700' },
-        ].map((item, i) => (
-          <div key={i} className={`bg-white rounded-xl p-4 border-2 ${item.color} text-center`}>
-            <div className="text-xs text-gray-500 mb-1">{item.label}</div>
-            <div className={`text-xl font-bold ${item.textColor}`}>
-              {item.pct != null
-                ? `${item.pct}%`
-                : `${item.value >= 0 ? '' : '-'}${formatNumber(Math.abs(item.value))}`}
-            </div>
+        {/* Totales anuales — dentro del card, debajo de la gráfica */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3 text-center">Totales anuales</p>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+            {[
+              { label: 'Prog 2025', value: formatNumber(totalProgramado2025), color: 'text-blue-700', bg: 'bg-blue-50' },
+              { label: 'Real 2025', value: formatNumber(totalEncasetado2025), color: 'text-green-600', bg: 'bg-green-50' },
+              { label: '% Cumpl 2025', value: `${cumplimiento2025}%`, color: parseFloat(cumplimiento2025) >= 100 ? 'text-green-600' : 'text-orange-600', bg: parseFloat(cumplimiento2025) >= 100 ? 'bg-green-50' : 'bg-orange-50' },
+            ].map((item, i) => (
+              <div key={i} className={`${item.bg} rounded-lg p-2 text-center`}>
+                <div className="text-xs text-gray-400 mb-1">{item.label}</div>
+                <div className={`text-sm font-bold ${item.color}`}>{item.value}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </motion.div>
 
       {/* Gráfico de Comparación Anual 2024 vs 2025 */}
@@ -468,9 +460,9 @@ export default function ProduccionEncasetadoDashboard({ data }) {
         )}
       >
         <h3 className="text-xl font-bold text-gray-900 mb-2">Encasetamiento Real 2024 vs 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Encasetamiento real mensual en pollitos — comparación interanual</p>
+        <p className="text-sm text-gray-600 mb-4">Encasetamiento real mensual en pollitos — comparación interanual</p>
         <ResponsiveContainer width="100%" height={400}>
-          <ComposedChart data={encasetadoConTend} margin={{ left: 20, right: 20 }}>
+          <ComposedChart data={encasetadoConTend} margin={{ left: 20, right: 20, bottom: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis dataKey="mes" stroke="#6b7280" height={60} style={{ fontSize: '12px' }} />
             <YAxis stroke="#6b7280" width={80} style={{ fontSize: '12px' }} tickFormatter={(value) => formatNumber(value)} />
@@ -482,7 +474,6 @@ export default function ProduccionEncasetadoDashboard({ data }) {
                   const real2025 = payload.find(p => p.dataKey === 'real2025')?.value || 0;
                   const diferencia = real2025 - real2024;
                   const variacion = real2024 > 0 ? ((diferencia / real2024) * 100).toFixed(1) : 0;
-                  
                   return (
                     <div className="bg-white border-2 border-purple-500 rounded-xl p-4 shadow-xl">
                       <p className="font-bold text-gray-900 mb-3 text-lg">{label}</p>
@@ -522,9 +513,31 @@ export default function ProduccionEncasetadoDashboard({ data }) {
             <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
           </ComposedChart>
         </ResponsiveContainer>
+
+        {/* Totales anuales — dentro del card, debajo de la gráfica */}
+        {(() => {
+          const dif = totalEncasetado2025 - totalEncasetado2024;
+          const varPct = totalEncasetado2024 > 0 ? (((totalEncasetado2025 - totalEncasetado2024) / totalEncasetado2024) * 100).toFixed(1) : '0';
+          return (
+            <div className="mt-4 pt-4 border-t border-gray-100">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3 text-center">Totales anuales</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                {[
+                  { label: 'Total Real 2024', value: formatNumber(totalEncasetado2024), color: 'text-indigo-600', bg: 'bg-indigo-50' },
+                  { label: 'Total Real 2025', value: formatNumber(totalEncasetado2025), color: 'text-green-600', bg: 'bg-green-50' },
+                  { label: 'Diferencia', value: `${dif >= 0 ? '+' : ''}${formatNumber(dif)}`, color: dif >= 0 ? 'text-green-600' : 'text-red-600', bg: dif >= 0 ? 'bg-green-50' : 'bg-red-50' },
+                  { label: 'Variación %', value: `${parseFloat(varPct) >= 0 ? '+' : ''}${varPct}%`, color: parseFloat(varPct) >= 0 ? 'text-green-600' : 'text-red-600', bg: parseFloat(varPct) >= 0 ? 'bg-green-50' : 'bg-red-50' },
+                ].map((item, i) => (
+                  <div key={i} className={`${item.bg} rounded-lg p-3 text-center`}>
+                    <div className="text-xs text-gray-400 mb-1">{item.label}</div>
+                    <div className={`text-sm font-bold ${item.color}`}>{item.value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
       </motion.div>
-
-
 
       {/* Análisis de Encasetamiento */}
       {(() => {

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TrendingUp, DollarSign, Building, FileText, X, Info, Users, Scale, Briefcase } from 'lucide-react';
-import CollapsibleTable from '../CollapsibleTable';
+import { TrendingUp, DollarSign, Building, FileText, X, Info, Users, Scale, Briefcase, Heart } from 'lucide-react';
+import CollapsibleTable, { fmt as formatNumber } from '../CollapsibleTable';
 
-export default function SituacionEconomicaDashboard() {
+export default function SituacionEconomicaDashboard({ onNavigate }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', content: '' });
 
@@ -13,9 +13,6 @@ export default function SituacionEconomicaDashboard() {
     setModalOpen(true);
   };
 
-  const formatNumber = (value) => {
-    return new Intl.NumberFormat('es-CO').format(value);
-  };
 
   // Datos de composición accionaria
   const accionistas = [
@@ -79,8 +76,8 @@ export default function SituacionEconomicaDashboard() {
             <span className="text-gray-600 text-sm">Utilidad Neta 2025 vs 2024</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${formatNumber(16714)}</div>
-          <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
+          <div className="text-3xl font-bold text-gray-900">${formatNumber(16714000000)}</div>
+          <div className="text-sm text-gray-600 mt-1">Pesos colombianos</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">Crecimiento vs 2024</div>
             <div className="text-lg font-semibold text-green-600">+37.8%</div>
@@ -98,10 +95,10 @@ export default function SituacionEconomicaDashboard() {
             <span className="text-gray-600 text-sm">Ingresos Operacionales 2025 vs 2024</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">$431.000 MM</div>
-          <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(431000000000)}</div>
+          <div className="text-sm text-gray-600 mt-1">Pesos colombianos</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Crecimiento vs 2024 ($426 MM)</div>
+            <div className="text-xs text-gray-500">Crecimiento vs 2024 ($426.000.000.000)</div>
             <div className="text-lg font-semibold text-blue-600">+1.04%</div>
           </div>
         </motion.div>
@@ -117,8 +114,8 @@ export default function SituacionEconomicaDashboard() {
             <span className="text-gray-600 text-sm">Patrimonio Total 2025 vs 2024</span>
             <Building className="w-5 h-5 text-purple-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${formatNumber(245333)}</div>
-          <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
+          <div className="text-3xl font-bold text-gray-900">${formatNumber(245333000000)}</div>
+          <div className="text-sm text-gray-600 mt-1">Pesos colombianos</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">Crecimiento vs 2024</div>
             <div className="text-lg font-semibold text-purple-600">+194%</div>
@@ -136,8 +133,8 @@ export default function SituacionEconomicaDashboard() {
             <span className="text-gray-600 text-sm">Activos Totales 2025 vs 2024</span>
             <FileText className="w-5 h-5 text-cyan-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${formatNumber(311430)}</div>
-          <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
+          <div className="text-3xl font-bold text-gray-900">${formatNumber(311430000000)}</div>
+          <div className="text-sm text-gray-600 mt-1">Pesos colombianos</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">Crecimiento vs 2024</div>
             <div className="text-lg font-semibold text-cyan-600">+127%</div>
@@ -157,32 +154,32 @@ export default function SituacionEconomicaDashboard() {
           <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 cursor-pointer hover:border-blue-500 transition-all"
             onClick={() => openModal('Utilidad Bruta', 'La utilidad bruta por los años de 2025 y 2024 se determinaron en: $64,781 y $58,309 MM respectivamente, generando un incremento $6,472 MM correspondiente al 11.1%.')}>
             <p className="text-sm text-gray-600 mb-2">Utilidad Bruta 2025</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(64781)} MM</p>
-            <p className="text-xs text-green-600 mt-1">+11.1% vs 2024 ($58,309 MM)</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(64781000000)}</p>
+            <p className="text-xs text-green-600 mt-1">+11.1% vs 2024 ($58.309.000.000)</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
             onClick={() => openModal('Utilidad Operacional', 'El valor de la utilidad operacional se determinó en $27,229 MM para el año 2025 y en $22,534 para el año 2024 reflejando crecimiento del +20.8% por valor de $4,695 MM.')}>
             <p className="text-sm text-gray-600 mb-2">Utilidad Operacional 2025</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(27229)} MM</p>
-            <p className="text-xs text-green-600 mt-1">+20.8% vs 2024 ($22,534 MM)</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(27229000000)}</p>
+            <p className="text-xs text-green-600 mt-1">+20.8% vs 2024 ($22.534.000.000)</p>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 cursor-pointer hover:border-purple-500 transition-all"
             onClick={() => openModal('Costos de Ventas', 'Pollo Fiesta S.A., cierra el ejercicio con costes de ventas por el año 2025, en cuantía de $368,749 MM y en el año 2024 en cuantía de $370,332 MM, es decir una disminución del -0.43%, hecho explicado principalmente por la disminución en el costo directo del ABA.')}>
             <p className="text-sm text-gray-600 mb-2">Costos de Ventas 2025</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(368749)} MM</p>
-            <p className="text-xs text-green-600 mt-1">-0.43% vs 2024 ($370,332 MM)</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(368749000000)}</p>
+            <p className="text-xs text-green-600 mt-1">-0.43% vs 2024 ($370.332.000.000)</p>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
             onClick={() => openModal('Costo Neto Financiero', 'El coste financiero fue de $6,061 MM para el año 2025 y de $6,880 MM para el año 2024, lo que arrojó un decrecimiento de $819 MM que corresponde a un -11.91%. En relación directa con los intereses pagados por obligaciones financieras, gravamen al movimiento financiero GMF por la bancarización de los pagos.')}>
             <p className="text-sm text-gray-600 mb-2">Costo Financiero 2025</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(6061)} MM</p>
-            <p className="text-xs text-green-600 mt-1">-11.91% vs 2024 ($6,880 MM)</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(6061000000)}</p>
+            <p className="text-xs text-green-600 mt-1">-11.91% vs 2024 ($6.880.000.000)</p>
           </div>
           <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"
             onClick={() => openModal('Otros Ingresos Financieros', 'Los otros ingresos financieros fueron determinados por los intereses recibidos en la colocación de recursos en portafolios de rentabilidad, aumentando en un 61.53% es decir en $1,572 MM, al pasar de $2,555 MM en el año 2024 a $4,127 MM del año 2025, resultado producto de la mayor colocación de recursos en las fiducias.')}>
             <p className="text-sm text-gray-600 mb-2">Ingresos Financieros 2025</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(4127)} MM</p>
-            <p className="text-xs text-cyan-600 mt-1">+61.53% vs 2024 ($2,555 MM)</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(4127000000)}</p>
+            <p className="text-xs text-cyan-600 mt-1">+61.53% vs 2024 ($2.555.000.000)</p>
           </div>
         </div>
       </motion.div>
@@ -198,18 +195,18 @@ export default function SituacionEconomicaDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
             <p className="text-sm text-gray-600 mb-2">Gastos de Administración</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(3928)} MM</p>
-            <p className="text-xs text-orange-600 mt-1">+4.91% vs 2024 ($3,744 MM)</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(3928000000)}</p>
+            <p className="text-xs text-orange-600 mt-1">+4.91% vs 2024 ($3.744.000.000)</p>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
             <p className="text-sm text-gray-600 mb-2">Gastos de Ventas</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(11528)} MM</p>
-            <p className="text-xs text-red-600 mt-1">+9.90% vs 2024 ($10,490 MM)</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(11528000000)}</p>
+            <p className="text-xs text-red-600 mt-1">+9.90% vs 2024 ($10.490.000.000)</p>
           </div>
           <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-300">
             <p className="text-sm text-gray-600 mb-2">Beneficios a Empleados</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(21118)} MM</p>
-            <p className="text-xs text-yellow-600 mt-1">+9% vs 2024 ($19,369 MM)</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(21118000000)}</p>
+            <p className="text-xs text-yellow-600 mt-1">+9% vs 2024 ($19.369.000.000)</p>
           </div>
         </div>
       </motion.div>
@@ -225,21 +222,21 @@ export default function SituacionEconomicaDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300">
             <p className="text-sm text-gray-600 mb-2">Activos Totales 2025</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(311430)} MM</p>
-            <p className="text-xs text-cyan-600 mt-1">+127% vs 2024 ($137,287 MM)</p>
-            <p className="text-xs text-gray-600 mt-2">Variación: +$174,143 MM</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(311430000000)}</p>
+            <p className="text-xs text-cyan-600 mt-1">+127% vs 2024 ($137.287.000.000)</p>
+            <p className="text-xs text-gray-600 mt-2">Variación: +$174.143.000.000</p>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
             <p className="text-sm text-gray-600 mb-2">Pasivos Totales 2025</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(66097)} MM</p>
-            <p className="text-xs text-red-600 mt-1">+23% vs 2024 ($53,756 MM)</p>
-            <p className="text-xs text-gray-600 mt-2">Variación: +$12,340 MM</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(66097000000)}</p>
+            <p className="text-xs text-red-600 mt-1">+23% vs 2024 ($53.756.000.000)</p>
+            <p className="text-xs text-gray-600 mt-2">Variación: +$12.340.000.000</p>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
             <p className="text-sm text-gray-600 mb-2">Patrimonio 2025</p>
-            <p className="text-2xl font-bold text-gray-900">${formatNumber(245333)} MM</p>
-            <p className="text-xs text-purple-600 mt-1">+194% vs 2024 ($83,530 MM)</p>
-            <p className="text-xs text-gray-600 mt-2">Variación: +$161,802 MM</p>
+            <p className="text-2xl font-bold text-gray-900">${formatNumber(245333000000)}</p>
+            <p className="text-xs text-purple-600 mt-1">+194% vs 2024 ($83.530.000.000)</p>
+            <p className="text-xs text-gray-600 mt-2">Variación: +$161.802.000.000</p>
           </div>
         </div>
       </motion.div>
@@ -322,33 +319,20 @@ export default function SituacionEconomicaDashboard() {
         </div>
       </motion.div>
 
-      {/* Agradecimientos */}
+      {/* Agradecimientos — botón para ir al dashboard dedicado */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9 }}
-        className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-8 border-4 border-amber-500/30"
+        className="flex justify-center"
       >
-        <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">AGRADECIMIENTOS</h3>
-        <div className="text-gray-700 text-center max-w-4xl mx-auto space-y-4">
-          <p className="text-base leading-relaxed">
-            La Gerencia General expresa su más profundo agradecimiento a nuestros estimados accionistas por la confianza depositada en 
-            la empresa durante este año de retos y logros compartidos. Su respaldo constante ha sido fundamental para seguir consolidando 
-            nuestro liderazgo en el sector avícola, impulsar proyectos estratégicos y fortalecer nuestro compromiso con la calidad, la 
-            innovación y la sostenibilidad.
-          </p>
-          <p className="text-base leading-relaxed">
-            Gracias familia Roa a su visión y apoyo, continuamos avanzando con firmeza hacia un crecimiento responsable y sostenible, 
-            enfocado en generar valor para todos nuestros grupos de interés y para el futuro de nuestra organización.
-          </p>
-          <div className="mt-8 pt-6 border-t-2 border-amber-500/30">
-            <p className="text-gray-600 text-sm mb-2">Atentamente,</p>
-            <div className="mt-6">
-              <p className="text-xl font-bold text-gray-900">JOHN HENRY RESTREPO MELO</p>
-              <p className="text-amber-600 font-semibold">Gerente General</p>
-            </div>
-          </div>
-        </div>
+        <button
+          onClick={() => onNavigate && onNavigate('agradecimientos')}
+          className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all"
+        >
+          <Heart className="w-6 h-6 fill-white" />
+          Ver Agradecimientos
+        </button>
       </motion.div>
 
       {/* Modal */}

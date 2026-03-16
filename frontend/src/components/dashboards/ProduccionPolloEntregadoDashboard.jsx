@@ -315,18 +315,25 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             </BarChart>
           </ResponsiveContainer>
           
-          {/* Mini resumen debajo del gráfico - Muestra todas las categorías */}
-          <div className="grid grid-cols-4 gap-2 mt-4">
-            {datosResumen.map((item, idx) => {
-              return (
-                <div key={idx} className="bg-gray-50 rounded-lg p-2 text-center">
-                  <div className="text-xs text-gray-600 mb-1">{item.categoria}</div>
-                  <div className={`text-sm font-bold ${item.diferencia >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {item.diferencia >= 0 ? '+' : ''}{formatNumber(item.diferencia)}
+          {/* Totales anuales debajo del gráfico */}
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3 text-center">Totales anuales</p>
+            <div className="grid grid-cols-4 gap-2">
+              {datosComparativo.map((item, idx) => {
+                const dif = item['2025'] - item['2024'];
+                const varPct = item['2024'] > 0 ? ((dif / item['2024']) * 100).toFixed(1) : 0;
+                return (
+                  <div key={idx} className="bg-gray-50 rounded-lg p-2 text-center">
+                    <div className="text-xs font-semibold text-gray-500 mb-1">{item.categoria}</div>
+                    <div className="text-xs text-blue-600 font-medium">2024: {formatNumber(item['2024'])}</div>
+                    <div className="text-xs text-green-600 font-medium">2025: {formatNumber(item['2025'])}</div>
+                    <div className={`text-xs font-bold mt-1 ${dif >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {dif >= 0 ? '+' : ''}{varPct}%
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </motion.div>
 
@@ -429,26 +436,6 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           </div>
         </motion.div>
       </div>
-
-      {/* Totales comparativos */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.85 }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4"
-      >
-        {[
-          { label: 'Total Programado 2025', value: datos2025.programado, color: 'border-purple-400', textColor: 'text-purple-700' },
-          { label: 'Total Real Granjas 2025', value: datos2025.real_granjas, color: 'border-green-400', textColor: 'text-green-700' },
-          { label: 'Total Comprado 2025', value: datos2025.comprado, color: 'border-orange-400', textColor: 'text-orange-700' },
-          { label: 'Total Aves 2025', value: datos2025.total, color: 'border-blue-400', textColor: 'text-blue-700' },
-        ].map((item, i) => (
-          <div key={i} className={`bg-white rounded-xl p-4 border-2 ${item.color} text-center`}>
-            <div className="text-xs text-gray-500 mb-1">{item.label}</div>
-            <div className={`text-xl font-bold ${item.textColor}`}>{formatNumber(item.value)}</div>
-          </div>
-        ))}
-      </motion.div>
 
       {/* Análisis */}
       {(() => {

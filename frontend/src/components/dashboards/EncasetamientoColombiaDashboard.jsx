@@ -97,7 +97,7 @@ export default function EncasetamientoColombiaDashboard() {
           const crecPct = ((incrementoAbs / t2024) * 100).toFixed(1);
           // Formatear millones con separador de miles colombiano
           const fmtM = (v) => new Intl.NumberFormat('es-CO', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(v);
-          const pfEnc = 32.4; // millones Pollo Fiesta
+          const pfEnc = 31.4; // millones Pollo Fiesta
           const participacion = ((pfEnc / t2025) * 100).toFixed(1);
           return (
             <>

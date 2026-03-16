@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
 import { Package, TrendingUp, DollarSign, X, Info, Percent, ArrowUpRight, ArrowDownRight, Building2 } from 'lucide-react';
-import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleTable, { fmt as formatNumber } from '../CollapsibleTable';
 import { formatCurrencyFull } from './CustomTooltip';
 
 export default function ComercialInstitucionalDashboard({ data }) {
@@ -34,14 +34,6 @@ export default function ComercialInstitucionalDashboard({ data }) {
     if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
     if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
     return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
-  };
-
-  const formatNumber = (value) => {
-    if (!value || isNaN(value)) return '0';
-    return new Intl.NumberFormat('es-CO', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
   };
 
   // Procesar datos por temperatura
@@ -265,8 +257,8 @@ export default function ComercialInstitucionalDashboard({ data }) {
                       {d.varPct}%
                     </span>
                   </td>
-                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2025 != null ? formatCurrency(d.precio2025) : 'N/D'}</td>
-                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2024 != null ? formatCurrency(d.precio2024) : 'N/D'}</td>
+                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2025 != null ? formatNumber(d.precio2025) : 'N/D'}</td>
+                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2024 != null ? formatNumber(d.precio2024) : 'N/D'}</td>
                   <td className="py-2 px-4 text-right tabular-nums">
                     {d.varPrecio === 'N/D' ? (
                       <span className="text-gray-400">N/D</span>
@@ -296,7 +288,25 @@ export default function ComercialInstitucionalDashboard({ data }) {
                   {totalRefrig2024 > 0 ? (((totalRefrig2025 - totalRefrig2024) / totalRefrig2024) * 100).toFixed(2) : 0}%
                 </span>
               </td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums" colSpan="3"></td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
+                {refrigerado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 : 0), 0) > 0 ? formatNumber(Math.round(refrigerado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 * d.precio2025 : 0), 0) / refrigerado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 : 0), 0))) : 'N/D'}
+              </td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
+                {refrigerado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 : 0), 0) > 0 ? formatNumber(Math.round(refrigerado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 * d.precio2024 : 0), 0) / refrigerado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 : 0), 0))) : 'N/D'}
+              </td>
+              <td className="py-3 px-4 text-right tabular-nums">
+                {(refrigerado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 : 0), 0) > 0 && refrigerado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 : 0), 0) > 0) ? (() => {
+                  const p25 = refrigerado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 * d.precio2025 : 0), 0) / refrigerado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 : 0), 0);
+                  const p24 = refrigerado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 * d.precio2024 : 0), 0) / refrigerado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 : 0), 0);
+                  const vp = (((p25 - p24) / p24) * 100).toFixed(2);
+                  return (
+                    <span className={`inline-flex items-center gap-1 ${parseFloat(vp) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(vp) >= 0 ? 'bg-green-500' : 'bg-red-500'}`}>●</span>
+                      {vp}%
+                    </span>
+                  );
+                })() : <span className="text-gray-400">N/D</span>}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -352,8 +362,8 @@ export default function ComercialInstitucionalDashboard({ data }) {
                       {d.varPct}%
                     </span>
                   </td>
-                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2025 != null ? formatCurrency(d.precio2025) : 'N/D'}</td>
-                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2024 != null ? formatCurrency(d.precio2024) : 'N/D'}</td>
+                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2025 != null ? formatNumber(d.precio2025) : 'N/D'}</td>
+                  <td className="py-2 px-4 text-right text-gray-900 tabular-nums">{d.precio2024 != null ? formatNumber(d.precio2024) : 'N/D'}</td>
                   <td className="py-2 px-4 text-right tabular-nums">
                     {d.varPrecio === 'N/D' ? (
                       <span className="text-gray-400">N/D</span>
@@ -383,7 +393,25 @@ export default function ComercialInstitucionalDashboard({ data }) {
                   {totalCongel2024 > 0 ? (((totalCongel2025 - totalCongel2024) / totalCongel2024) * 100).toFixed(2) : 0}%
                 </span>
               </td>
-              <td className="py-3 px-4 text-right text-gray-900 tabular-nums" colSpan="3"></td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
+                {congelado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 : 0), 0) > 0 ? formatNumber(Math.round(congelado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 * d.precio2025 : 0), 0) / congelado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 : 0), 0))) : 'N/D'}
+              </td>
+              <td className="py-3 px-4 text-right text-gray-900 tabular-nums">
+                {congelado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 : 0), 0) > 0 ? formatNumber(Math.round(congelado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 * d.precio2024 : 0), 0) / congelado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 : 0), 0))) : 'N/D'}
+              </td>
+              <td className="py-3 px-4 text-right tabular-nums">
+                {(congelado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 : 0), 0) > 0 && congelado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 : 0), 0) > 0) ? (() => {
+                  const p25 = congelado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 * d.precio2025 : 0), 0) / congelado.reduce((s,d) => s + (d.precio2025 != null ? d.kilos2025 : 0), 0);
+                  const p24 = congelado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 * d.precio2024 : 0), 0) / congelado.reduce((s,d) => s + (d.precio2024 != null ? d.kilos2024 : 0), 0);
+                  const vp = (((p25 - p24) / p24) * 100).toFixed(2);
+                  return (
+                    <span className={`inline-flex items-center gap-1 ${parseFloat(vp) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${parseFloat(vp) >= 0 ? 'bg-green-500' : 'bg-red-500'}`}>●</span>
+                      {vp}%
+                    </span>
+                  );
+                })() : <span className="text-gray-400">N/D</span>}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -398,24 +426,73 @@ export default function ComercialInstitucionalDashboard({ data }) {
         className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-xl rounded-xl p-6 border-2 border-purple-500/30"
       >
         <h3 className="text-xl font-bold text-gray-900 mb-4">TOTAL GENERAL</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div>
-            <p className="text-sm text-gray-600">Total 2025</p>
-            <p className="text-2xl font-bold text-gray-900">{formatNumber(total2025)} kg</p>
+
+        {/* Refrigerado */}
+        <p className="text-xs font-bold text-blue-600 uppercase mb-2">Refrigerado</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="bg-blue-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Kls. 2025</p>
+            <p className="text-lg font-bold text-gray-900">{formatNumber(totalRefrig2025)}</p>
           </div>
-          <div>
-            <p className="text-sm text-gray-600">Total 2024</p>
-            <p className="text-2xl font-bold text-gray-900">{formatNumber(total2024)} kg</p>
+          <div className="bg-blue-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Kls. 2024</p>
+            <p className="text-lg font-bold text-gray-900">{formatNumber(totalRefrig2024)}</p>
           </div>
-          <div>
-            <p className="text-sm text-gray-600">Variación</p>
-            <p className={`text-2xl font-bold ${parseFloat(variacionKilos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {variacionKilos > 0 ? '+' : ''}{variacionKilos}%
+          <div className="bg-blue-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Variación kg</p>
+            <p className={`text-lg font-bold ${(totalRefrig2025-totalRefrig2024)>=0?'text-green-600':'text-red-600'}`}>{formatNumber(totalRefrig2025-totalRefrig2024)}</p>
+          </div>
+          <div className="bg-blue-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">% Var</p>
+            <p className={`text-lg font-bold ${totalRefrig2024>0&&((totalRefrig2025-totalRefrig2024)/totalRefrig2024)>=0?'text-green-600':'text-red-600'}`}>
+              {totalRefrig2024>0?(((totalRefrig2025-totalRefrig2024)/totalRefrig2024)*100).toFixed(2):0}%
             </p>
           </div>
-          <div>
-            <p className="text-sm text-gray-600">Precio Promedio 2025</p>
-            <p className="text-2xl font-bold text-gray-900">{formatCurrency(precioProm2025)}/kg</p>
+        </div>
+
+        {/* Congelado */}
+        <p className="text-xs font-bold text-green-600 uppercase mb-2">Congelado</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="bg-green-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Kls. 2025</p>
+            <p className="text-lg font-bold text-gray-900">{formatNumber(totalCongel2025)}</p>
+          </div>
+          <div className="bg-green-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Kls. 2024</p>
+            <p className="text-lg font-bold text-gray-900">{formatNumber(totalCongel2024)}</p>
+          </div>
+          <div className="bg-green-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Variación kg</p>
+            <p className={`text-lg font-bold ${(totalCongel2025-totalCongel2024)>=0?'text-green-600':'text-red-600'}`}>{formatNumber(totalCongel2025-totalCongel2024)}</p>
+          </div>
+          <div className="bg-green-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">% Var</p>
+            <p className={`text-lg font-bold ${totalCongel2024>0&&((totalCongel2025-totalCongel2024)/totalCongel2024)>=0?'text-green-600':'text-red-600'}`}>
+              {totalCongel2024>0?(((totalCongel2025-totalCongel2024)/totalCongel2024)*100).toFixed(2):0}%
+            </p>
+          </div>
+        </div>
+
+        {/* Total consolidado */}
+        <div className="border-t-2 border-purple-300 pt-4">
+          <p className="text-xs font-bold text-purple-600 uppercase mb-2">Total Consolidado</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="bg-purple-50 rounded-lg p-3">
+              <p className="text-xs text-gray-500">Total Kls. 2025</p>
+              <p className="text-xl font-bold text-gray-900">{formatNumber(total2025)}</p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-3">
+              <p className="text-xs text-gray-500">Total Kls. 2024</p>
+              <p className="text-xl font-bold text-gray-900">{formatNumber(total2024)}</p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-3">
+              <p className="text-xs text-gray-500">% Variación</p>
+              <p className={`text-xl font-bold ${parseFloat(variacionKilos)>=0?'text-green-600':'text-red-600'}`}>{variacionKilos>0?'+':''}{variacionKilos}%</p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-3">
+              <p className="text-xs text-gray-500">$/kg Prom. 2025</p>
+              <p className="text-xl font-bold text-gray-900">{formatNumber(precioProm2025)}</p>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -441,7 +518,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
             <BarChart data={datosComparativa}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="temperatura" stroke="#64748b" />
-              <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} width={60} />
+              <YAxis stroke="#64748b" tickFormatter={(value) => formatNumber(value)} width={80} />
               <Tooltip content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
                   const val2024 = payload.find(p => p.dataKey === '2024')?.value || 0;

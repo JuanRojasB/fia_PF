@@ -122,7 +122,7 @@ export default function Dashboard() {
   };
 
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal'];
+  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos'];
 
   // Función para cambiar de sección que actualiza tanto el estado como la URL
   const handleSectionChange = useCallback((newSection) => {
@@ -291,6 +291,7 @@ export default function Dashboard() {
       'cartera': 'Gestión de Cartera',
       'comercial': 'Gestión Comercial',
       'comercial-pdv': 'Puntos de Venta',
+      'comercial-productos': 'Ventas en Pollo en Canal',
       'ventas': 'Equipo de Ventas',
       'humana': 'Gestión Humana',
       'humana-general': 'Gestión Humana',
@@ -438,7 +439,7 @@ export default function Dashboard() {
                 title={`Error al cargar: ${dashboardTitle}`}
                 onReset={() => loadDashboardData(sectionToDashboardType[activeSection])}
               >
-                <DashboardRenderer type={activeSection} data={dashboardData} />
+                <DashboardRenderer type={activeSection} data={dashboardData} onNavigate={handleSectionChange} />
               </ErrorBoundary>
             </DashboardWrapper>
           )}

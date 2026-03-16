@@ -95,7 +95,7 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
         { id: 'comercial-resumen', label: 'Estructura' },
         { id: 'comercial-ventas-compania', label: 'Ventas Total Compañía' },
         { id: 'comercial-pollo-entero', label: 'Pollo Entero' },
-        { id: 'comercial-productos', label: 'Análisis de Productos' },
+        { id: 'comercial-productos', label: 'Ventas en Pollo en Canal' },
         { id: 'comercial-asadero', label: 'Ventas Asadero (Sede 1)' },
         { id: 'comercial-institucional', label: 'Ventas Institucional/Moderno (Sede 3)' },
         { id: 'comercial-huevo', label: 'Ventas de Huevo' },

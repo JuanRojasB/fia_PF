@@ -162,12 +162,12 @@ export default function ProduccionHuevosDashboard({ data }) {
           transition={{ delay: 0.3 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Diferencia vs Estándar Industria 2025',
-            `La productividad real de 2025 es de ${formatDecimal(productividadReal2025)} huevos/gallina/mes, comparado con el estándar de la industria de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes. La diferencia absoluta es de ${formatDecimal(productividadReal2025 - productividadTabla2025)} huevos ${productividadReal2025 > productividadTabla2025 ? 'por encima' : 'por debajo'} del estándar. ${productividadReal2025 > productividadTabla2025 ? 'Esta mejora indica excelencia en genética, nutrición, manejo y bioseguridad, traduciéndose en mayor rentabilidad por ave.' : 'Hay oportunidad de mejora para alcanzar el estándar de la industria.'}`
+            'Diferencia vs Valor de Tabla 2025',
+            `La productividad real de 2025 es de ${formatDecimal(productividadReal2025)} huevos/gallina/mes, comparado con el valor de tabla de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes. La diferencia absoluta es de ${formatDecimal(productividadReal2025 - productividadTabla2025)} huevos ${productividadReal2025 > productividadTabla2025 ? 'por encima' : 'por debajo'} del valor de tabla.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Productividad Real vs Estándar 2025</span>
+            <span className="text-gray-600 text-sm">Productividad Real vs Valor de Tabla 2025</span>
             {productividadReal2025 > productividadTabla2025 ? <Award className="w-5 h-5 text-blue-400" /> : <Target className="w-5 h-5 text-orange-400" />}
           </div>
           <div className="text-3xl font-bold text-gray-900">{productividadReal2025 > productividadTabla2025 ? '+' : ''}{formatDecimal(productividadReal2025 - productividadTabla2025)}</div>
@@ -183,7 +183,7 @@ export default function ProduccionHuevosDashboard({ data }) {
       {zootecniaHuevo.length >= 2 && (
         <CollapsibleTable 
           title="COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS HUEVO 2025-2024"
-          defaultOpen={false}
+          defaultOpen={true}
           totalRow={[
             { label: 'Indicadores Clave 2025' },
             { label: `Huevos: ${formatNumber(totalHuevos2025)}`, color: 'text-yellow-500' },
@@ -385,8 +385,8 @@ export default function ProduccionHuevosDashboard({ data }) {
           `Comparación de la productividad real (huevos/gallina/mes) contra el estándar de la industria. Las barras verdes muestran el desempeño real y las azules el estándar. Superar el estándar demuestra excelencia operativa y genética superior.`
         )}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Productividad Real vs Estándar Sector - Huevos 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Comparación de desempeño contra benchmarks del sector</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Productividad Real vs Valor de Tabla — Huevos 2025</h3>
+        <p className="text-sm text-gray-600 mb-6">Comparación de desempeño contra valor de tabla</p>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -434,7 +434,7 @@ export default function ProduccionHuevosDashboard({ data }) {
               }}
             />
             <Legend />
-            <Bar dataKey="estandar" fill="#3b82f6" name="Estándar Industria" radius={[8, 8, 0, 0]}>
+            <Bar dataKey="estandar" fill="#3b82f6" name="Valor de Tabla" radius={[8, 8, 0, 0]}>
               <LabelList dataKey="anio" position="top" style={{ fontSize: '11px', fontWeight: 'bold', fill: '#374151' }} />
             </Bar>
             <Bar dataKey="productividad" fill="#10b981" name="Productividad Real" radius={[8, 8, 0, 0]} />
@@ -500,57 +500,6 @@ export default function ProduccionHuevosDashboard({ data }) {
             <Bar yAxisId="left" dataKey="mortalidadTabla" fill="#6b7280" name="Mortalidad Tabla" radius={[8, 8, 0, 0]} />
             <Bar yAxisId="left" dataKey="mortalidadReal" fill="#ef4444" name="Mortalidad Real" radius={[8, 8, 0, 0]} />
             <Line yAxisId="right" type="monotone" dataKey="consumoReal" stroke="#06b6d4" strokeWidth={3} name="Consumo Alimento Real" dot={{ fill: '#06b6d4', r: 5 }} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </motion.div>
-
-      {/* Gráfica 3: Población de Aves vs Huevos por Ave */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.7 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
-        onClick={() => openModal(
-          'Población de Aves vs Productividad por Ave',
-          `Comparación entre el número de aves en producción (barras azules) y la productividad por ave (línea verde). Esta gráfica muestra si el aumento o reducción de aves afecta la productividad individual. Idealmente, se busca mantener alta productividad independientemente del tamaño del lote.`
-        )}
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Población de Aves vs Productividad por Ave 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Relación entre tamaño del lote y eficiencia individual</p>
-        <ResponsiveContainer width="100%" height={400}>
-          <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey="anio" stroke="#9ca3af" />
-            <YAxis yAxisId="left" stroke="#9ca3af" width={90} label={{ value: 'Aves en Producción', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} tickFormatter={(value) => formatNumber(value)} />
-            <YAxis yAxisId="right" orientation="right" stroke="#9ca3af" label={{ value: 'Huevos/Ave/Mes', angle: 90, position: 'insideRight', fill: '#9ca3af' }} />
-            <Tooltip 
-              content={({ active, payload, label }) => {
-                if (active && payload && payload.length) {
-                  const aves = payload.find(p => p.dataKey === 'aves')?.value || 0;
-                  const productividad = payload.find(p => p.dataKey === 'productividad')?.value || 0;
-                  
-                  return (
-                    <div className="bg-white border-2 border-purple-500 rounded-xl p-4 shadow-xl">
-                      <p className="font-bold text-gray-900 mb-3 text-lg">Año {label}</p>
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center gap-4">
-                          <span className="text-blue-600 font-medium">Aves:</span>
-                          <span className="font-bold text-gray-900">{formatNumber(aves)}</span>
-                        </div>
-                        <div className="flex justify-between items-center gap-4">
-                          <span className="text-green-600 font-medium">Productividad:</span>
-                          <span className="font-bold text-gray-900">{formatDecimal(productividad)} huevos/ave/mes</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            />
-            <Legend />
-            <Bar yAxisId="left" dataKey="aves" fill="#3b82f6" name="Aves en Producción" radius={[8, 8, 0, 0]} />
-            <Line yAxisId="right" type="monotone" dataKey="productividad" stroke="#10b981" strokeWidth={3} name="Productividad por Ave" dot={{ fill: '#10b981', r: 6 }} />
           </ComposedChart>
         </ResponsiveContainer>
       </motion.div>
