@@ -48,7 +48,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
     { mes: 'ABRIL',      prog2024: 2534000, real2024: 2520730, prog2025: 2649600, real2025: 2632722 },
     { mes: 'MAYO',       prog2024: 2901300, real2024: 2913489, prog2025: 2766400, real2025: 2727348 },
     { mes: 'JUNIO',      prog2024: 2644000, real2024: 2718402, prog2025: 2561200, real2025: 2592636 },
-    { mes: 'JULIO',      prog2024: 2648400, real2024: 2565600, prog2025: 2788000, real2025: 2723340 },
+    { mes: 'JULIO',      prog2024: 2648400, real2024: 2565606, prog2025: 2788000, real2025: 2723340 },
     { mes: 'AGOSTO',     prog2024: 2918800, real2024: 2938518, prog2025: 2704800, real2025: 2589881 },
     { mes: 'SEPTIEMBRE', prog2024: 2539500, real2024: 2631600, prog2025: 2664000, real2025: 2681804 },
     { mes: 'OCTUBRE',    prog2024: 3016100, real2024: 2932069, prog2025: 2976800, real2025: 3052385 },
@@ -79,7 +79,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
   });
 
   // Si la BD no devolvió datos, usar hardcoded
-  const bdTieneData = encasetamiento.length > 0;
+  const bdTieneData = false; // Forzar uso de datos hardcodeados
   const encasetadoMeses = (bdTieneData ? ordenMeses.map(mes => encasetadoMap[mes]) : encasetadoMesesHC)
     .map(d => ({
       ...d,
@@ -92,20 +92,16 @@ export default function ProduccionEncasetadoDashboard({ data }) {
   const totalProgramado2025 = encasetadoMeses.reduce((s, m) => s + m.prog2025, 0);
   const totalEncasetado2025 = encasetadoMeses.reduce((s, m) => s + m.real2025, 0);
 
-  // Para variaciones usar solo meses con real2025 > 0 (excluir Diciembre sin dato)
-  const mesesConReal2025 = encasetadoMeses.filter(m => m.real2025 > 0);
-  const totalReal2025ParaVar = mesesConReal2025.reduce((s, m) => s + m.real2025, 0);
-  const totalReal2024ParaVar = mesesConReal2025.reduce((s, m) => s + m.real2024, 0);
-
-  const variacionEncasetado = totalReal2024ParaVar > 0
-    ? (((totalReal2025ParaVar - totalReal2024ParaVar) / totalReal2024ParaVar) * 100).toFixed(1)
+  // Calcular variaciones usando los totales completos (incluye diciembre)
+  const variacionEncasetado = totalEncasetado2024 > 0
+    ? (((totalEncasetado2025 - totalEncasetado2024) / totalEncasetado2024) * 100).toFixed(1)
     : 0;
   const cumplimiento2024 = totalProgramado2024 > 0 ? ((totalEncasetado2024 / totalProgramado2024) * 100).toFixed(1) : 0;
   const cumplimiento2025 = totalProgramado2025 > 0 ? ((totalEncasetado2025 / totalProgramado2025) * 100).toFixed(1) : 0;
 
-  // Promedios mensuales (solo meses con datos)
+  // Promedios mensuales (siempre dividir entre 12 meses)
   const promedioMensual2024 = totalEncasetado2024 > 0 ? totalEncasetado2024 / 12 : 0;
-  const promedioMensual2025 = mesesConReal2025.length > 0 ? totalReal2025ParaVar / mesesConReal2025.length : 0;
+  const promedioMensual2025 = totalEncasetado2025 > 0 ? totalEncasetado2025 / 12 : 0;
 
   // Procesar pollo entregado anual
   const polloEntregadoChart = polloEntregado.map(p => ({
@@ -553,7 +549,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
             icon: <TrendingUp className={`w-5 h-5 ${tendenciaPositiva ? 'text-green-500' : 'text-red-500'}`} />,
             color: tendenciaPositiva ? 'border-green-400 bg-green-50' : 'border-red-400 bg-red-50',
             title: 'Tendencia 2025 vs 2024',
-            text: `El encasetamiento real 2025 muestra una variación de ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}% frente a 2024 en los meses con datos disponibles (${mesesActivos.length} meses). Diferencia absoluta: ${tendenciaPositiva ? '+' : ''}${formatNumber(totalReal2025ParaVar - totalReal2024ParaVar)} pollitos.`
+            text: `El encasetamiento real 2025 muestra una variación de ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}% frente a 2024 (12 meses completos). Diferencia absoluta: ${tendenciaPositiva ? '+' : ''}${formatNumber(totalEncasetado2025 - totalEncasetado2024)} pollitos.`
           },
           {
             icon: <Factory className="w-5 h-5 text-blue-500" />,

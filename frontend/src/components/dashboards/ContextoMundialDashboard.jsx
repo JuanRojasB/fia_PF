@@ -1,11 +1,19 @@
 import { motion } from 'framer-motion';
-import { Globe, DollarSign, TrendingUp, Target, AlertTriangle, Info } from 'lucide-react';
+import { Globe, DollarSign, TrendingUp, Target, AlertTriangle, Info, ChevronDown, ChevronUp } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import CollapsibleTable from '../CollapsibleTable';
 import { useState } from 'react';
 
 export default function ContextoMundialDashboard() {
   const [showGastoInfo, setShowGastoInfo] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({});
+
+  const toggleSection = (sectionId) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+  };
 
   const pibData = [
     { trimestre: 'I',   año: '2019',   valor: 25000, index: 0 },
@@ -133,95 +141,111 @@ export default function ContextoMundialDashboard() {
       {/* Sections */}
       {sections.map((section, index) => {
         const Icon = section.icon;
+        const isExpanded = expandedSections[section.id];
+        
         return (
           <motion.div
             key={section.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-2 border-gray-200 shadow-sm"
+            className="bg-white/95 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-2 border-gray-200 shadow-sm cursor-pointer hover:border-gray-300 transition-all"
+            onClick={() => toggleSection(section.id)}
           >
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${section.color} flex items-center justify-center shadow-lg`}>
-                <Icon className="w-6 h-6 text-white" />
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-3">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${section.color} flex items-center justify-center shadow-lg`}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <h2 className="text-xl lg:text-2xl font-bold text-gray-900">{section.title}</h2>
               </div>
-              <h2 className="text-xl lg:text-2xl font-bold text-gray-900">{section.title}</h2>
+              <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                {isExpanded ? (
+                  <ChevronUp className="w-6 h-6 text-gray-600" />
+                ) : (
+                  <ChevronDown className="w-6 h-6 text-gray-600" />
+                )}
+              </div>
             </div>
-            <div className="space-y-2">
-              {section.content.map((line, i) => (
-                <p key={i} className={`leading-relaxed ${line === '' ? 'mt-2' : 'text-gray-700'}`}>
-                  {line}
-                </p>
-              ))}
-            </div>
+            
+            {isExpanded && (
+              <>
+                <div className="space-y-2">
+                  {section.content.map((line, i) => (
+                    <p key={i} className={`leading-relaxed ${line === '' ? 'mt-2' : 'text-gray-700'}`}>
+                      {line}
+                    </p>
+                  ))}
+                </div>
 
-
-            {/* Barreras a la Entrada — solo dentro de Conclusiones Estratégicas */}
-            {section.id === 5 && (
-              <div className="mt-6 pt-6 border-t-2 border-gray-200">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center shadow-md">
-                    <AlertTriangle className="w-5 h-5 text-white" />
+                {/* Barreras a la Entrada — solo dentro de Conclusiones Estratégicas */}
+                {section.id === 5 && (
+                  <div className="mt-6 pt-6 border-t-2 border-gray-200">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center shadow-md">
+                        <AlertTriangle className="w-5 h-5 text-white" />
+                      </div>
+                      <h3 className="text-lg lg:text-xl font-bold text-gray-900">Barreras a la Entrada en el Negocio Avícola</h3>
+                    </div>
+                    <p className="text-gray-700 mb-4 leading-relaxed">
+                      Las barreras a la entrada en el negocio avícola son <span className="font-bold">normativas</span> y requieren cumplimiento estricto para operar en el sector:
+                    </p>
+                    <div className="overflow-x-auto">
+                      <CollapsibleTable title="Barreras a la Entrada en el Negocio Avícola" defaultOpen={false}>
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="bg-indigo-600 text-white">
+                              <th className="border-2 border-indigo-700 p-3 text-left font-bold">Categoría</th>
+                              <th className="border-2 border-indigo-700 p-3 text-left font-bold">Descripción</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="hover:bg-indigo-50 transition-colors">
+                              <td className="border-2 border-indigo-200 p-4 bg-indigo-100">
+                                <span className="font-bold text-indigo-700">Sanitaria y Bioseguridad (ICA)</span>
+                              </td>
+                              <td className="border-2 border-indigo-200 p-4">
+                                <p className="mb-2"><span className="font-bold">Certificación de granja biosegura</span>, protocolos estrictos de ingreso, manejo de mortalidades, limpieza, control de plagas, trazabilidad y movilización de animales.</p>
+                                <p className="text-sm text-gray-600 italic mt-2"><span className="font-bold">Inversión en infraestructura</span></p>
+                              </td>
+                            </tr>
+                            <tr className="hover:bg-indigo-50 transition-colors">
+                              <td className="border-2 border-indigo-200 p-4 bg-indigo-100">
+                                <span className="font-bold text-indigo-700">Inocuidad y Plantas de Beneficio (Pollo)</span>
+                              </td>
+                              <td className="border-2 border-indigo-200 p-4">
+                                <p className="mb-2">Cumplimiento del <span className="font-bold">Decreto 1500</span> y normativa sanitaria para plantas de beneficio, desprese, almacenamiento y comercialización.</p>
+                                <p className="text-sm text-gray-600 italic mt-2"><span className="font-bold">Inversión en infraestructura</span></p>
+                              </td>
+                            </tr>
+                            <tr className="hover:bg-indigo-50 transition-colors">
+                              <td className="border-2 border-indigo-200 p-4 bg-indigo-100">
+                                <span className="font-bold text-indigo-700">Capital Inicial y Economías de Escala</span>
+                              </td>
+                              <td className="border-2 border-indigo-200 p-4">
+                                <p>Inversión en <span className="font-bold">galpones, equipos, silos, energía, logística y capital de trabajo</span> para sostener ciclos productivos.</p>
+                              </td>
+                            </tr>
+                            <tr className="hover:bg-indigo-50 transition-colors">
+                              <td className="border-2 border-indigo-200 p-4 bg-indigo-100">
+                                <span className="font-bold text-indigo-700">Ambiental y Territorial</span>
+                              </td>
+                              <td className="border-2 border-indigo-200 p-4">
+                                <p>Uso de suelo, manejo de residuos (<span className="font-bold">gallinaza/pollinaza</span>), olores, vectores, cumplimiento ambiental y aceptación comunitaria.</p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </CollapsibleTable>
+                    </div>
+                    <div className="mt-4 p-4 rounded-lg bg-indigo-50 border-2 border-indigo-200">
+                      <p className="text-sm text-gray-700">
+                        <span className="font-bold text-indigo-700">Fuente:</span> FENAVI - Federación Nacional de Avicultores de Colombia
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="text-lg lg:text-xl font-bold text-gray-900">Barreras a la Entrada en el Negocio Avícola</h3>
-                </div>
-                <p className="text-gray-700 mb-4 leading-relaxed">
-                  Las barreras a la entrada en el negocio avícola son <span className="font-bold">normativas</span> y requieren cumplimiento estricto para operar en el sector:
-                </p>
-                <div className="overflow-x-auto">
-                  <CollapsibleTable title="Barreras a la Entrada en el Negocio Avícola" defaultOpen={true}>
-                    <table className="w-full border-collapse">
-                      <thead>
-                        <tr className="bg-indigo-600 text-white">
-                          <th className="border-2 border-indigo-700 p-3 text-left font-bold">Categoría</th>
-                          <th className="border-2 border-indigo-700 p-3 text-left font-bold">Descripción</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="hover:bg-indigo-50 transition-colors">
-                          <td className="border-2 border-indigo-200 p-4 bg-indigo-100">
-                            <span className="font-bold text-indigo-700">Sanitaria y Bioseguridad (ICA)</span>
-                          </td>
-                          <td className="border-2 border-indigo-200 p-4">
-                            <p className="mb-2"><span className="font-bold">Certificación de granja biosegura</span>, protocolos estrictos de ingreso, manejo de mortalidades, limpieza, control de plagas, trazabilidad y movilización de animales.</p>
-                            <p className="text-sm text-gray-600 italic mt-2"><span className="font-bold">Inversión en infraestructura</span></p>
-                          </td>
-                        </tr>
-                        <tr className="hover:bg-indigo-50 transition-colors">
-                          <td className="border-2 border-indigo-200 p-4 bg-indigo-100">
-                            <span className="font-bold text-indigo-700">Inocuidad y Plantas de Beneficio (Pollo)</span>
-                          </td>
-                          <td className="border-2 border-indigo-200 p-4">
-                            <p className="mb-2">Cumplimiento del <span className="font-bold">Decreto 1500</span> y normativa sanitaria para plantas de beneficio, desprese, almacenamiento y comercialización.</p>
-                            <p className="text-sm text-gray-600 italic mt-2"><span className="font-bold">Inversión en infraestructura</span></p>
-                          </td>
-                        </tr>
-                        <tr className="hover:bg-indigo-50 transition-colors">
-                          <td className="border-2 border-indigo-200 p-4 bg-indigo-100">
-                            <span className="font-bold text-indigo-700">Capital Inicial y Economías de Escala</span>
-                          </td>
-                          <td className="border-2 border-indigo-200 p-4">
-                            <p>Inversión en <span className="font-bold">galpones, equipos, silos, energía, logística y capital de trabajo</span> para sostener ciclos productivos.</p>
-                          </td>
-                        </tr>
-                        <tr className="hover:bg-indigo-50 transition-colors">
-                          <td className="border-2 border-indigo-200 p-4 bg-indigo-100">
-                            <span className="font-bold text-indigo-700">Ambiental y Territorial</span>
-                          </td>
-                          <td className="border-2 border-indigo-200 p-4">
-                            <p>Uso de suelo, manejo de residuos (<span className="font-bold">gallinaza/pollinaza</span>), olores, vectores, cumplimiento ambiental y aceptación comunitaria.</p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </CollapsibleTable>
-                </div>
-                <div className="mt-4 p-4 rounded-lg bg-indigo-50 border-2 border-indigo-200">
-                  <p className="text-sm text-gray-700">
-                    <span className="font-bold text-indigo-700">Fuente:</span> FENAVI - Federación Nacional de Avicultores de Colombia
-                  </p>
-                </div>
-              </div>
+                )}
+              </>
             )}
           </motion.div>
         );

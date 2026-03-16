@@ -319,8 +319,77 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         </div>
       </motion.div>
 
-      {/* 1. INDICADORES DE LIQUIDEZ */}
-      <CollapsibleTable title="1. INDICADORES DE LIQUIDEZ" defaultOpen={false} className="border-4 border-blue-500/30">
+      {/* 1. INDICADORES DE LIQUIDEZ - CARDS */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+      >
+        <h3 className="text-xl font-bold text-gray-900 mb-4">1. INDICADORES DE LIQUIDEZ</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div 
+            className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 cursor-pointer hover:border-blue-500 transition-all"
+            onClick={() => openModal('Capital de Trabajo', 'Son los recursos con que se dispone para desarrollar su actividad fluidamente. Se calcula restando el Pasivo Corriente del Activo Corriente. Un capital de trabajo positivo indica que la empresa tiene suficientes recursos líquidos para cubrir sus obligaciones a corto plazo.')}
+          >
+            <p className="text-sm font-bold text-gray-900">CAPITAL DE TRABAJO</p>
+            <p className="text-xs text-gray-600">(Activo Corriente - Pasivo Corriente)</p>
+            <p className="text-2xl font-bold text-blue-600 mt-2">96.138.091.362</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 57.705.588.903</p>
+          </div>
+
+          <div 
+            className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"
+            onClick={() => openModal('Razón Corriente', 'Por cada peso de deuda en el corto plazo se dispone de n veces de respaldo para cumplir con la obligación. Una razón corriente mayor a 1 indica que la empresa tiene más activos corrientes que pasivos corrientes.')}
+          >
+            <p className="text-sm font-bold text-gray-900">RAZÓN CORRIENTE</p>
+            <p className="text-xs text-gray-600">Activo corriente / Pasivo corriente</p>
+            <p className="text-2xl font-bold text-cyan-600 mt-2">$ 4,22</p>
+            <p className="text-xs text-gray-600 mt-1">2024: $ 3,35</p>
+          </div>
+
+          <div 
+            className="bg-indigo-50 rounded-lg p-4 border-2 border-indigo-300 cursor-pointer hover:border-indigo-500 transition-all"
+            onClick={() => openModal('Prueba Ácida', 'Es el respaldo que se tiene para cancelar un peso en el corto plazo sin comprometer los inventarios. Es una medida más estricta de liquidez que la razón corriente.')}
+          >
+            <p className="text-sm font-bold text-gray-900">PRUEBA ÁCIDA</p>
+            <p className="text-xs text-gray-600">(Activo corriente - inventario) / pasivo corriente</p>
+            <p className="text-2xl font-bold text-indigo-600 mt-2">$ 4,05</p>
+            <p className="text-xs text-gray-600 mt-1">2024: $ 3,31</p>
+          </div>
+
+          <div 
+            className="bg-sky-50 rounded-lg p-4 border-2 border-sky-300 cursor-pointer hover:border-sky-500 transition-all"
+            onClick={() => openModal('Solidez', 'Es la consistencia financiera para cubrir su deuda total. Mide la capacidad de la empresa para cubrir todas sus deudas con sus activos totales.')}
+          >
+            <p className="text-sm font-bold text-gray-900">SOLIDEZ</p>
+            <p className="text-xs text-gray-600">Activo total / Pasivo total</p>
+            <p className="text-2xl font-bold text-sky-600 mt-2">$ 4,71</p>
+            <p className="text-xs text-gray-600 mt-1">2024: $ 2,55</p>
+          </div>
+
+          <div 
+            className="bg-blue-100 rounded-lg p-4 border-2 border-blue-400 md:col-span-2 cursor-pointer hover:border-blue-600 transition-all"
+            onClick={() => openModal('EBITDA', 'Beneficio Bruto sin gastos financieros, amortizaciones e impuestos. Es un indicador de la rentabilidad operativa de la empresa antes de considerar la estructura de capital, impuestos y depreciación.')}
+          >
+            <p className="text-sm font-bold text-gray-900">EBITDA</p>
+            <p className="text-xs text-gray-600">Margen Ebitda = Ebitda / Ingresos Totales</p>
+            <div className="flex gap-8 mt-2">
+              <div>
+                <p className="text-2xl font-bold text-blue-600">29.712.979.101</p>
+                <p className="text-lg font-semibold text-blue-600">6,8%</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">2024:</p>
+                <p className="text-xl font-bold text-gray-700">25.734.246.272</p>
+                <p className="text-md font-semibold text-gray-700">6,0%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* 1. INDICADORES DE LIQUIDEZ - TABLA */}
+      <CollapsibleTable title="Tabla Detallada - Indicadores de Liquidez" defaultOpen={false} className="border-4 border-blue-500/30">
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -367,8 +436,72 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         </div>
       </CollapsibleTable>
 
-      {/* 2. INDICADORES DE ENDEUDAMIENTO */}
-      <CollapsibleTable title="2. INDICADORES DE ENDEUDAMIENTO" defaultOpen={false} className="border-4 border-red-500/30">
+      {/* 2. INDICADORES DE ENDEUDAMIENTO - CARDS */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+      >
+        <h3 className="text-xl font-bold text-gray-900 mb-4">2. INDICADORES DE ENDEUDAMIENTO</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div 
+            className="bg-red-50 rounded-lg p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
+            onClick={() => openModal('Nivel de Endeudamiento', 'Es el % en que participan los acreedores en los activos de la empresa. Un 21.2% indica que solo el 21.2% de los activos están financiados con deuda, lo cual es un nivel saludable.')}
+          >
+            <p className="text-sm font-bold text-gray-900">NIVEL DE ENDEUDAMIENTO</p>
+            <p className="text-xs text-gray-600">Pasivo / Activo</p>
+            <p className="text-2xl font-bold text-red-600 mt-2">21,2%</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 39,2%</p>
+          </div>
+
+          <div 
+            className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300 cursor-pointer hover:border-orange-500 transition-all"
+            onClick={() => openModal('Endeudamiento a Corto Plazo', 'Es el % en que participan los acreedores del corto plazo en los activos de la compañía. Un 45.1% indica que casi la mitad de las deudas son de corto plazo.')}
+          >
+            <p className="text-sm font-bold text-gray-900">ENDEUDAMIENTO A CORTO PLAZO</p>
+            <p className="text-xs text-gray-600">Pasivo Corriente / Pasivo Total</p>
+            <p className="text-2xl font-bold text-orange-600 mt-2">45,1%</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 45,7%</p>
+          </div>
+
+          <div 
+            className="bg-rose-50 rounded-lg p-4 border-2 border-rose-300 cursor-pointer hover:border-rose-500 transition-all"
+            onClick={() => openModal('Cobertura de Gastos Financieros', 'Es el % en que participa de la parte de las ventas. Un 1.4% indica que los costos financieros representan una porción muy pequeña de las ventas.')}
+          >
+            <p className="text-sm font-bold text-gray-900">COBERTURA DE GASTOS FINANCIEROS</p>
+            <p className="text-xs text-gray-600">Costos financieros / Ventas netas</p>
+            <p className="text-2xl font-bold text-rose-600 mt-2">1,4%</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 1,6%</p>
+          </div>
+
+          <div 
+            className="bg-red-100 rounded-lg p-4 border-2 border-red-400 md:col-span-3 cursor-pointer hover:border-red-600 transition-all"
+            onClick={() => openModal('Indicador de Apalancamiento', 'Mide el grado de compromiso de los accionistas para con el sector financiero. Los tres sub-indicadores muestran diferentes perspectivas del apalancamiento.')}
+          >
+            <p className="text-sm font-bold text-gray-900 mb-3">INDICADOR DE APALANCAMIENTO</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white rounded-lg p-3 border border-red-300">
+                <p className="text-xs text-gray-600 mb-1">Pasivo / Capital contable</p>
+                <p className="text-xl font-bold text-red-600">26,9%</p>
+                <p className="text-xs text-gray-600 mt-1">2024: 64,4%</p>
+              </div>
+              <div className="bg-white rounded-lg p-3 border border-red-300">
+                <p className="text-xs text-gray-600 mb-1">Pasivo corriente / Capital Contable</p>
+                <p className="text-xl font-bold text-red-600">12,2%</p>
+                <p className="text-xs text-gray-600 mt-1">2024: 29,4%</p>
+              </div>
+              <div className="bg-white rounded-lg p-3 border border-red-300">
+                <p className="text-xs text-gray-600 mb-1">Pasivo Financiero / Capital Contable</p>
+                <p className="text-xl font-bold text-red-600">14,3%</p>
+                <p className="text-xs text-gray-600 mt-1">2024: 37,4%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* 2. INDICADORES DE ENDEUDAMIENTO - TABLA */}
+      <CollapsibleTable title="Tabla Detallada - Indicadores de Endeudamiento" defaultOpen={false} className="border-4 border-red-500/30">
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -419,8 +552,57 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         </div>
       </CollapsibleTable>
 
-      {/* 3. INDICADORES DE ACTIVIDAD */}
-      <CollapsibleTable title="3. INDICADORES DE ACTIVIDAD" defaultOpen={false} className="border-4 border-green-500/30">
+      {/* 3. INDICADORES DE ACTIVIDAD - CARDS */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9 }}
+      >
+        <h3 className="text-xl font-bold text-gray-900 mb-4">3. INDICADORES DE ACTIVIDAD</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div 
+            className="bg-green-50 rounded-lg p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
+            onClick={() => openModal('Rotación de Cartera', 'Es el número de veces en que rota la cartera respecto a las ventas del año. Un valor de 15.40 indica una buena gestión de cobros.')}
+          >
+            <p className="text-sm font-bold text-gray-900">ROTACIÓN DE CARTERA</p>
+            <p className="text-2xl font-bold text-green-600 mt-2">15,40</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 14,99</p>
+          </div>
+
+          <div 
+            className="bg-emerald-50 rounded-lg p-4 border-2 border-emerald-300 cursor-pointer hover:border-emerald-500 transition-all"
+            onClick={() => openModal('Rotación de Inventarios', 'Es la cantidad de tiempo que estuvo el inventario en la compañía. Un valor de 39.2 indica una rotación muy eficiente del inventario.')}
+          >
+            <p className="text-sm font-bold text-gray-900">ROTACIÓN DE INVENTARIOS</p>
+            <p className="text-xs text-gray-600">(Costo de Mcia / Prom. de Inventarios)</p>
+            <p className="text-2xl font-bold text-emerald-600 mt-2">39,2</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 22,2</p>
+          </div>
+
+          <div 
+            className="bg-teal-50 rounded-lg p-4 border-2 border-teal-300 cursor-pointer hover:border-teal-500 transition-all"
+            onClick={() => openModal('Rotación del Patrimonio', 'Es el volumen de ventas generado con el patrimonio invertido. Indica cuántas veces se recupera el patrimonio a través de las ventas.')}
+          >
+            <p className="text-sm font-bold text-gray-900">ROTACIÓN DEL PATRIMONIO</p>
+            <p className="text-xs text-gray-600">(Vtas Netas / Patrimonio)</p>
+            <p className="text-2xl font-bold text-teal-600 mt-2">1,8</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 5,1</p>
+          </div>
+
+          <div 
+            className="bg-green-100 rounded-lg p-4 border-2 border-green-400 cursor-pointer hover:border-green-600 transition-all"
+            onClick={() => openModal('Variación de las Ventas Netas', 'Es el % de crecimiento o decrecimiento con respecto al año anterior. Un 1.5% indica crecimiento moderado en las ventas.')}
+          >
+            <p className="text-sm font-bold text-gray-900">VARIACIÓN DE LAS VENTAS NETAS</p>
+            <p className="text-xs text-gray-600">(Vtas Presente Ejercicio / Ventas Ejercicio Anterior)</p>
+            <p className="text-2xl font-bold text-green-600 mt-2">1,5%</p>
+            <p className="text-xs text-gray-600 mt-1">2024: -1,6%</p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* 3. INDICADORES DE ACTIVIDAD - TABLA */}
+      <CollapsibleTable title="Tabla Detallada - Indicadores de Actividad" defaultOpen={false} className="border-4 border-green-500/30">
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -461,8 +643,58 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         </div>
       </CollapsibleTable>
 
-      {/* 4. INDICADORES DE RENDIMIENTO */}
-      <CollapsibleTable title="4. INDICADORES DE RENDIMIENTO" defaultOpen={false} className="border-4 border-purple-500/30">
+      {/* 4. INDICADORES DE RENDIMIENTO - CARDS */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.0 }}
+      >
+        <h3 className="text-xl font-bold text-gray-900 mb-4">4. INDICADORES DE RENDIMIENTO</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div 
+            className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 cursor-pointer hover:border-purple-500 transition-all"
+            onClick={() => openModal('Margen Bruto de Utilidad', 'Es la participación de la utilidad operacional en las ventas del año. Un 15.0% indica una buena rentabilidad bruta.')}
+          >
+            <p className="text-sm font-bold text-gray-900">MARGEN BRUTO DE UTILIDAD</p>
+            <p className="text-xs text-gray-600">Utilidad Bruta / Ventas netas</p>
+            <p className="text-2xl font-bold text-purple-600 mt-2">15,0%</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 13,7%</p>
+          </div>
+
+          <div 
+            className="bg-violet-50 rounded-lg p-4 border-2 border-violet-300 cursor-pointer hover:border-violet-500 transition-all"
+            onClick={() => openModal('Margen Operacional de Utilidad', 'Indica la rentabilidad si el negocio es o no lucrativo. Un 6.3% muestra que el negocio genera utilidad operativa.')}
+          >
+            <p className="text-sm font-bold text-gray-900">MARGEN OPERACIONAL DE UTILIDAD</p>
+            <p className="text-xs text-gray-600">Utilidad Operativa / Ventas netas</p>
+            <p className="text-2xl font-bold text-violet-600 mt-2">6,3%</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 5,3%</p>
+          </div>
+
+          <div 
+            className="bg-fuchsia-50 rounded-lg p-4 border-2 border-fuchsia-300 cursor-pointer hover:border-fuchsia-500 transition-all"
+            onClick={() => openModal('Rentabilidad del Patrimonio', 'Es el rendimiento de la inversión de los socios en el ejercicio económico. Muestra qué tan rentable es la inversión de los accionistas.')}
+          >
+            <p className="text-sm font-bold text-gray-900">RENTABIL. DEL PATRIMONIO</p>
+            <p className="text-xs text-gray-600">(Utilidad Antes de Impuesto / Patrimonio)</p>
+            <p className="text-2xl font-bold text-fuchsia-600 mt-2">10,3%</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 21,8%</p>
+          </div>
+
+          <div 
+            className="bg-purple-100 rounded-lg p-4 border-2 border-purple-400 cursor-pointer hover:border-purple-600 transition-all"
+            onClick={() => openModal('Rendimiento del Capital Contable - ROE', 'Representa que por cada peso invertido en activo cuanto se genera en utilidad. Es un indicador clave de rentabilidad para los inversionistas.')}
+          >
+            <p className="text-sm font-bold text-gray-900">RENDIMIENTO DEL CAPITAL CONTABLE -ROE</p>
+            <p className="text-xs text-gray-600">Utilidad Neta / Capital Contable</p>
+            <p className="text-2xl font-bold text-purple-600 mt-2">6,8%</p>
+            <p className="text-xs text-gray-600 mt-1">2024: 14,5%</p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* 4. INDICADORES DE RENDIMIENTO - TABLA */}
+      <CollapsibleTable title="Tabla Detallada - Indicadores de Rendimiento" defaultOpen={false} className="border-4 border-purple-500/30">
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>

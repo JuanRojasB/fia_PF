@@ -137,7 +137,7 @@ export default function EncasetamientoColombiaDashboard() {
         <div className="mb-6">
           <CollapsibleTable
             title="Encasetamiento Mensual por Año (Millones de Aves)"
-            defaultOpen={true}
+            defaultOpen={false}
             className="border-2 border-violet-300"
           >
             <table className="w-full text-sm border-collapse">

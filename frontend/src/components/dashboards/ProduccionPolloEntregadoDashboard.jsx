@@ -268,13 +268,21 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Aves Entregadas Real vs Programado por Mes 2025</h3>
+            <h3 className="text-xl font-bold text-gray-900">Aves Entregadas Real vs Programado por Año</h3>
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={350}>
-            <BarChart data={datosComparativo} margin={{ top: 5, right: 20, left: 60, bottom: 5 }}>
+            <BarChart data={datosComparativo} margin={{ top: 5, right: 20, left: 60, bottom: 40 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="categoria" stroke="#6b7280" />
+              <XAxis 
+                dataKey="categoria" 
+                stroke="#6b7280" 
+                angle={0}
+                textAnchor="middle"
+                interval={0}
+                height={60}
+                tick={{ fontSize: 13 }}
+              />
               <YAxis stroke="#6b7280" tickFormatter={(value) => formatNumber(value)} width={90} />
               <Tooltip 
                 contentStyle={{ backgroundColor: 'white', border: '2px solid #3b82f6', borderRadius: '12px', padding: '12px' }}
