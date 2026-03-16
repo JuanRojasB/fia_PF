@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
 import { ShoppingCart, TrendingUp, DollarSign, X, Info, Package, Percent, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import { formatCurrencyFull } from './CustomTooltip';
 
 export default function ComercialVentasCompaniaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -28,9 +29,9 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
     if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
     return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
@@ -191,7 +192,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ingresos Totales Compañía 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(datos2025.totalIngresos)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(datos2025.totalIngresos)}</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionIngresos) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {variacionIngresos > 0 ? '+' : ''}{variacionIngresos}% vs 2024
@@ -212,7 +213,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Precio Promedio $/kg Compañía 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(precioProm2025)}/kg</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(precioProm2025)}/kg</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionPrecio) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {variacionPrecio > 0 ? '+' : ''}{variacionPrecio}% vs 2024
@@ -755,7 +756,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           <BarChart data={datosComparativa}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="categoria" stroke="#64748b" />
-            <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`} />
+            <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`} width={60} />
             <Tooltip content={({ active, payload, label }) => {
               if (active && payload && payload.length) {
                 const val2024 = payload.find(p => p.dataKey === '2024')?.value || 0;

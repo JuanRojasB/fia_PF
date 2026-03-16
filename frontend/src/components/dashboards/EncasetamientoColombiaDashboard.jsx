@@ -3,6 +3,7 @@ import { TrendingUp } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useState } from 'react';
 import CollapsibleTable from '../CollapsibleTable';
+import { CustomBarTooltip } from './CustomTooltip';
 
 export default function EncasetamientoColombiaDashboard() {
   const [selectedMonth, setSelectedMonth] = useState(null);
@@ -12,18 +13,18 @@ export default function EncasetamientoColombiaDashboard() {
 
   // Datos de Encasetamiento Pollito 2020-2025 (millones de aves)
   const encasetamientoData = [
-    { mes: 'Enero', 2020: 73.562888, 2021: 67.177991, 2022: 73.814052, 2023: 77.780694, 2024: 76.570535, 2025: 81.468535 },
-    { mes: 'Febrero', 2020: 65.151532, 2021: 63.691276, 2022: 68.281496, 2023: 67.768356, 2024: 71.155094, 2025: 73.456151 },
-    { mes: 'Marzo', 2020: 68.425009, 2021: 75.958776, 2022: 76.315153, 2023: 75.103872, 2024: 73.537564, 2025: 77.721409 },
-    { mes: 'Abril', 2020: 51.700998, 2021: 72.385209, 2022: 74.444922, 2023: 66.963648, 2024: 76.996233, 2025: 79.950675 },
-    { mes: 'Mayo', 2020: 49.907000, 2021: 60.846094, 2022: 76.724748, 2023: 73.497077, 2024: 78.696556, 2025: 81.060166 },
-    { mes: 'Junio', 2020: 62.715400, 2021: 65.832403, 2022: 73.988602, 2023: 76.035025, 2024: 72.097334, 2025: 76.063317 },
-    { mes: 'Julio', 2020: 71.248323, 2021: 72.504945, 2022: 74.763961, 2023: 75.228863, 2024: 77.151480, 2025: 82.034723 },
-    { mes: 'Agosto', 2020: 70.922275, 2021: 75.886423, 2022: 79.446614, 2023: 81.311122, 2024: 77.028631, 2025: 79.901057 },
+    { mes: 'Enero',      2020: 73.562888, 2021: 67.177991, 2022: 73.814052, 2023: 77.780694, 2024: 76.570535, 2025: 81.468535 },
+    { mes: 'Febrero',    2020: 65.151532, 2021: 63.691276, 2022: 68.281496, 2023: 67.768356, 2024: 71.155094, 2025: 73.456151 },
+    { mes: 'Marzo',      2020: 68.425009, 2021: 75.958776, 2022: 76.315153, 2023: 75.103872, 2024: 73.537564, 2025: 77.721409 },
+    { mes: 'Abril',      2020: 51.700998, 2021: 72.385209, 2022: 74.444922, 2023: 66.963648, 2024: 76.996233, 2025: 79.950675 },
+    { mes: 'Mayo',       2020: 49.907000, 2021: 60.846094, 2022: 76.724748, 2023: 73.397077, 2024: 78.696556, 2025: 81.060166 },
+    { mes: 'Junio',      2020: 62.715400, 2021: 65.832403, 2022: 73.988602, 2023: 76.035025, 2024: 72.097334, 2025: 76.063317 },
+    { mes: 'Julio',      2020: 71.248323, 2021: 72.504945, 2022: 74.763964, 2023: 75.723283, 2024: 77.151480, 2025: 82.034723 },
+    { mes: 'Agosto',     2020: 70.922275, 2021: 75.886423, 2022: 79.426614, 2023: 81.311122, 2024: 78.028631, 2025: 79.901057 },
     { mes: 'Septiembre', 2020: 71.152570, 2021: 73.806860, 2022: 79.859780, 2023: 77.119645, 2024: 74.706219, 2025: 83.531101 },
-    { mes: 'Octubre', 2020: 74.531194, 2021: 75.653586, 2022: 79.011016, 2023: 81.726509, 2024: 80.406617, 2025: 87.041058 },
-    { mes: 'Noviembre', 2020: 68.043264, 2021: 76.920167, 2022: 77.439680, 2023: 76.813697, 2024: 76.793286, 2025: 80.844846 },
-    { mes: 'Diciembre', 2020: 66.082593, 2021: 73.135987, 2022: 75.664394, 2023: 71.740785, 2024: 75.402893, 2025: 80.299750 }
+    { mes: 'Octubre',    2020: 74.531194, 2021: 75.653586, 2022: 79.011016, 2023: 81.726509, 2024: 80.406617, 2025: 87.041058 },
+    { mes: 'Noviembre',  2020: 68.043264, 2021: 76.920167, 2022: 77.439680, 2023: 76.813697, 2024: 76.793286, 2025: 80.844846 },
+    { mes: 'Diciembre',  2020: 66.082593, 2021: 73.135987, 2022: 75.664394, 2023: 71.740785, 2024: 75.402893, 2025: 80.299750 }
   ];
 
   const totalesEncasetamiento = {
@@ -95,12 +96,12 @@ export default function EncasetamientoColombiaDashboard() {
         </div>
         <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 shadow-lg text-center">
           <p className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">Crecimiento Sector Avícola Colombia 2025 vs 2024</p>
-          <p className="text-3xl font-bold text-green-600">+5.6%</p>
+          <p className="text-3xl font-bold text-green-600">+5.7%</p>
           <p className="text-xs text-gray-500 mt-1">variación porcentual anual en aves encasetadas</p>
         </div>
         <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 shadow-lg text-center">
           <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-1">Incremento Absoluto Aves Encasetadas 2025 vs 2024</p>
-          <p className="text-3xl font-bold text-purple-700">+51M</p>
+          <p className="text-3xl font-bold text-purple-700">+51.8M</p>
           <p className="text-xs text-gray-500 mt-1">aves adicionales encasetadas respecto a 2024</p>
         </div>
         <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-violet-500/30 shadow-lg text-center">
@@ -260,18 +261,7 @@ export default function EncasetamientoColombiaDashboard() {
                   ticks={[45, 50, 55, 60, 65, 70, 75, 80, 85, 90]}
                   label={{ value: 'Millones de aves', angle: -90, position: 'insideLeft', style: { fontSize: 17, fill: '#94a3b8' } }}
                 />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#ffffff', 
-                    border: '2px solid #8b5cf6',
-                    borderRadius: '8px',
-                    fontSize: '17px',
-                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                  }}
-                  labelStyle={{ color: '#1f2937', fontSize: '17px', fontWeight: 'bold' }}
-                  itemStyle={{ color: '#374151' }}
-                  formatter={(value, name) => [`${value.toFixed(2)}M`, name]}
-                />
+                <Tooltip content={<CustomBarTooltip borderColor="#8b5cf6" unit="M" />} />
                 <Legend 
                   wrapperStyle={{ fontSize: '17px', paddingTop: '20px' }}
                   iconType="line"

@@ -418,7 +418,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 <ComposedChart data={datosPolloChart} margin={{ left: 20, right: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis dataKey="anio" stroke="#9ca3af" />
-                  <YAxis stroke="#9ca3af" label={{ value: 'Conversión', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} />
+                  <YAxis stroke="#9ca3af" width={70} label={{ value: 'Conversión', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} />
                   <Tooltip 
                     content={({ active, payload, label }) => {
                       if (active && payload && payload.length) {
@@ -450,65 +450,6 @@ export default function ProduccionIndicadoresDashboard({ data }) {
               </ResponsiveContainer>
             </motion.div>
 
-            {/* Gráfica 2: Mortalidad % y Peso Promedio */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-red-500 transition-all cursor-pointer"
-              onClick={() => openModal(
-                'Mortalidad y Peso Promedio',
-                `Mortalidad ideal: <5%. Peso promedio objetivo: 2.4-2.6 kg. Baja mortalidad indica buen manejo sanitario. Peso consistente facilita comercialización y procesamiento. Ambos indicadores son clave para rentabilidad.`
-              )}
-            >
-            <h3 className="text-xl font-bold text-gray-900">Mortalidad % y Peso Promedio por Lote 2025</h3>
-              <p className="text-sm text-gray-600 mb-6">Indicadores de sanidad y calidad</p>
-              <ResponsiveContainer width="100%" height={400}>
-                <ComposedChart data={datosPolloChart} margin={{ left: 20, right: 20 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="anio" stroke="#9ca3af" />
-                  <YAxis yAxisId="left" stroke="#9ca3af" label={{ value: '% Mortalidad', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} />
-                  <YAxis yAxisId="right" orientation="right" stroke="#9ca3af" label={{ value: 'Peso (kg)', angle: 90, position: 'insideRight', fill: '#9ca3af' }} />
-                  <Tooltip 
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        const mortalidad = payload.find(p => p.dataKey === 'mortalidad')?.value || 0;
-                        const peso = payload.find(p => p.dataKey === 'peso')?.value || 0;
-                        
-                        return (
-                          <div className="bg-white border-2 border-red-500 rounded-xl p-4 shadow-xl">
-                            <p className="font-bold text-gray-900 mb-3 text-lg">Año {label}</p>
-                            <div className="space-y-2">
-                              <div className="flex justify-between items-center gap-4">
-                                <span className="text-red-600 font-medium">Mortalidad:</span>
-                                <span className="font-bold text-gray-900">{formatDecimal(mortalidad)}%</span>
-                              </div>
-                              <div className="flex justify-between items-center gap-4">
-                                <span className="text-yellow-600 font-medium">Peso Promedio:</span>
-                                <span className="font-bold text-gray-900">{formatDecimal(peso, 2)} kg</span>
-                              </div>
-                              <div className="border-t border-gray-200 pt-2 mt-2">
-                                <div className="text-xs text-gray-600">
-                                  Mortalidad: {mortalidad < 5 ? '✓ Dentro del estándar' : '⚠ Por encima del ideal (<5%)'}
-                                </div>
-                                <div className="text-xs text-gray-600 mt-1">
-                                  Peso: {peso >= 2.4 && peso <= 2.6 ? '✓ Peso objetivo' : '⚠ Fuera del rango (2.4-2.6 kg)'}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Legend />
-                  <Bar yAxisId="left" dataKey="mortalidad" fill="#ef4444" name="Mortalidad %" radius={[8, 8, 0, 0]} />
-                  <Line yAxisId="right" type="monotone" dataKey="peso" stroke="#eab308" strokeWidth={3} name="Peso Promedio" dot={{ fill: '#eab308', r: 6 }} />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </motion.div>
-
             {/* Gráfica 3: Pollo Procesado (Volumen de Producción) */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }} 
@@ -526,7 +467,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 <ComposedChart data={datosPolloChart} margin={{ left: 20, right: 20, bottom: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis dataKey="anio" stroke="#9ca3af" />
-                  <YAxis stroke="#9ca3af" tickFormatter={(value) => formatNumber(value)} />
+                  <YAxis stroke="#9ca3af" tickFormatter={(value) => formatNumber(value)} width={90} />
                   <Tooltip 
                     content={({ active, payload, label }) => {
                       if (active && payload && payload.length) {

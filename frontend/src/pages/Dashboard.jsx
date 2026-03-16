@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, ClipboardList } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import DashboardRenderer from '../components/dashboards/DashboardRenderer';
 import DashboardWrapper from '../components/DashboardWrapper';
+import ErrorBoundary from '../components/ErrorBoundary';
 import Toast from '../components/Toast';
 import { OrdenDelDiaModal } from '../components/ui/OrdenDelDiaModal';
 import { authService } from '../services/authService';
@@ -64,6 +65,7 @@ export default function Dashboard() {
     'tecnologias-informacion': 'Tecnologías de la Información',
     'sagrilaft': 'Sistema SAGRILAFT',
     'presupuesto-2025': 'Presupuesto 2025',
+    'situacion-juridica': 'Situación Jurídica y Tecnológica',
     'situacion-economica': 'Situación Económica'
   }), []);
 
@@ -88,6 +90,8 @@ export default function Dashboard() {
     'cartera': 'cartera',
     'comercial': 'comercial',
     'comercial-resumen': 'comercial',
+    'comercial-ventas-compania': 'comercial',
+    'comercial-pollo-entero': 'comercial',
     'comercial-pdv': 'comercial-pdv',
     'comercial-productos': 'comercial',
     'comercial-asadero': 'comercial',
@@ -107,15 +111,18 @@ export default function Dashboard() {
     'logistica-sede3': 'logistica-sede3',
     'produccion-granjas': 'produccion-granjas',
     'produccion-encasetado': 'produccion-historico',
+    'produccion-pollo-entregado': 'produccion-historico',
     'produccion-huevos': 'produccion-historico',
     'produccion-indicadores': 'produccion-historico',
     'sagrilaft': 'sagrilaft',
     'presupuesto-2025': 'presupuesto-2025',
-    'gerencia': 'gerencia'
+    'gerencia': 'gerencia',
+    'marketing-indicadores': 'marketing-general',
+    'marketing-detalle': 'marketing-general'
   };
 
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida'];
+  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal'];
 
   // Función para cambiar de sección que actualiza tanto el estado como la URL
   const handleSectionChange = useCallback((newSection) => {
@@ -186,6 +193,7 @@ export default function Dashboard() {
     'tecnologias-informacion',
     'sagrilaft',
     'presupuesto-2025',
+    'situacion-juridica',
     'situacion-economica'
   ], []);
 
@@ -242,14 +250,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     const dashboardType = sectionToDashboardType[activeSection];
-    if (dashboardType) {
-      // Si el dashboard no requiere datos, establecer un objeto vacío
-      if (noDataRequired.includes(dashboardType)) {
-        setDashboardData({});
-        setLoading(false);
-      } else {
-        loadDashboardData(dashboardType);
-      }
+    // Si la sección no requiere datos (por sección o por tipo), establecer objeto vacío
+    if (noDataRequired.includes(activeSection) || (dashboardType && noDataRequired.includes(dashboardType))) {
+      setDashboardData({});
+      setLoading(false);
+    } else if (dashboardType) {
+      loadDashboardData(dashboardType);
+    } else {
+      // Sección sin tipo mapeado, no requiere datos
+      setDashboardData({});
+      setLoading(false);
     }
   }, [activeSection]);
 
@@ -424,7 +434,13 @@ export default function Dashboard() {
 
           {!loading && !error && dashboardData && (
             <DashboardWrapper>
-              <DashboardRenderer type={activeSection} data={dashboardData} />
+              <ErrorBoundary
+                key={activeSection}
+                title={`Error al cargar: ${dashboardTitle}`}
+                onReset={() => loadDashboardData(sectionToDashboardType[activeSection])}
+              >
+                <DashboardRenderer type={activeSection} data={dashboardData} />
+              </ErrorBoundary>
             </DashboardWrapper>
           )}
         </div>

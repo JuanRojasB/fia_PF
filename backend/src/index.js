@@ -9,16 +9,18 @@ const { getInstance: getDbConnection } = require('./infrastructure/database/conn
 
 // Repositories
 const UserRepository = require('./infrastructure/repositories/UserRepository');
+const DashboardRepository = require('./infrastructure/repositories/DashboardRepository');
 
 // Use Cases
 const LoginUseCase = require('./application/use-cases/auth/LoginUseCase');
+const GetDashboardDataUseCase = require('./application/use-cases/dashboard/GetDashboardDataUseCase');
 
 // Controllers
 const AuthController = require('./presentation/controllers/AuthController');
+const DashboardController = require('./presentation/controllers/DashboardController');
 
 // Routes
 const routes = require('./presentation/routes');
-const dashboardRoutes = require('./presentation/routes/dashboard.routes');
 
 // App
 const App = require('./app');
@@ -36,16 +38,18 @@ async function startServer() {
 
     // Inicializar repositorios
     const userRepository = new UserRepository(dbConnection);
+    const dashboardRepository = new DashboardRepository();
 
     // Inicializar casos de uso
     const loginUseCase = new LoginUseCase(userRepository);
+    const getDashboardDataUseCase = new GetDashboardDataUseCase(dashboardRepository);
 
     // Inicializar controladores
     const authController = new AuthController(loginUseCase);
+    const dashboardController = new DashboardController(getDashboardDataUseCase);
 
     // Configurar rutas
-    const appRoutes = routes(authController);
-    appRoutes.dashboard = dashboardRoutes;
+    const appRoutes = routes(authController, dashboardController);
 
     // Crear aplicación
     const app = new App(appRoutes);
@@ -63,10 +67,6 @@ async function startServer() {
       console.log(`   GET    /api/auth/verify`);
       console.log(`   GET    /api/dashboard/summary`);
       console.log(`   GET    /api/dashboard/:type`);
-      console.log(`\n👤 Usuarios de prueba:`);
-      console.log(`   admin / admin123`);
-      console.log(`   analista / analista123`);
-      console.log(`   viewer / viewer123\n`);
     });
 
     // Manejo de cierre graceful

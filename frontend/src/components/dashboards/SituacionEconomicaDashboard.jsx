@@ -97,7 +97,7 @@ export default function SituacionEconomicaDashboard() {
             <span className="text-gray-600 text-sm">Ingresos Operacionales 2025 vs 2024</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">$431 MM</div>
+          <div className="text-3xl font-bold text-gray-900">$431.000 MM</div>
           <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">Crecimiento vs 2024 ($426 MM)</div>

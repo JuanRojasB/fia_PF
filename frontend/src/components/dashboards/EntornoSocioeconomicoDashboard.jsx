@@ -40,15 +40,12 @@ const pibData = [
     { trimestre: 'III', año: '2025pr', valor: 32200, index: 26 }
 ];
 
-  // Tendencia recta: sube de 25000 (index 0) a 32000 (index 26), luego cierra a 25000
+  // Tendencia recta: sube de 25000 (index 0) a 32000 (index 26) y se mantiene
   const tendenciaData = pibData.map((item, index) => ({
     ...item,
     tendencia: Math.round(25000 + ((32000 - 25000) / 26) * index)
   }));
-  const tendenciaConCierre = [
-    ...tendenciaData,
-    { trimestre: '', año: '', valor: null, index: 26.01, tendencia: 25000 }
-  ];
+  const tendenciaConCierre = tendenciaData;
   // Datos de Tasas de Crecimiento por Actividad Económica
   const actividadesData = [
     { actividad: 'Agricultura, ganadería, caza, silvicultura y pesca', anual2025: 3.1, anual2025_IV: -0.4, trim2025_III: -2.6 },
@@ -98,6 +95,28 @@ const granosData = [
     { año: '2025', maizAmarillo: 1806, soyaGrano: 1675, tortaSoya: 1313 },
     { año: '2026', maizAmarillo: 1904, soyaGrano: 1923, tortaSoya: 1382 }
   ];
+
+  // Regresión lineal para tendencia
+  const calcTendencia = (datos, key) => {
+    const n = datos.length;
+    if (n < 3) return datos.map(d => ({ ...d }));
+    const sumX = datos.reduce((s, _, i) => s + i, 0);
+    const sumY = datos.reduce((s, d) => s + (parseFloat(d[key]) || 0), 0);
+    const sumXY = datos.reduce((s, d, i) => s + i * (parseFloat(d[key]) || 0), 0);
+    const sumX2 = datos.reduce((s, _, i) => s + i * i, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    return datos.map((d, i) => ({ ...d, tendencia: parseFloat((intercept + slope * i).toFixed(2)) }));
+  };
+
+  const desempleoConTend = calcTendencia(desempleoData, 'td');
+  const granosConTend = calcTendencia(granosData, 'soya');
+  const preciosColombiaConTend = calcTendencia(preciosColombiaData, 'maizAmarillo');
+  const precioPolloConTend = calcTendencia([
+    { año: '2024', precio: 10500, variacion: null },
+    { año: '2025', precio: 10700, variacion: 1.9 },
+    { año: '2026', precio: 10660, variacion: -0.4 }
+  ], 'precio');
 
   return (
     <div className="space-y-8">
@@ -452,7 +471,7 @@ const granosData = [
                       }}
                       labelStyle={{ color: '#1f2937', fontSize: '14px', fontWeight: 'bold' }}
                       formatter={(value, name, props) => {
-                        if (name === 'Tendencia') return null;
+                        if (name === 'Tendencia') return [`${value.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 'Tendencia'];
                         const v = props.payload.variacion;
                         const varStr = v !== null ? (v > 0 ? ` (+${v}%)` : ` (${v}%)`) : ' (base)';
                         return [`${value.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${varStr}`, 'TRM Promedio'];
@@ -542,6 +561,8 @@ const granosData = [
                   <span className="font-semibold text-teal-700">Descripción:</span> El precio del pollo en el año 2025-2024 
                   aumentó de 1.9%. Mientras que lo que va corrido de 2026 versus 2025 el mercado registró una contracción de precios lo que 
                   arroja una disminución del -4%, respecto a promedio de precios del año anterior.
+                  <br/><br/>
+                  <span className="font-semibold text-red-600">Línea roja punteada — Tendencia:</span> Calculada por regresión lineal sobre el precio promedio por kilogramo. Indica la dirección general del precio: si sube, el mercado está valorizando el producto; si baja, hay presión a la baja en precios.
                 </p>
               </div>
             )}
@@ -560,11 +581,7 @@ const granosData = [
             <div className="w-full">
               <ResponsiveContainer width="100%" height={400}>
                 <ComposedChart
-                    data={[
-                      { año: '2024', precio: 10500, variacion: null },
-                      { año: '2025', precio: 10700, variacion: 1.9 },
-                      { año: '2026', precio: 10660, variacion: -0.4 }
-                    ]}
+                    data={precioPolloConTend}
                     margin={{ bottom: 40, top: 60, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -589,7 +606,7 @@ const granosData = [
                       }}
                       labelStyle={{ color: '#1f2937', fontWeight: 'bold' }}
                       formatter={(value, name, props) => {
-                        if (name === '_tendencia') return null;
+                        if (name === 'Tendencia') return [`${value.toLocaleString()}`, 'Tendencia'];
                         const v = props.payload.variacion;
                         const varStr = v !== null ? (v > 0 ? ` (+${v}%)` : ` (${v}%)`) : ' (base)';
                         const varColor = v !== null ? (v > 0 ? '#16a34a' : '#dc2626') : '#6b7280';
@@ -626,14 +643,12 @@ const granosData = [
                     </Bar>
                     <Line
                       type="linear"
-                      dataKey="precio"
-                      name="_tendencia"
+                      dataKey="tendencia"
+                      name="Tendencia"
                       stroke="#ef4444"
-                      strokeWidth={3}
-                      strokeDasharray="8 4"
-                      dot={{ r: 6, fill: '#ef4444', strokeWidth: 2, stroke: '#fff' }}
-                      activeDot={{ r: 8 }}
-                      legendType="none"
+                      strokeWidth={2}
+                      strokeDasharray="6 3"
+                      dot={false}
                     />
                   </ComposedChart>
                 </ResponsiveContainer>
@@ -686,7 +701,7 @@ const granosData = [
             <div className="w-full">
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart 
-                    data={desempleoData} 
+                    data={desempleoConTend} 
                     margin={{ bottom: 60, top: 40, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
@@ -767,6 +782,7 @@ const granosData = [
                       dot={{ r: 5, fill: '#6b7280' }}
                       activeDot={{ r: 7 }}
                     />
+                    <Line yAxisId="right" type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia TD" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -808,7 +824,7 @@ const granosData = [
             <div className="w-full mb-6">
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart 
-                    data={granosData} 
+                    data={granosConTend} 
                     margin={{ bottom: 40, top: 40, left: 70, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
@@ -862,6 +878,7 @@ const granosData = [
                       dot={{ r: 6, fill: '#ef4444' }}
                       activeDot={{ r: 8 }}
                     />
+                    <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Soya" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -897,7 +914,7 @@ const granosData = [
             <div className="w-full mb-6">
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart 
-                    data={preciosColombiaData} 
+                    data={preciosColombiaConTend} 
                     margin={{ bottom: 40, top: 40, left: 90, right: 70 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
@@ -963,6 +980,7 @@ const granosData = [
                       dot={{ r: 6, fill: '#92400e' }}
                       activeDot={{ r: 8 }}
                     />
+                    <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Maíz" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

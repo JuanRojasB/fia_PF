@@ -6,9 +6,9 @@
 const authRoutes = require('./authRoutes');
 const dashboardRoutes = require('./dashboard.routes');
 
-module.exports = (authController) => {
+module.exports = (authController, dashboardController) => {
   return {
     auth: authRoutes(authController),
-    dashboard: dashboardRoutes
+    dashboard: dashboardRoutes(dashboardController)
   };
 };

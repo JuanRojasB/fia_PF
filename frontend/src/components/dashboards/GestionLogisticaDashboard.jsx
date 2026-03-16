@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
 import { Truck, TrendingUp, Building, X, Info, Users, Package, DollarSign, TrendingDown } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import { formatCurrencyFull } from './CustomTooltip';
 
 export default function GestionLogisticaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -25,9 +26,9 @@ export default function GestionLogisticaDashboard({ data }) {
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
     if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
     return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
@@ -144,7 +145,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos 2025 (3 Sedes)</span>
             <DollarSign className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(total2025)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(total2025)}</div>
           <div className={`text-xs ${parseFloat(variacionTotal) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {variacionTotal > 0 ? '+' : ''}{variacionTotal}% vs 2024
           </div>
@@ -164,7 +165,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 1 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[0]?.total2025 || 0)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[0]?.variacion || 0}% vs 2024
           </div>
@@ -184,7 +185,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 2 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[1]?.total2025 || 0)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[1]?.variacion || 0}% vs 2024
           </div>
@@ -204,7 +205,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 3 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-orange-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(sedesData[2]?.total2025 || 0)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[2]?.variacion || 0}% vs 2024
           </div>
@@ -235,7 +236,7 @@ export default function GestionLogisticaDashboard({ data }) {
             />
             <YAxis 
               stroke="#9ca3af" 
-              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}mil`}
             />
             <Tooltip content={({ active, payload }) => {
               if (active && payload && payload.length) {
@@ -281,7 +282,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <XAxis 
               type="number" 
               stroke="#9ca3af" 
-              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}mil`}
             />
             <YAxis 
               type="category" 

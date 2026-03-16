@@ -31,9 +31,9 @@ export default function HumanaDashboard({ data }) {
   const formatCOPShort = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
     if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000) return `$${(v / 1_000).toFixed(0)}K`;
+    if (v >= 1_000) return `$${(v / 1_000).toFixed(0)}mil`;
     return `$${v.toFixed(0)}`;
   };
 

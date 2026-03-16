@@ -46,6 +46,30 @@ class IDashboardRepository {
   async getComercialPDV() {
     throw new Error('Método getComercialPDV() debe ser implementado');
   }
+
+  async getGestionCalidad() {
+    throw new Error('Método getGestionCalidad() debe ser implementado');
+  }
+
+  async getGestionMarketing() {
+    throw new Error('Método getGestionMarketing() debe ser implementado');
+  }
+
+  async getGestionCompras() {
+    throw new Error('Método getGestionCompras() debe ser implementado');
+  }
+
+  async getGestionOperaciones() {
+    throw new Error('Método getGestionOperaciones() debe ser implementado');
+  }
+
+  async getPlantaBeneficio() {
+    throw new Error('Método getPlantaBeneficio() debe ser implementado');
+  }
+
+  async getTecnologiasInformacion() {
+    throw new Error('Método getTecnologiasInformacion() debe ser implementado');
+  }
 }
 
 module.exports = IDashboardRepository;

@@ -1,10 +1,6 @@
-const DashboardRepository = require('../../infrastructure/repositories/DashboardRepository');
-const GetDashboardDataUseCase = require('../../application/use-cases/dashboard/GetDashboardDataUseCase');
-
 class DashboardController {
-  constructor() {
-    this.dashboardRepository = new DashboardRepository();
-    this.getDashboardDataUseCase = new GetDashboardDataUseCase(this.dashboardRepository);
+  constructor(getDashboardDataUseCase) {
+    this.getDashboardDataUseCase = getDashboardDataUseCase;
   }
 
   async getDashboardData(req, res) {
@@ -40,10 +36,7 @@ class DashboardController {
         { id: 'gerencia', name: 'Gerencia Estratégica', description: 'Indicadores de gestión estratégica', icon: 'Briefcase' }
       ];
 
-      res.json({
-        success: true,
-        dashboards
-      });
+      res.json({ success: true, dashboards });
     } catch (error) {
       console.error('Error en getDashboardsSummary:', error);
       res.status(500).json({
@@ -55,4 +48,4 @@ class DashboardController {
   }
 }
 
-module.exports = new DashboardController();
+module.exports = DashboardController;

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Package, TrendingUp, DollarSign, X, Info, Percent, ArrowUpRight, ArrowDownRight, Building2 } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import { formatCurrencyFull } from './CustomTooltip';
 
 export default function ComercialInstitucionalDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -28,9 +29,9 @@ export default function ComercialInstitucionalDashboard({ data }) {
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
     if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
     return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
@@ -162,7 +163,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ingresos Canal Institucional 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatCurrency(ingresos2025)}</div>
+          <div className="text-3xl font-bold text-gray-900">{formatCurrencyFull(ingresos2025)}</div>
           <div className="text-sm text-gray-600 mb-1">pesos colombianos</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionIngresos) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
@@ -184,7 +185,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Precio Promedio $/kg Institucional 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatCurrency(precioProm2025)}/kg</div>
+          <div className="text-3xl font-bold text-gray-900">{formatCurrencyFull(precioProm2025)}/kg</div>
           <div className="text-sm text-gray-600 mb-1">pesos por kilogramo</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {parseFloat(variacionPrecio) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
@@ -439,7 +440,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
             <BarChart data={datosComparativa}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="temperatura" stroke="#64748b" />
-              <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
+              <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} width={60} />
               <Tooltip content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
                   const val2024 = payload.find(p => p.dataKey === '2024')?.value || 0;

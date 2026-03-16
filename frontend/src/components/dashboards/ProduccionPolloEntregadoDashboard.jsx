@@ -25,43 +25,53 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
     return new Intl.NumberFormat('es-CO').format(value);
   };
 
-  // Obtener datos de 2024 y 2025
-  const datos2025 = polloEntregado.find(p => p.anio === 2025) || {};
-  const datos2024 = polloEntregado.find(p => p.anio === 2024) || {};
+  // Datos históricos hardcodeados como fuente de verdad
+  const historico = [
+    { anio: 2018, programado: 26617724, real_granjas: 26353497, comprado: 664575,  total: 27018072, var_pct: null },
+    { anio: 2019, programado: 27353834, real_granjas: 27201661, comprado: 618577,  total: 27820238, var_pct: 3.0  },
+    { anio: 2020, programado: 27816195, real_granjas: 23666296, comprado: 659756,  total: 24326052, var_pct: -12.5 },
+    { anio: 2021, programado: 31212400, real_granjas: 28303721, comprado: 398578,  total: 28702299, var_pct: 18.0 },
+    { anio: 2022, programado: 33632300, real_granjas: 30042350, comprado: 582264,  total: 30624614, var_pct: 6.7  },
+    { anio: 2023, programado: 30805997, real_granjas: 29171431, comprado: 427670,  total: 29599101, var_pct: -3.3 },
+    { anio: 2024, programado: 30581067, real_granjas: 28604260, comprado: 274229,  total: 28878489, var_pct: -2.4 },
+    { anio: 2025, programado: 30872786, real_granjas: 29435711, comprado: 238502,  total: 29674213, var_pct: 2.7  },
+  ];
+
+  // La BD tiene 2025 con datos idénticos a 2024 (no actualizado).
+  // Usamos BD para 2018-2024 y hardcodeado para 2025.
+  const mergeRow = (anio) => {
+    if (anio === 2025) return historico.find(p => p.anio === 2025);
+    const fromBD = polloEntregado.find(p => parseInt(p.anio) === anio);
+    const fromHC = historico.find(p => p.anio === anio);
+    if (!fromBD) return fromHC;
+    return {
+      anio,
+      programado:   parseInt(fromBD.programado)   || fromHC?.programado   || 0,
+      real_granjas: parseInt(fromBD.real_granjas)  || fromHC?.real_granjas || 0,
+      comprado:     parseInt(fromBD.comprado)      || fromHC?.comprado     || 0,
+      total:        parseInt(fromBD.total)         || fromHC?.total        || 0,
+      var_pct:      fromBD.var_pct != null ? parseFloat(fromBD.var_pct) : fromHC?.var_pct,
+      notas:        fromBD.notas
+    };
+  };
+
+  const datos2025 = mergeRow(2025) || historico.find(p => p.anio === 2025);
+  const datos2024 = mergeRow(2024) || historico.find(p => p.anio === 2024);
+  const tablaData = historico.map(h => mergeRow(h.anio));
 
   // Preparar datos para gráfico comparativo - Real vs Programado
   const datosComparativo = [
-    {
-      categoria: 'Programado',
-      '2024': parseInt(datos2024.programado) || 0,
-      '2025': parseInt(datos2025.programado) || 0
-    },
-    {
-      categoria: 'Real Granjas',
-      '2024': parseInt(datos2024.real_granjas) || 0,
-      '2025': parseInt(datos2025.real_granjas) || 0
-    }
+    { categoria: 'Programado', '2024': datos2024.programado, '2025': datos2025.programado },
+    { categoria: 'Real Granjas', '2024': datos2024.real_granjas, '2025': datos2025.real_granjas },
+    { categoria: 'Comprado',    '2024': datos2024.comprado,    '2025': datos2025.comprado    },
+    { categoria: 'Total',       '2024': datos2024.total,       '2025': datos2025.total       },
   ];
 
   // Datos para el resumen completo (incluye todas las categorías)
-  const datosResumen = [
-    {
-      categoria: 'Programado',
-      diferencia: (parseInt(datos2025.programado) || 0) - (parseInt(datos2024.programado) || 0)
-    },
-    {
-      categoria: 'Real Granjas',
-      diferencia: (parseInt(datos2025.real_granjas) || 0) - (parseInt(datos2024.real_granjas) || 0)
-    },
-    {
-      categoria: 'Comprado',
-      diferencia: (parseInt(datos2025.comprado) || 0) - (parseInt(datos2024.comprado) || 0)
-    },
-    {
-      categoria: 'Total',
-      diferencia: (parseInt(datos2025.total) || 0) - (parseInt(datos2024.total) || 0)
-    }
-  ];
+  const datosResumen = datosComparativo.map(d => ({
+    categoria: d.categoria,
+    diferencia: d['2025'] - d['2024']
+  }));
 
 
 
@@ -113,8 +123,8 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Programado Aves 2025</span>
             <Package className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(Math.round(datos2025.programado / 1000000))}M</div>
-          <div className="text-xs text-gray-600 mt-1">2024: {formatNumber(Math.round(datos2024.programado / 1000000))}M</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(datos2025.programado)}</div>
+          <div className="text-xs text-gray-600 mt-1">2024: {formatNumber(datos2024.programado)}</div>
         </motion.div>
 
         <motion.div
@@ -131,8 +141,8 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Real Aves Entregadas en 2025</span>
             <Truck className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(Math.round(datos2025.real_granjas / 1000000))}M</div>
-          <div className="text-xs text-gray-600 mt-1">2024: {formatNumber(Math.round(datos2024.real_granjas / 1000000))}M</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(datos2025.real_granjas)}</div>
+          <div className="text-xs text-gray-600 mt-1">2024: {formatNumber(datos2024.real_granjas)}</div>
         </motion.div>
 
         <motion.div
@@ -167,7 +177,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total de Aves en 2025</span>
             <TrendingDown className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(Math.round(datos2025.total / 1000000))}M</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(datos2025.total)}</div>
           <div className={`text-xs mt-1 font-semibold px-2 py-1 rounded inline-block ${getValueColor(datos2025.var_pct).bg} ${getValueColor(datos2025.var_pct).text}`}>
             {datos2025.var_pct}% vs 2024
           </div>
@@ -177,7 +187,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
       {/* Tabla Histórica Pollo Entregado */}
       <CollapsibleTable
         title="Pollo Entregado — Cantidad en Unidades (Histórico 2018-2025)"
-        defaultOpen={true}
+        defaultOpen={false}
         totalRow={[
           { label: 'Histórico 2018-2025' },
           { label: 'Real 2025: 29.435.711', color: 'text-green-600' },
@@ -203,23 +213,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               </tr>
             </thead>
             <tbody>
-              {(polloEntregado.length > 0 ? polloEntregado.map(p => ({
-                anio: p.anio,
-                programado: parseInt(p.programado) || 0,
-                real: parseInt(p.real_granjas) || 0,
-                comprado: parseInt(p.comprado) || 0,
-                total: parseInt(p.total) || 0,
-                var: p.var_pct !== null ? parseFloat(p.var_pct) : null
-              })) : [
-                { anio: 2018, programado: 26617724, real: 26353497, comprado: 664575,  total: 27018072, var: null },
-                { anio: 2019, programado: 27353834, real: 27201661, comprado: 618577,  total: 27820238, var: 3.0  },
-                { anio: 2020, programado: 27816195, real: 23666296, comprado: 659756,  total: 24326052, var: -12.5 },
-                { anio: 2021, programado: 31212400, real: 28303721, comprado: 398578,  total: 28702299, var: 18.0 },
-                { anio: 2022, programado: 33632300, real: 30042350, comprado: 582264,  total: 30624614, var: 6.7  },
-                { anio: 2023, programado: 30805997, real: 29171431, comprado: 427670,  total: 29599101, var: -3.3 },
-                { anio: 2024, programado: 30581067, real: 28604260, comprado: 274229,  total: 28878489, var: -2.4 },
-                { anio: 2025, programado: 30872786, real: 29435711, comprado: 238502,  total: 29674213, var: 2.7  },
-              ]).sort((a, b) => a.anio - b.anio).map((row, idx) => {
+              {tablaData.sort((a, b) => a.anio - b.anio).map((row, idx) => {
                 const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-blue-50/30';
                 const es2025 = row.anio === 2025;
                 return (
@@ -230,14 +224,14 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
                       ) : row.anio}
                     </td>
                     <td className="py-2 px-4 text-right text-gray-700">{formatNumber(row.programado)}</td>
-                    <td className="py-2 px-4 text-right text-gray-800 font-medium">{formatNumber(row.real)}</td>
+                    <td className="py-2 px-4 text-right text-gray-800 font-medium">{formatNumber(row.real_granjas)}</td>
                     <td className="py-2 px-4 text-right text-gray-700">{formatNumber(row.comprado)}</td>
                     <td className="py-2 px-4 text-right text-blue-700 font-bold">{formatNumber(row.total)}</td>
                     <td className={`py-2 px-4 text-right font-bold ${
-                      row.var === null ? 'text-gray-400' :
-                      row.var >= 0 ? 'text-gray-800' : 'text-red-600'
+                      row.var_pct === null ? 'text-gray-400' :
+                      row.var_pct >= 0 ? 'text-gray-800' : 'text-red-600'
                     }`}>
-                      {row.var === null ? '' : `${row.var > 0 ? '' : ''}${row.var.toFixed(1)}%`}
+                      {row.var_pct === null ? '' : `${row.var_pct.toFixed(1)}%`}
                     </td>
                   </tr>
                 );
@@ -265,10 +259,10 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={350}>
-            <BarChart data={datosComparativo}>
+            <BarChart data={datosComparativo} margin={{ top: 5, right: 20, left: 60, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="categoria" stroke="#6b7280" />
-              <YAxis stroke="#6b7280" tickFormatter={(value) => formatNumber(value)} />
+              <YAxis stroke="#6b7280" tickFormatter={(value) => formatNumber(value)} width={90} />
               <Tooltip 
                 contentStyle={{ backgroundColor: 'white', border: '2px solid #3b82f6', borderRadius: '12px', padding: '12px' }}
                 content={({ active, payload, label }) => {

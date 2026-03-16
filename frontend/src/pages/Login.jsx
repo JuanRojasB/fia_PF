@@ -62,8 +62,8 @@ export default function Login() {
               className="flex flex-col items-center"
               style={{ maxHeight: '95vh', width: '100%', maxWidth: '700px' }}
             >
-              {/* Imagen sin contenedor blanco extra */}
-              <div className="overflow-hidden rounded-2xl w-full" style={{ maxHeight: 'calc(95vh - 80px)' }}>
+              {/* Imagen con scroll si no cabe en pantalla */}
+              <div className="overflow-y-auto rounded-2xl w-full" style={{ maxHeight: 'calc(95vh - 80px)' }}>
                 <img
                   src={asambleaImg}
                   alt="Convocatoria Asamblea General de Accionistas"

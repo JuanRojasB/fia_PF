@@ -114,6 +114,24 @@ export default function ProduccionEncasetadoDashboard({ data }) {
     comprado: parseInt(p.comprado) || 0
   }));
 
+  // Regresión lineal para tendencia
+  const calcTendencia = (datos, key) => {
+    const n = datos.length;
+    if (n < 3) return datos.map(d => ({ ...d }));
+    const sumX = datos.reduce((s, _, i) => s + i, 0);
+    const sumY = datos.reduce((s, d) => s + (parseFloat(d[key]) || 0), 0);
+    const sumXY = datos.reduce((s, d, i) => s + i * (parseFloat(d[key]) || 0), 0);
+    const sumX2 = datos.reduce((s, _, i) => s + i * i, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    return datos.map((d, i) => ({ ...d, tendencia: parseFloat((intercept + slope * i).toFixed(0)) }));
+  };
+
+  const encasetadoConTend = calcTendencia(
+    encasetadoMeses.filter(m => m.real2025 > 0),
+    'real2025'
+  );
+
   return (
     <div className="space-y-8">
 
@@ -236,12 +254,10 @@ export default function ProduccionEncasetadoDashboard({ data }) {
         
         <CollapsibleTable 
           title="Detalle Mensual de Encasetamiento — Pollo Encasetado 2024 vs 2025"
-          defaultOpen={true}
+          defaultOpen={false}
           totalRow={[
             { label: 'TOTALES ANUALES' },
-            { label: `Prog 2024: ${new Intl.NumberFormat('es-CO').format(encasetadoMeses.reduce((s,m)=>s+m.prog2024,0))}`, color: 'text-gray-600' },
             { label: `Real 2024: ${new Intl.NumberFormat('es-CO').format(encasetadoMeses.reduce((s,m)=>s+m.real2024,0))}`, color: 'text-gray-700' },
-            { label: `Prog 2025: ${new Intl.NumberFormat('es-CO').format(encasetadoMeses.reduce((s,m)=>s+m.prog2025,0))}`, color: 'text-blue-600' },
             { label: `Real 2025: ${new Intl.NumberFormat('es-CO').format(encasetadoMeses.reduce((s,m)=>s+m.real2025,0))}`, color: 'text-blue-700' },
             { label: `Var Prog: -1.47%`, color: 'text-red-500' },
             { label: `Var Real: +6.70%`, color: 'text-green-600' },
@@ -423,13 +439,13 @@ export default function ProduccionEncasetadoDashboard({ data }) {
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
         onClick={() => openModal(
           'Comparación Anual 2024 vs 2025',
-          `Comparación del encasetamiento real entre 2024 y 2025 mes a mes. Permite identificar patrones estacionales y crecimiento de la operación.`
+          `Comparación del encasetamiento real entre 2024 y 2025 mes a mes. Permite identificar patrones estacionales y crecimiento de la operación.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el encasetamiento real mensual de 2025, mostrando la dirección general del volumen productivo en el año.`
         )}
       >
         <h3 className="text-xl font-bold text-gray-900 mb-2">Encasetamiento Real 2024 vs 2025</h3>
         <p className="text-sm text-gray-600 mb-6">Encasetamiento real mensual en pollitos — comparación interanual</p>
         <ResponsiveContainer width="100%" height={400}>
-          <ComposedChart data={encasetadoMeses} margin={{ left: 20, right: 20 }}>
+          <ComposedChart data={encasetadoConTend} margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis dataKey="mes" stroke="#6b7280" height={60} style={{ fontSize: '12px' }} />
             <YAxis stroke="#6b7280" width={80} style={{ fontSize: '12px' }} tickFormatter={(value) => formatNumber(value)} />
@@ -478,6 +494,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
             <Legend />
             <Area type="monotone" dataKey="real2024" fill="#6366f1" fillOpacity={0.3} stroke="#6366f1" strokeWidth={2} name="Real 2024" />
             <Area type="monotone" dataKey="real2025" fill="#10b981" fillOpacity={0.3} stroke="#10b981" strokeWidth={2} name="Real 2025" />
+            <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
           </ComposedChart>
         </ResponsiveContainer>
       </motion.div>

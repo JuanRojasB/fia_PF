@@ -34,16 +34,5 @@ export const dashboardService = {
     }
   },
 
-  /**
-   * Carga los archivos CSV a la base de datos
-   */
-  async loadCSVData() {
-    try {
-      const response = await api.post('/dashboard/load-csv');
-      return response.data;
-    } catch (error) {
-      console.error('Error en loadCSVData:', error);
-      throw error;
-    }
-  }
+
 };

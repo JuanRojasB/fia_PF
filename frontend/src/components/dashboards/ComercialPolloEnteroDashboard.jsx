@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend, ComposedChart, ReferenceLine } from 'recharts';
 import { Package, TrendingUp, Target, X, Info, Percent, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 
@@ -72,6 +72,21 @@ export default function ComercialPolloEnteroDashboard({ data }) {
     { anio: '2024', planta: datos2024.polloEnteroPlanta, asadero: datos2024.ventaLineaAsadero, participacion: datos2024.participacionLograda },
     { anio: '2025', planta: datos2025.polloEnteroPlanta, asadero: datos2025.ventaLineaAsadero, participacion: datos2025.participacionLograda }
   ];
+
+  // Regresión lineal para tendencia de volumen (planta + asadero combinados)
+  const calcTendencia = (datos, key) => {
+    const n = datos.length;
+    const sumX = datos.reduce((s, _, i) => s + i, 0);
+    const sumY = datos.reduce((s, d) => s + (d[key] || 0), 0);
+    const sumXY = datos.reduce((s, d, i) => s + i * (d[key] || 0), 0);
+    const sumX2 = datos.reduce((s, _, i) => s + i * i, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    return datos.map((d, i) => ({ ...d, tendencia: Math.round(intercept + slope * i) }));
+  };
+
+  const datosConTendenciaPlanta = calcTendencia(datosComparativa, 'planta');
+  const datosConTendenciaParticipacion = calcTendencia(datosComparativa, 'participacion');
 
   return (
     <div className="space-y-6">
@@ -272,7 +287,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
         transition={{ delay: 0.5 }}
         onClick={() => openModal(
           'Evolución Histórica 2023-2025',
-          `Análisis de la evolución de la producción y ventas de pollo entero durante los últimos 3 años. 2023: Producción ${formatNumber(datos2023.polloEnteroPlanta)}, Ventas ${formatNumber(datos2023.ventaLineaAsadero)} (${datos2023.participacionLograda}%). 2024: Producción ${formatNumber(datos2024.polloEnteroPlanta)}, Ventas ${formatNumber(datos2024.ventaLineaAsadero)} (${datos2024.participacionLograda}%). 2025: Producción ${formatNumber(datos2025.polloEnteroPlanta)}, Ventas ${formatNumber(datos2025.ventaLineaAsadero)} (${datos2025.participacionLograda}%). La tendencia muestra una mejora sostenida en la participación de la línea Asadero.`
+          `Análisis de la evolución de la producción y ventas de pollo entero durante los últimos 3 años. 2023: Producción ${formatNumber(datos2023.polloEnteroPlanta)}, Ventas ${formatNumber(datos2023.ventaLineaAsadero)} (${datos2023.participacionLograda}%). 2024: Producción ${formatNumber(datos2024.polloEnteroPlanta)}, Ventas ${formatNumber(datos2024.ventaLineaAsadero)} (${datos2024.participacionLograda}%). 2025: Producción ${formatNumber(datos2025.polloEnteroPlanta)}, Ventas ${formatNumber(datos2025.ventaLineaAsadero)} (${datos2025.participacionLograda}%). La tendencia muestra una mejora sostenida en la participación de la línea Asadero.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el volumen de planta anual, indicando la dirección general del crecimiento productivo.`
         )}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-orange-500 transition-all cursor-pointer"
       >
@@ -281,14 +296,15 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           <Info className="w-5 h-5 text-orange-400 animate-pulse" />
         </div>
         <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={datosComparativa}>
+          <ComposedChart data={datosConTendenciaPlanta}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="anio" stroke="#64748b" />
-            <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
+            <YAxis stroke="#64748b" tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} width={60} />
             <Tooltip content={({ active, payload, label }) => {
               if (active && payload && payload.length) {
                 const planta = payload.find(p => p.dataKey === 'planta')?.value || 0;
                 const asadero = payload.find(p => p.dataKey === 'asadero')?.value || 0;
+                const tendencia = payload.find(p => p.dataKey === 'tendencia')?.value;
                 const total = planta + asadero;
                 const participacion = total > 0 ? ((asadero / total) * 100).toFixed(1) : 0;
                 
@@ -313,6 +329,12 @@ export default function ComercialPolloEnteroDashboard({ data }) {
                           <span className="text-green-600 font-medium">Participación Asadero:</span>
                           <span className="font-bold text-gray-900">{participacion}%</span>
                         </div>
+                        {tendencia != null && (
+                          <div className="flex justify-between items-center gap-4 mt-1">
+                            <span className="text-red-500 font-medium">Tendencia Planta:</span>
+                            <span className="font-bold text-red-500">{formatNumber(tendencia)} kg</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -320,9 +342,11 @@ export default function ComercialPolloEnteroDashboard({ data }) {
               }
               return null;
             }} />
+            <Legend />
             <Bar dataKey="planta" fill="#f97316" name="Pollo Entero Planta" radius={[8, 8, 0, 0]} />
             <Bar dataKey="asadero" fill="#3b82f6" name="Línea Asadero" radius={[8, 8, 0, 0]} />
-          </BarChart>
+            <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 4, fill: '#ef4444' }} name="Tendencia Planta" />
+          </ComposedChart>
         </ResponsiveContainer>
       </motion.div>
 
@@ -333,7 +357,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
         transition={{ delay: 0.6 }}
         onClick={() => openModal(
           'Evolución de Participación vs Meta',
-          `Seguimiento de la participación de la línea Asadero vs la meta del 50%. 2023: ${datos2023.participacionLograda}% (faltaban ${datos2023.puntosFaltantes} pts). 2024: ${datos2024.participacionLograda}% (faltaban ${datos2024.puntosFaltantes} pts). 2025: ${datos2025.participacionLograda}% (faltan ${datos2025.puntosFaltantes} pts). La tendencia es positiva, acercándose cada vez más a la meta estratégica del 50%.`
+          `Seguimiento de la participación de la línea Asadero vs la meta del 50%. 2023: ${datos2023.participacionLograda}% (faltaban ${datos2023.puntosFaltantes} pts). 2024: ${datos2024.participacionLograda}% (faltaban ${datos2024.puntosFaltantes} pts). 2025: ${datos2025.participacionLograda}% (faltan ${datos2025.puntosFaltantes} pts). La tendencia es positiva, acercándose cada vez más a la meta estratégica del 50%.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre la participación anual, mostrando si el avance hacia la meta del 50% está acelerando o estancándose.`
         )}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-green-500 transition-all cursor-pointer"
       >
@@ -342,13 +366,14 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           <Info className="w-5 h-5 text-green-400 animate-pulse" />
         </div>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={datosComparativa}>
+          <LineChart data={datosConTendenciaParticipacion}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="anio" stroke="#64748b" />
             <YAxis stroke="#64748b" domain={[40, 55]} />
             <Tooltip content={({ active, payload, label }) => {
               if (active && payload && payload.length) {
                 const participacion = payload.find(p => p.dataKey === 'participacion')?.value || 0;
+                const tendencia = payload.find(p => p.dataKey === 'tendencia')?.value;
                 const faltante = 50 - participacion;
                 
                 return (
@@ -363,6 +388,12 @@ export default function ComercialPolloEnteroDashboard({ data }) {
                         <span className="text-purple-600 font-medium">Meta:</span>
                         <span className="font-bold text-gray-900">50.00%</span>
                       </div>
+                      {tendencia != null && (
+                        <div className="flex justify-between items-center gap-4">
+                          <span className="text-red-500 font-medium">Tendencia:</span>
+                          <span className="font-bold text-red-500">{tendencia.toFixed(2)}%</span>
+                        </div>
+                      )}
                       <div className="border-t border-gray-200 pt-2 mt-2">
                         <div className="flex justify-between items-center gap-4">
                           <span className="text-gray-600 font-medium">Faltante:</span>
@@ -378,6 +409,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
               return null;
             }} />
             <Line type="monotone" dataKey="participacion" stroke="#10b981" strokeWidth={3} name="Participación Lograda" dot={{ r: 6 }} />
+            <Line type="monotone" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 4, fill: '#ef4444' }} name="Tendencia" />
             <Line type="monotone" dataKey={() => 50} stroke="#a855f7" strokeWidth={2} strokeDasharray="5 5" name="Meta 50%" />
             <Legend />
           </LineChart>

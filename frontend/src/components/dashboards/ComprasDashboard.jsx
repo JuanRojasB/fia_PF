@@ -1,8 +1,9 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell, ComposedChart } from 'recharts';
 import { TrendingUp, TrendingDown, ShoppingCart, DollarSign, X, Info, ArrowUp, ArrowDown } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import { CustomCurrencyTooltip, CustomPctTooltip, formatCurrencyFull } from './CustomTooltip';
 
 export default function ComprasDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -22,18 +23,12 @@ export default function ComprasDashboard({ data }) {
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return "$0";
     const v = parseFloat(value);
-    if (v >= 1000000000) return "$" + (v / 1000000000).toFixed(2) + " mil M";
+    if (v >= 1000000000) return "$" + (v / 1000000000).toFixed(2) + "MM";
     const millones = v / 1000000;
     return "$" + millones.toFixed(1) + "M";
   };
 
-  const formatCurrencyFull = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    return '$' + new Intl.NumberFormat('es-CO', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(parseFloat(value));
-  };
+
 
   // Preparar datos para gráficos
   const mesesCompletos = {
@@ -49,6 +44,20 @@ export default function ComprasDashboard({ data }) {
     '2024': parseFloat(m.compras2024) / 1000000,
     '2023': parseFloat(m.compras2023) / 1000000
   }));
+
+  // Regresión lineal para tendencia de 2025
+  const calcTendencia = (datos, key) => {
+    const n = datos.length;
+    const sumX = datos.reduce((s, _, i) => s + i, 0);
+    const sumY = datos.reduce((s, d) => s + (d[key] || 0), 0);
+    const sumXY = datos.reduce((s, d, i) => s + i * (d[key] || 0), 0);
+    const sumX2 = datos.reduce((s, _, i) => s + i * i, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    return datos.map((d, i) => ({ ...d, tendencia2025: parseFloat((intercept + slope * i).toFixed(2)) }));
+  };
+
+  const datosComparativoConTendencia = calcTendencia(datosComparativo, '2025');
 
   const datosVariacion = comprasMensuales.map(m => ({
     mes: m.mes.substring(0, 3),
@@ -75,7 +84,7 @@ export default function ComprasDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium">Total Compras 2025</span>
             <ShoppingCart className="w-5 h-5 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(totales.total2025)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(totales.total2025)}</div>
           <div className="text-xs text-gray-600">Compras totales</div>
           <div className="text-xs text-blue-400 mt-1">vs ${formatCurrency(totales.total2024)} (2024)</div>
         </motion.div>
@@ -123,7 +132,7 @@ export default function ComprasDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium">Promedio Mensual</span>
             <DollarSign className="w-5 h-5 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(totales.total2025 / 12)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(totales.total2025 / 12)}</div>
           <div className="text-xs text-gray-600">Por mes 2025</div>
           <div className="text-xs text-purple-400 mt-1">12 meses</div>
         </motion.div>
@@ -164,7 +173,7 @@ export default function ComprasDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        onClick={() => openModal('Evolución Anual', 'El gráfico muestra tres años con comportamientos distintos: 2023 como año base, 2024 con ajuste y contracción, y 2025 con recuperación sostenida. La tendencia indica estabilización del proceso de compras con mejor gestión de proveedores.')}
+        onClick={() => openModal('Evolución Anual', 'El gráfico muestra tres años con comportamientos distintos: 2023 como año base, 2024 con ajuste y contracción, y 2025 con recuperación sostenida.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre los valores mensuales de 2025, mostrando la dirección general del gasto en el período.')}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
       >
         <div className="flex items-center justify-between mb-6">
@@ -175,7 +184,7 @@ export default function ComprasDashboard({ data }) {
           <Info className="w-5 h-5 text-gray-400" />
         </div>
         <ResponsiveContainer width="100%" height={450}>
-          <LineChart data={datosComparativo} margin={{ top: 5, right: 30, left: 20, bottom: 80 }}>
+          <ComposedChart data={datosComparativoConTendencia} margin={{ top: 5, right: 30, left: 20, bottom: 80 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis 
               dataKey="mes" 
@@ -185,30 +194,13 @@ export default function ComprasDashboard({ data }) {
               textAnchor="end"
               height={80}
             />
-            <YAxis stroke="#9ca3af" tickFormatter={(v) => `$${v}M`} style={{ fontSize: '13px' }} />
-            <Tooltip
-              contentStyle={{ 
-                backgroundcolor: '#1f2937', 
-                border: '2px solid #3b82f6', 
-                borderRadius: '8px',
-                fontSize: '14px',
-                padding: '12px',
-                color: '#1f2937'
-              }}
-              labelStyle={{ color: '#1f2937' }}
-              itemStyle={{ color: '#1f2937' }}
-              labelFormatter={(label, payload) => {
-                if (payload && payload[0]) {
-                  return payload[0].payload.mesCompleto;
-                }
-                return label;
-              }}
-              formatter={(value, name) => [`$${value.toFixed(1)}M`, name]}
-            />
+            <YAxis stroke="#9ca3af" tickFormatter={(v) => `$${v}M`} style={{ fontSize: '13px' }} width={65} />
+            <Tooltip content={<CustomCurrencyTooltip borderColor="#3b82f6" suffix="M" />} />
             <Line type="monotone" dataKey="2025" stroke="#3b82f6" strokeWidth={3} name="2025" />
             <Line type="monotone" dataKey="2024" stroke="#10b981" strokeWidth={2} name="2024" />
             <Line type="monotone" dataKey="2023" stroke="#f59e0b" strokeWidth={2} name="2023" />
-          </LineChart>
+            <Line type="linear" dataKey="tendencia2025" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 3, fill: '#ef4444' }} name="Tendencia 2025" />
+          </ComposedChart>
         </ResponsiveContainer>
       </motion.div>
 
@@ -244,25 +236,7 @@ export default function ComprasDashboard({ data }) {
               style={{ fontSize: '13px' }}
               domain={[-25, 55]}
             />
-            <Tooltip
-              contentStyle={{ 
-                backgroundcolor: '#1f2937', 
-                border: '2px solid #3b82f6', 
-                borderRadius: '8px',
-                fontSize: '14px',
-                padding: '12px',
-                color: '#1f2937'
-              }}
-              labelStyle={{ color: '#1f2937' }}
-              itemStyle={{ color: '#1f2937' }}
-              labelFormatter={(label, payload) => {
-                if (payload && payload[0]) {
-                  return payload[0].payload.mesCompleto;
-                }
-                return label;
-              }}
-              formatter={(value) => [`${value.toFixed(2)}%`, 'Variación']}
-            />
+            <Tooltip content={<CustomPctTooltip borderColor="#a855f7" />} />
             <Bar dataKey="variacion" radius={[8, 8, 0, 0]}>
               {datosVariacion.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.variacion >= 0 ? '#10b981' : '#ef4444'} />

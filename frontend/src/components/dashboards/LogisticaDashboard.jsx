@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Truck, TrendingUp, Building, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import { formatCurrencyFull } from './CustomTooltip';
 
 export default function LogisticaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -35,9 +36,9 @@ export default function LogisticaDashboard({ data }) {
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
     if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
     return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
@@ -115,7 +116,7 @@ export default function LogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos 2025</span>
             <Truck className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrency(total2025)}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrencyFull(total2025)}</div>
           <div className={`text-xs ${variacionTotal >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {variacionTotal > 0 ? '+' : ''}{variacionTotal}% vs 2024
           </div>
@@ -128,7 +129,7 @@ export default function LogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Variación Gastos Logísticos 2025 vs 2024</span>
             <TrendingUp className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrency(Math.abs(total2025 - total2024))}</div>
+          <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrencyFull(Math.abs(total2025 - total2024))}</div>
           <div className={`text-xs ${variacionTotal >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {variacionTotal >= 0 ? 'Incremento' : 'Reducción'}
           </div>

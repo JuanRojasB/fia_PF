@@ -390,7 +390,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis dataKey="anio" stroke="#9ca3af" />
-            <YAxis stroke="#9ca3af" label={{ value: 'Huevos/Gallina/Mes', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} />
+            <YAxis stroke="#9ca3af" width={80} label={{ value: 'Huevos/Gallina/Mes', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} />
             <Tooltip 
               content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
@@ -518,7 +518,7 @@ export default function ProduccionHuevosDashboard({ data }) {
           <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis dataKey="anio" stroke="#9ca3af" />
-            <YAxis yAxisId="left" stroke="#9ca3af" label={{ value: 'Aves en Producción', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} tickFormatter={(value) => formatNumber(value)} />
+            <YAxis yAxisId="left" stroke="#9ca3af" width={90} label={{ value: 'Aves en Producción', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} tickFormatter={(value) => formatNumber(value)} />
             <YAxis yAxisId="right" orientation="right" stroke="#9ca3af" label={{ value: 'Huevos/Ave/Mes', angle: 90, position: 'insideRight', fill: '#9ca3af' }} />
             <Tooltip 
               content={({ active, payload, label }) => {

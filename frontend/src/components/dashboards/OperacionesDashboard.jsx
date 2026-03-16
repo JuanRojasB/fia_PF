@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell, PieChart, Pie } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell, PieChart, Pie, ComposedChart } from 'recharts';
 import { Wrench, AlertTriangle, TrendingUp, TrendingDown, CheckCircle, XCircle, Info, X, Clock, Activity } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import { CustomBarTooltip } from './CustomTooltip';
 
 export default function OperacionesDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,6 +47,24 @@ export default function OperacionesDashboard({ data }) {
     { area: 'Arquitectura', cumplimiento: 58, abiertas: novedadesArquitectura.reduce((s, n) => s + parseInt(n.abiertas || 0), 0), cerradas: novedadesArquitectura.reduce((s, n) => s + parseInt(n.cerradas || 0), 0) },
     { area: 'Mantenimiento', cumplimiento: 84, abiertas: novedadesInfraestructura.reduce((s, n) => s + parseInt(n.abiertas || 0), 0), cerradas: novedadesInfraestructura.reduce((s, n) => s + parseInt(n.cerradas || 0), 0) }
   ];
+
+  // Regresión lineal para tendencia
+  const calcTendencia = (datos, key) => {
+    const n = datos.length;
+    if (n < 3) return datos.map(d => ({ ...d }));
+    const sumX = datos.reduce((s, _, i) => s + i, 0);
+    const sumY = datos.reduce((s, d) => s + (parseFloat(d[key]) || 0), 0);
+    const sumXY = datos.reduce((s, d, i) => s + i * (parseFloat(d[key]) || 0), 0);
+    const sumX2 = datos.reduce((s, _, i) => s + i * i, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    return datos.map((d, i) => ({ ...d, tendencia: parseFloat((intercept + slope * i).toFixed(2)) }));
+  };
+
+  const datosOTConTend = calcTendencia(
+    datosOrdenesTrabajo.map(d => ({ ...d, total: (d.Preventivas || 0) + (d.Correctivas || 0) })),
+    'total'
+  );
 
   return (
     <div className="space-y-6">
@@ -295,7 +314,7 @@ export default function OperacionesDashboard({ data }) {
             'Total': o.total_ot,
             '% Correctivas': `${o.porcentaje_correctivas}%`
           }));
-          openModal('Análisis Detallado de Órdenes de Trabajo', 'El 89,3% de las intervenciones totales (3.807 OT) fueron de carácter preventivo y 456 correctivas de acuerdo con reporte SIESA, lo que indica que se tiene un enfoque preventivo sólido. Meses con más correctivas: Enero (35,8%), Agosto (26%), Febrero (25,7%) y Marzo (23,7%). Estos picos pueden estar relacionados con el inicio de año y períodos de alta producción. Meses con mejor gestión preventiva: Diciembre (2%), Noviembre (3%), Junio (4,3%) y Julio (16,5%). El objetivo es mantener el porcentaje de correctivas por debajo del 15% mensual.', tableData);
+          openModal('Análisis Detallado de Órdenes de Trabajo', 'El 89,3% de las intervenciones totales (3.807 OT) fueron de carácter preventivo y 456 correctivas de acuerdo con reporte SIESA, lo que indica que se tiene un enfoque preventivo sólido. Meses con más correctivas: Enero (35,8%), Agosto (26%), Febrero (25,7%) y Marzo (23,7%). Estos picos pueden estar relacionados con el inicio de año y períodos de alta producción. Meses con mejor gestión preventiva: Diciembre (2%), Noviembre (3%), Junio (4,3%) y Julio (16,5%). El objetivo es mantener el porcentaje de correctivas por debajo del 15% mensual.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el total mensual de OT, mostrando si el volumen de intervenciones está aumentando o disminuyendo en el año.', tableData);
         }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
       >
@@ -309,7 +328,7 @@ export default function OperacionesDashboard({ data }) {
 
         {/* Gráfico de Barras */}
         <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={datosOrdenesTrabajo} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
+          <ComposedChart data={datosOTConTend} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
             <XAxis 
               dataKey="mes" 
@@ -320,26 +339,11 @@ export default function OperacionesDashboard({ data }) {
               height={60}
             />
             <YAxis stroke="#6b7280" style={{ fontSize: '13px' }} />
-            <Tooltip
-              contentStyle={{ 
-                backgroundColor: '#ffffff', 
-                border: '2px solid #a855f7', 
-                borderRadius: '8px',
-                fontSize: '14px',
-                padding: '12px'
-              }}
-              labelStyle={{ color: '#111827', fontWeight: 'bold' }}
-              itemStyle={{ color: '#374151' }}
-              labelFormatter={(label, payload) => {
-                if (payload && payload[0]) {
-                  return payload[0].payload.mesCompleto;
-                }
-                return label;
-              }}
-            />
+            <Tooltip content={<CustomBarTooltip borderColor="#a855f7" />} />
             <Bar dataKey="Preventivas" stackId="a" fill="#10b981" radius={[0, 0, 0, 0]} />
             <Bar dataKey="Correctivas" stackId="a" fill="#ef4444" radius={[8, 8, 0, 0]} />
-          </BarChart>
+            <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Total OT" />
+          </ComposedChart>
         </ResponsiveContainer>
 
         {/* Tabla Detallada */}

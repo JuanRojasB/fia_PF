@@ -1,6 +1,6 @@
 // Sidebar Component - Optimized Collapsible Version
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shield, TrendingUp, UserCheck, Truck, Menu, X, Store, ShoppingCart, Wrench, Monitor } from 'lucide-react';
+import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shield, TrendingUp, UserCheck, Truck, Menu, X, Store, ShoppingCart, Wrench, Monitor, Scale } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
@@ -192,6 +192,12 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       id: 'presupuesto-2025', 
       label: 'Presupuesto 2025', 
       icon: Briefcase,
+      type: 'single'
+    },
+    { 
+      id: 'situacion-juridica', 
+      label: 'Situación Jurídica y Tecnológica', 
+      icon: Scale,
       type: 'single'
     },
     { 

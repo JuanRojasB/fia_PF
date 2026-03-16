@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart } from 'recharts';
 import { CheckCircle, AlertTriangle, FileText, TrendingDown, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import { CustomPctTooltip } from './CustomTooltip';
 
 export default function AuditoriaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,14 +37,30 @@ export default function AuditoriaDashboard({ data }) {
     return new Intl.NumberFormat('es-CO').format(value);
   };
 
-  // Preparar datos de devoluciones mensuales para gráfico
-  const datosDevolucionesMes = devolucionesMensuales.map(d => ({
+  // Regresión lineal para tendencia
+  const calcTendencia = (datos, key) => {
+    const n = datos.length;
+    if (n < 3) return datos.map(d => ({ ...d }));
+    const sumX = datos.reduce((s, _, i) => s + i, 0);
+    const sumY = datos.reduce((s, d) => s + (parseFloat(d[key]) || 0), 0);
+    const sumXY = datos.reduce((s, d, i) => s + i * (parseFloat(d[key]) || 0), 0);
+    const sumX2 = datos.reduce((s, _, i) => s + i * i, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    return datos.map((d, i) => ({ ...d, tendencia: parseFloat((intercept + slope * i).toFixed(3)) }));
+  };
+
+  // Preparar datos de devoluciones mensuales para gráfico con tendencia compañía
+  const datosDevolucionesMesBase = devolucionesMensuales.map(d => ({
     mes: d.mes_nombre,
     anio: d.anio,
     'Sede 1': parseFloat(d.sede_1_pct),
     'Sede 2': parseFloat(d.sede_2_pct),
-    'Sede 3': parseFloat(d.sede_3_pct)
+    'Sede 3': parseFloat(d.sede_3_pct),
+    promedio: parseFloat(((parseFloat(d.sede_1_pct) + parseFloat(d.sede_2_pct) + parseFloat(d.sede_3_pct)) / 3).toFixed(3))
   }));
+
+  const datosDevolucionesMes = calcTendencia(datosDevolucionesMesBase, 'promedio');
 
   // Preparar datos de resumen anual
   const datosResumenAnual = devolucionesResumen.map(r => ({
@@ -63,6 +80,22 @@ export default function AuditoriaDashboard({ data }) {
 
   return (
     <div className="space-y-6">
+
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 backdrop-blur-xl rounded-xl p-6 border-2 border-blue-500/30"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <CheckCircle className="w-8 h-8 text-blue-600" />
+          <h2 className="text-3xl font-bold text-gray-900">AUDITORÍA INTERNA Y CONTROL INTERNO 2025</h2>
+        </div>
+        <p className="text-gray-700 leading-relaxed">
+          Durante 2025, el área ejecutó auditorías mensuales a los procesos misionales de la compañía: Logística, Producción y Comercial (12 auditorías cada uno), así como a Puntos de Venta (12 auditorías por punto). Las auditorías evaluaron la correcta aplicación de controles para mitigar riesgos e impacto en inventarios, merma y eficiencia operativa. Como resultado, se realizaron alertas preventivas diarias y semanales a las áreas involucradas, contribuyendo a los objetivos estratégicos y a la mejora continua.
+        </p>
+      </motion.div>
+
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <motion.div
@@ -70,7 +103,7 @@ export default function AuditoriaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
             'Total de Auditorías Ejecutadas',
-            `Se han ejecutado ${totales.totalAuditorias} auditorías en total, distribuidas en ${totales.tiposAuditoria} tipos diferentes: auditorías de procesos misionales y auditorías de puntos de venta. Estas auditorías permiten evaluar el cumplimiento de estándares de calidad, operación y control en toda la compañía, identificando oportunidades de mejora y asegurando el cumplimiento normativo.`
+            `Durante 2025 se ejecutaron auditorías mensuales a los procesos misionales: Logística, Producción y Comercial (12 auditorías cada uno), y a Puntos de Venta (12 auditorías por punto). Las auditorías se realizaron con base en los controles implementados por cada área, evaluando su correcta aplicación y gestión para mitigar riesgos y su impacto en la gestión de inventarios, la merma y la eficiencia operativa.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
@@ -78,9 +111,9 @@ export default function AuditoriaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total Auditorías Ejecutadas 2025</span>
             <FileText className="w-5 h-5 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{totales.totalAuditorias}</div>
-          <div className="text-sm text-gray-600 mt-1">auditorías ejecutadas</div>
-          <div className="text-xs text-blue-600 mt-2">{totales.tiposAuditoria} tipos diferentes</div>
+          <div className="text-3xl font-bold text-gray-900">12</div>
+          <div className="text-sm text-gray-600 mt-1">auditorías por proceso misional</div>
+          <div className="text-xs text-blue-600 mt-2">Logística · Producción · Comercial · PDV</div>
         </motion.div>
 
         <motion.div
@@ -88,8 +121,8 @@ export default function AuditoriaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Porcentaje de Devolución 2025',
-            `El porcentaje promedio de devoluciones en 2025 es de ${variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%, evaluado en ${totales.sedesEvaluadas} sedes de producción. Este indicador crítico mide la calidad del producto entregado y la efectividad de los procesos de distribución. Un porcentaje bajo indica alta calidad y buenos procesos. En 2024 el porcentaje fue de ${variacionDevoluciones ? variacionDevoluciones.pct_2024 : 'N/A'}%.`
+            'Porcentaje de Devolución Promedio 2025',
+            `En 2025, el promedio de devoluciones de la compañía (sedes) se ubica en 2,26%, con una disminución de 0,28 p.p. frente a 2024 (2,54%). El indicador se calcula como los kilos devueltos sobre la venta bruta, y permite evaluar la gestión de las áreas de logística y comercial. Por sede: Sede 1: 2,85% — Sede 2: 1,61% — Sede 3: 2,31%.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
         >
@@ -108,7 +141,7 @@ export default function AuditoriaDashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Variación de Devoluciones 2025 vs 2024',
-            `La variación 2025 vs 2024 es de ${totales.variacion2025vs2024} puntos porcentuales (pp). ${totales.variacion2025vs2024 < 0 ? `Una reducción de ${Math.abs(totales.variacion2025vs2024)}pp indica mejora en la calidad del producto y eficiencia en los procesos de distribución. Esto refleja el impacto positivo de las acciones correctivas implementadas.` : `Un incremento de ${totales.variacion2025vs2024}pp indica deterioro en el indicador. Se requieren acciones correctivas inmediatas para reducir las devoluciones y mejorar la calidad.`} Fórmula: 2025 (${variacionDevoluciones ? variacionDevoluciones.pct_2025 : 'N/A'}%) - 2024 (${variacionDevoluciones ? variacionDevoluciones.pct_2024 : 'N/A'}%) = ${totales.variacion2025vs2024}pp.`
+            `El promedio de devoluciones de la compañía pasó de 2,54% en 2024 a 2,26% en 2025, una reducción de 0,28 p.p. Esta mejora refleja el impacto positivo de las alertas preventivas diarias y semanales emitidas por el área de Auditoría, que permitieron corregir desviaciones oportunamente y fortalecer los controles existentes. Por sede en 2025: Sede 1: 2,85% — Sede 2: 1,61% — Sede 3: 2,31%.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
         >
@@ -134,8 +167,8 @@ export default function AuditoriaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
-            'Datos Mensuales Registrados',
-            `Se han registrado ${totales.totalDevolucionesMensuales} datos mensuales de devoluciones a lo largo del tiempo. Este seguimiento mensual detallado permite identificar tendencias estacionales, patrones de comportamiento, picos anormales y tomar acciones correctivas oportunas. El monitoreo continuo es fundamental para mantener y mejorar la calidad del producto entregado a los clientes.`
+            'Seguimiento Mensual de Devoluciones',
+            `El área de Auditoría realiza seguimiento mensual al proceso de devoluciones por sede, evidenciando su comportamiento al cierre del año 2025 en comparación con 2024. Esto permite identificar variaciones, tendencias y oportunidades de mejora en la gestión del proceso. El indicador se calcula como los kilos devueltos sobre la venta bruta.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el promedio mensual de la compañía, mostrando la dirección general del indicador en el período.`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
         >
@@ -157,7 +190,7 @@ export default function AuditoriaDashboard({ data }) {
           transition={{ delay: 0.4 }}
           onClick={() => openModal(
             'Devoluciones Mensuales por Sede',
-            'Este gráfico muestra la evolución mensual del porcentaje de devoluciones por sede. Permite identificar tendencias, picos estacionales y comparar el desempeño entre sedes. Una tendencia descendente indica mejora en la calidad del producto y procesos de distribución.'
+            'Este gráfico muestra la evolución mensual del porcentaje de devoluciones por sede durante 2025. El indicador se calcula como los kilos devueltos sobre la venta bruta. Al cierre de 2025: Sede 1: 2,85% — Sede 2: 1,61% — Sede 3: 2,31%. El promedio de la compañía es 2,26%, una mejora de 0,28 p.p. frente al 2,54% de 2024.'
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
         >
@@ -166,24 +199,55 @@ export default function AuditoriaDashboard({ data }) {
             <Info className="w-5 h-5 text-blue-400 animate-pulse" />
           </div>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={datosDevolucionesMes}>
+            <ComposedChart data={datosDevolucionesMes}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="mes" stroke="#6b7280" />
               <YAxis stroke="#6b7280" />
-              <Tooltip 
-                contentStyle={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-                labelStyle={{ color: '#111827' }}
-                itemStyle={{ color: '#374151' }}
-                formatter={(value) => value + '%'}
-              />
+              <Tooltip content={<CustomPctTooltip borderColor="#3b82f6" />} />
               <Legend />
               <Line type="monotone" dataKey="Sede 1" stroke="#3b82f6" strokeWidth={2} />
               <Line type="monotone" dataKey="Sede 2" stroke="#10b981" strokeWidth={2} />
               <Line type="monotone" dataKey="Sede 3" stroke="#f59e0b" strokeWidth={2} />
-            </LineChart>
+              <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Cía." />
+            </ComposedChart>
           </ResponsiveContainer>
         </motion.div>
       )}
+
+      {/* Devoluciones por Sede 2025 */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.55 }}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
+      >
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Devoluciones por Sede — Cierre 2025 vs 2024</h3>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-blue-50 rounded-xl p-4 border-2 border-blue-200 text-center">
+            <div className="text-sm text-blue-700 font-medium mb-1">Compañía (promedio)</div>
+            <div className="text-3xl font-bold text-blue-900">2,26%</div>
+            <div className="text-xs text-green-600 mt-1">↓ 0,28 p.p. vs 2024 (2,54%)</div>
+          </div>
+          <div className="bg-indigo-50 rounded-xl p-4 border-2 border-indigo-200 text-center">
+            <div className="text-sm text-indigo-700 font-medium mb-1">Sede 1</div>
+            <div className="text-3xl font-bold text-indigo-900">2,85%</div>
+            <div className="text-xs text-gray-500 mt-1">kilos devueltos / venta bruta</div>
+          </div>
+          <div className="bg-emerald-50 rounded-xl p-4 border-2 border-emerald-200 text-center">
+            <div className="text-sm text-emerald-700 font-medium mb-1">Sede 2</div>
+            <div className="text-3xl font-bold text-emerald-900">1,61%</div>
+            <div className="text-xs text-gray-500 mt-1">kilos devueltos / venta bruta</div>
+          </div>
+          <div className="bg-amber-50 rounded-xl p-4 border-2 border-amber-200 text-center">
+            <div className="text-sm text-amber-700 font-medium mb-1">Sede 3</div>
+            <div className="text-3xl font-bold text-amber-900">2,31%</div>
+            <div className="text-xs text-gray-500 mt-1">kilos devueltos / venta bruta</div>
+          </div>
+        </div>
+        <p className="text-sm text-gray-600 mt-4 leading-relaxed">
+          El proceso de devoluciones es analizado por sede, evidenciando su comportamiento al cierre del año 2025 en comparación con 2024, permitiendo identificar variaciones, tendencias y oportunidades de mejora en la gestión del proceso.
+        </p>
+      </motion.div>
 
       {/* Variación 2025 vs 2024 */}
       {variacionDevoluciones && (
@@ -219,48 +283,43 @@ export default function AuditoriaDashboard({ data }) {
         </motion.div>
       )}
 
-      {/* Tabla de Auditorías Recientes */}
-      {auditorias.length > 0 && (
-        <CollapsibleTable 
-          title="Auditorías Recientes"
-          defaultOpen={false}
-        >
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-300">
-                  <th className="text-left py-3 px-4 text-gray-700">Fecha</th>
-                  <th className="text-left py-3 px-4 text-gray-700">Tipo</th>
-                  <th className="text-left py-3 px-4 text-gray-700">Área/Proceso</th>
-                  <th className="text-left py-3 px-4 text-gray-700">Auditor</th>
-                  <th className="text-left py-3 px-4 text-gray-700">Estado</th>
-                  <th className="text-right py-3 px-4 text-gray-700">Días</th>
+      {/* Tabla de Auditorías Ejecutadas 2025 */}
+      <CollapsibleTable 
+        title="Auditorías Ejecutadas 2025 — Resumen por Proceso"
+        defaultOpen={false}
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-300">
+                <th className="text-left py-3 px-4 text-gray-700">Proceso / Área</th>
+                <th className="text-left py-3 px-4 text-gray-700">Tipo</th>
+                <th className="text-center py-3 px-4 text-gray-700">Auditorías ejecutadas</th>
+                <th className="text-left py-3 px-4 text-gray-700">Frecuencia</th>
+                <th className="text-left py-3 px-4 text-gray-700">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { proceso: 'Logística', tipo: 'Proceso Misional' },
+                { proceso: 'Producción', tipo: 'Proceso Misional' },
+                { proceso: 'Comercial', tipo: 'Proceso Misional' },
+                { proceso: 'Puntos de Venta', tipo: 'Punto de Venta' },
+              ].map((row, idx) => (
+                <tr key={idx} className="border-b border-gray-200/50 hover:bg-gray-100/30">
+                  <td className="py-3 px-4 text-gray-900 font-medium">{row.proceso}</td>
+                  <td className="py-3 px-4 text-blue-500">{row.tipo}</td>
+                  <td className="py-3 px-4 text-center font-bold text-gray-900">12</td>
+                  <td className="py-3 px-4 text-gray-600">Mensual</td>
+                  <td className="py-3 px-4">
+                    <span className="px-2 py-1 rounded text-xs bg-green-500/20 text-green-600">Completadas</span>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {auditorias.slice(0, 10).map((aud, idx) => (
-                  <tr key={idx} className="border-b border-gray-200/50 hover:bg-gray-100/30">
-                    <td className="py-3 px-4 text-gray-900">{new Date(aud.fecha_auditoria).toLocaleDateString('es-CO')}</td>
-                    <td className="py-3 px-4 text-blue-400">{aud.tipo_auditoria}</td>
-                    <td className="py-3 px-4 text-gray-600">{aud.area_proceso_auditado}</td>
-                    <td className="py-3 px-4 text-gray-600">{aud.auditor_responsable}</td>
-                    <td className="py-3 px-4">
-                      <span className={`px-2 py-1 rounded text-xs ${
-                        aud.estado === 'Completada' ? 'bg-green-500/20 text-green-400' :
-                        aud.estado === 'En proceso' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-gray-500/20 text-gray-600'
-                      }`}>
-                        {aud.estado}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right text-gray-600">{aud.dias_desde_auditoria}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CollapsibleTable>
-      )}
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </CollapsibleTable>
 
       {/* Hallazgos y Planes de Acción */}
       {(hallazgos.length > 0 || planesAccion.length > 0) && (

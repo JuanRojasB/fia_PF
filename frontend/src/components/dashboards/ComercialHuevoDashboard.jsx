@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Egg, TrendingDown, DollarSign, X, Info, AlertTriangle, Package } from 'lucide-react';
+import { formatCurrencyFull } from './CustomTooltip';
 
 export default function ComercialHuevoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,9 +28,9 @@ export default function ComercialHuevoDashboard({ data }) {
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
     if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
     return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
   };
 
@@ -66,9 +67,21 @@ export default function ComercialHuevoDashboard({ data }) {
     ? (((datos2025.ingresos_totales_calculados - datos2024.ingresos_totales_calculados) / datos2024.ingresos_totales_calculados) * 100).toFixed(2)
     : 0;
 
+  // Regresión lineal para tendencia de precio
+  const calcTendenciaPrecio = (datos, key) => {
+    const n = datos.length;
+    const sumX = datos.reduce((s, _, i) => s + i, 0);
+    const sumY = datos.reduce((s, d) => s + (d[key] || 0), 0);
+    const sumXY = datos.reduce((s, d, i) => s + i * (d[key] || 0), 0);
+    const sumX2 = datos.reduce((s, _, i) => s + i * i, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    return datos.map((d, i) => ({ ...d, tendenciaPrecio: Math.round(intercept + slope * i) }));
+  };
+
   // Preparar datos para el gráfico
   const datosOrdenadosAsc = datosOrdenados.reverse();
-  const datosGrafico = datosOrdenadosAsc.map((v, idx) => {
+  const datosGraficoBase = datosOrdenadosAsc.map((v, idx) => {
     const prev = datosOrdenadosAsc[idx - 1];
     const ingresosActual = parseFloat(v.ingresos_totales_calculados) || 0;
     const ingresosPrev = prev ? (parseFloat(prev.ingresos_totales_calculados) || 0) : 0;
@@ -83,6 +96,8 @@ export default function ComercialHuevoDashboard({ data }) {
       varVentas
     };
   });
+
+  const datosGrafico = calcTendenciaPrecio(datosGraficoBase, 'precio');
 
   return (
     <div className="space-y-6">
@@ -140,7 +155,7 @@ export default function ComercialHuevoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Precio Promedio/Unidad Huevo 2025</span>
             <TrendingDown className="w-6 h-6 text-red-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(datos2025.precio_promedio_unidad)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(datos2025.precio_promedio_unidad)}</div>
           <div className="text-xs flex items-center gap-1 text-red-600">
             <AlertTriangle className="w-4 h-4" />
             {varPrecio2025vs2024}% vs 2024
@@ -161,7 +176,7 @@ export default function ComercialHuevoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ingresos Huevo 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrency(datos2025.ingresos_totales_calculados)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(datos2025.ingresos_totales_calculados)}</div>
           <div className={`text-xs flex items-center gap-1 ${parseFloat(varIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             <TrendingDown className="w-4 h-4" />
             {varIngresos}% vs 2024
@@ -251,7 +266,7 @@ export default function ComercialHuevoDashboard({ data }) {
         transition={{ delay: 0.7 }}
         onClick={() => openModal(
           'Evolución de Ventas de Huevo',
-          'Este gráfico muestra la evolución de unidades vendidas (barras azules) y precio promedio (línea naranja) durante los años 2023-2025. Se observa claramente cómo el volumen se mantiene estable alrededor de 34 millones de unidades, mientras que el precio cae continuamente desde $512 en 2023 hasta $403 en 2025, una reducción del 21.29%.'
+          'Este gráfico muestra la evolución de unidades vendidas (barras azules) y precio promedio (línea naranja) durante los años 2023-2025. Se observa claramente cómo el volumen se mantiene estable alrededor de 34 millones de unidades, mientras que el precio cae continuamente desde $512 en 2023 hasta $403 en 2025, una reducción del 21.29%.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el precio promedio anual, confirmando la dirección descendente sostenida del precio en el período.'
         )}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-yellow-400 transition-all"
       >
@@ -296,6 +311,12 @@ export default function ComercialHuevoDashboard({ data }) {
                           <span className="text-green-600 font-medium">Ventas:</span>
                           <span className="font-bold text-gray-900">{formatCurrency(ingresos)}</span>
                         </div>
+                        {payload[0].payload.tendenciaPrecio != null && (
+                          <div className="flex justify-between items-center gap-4">
+                            <span className="text-purple-600 font-medium">Tend. Precio:</span>
+                            <span className="font-bold text-purple-600">{formatCurrency(payload[0].payload.tendenciaPrecio)}</span>
+                          </div>
+                        )}
                         {varVentas !== null && (
                           <div className="border-t border-gray-200 pt-2 flex justify-between items-center gap-4">
                             <span className="text-gray-600 font-medium">Var. Ventas:</span>
@@ -314,6 +335,7 @@ export default function ComercialHuevoDashboard({ data }) {
             <Legend />
             <Bar yAxisId="left" dataKey="unidades" fill="#3b82f6" name="Unidades Vendidas" radius={[8, 8, 0, 0]} />
             <Line yAxisId="right" type="monotone" dataKey="precio" stroke="#f97316" strokeWidth={3} name="Precio Promedio ($/Unidad)" dot={{ r: 6 }} />
+            <Line yAxisId="right" type="linear" dataKey="tendenciaPrecio" stroke="#7c3aed" strokeWidth={2} strokeDasharray="8 4" dot={false} name="Tendencia Precio" />
           </ComposedChart>
         </ResponsiveContainer>
       </motion.div>

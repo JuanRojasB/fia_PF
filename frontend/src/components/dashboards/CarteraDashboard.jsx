@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell, ComposedChart } from 'recharts';
 import { DollarSign, TrendingUp, TrendingDown, Calendar, AlertTriangle, X, Info, CreditCard, Percent } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import { formatCurrencyFull } from './CustomTooltip';
 
 // Componente de Tooltip personalizado
 const CustomTooltip = ({ active, payload, label, formatNumber }) => {
@@ -47,24 +48,50 @@ export default function CarteraDashboard({ data }) {
     return new Intl.NumberFormat('es-CO').format(value);
   };
 
+  // Regresión lineal para tendencia
+  const calcTendencia = (datos, key) => {
+    const n = datos.length;
+    if (n < 3) return datos.map(d => ({ ...d }));
+    const sumX = datos.reduce((s, _, i) => s + i, 0);
+    const sumY = datos.reduce((s, d) => s + (parseFloat(d[key]) || 0), 0);
+    const sumXY = datos.reduce((s, d, i) => s + i * (parseFloat(d[key]) || 0), 0);
+    const sumX2 = datos.reduce((s, _, i) => s + i * i, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    return datos.map((d, i) => ({ ...d, tendencia: parseFloat((intercept + slope * i).toFixed(2)) }));
+  };
+
+  const exposicionConTend = calcTendencia(exposicionCartera, 't2025');
+  const rotacionConTend = calcTendencia(datosMensuales, 'dias_rotacion');
+  const morosidadConTend = calcTendencia(datosMensuales, 'indice_morosidad');
+  const contadoConTend = calcTendencia(datosMensuales, 'pct_contado');
+
   // Abreviado para KPIs: $1.234M / $1.23B
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
+    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
     if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}K`;
+    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
     return `$${new Intl.NumberFormat('es-CO').format(v)}`;
   };
 
   return (
     <div className="space-y-6">
       {/* Descripción */}
-      <div className="bg-gradient-to-r from-green-100 to-emerald-100 backdrop-blur-xl rounded-xl p-6 border border-green-500/30">
-        <p className="text-gray-700">
-          El año 2025 fue un año de cambios estructurales en el área, orientados a tener un manejo más óptimo y real de los estados de cuenta de los diferentes clientes. Se cumplió la meta de rotación establecida en ISO de 15 días.
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-xl rounded-xl p-6 border-2 border-green-500/30"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <CreditCard className="w-8 h-8 text-green-600" />
+          <h2 className="text-3xl font-bold text-gray-900">GESTIÓN DE CARTERA 2025</h2>
+        </div>
+        <p className="text-gray-700 leading-relaxed">
+          El año 2025 fue un año de cambios estructurales en el área, orientados a tener un manejo más óptimo y real de los estados de cuenta de los diferentes clientes. La cartera presenta una rotación al final del periodo de 15,40 días a Dic/25, frente al periodo anterior con una rotación de 14,99 días. Se cumplió la meta de rotación establecida en ISO de 15 días. Las ventas de contado en promedio representan el 37,91% y las ventas de crédito el 62,09%, siendo el 46,63% el porcentaje promedio de índice de cartera morosa vencida por recaudar. El nivel de cierre de cartera a diciembre 2025 quedó en 16.785 millones, disminuyendo un -1% frente a Dic/24.
         </p>
-      </div>
+      </motion.div>
 
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -82,8 +109,8 @@ export default function CarteraDashboard({ data }) {
                 <p className="text-sm font-semibold text-gray-900 mb-2">Resultado 2025:</p>
                 <p className="text-sm">• Rotación actual: <strong className="text-green-600">{resumenAnual.rotacion_dic_2025} días</strong></p>
                 <p className="text-sm">• Meta ISO: <strong>15 días</strong></p>
-                <p className="text-sm">• Rotación 2024: <strong>{resumenAnual.rotacion_dic_2024} días</strong></p>
-                <p className="text-sm mt-2"><strong className="text-green-600">Meta cumplida.</strong> Se mejoró en 5 días respecto al año anterior.</p>
+                <p className="text-sm">• Rotación Dic 2024: <strong>14,99 días</strong></p>
+                <p className="text-sm mt-2"><strong className="text-green-600">Meta cumplida.</strong> La rotación se mantiene dentro del objetivo ISO.</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
                 <p className="text-sm font-semibold text-gray-900 mb-2">¿Por qué es importante?</p>
@@ -115,16 +142,16 @@ export default function CarteraDashboard({ data }) {
             <div className="text-gray-700">
               <p className="mb-4 font-semibold">¿Cómo se distribuyen las ventas?</p>
               <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 mb-4">
-                <p className="text-sm mb-3"><strong>Ventas de Contado ({resumenAnual.ventas_contado_promedio}%):</strong></p>
+                <p className="text-sm mb-3"><strong>Ventas de Contado (37,91%):</strong></p>
                 <p className="text-sm">Los clientes pagan inmediatamente al recibir el producto. El dinero entra de inmediato a la empresa.</p>
               </div>
               <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 mb-4">
-                <p className="text-sm mb-3"><strong>Ventas de Crédito ({resumenAnual.ventas_credito_promedio}%):</strong></p>
+                <p className="text-sm mb-3"><strong>Ventas de Crédito (62,09%):</strong></p>
                 <p className="text-sm">Los clientes pagan después (a 15, 30 o más días). El dinero entra más tarde.</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
                 <p className="text-sm font-semibold text-gray-900 mb-2">Interpretación:</p>
-                <p className="text-sm">La mayoría de las ventas (62%) son a crédito, por eso es importante cobrar rápido para mantener el flujo de caja.</p>
+                <p className="text-sm">La mayoría de las ventas (62,09%) son a crédito, por eso es importante cobrar rápido para mantener el flujo de caja.</p>
               </div>
             </div>
           )}
@@ -135,10 +162,10 @@ export default function CarteraDashboard({ data }) {
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumenAnual.ventas_contado_promedio}%</div>
-          <div className="text-sm text-gray-600 mt-1">Promedio anual</div>
+          <div className="text-sm text-gray-600 mt-1">Promedio anual contado</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">Ventas de crédito</div>
-            <div className="text-lg font-semibold text-blue-600">{resumenAnual.ventas_credito_promedio}%</div>
+            <div className="text-lg font-semibold text-blue-600">62,09%</div>
           </div>
           <Info className="w-4 h-4 text-blue-600 animate-pulse mt-2" />
         </motion.div>
@@ -156,8 +183,8 @@ export default function CarteraDashboard({ data }) {
               </div>
               <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300 mb-4">
                 <p className="text-sm font-semibold text-gray-900 mb-2">Situación actual:</p>
-                <p className="text-sm">• Morosidad promedio: <strong className="text-orange-600">{resumenAnual.morosidad_promedio}%</strong></p>
-                <p className="text-sm mt-2">Esto significa que de todo el dinero que deben los clientes, casi la mitad está atrasado.</p>
+                <p className="text-sm">• Morosidad promedio: <strong className="text-orange-600">46,63%</strong></p>
+                <p className="text-sm mt-2">Esto significa que de todo el dinero que deben los clientes, casi la mitad está vencido por recaudar.</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
                 <p className="text-sm font-semibold text-gray-900 mb-2">Acciones recomendadas:</p>
@@ -208,7 +235,7 @@ export default function CarteraDashboard({ data }) {
             <span className="text-gray-600 text-sm">Saldo Cartera Dic 2025 vs Dic 2024</span>
             <CreditCard className="w-5 h-5 text-purple-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${formatNumber(resumenAnual.cartera_dic_2025)}M</div>
+          <div className="text-3xl font-bold text-gray-900">{formatCurrencyFull((resumenAnual.cartera_dic_2025 || 0) * 1000000)}</div>
           <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">Variación vs Dic 2024</div>
@@ -251,8 +278,12 @@ export default function CarteraDashboard({ data }) {
                 </tbody>
               </table>
             </div>
-            <div className="mt-4 bg-green-50 rounded-lg p-4 border-2 border-green-300">
+            <div className="mt-4 bg-green-50 rounded-lg p-4 border-2 border-green-300 mb-4">
               <p className="text-sm">El nivel de cierre de cartera a diciembre 2025, quedó en 16,785 millones disminuyendo un -1% frente a Dic/24.</p>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 border-2 border-red-200">
+              <p className="text-sm font-semibold text-gray-900 mb-1">Línea roja punteada — Tendencia:</p>
+              <p className="text-sm">Calculada por regresión lineal sobre el saldo mensual de cartera 2025. Indica si la exposición está creciendo o reduciéndose a lo largo del año.</p>
             </div>
           </div>
         )}
@@ -267,7 +298,7 @@ export default function CarteraDashboard({ data }) {
         </div>
         <div>
           <ResponsiveContainer width="100%" height={450}>
-            <LineChart data={exposicionCartera} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
+            <ComposedChart data={exposicionConTend} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
               <XAxis 
                 dataKey="mes" 
@@ -341,7 +372,8 @@ export default function CarteraDashboard({ data }) {
                 strokeWidth={4}
                 dot={{ r: 7, fill: '#374151', strokeWidth: 3, stroke: '#fff' }}
               />
-            </LineChart>
+              <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </motion.div>
@@ -361,15 +393,19 @@ export default function CarteraDashboard({ data }) {
             </div>
             <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 mb-4">
               <p className="text-sm font-semibold text-gray-900 mb-2">Meta ISO cumplida:</p>
-              <p className="text-sm">La cartera presenta una rotación al final del periodo de 15,40 días a Dic/25, frente al periodo anterior con una rotación de cartera en 20,86 días. Se cumplió la meta de rotación establecida en ISO de 15 días.</p>
+              <p className="text-sm">La cartera presenta una rotación al final del periodo de 15,40 días a Dic/25, frente al periodo anterior con una rotación de cartera en 14,99 días. Se cumplió la meta de rotación establecida en ISO de 15 días.</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
+            <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300 mb-4">
               <p className="text-sm font-semibold text-gray-900 mb-2">Interpretación:</p>
               <ul className="text-sm space-y-1 list-disc list-inside">
                 <li className="text-green-600">Verde (≤15 días): Excelente - Meta cumplida</li>
                 <li className="text-yellow-600">Amarillo (16-17 días): Aceptable - Cerca de la meta</li>
                 <li className="text-red-600">Rojo (&gt;17 días): Requiere atención</li>
               </ul>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 border-2 border-red-200">
+              <p className="text-sm font-semibold text-gray-900 mb-1">Línea roja punteada — Tendencia:</p>
+              <p className="text-sm">Calculada por regresión lineal sobre los días de rotación mensuales. Muestra la dirección general del indicador: si sube, el cobro se está tardando más; si baja, se está acelerando.</p>
             </div>
           </div>
         )}
@@ -384,7 +420,7 @@ export default function CarteraDashboard({ data }) {
         </div>
         <div>
           <ResponsiveContainer width="100%" height={450}>
-            <BarChart data={datosMensuales} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
+            <ComposedChart data={rotacionConTend} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
               <XAxis 
                 dataKey="mes" 
@@ -400,7 +436,8 @@ export default function CarteraDashboard({ data }) {
               <Tooltip 
                 content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
-                    const dias = payload[0].value;
+                    const dias = payload.find(p => p.dataKey === 'dias_rotacion')?.value;
+                    if (dias == null) return null;
                     let estado = '';
                     let color = '';
                     if (dias <= 15) {
@@ -441,11 +478,12 @@ export default function CarteraDashboard({ data }) {
                 }}
               />
               <Bar dataKey="dias_rotacion" name="Días Rotación" fill="#059669" radius={[8, 8, 0, 0]}>
-                {datosMensuales.map((entry, index) => (
+                {rotacionConTend.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.dias_rotacion <= 15 ? '#059669' : entry.dias_rotacion <= 17 ? '#f59e0b' : '#ef4444'} />
                 ))}
               </Bar>
-            </BarChart>
+              <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia" />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </motion.div>
@@ -459,8 +497,12 @@ export default function CarteraDashboard({ data }) {
           'Índice de Morosidad - Detalle',
           <div className="text-gray-700">
             <p className="mb-4 font-semibold">Porcentaje mensual de cartera vencida</p>
-            <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-300">
+            <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-300 mb-4">
               <p className="text-sm">El índice de morosidad promedio del año fue de {resumenAnual.morosidad_promedio}%, representando la cartera morosa vencida por recaudar.</p>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 border-2 border-red-200">
+              <p className="text-sm font-semibold text-gray-900 mb-1">Línea roja punteada — Tendencia:</p>
+              <p className="text-sm">Calculada por regresión lineal sobre el índice mensual de morosidad. Si la línea sube, la cartera vencida está creciendo; si baja, el recaudo está mejorando.</p>
             </div>
           </div>
         )}
@@ -475,7 +517,7 @@ export default function CarteraDashboard({ data }) {
         </div>
         <div>
           <ResponsiveContainer width="100%" height={450}>
-            <LineChart data={datosMensuales} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
+            <ComposedChart data={morosidadConTend} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
               <XAxis 
                 dataKey="mes" 
@@ -497,7 +539,8 @@ export default function CarteraDashboard({ data }) {
                 dot={{ r: 8, fill: '#f59e0b', strokeWidth: 3, stroke: '#fff' }}
                 activeDot={{ r: 10 }}
               />
-            </LineChart>
+              <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia" />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </motion.div>
@@ -588,6 +631,10 @@ export default function CarteraDashboard({ data }) {
               <p className="text-sm font-semibold text-gray-900 mb-2">Promedio Anual:</p>
               <p className="text-sm">Las ventas de contado en promedio representan el {resumenAnual.ventas_contado_promedio}% y las ventas de crédito el {resumenAnual.ventas_credito_promedio}%.</p>
             </div>
+            <div className="bg-red-50 rounded-lg p-4 border-2 border-red-200">
+              <p className="text-sm font-semibold text-gray-900 mb-1">Línea roja punteada — Tendencia:</p>
+              <p className="text-sm">Calculada por regresión lineal sobre el porcentaje mensual de ventas al contado. Si la línea sube, el peso del contado está creciendo en el año; si baja, el crédito está ganando participación.</p>
+            </div>
           </div>
         )}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
@@ -601,7 +648,7 @@ export default function CarteraDashboard({ data }) {
         </div>
         <div>
           <ResponsiveContainer width="100%" height={450}>
-            <BarChart data={datosMensuales} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
+            <ComposedChart data={contadoConTend} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
               <XAxis 
                 dataKey="mes" 
@@ -651,7 +698,8 @@ export default function CarteraDashboard({ data }) {
               />
               <Bar dataKey="pct_contado" name="% Contado" fill="#2563eb" radius={[8, 8, 0, 0]} />
               <Bar dataKey="pct_credito" name="% Crédito" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
-            </BarChart>
+              <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Contado" />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </motion.div>

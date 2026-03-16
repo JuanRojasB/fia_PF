@@ -40,11 +40,12 @@ import ComprasDashboard from './ComprasDashboard';
 import OperacionesDashboard from './OperacionesDashboard';
 import PlantaBeneficioDashboard from './PlantaBeneficioDashboard';
 import TecnologiasInformacionDashboard from './TecnologiasInformacionDashboard';
+import SituacionJuridicaDashboard from './SituacionJuridicaDashboard';
 import EnDesarrollo from './EnDesarrollo';
 
 export default function DashboardRenderer({ type, data }) {
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica'];
+  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica'];
   
   if (!data || (Array.isArray(data) && data.length === 0)) {
     // Si el dashboard no requiere datos, continuar normalmente
@@ -153,6 +154,8 @@ export default function DashboardRenderer({ type, data }) {
       return <Presupuesto2025Dashboard data={data} />;
     case 'gerencia':
       return <GerenciaDashboard data={data} />;
+    case 'situacion-juridica':
+      return <SituacionJuridicaDashboard />;
     case 'situacion-economica':
       return <SituacionEconomicaDashboard />;
     default:
