@@ -76,11 +76,11 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <span className="text-gray-600 text-sm">Utilidad Neta 2025 vs 2024</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${formatNumber(16714000000)}</div>
-          <div className="text-sm text-gray-600 mt-1">Pesos colombianos</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Crecimiento vs 2024</div>
-            <div className="text-lg font-semibold text-green-600">+37.8%</div>
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">${formatNumber(16714000000)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(12129000000)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">${formatNumber(16714000000)}</span></div>
+            <div className="text-sm font-bold text-green-600">Var: +37.8%</div>
           </div>
         </motion.div>
 
@@ -95,11 +95,11 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <span className="text-gray-600 text-sm">Ingresos Operacionales 2025 vs 2024</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(431000000000)}</div>
-          <div className="text-sm text-gray-600 mt-1">Pesos colombianos</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Crecimiento vs 2024 ($426.000.000.000)</div>
-            <div className="text-lg font-semibold text-blue-600">+1.04%</div>
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">{formatNumber(431000000000)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(426000000000)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(431000000000)}</span></div>
+            <div className="text-sm font-bold text-green-600">Var: +1.04%</div>
           </div>
         </motion.div>
 
@@ -114,11 +114,11 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <span className="text-gray-600 text-sm">Patrimonio Total 2025 vs 2024</span>
             <Building className="w-5 h-5 text-purple-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${formatNumber(245333000000)}</div>
-          <div className="text-sm text-gray-600 mt-1">Pesos colombianos</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Crecimiento vs 2024</div>
-            <div className="text-lg font-semibold text-purple-600">+194%</div>
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">${formatNumber(245333000000)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(83530000000)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">${formatNumber(245333000000)}</span></div>
+            <div className="text-sm font-bold text-green-600">Var: +194%</div>
           </div>
         </motion.div>
 
@@ -133,11 +133,11 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <span className="text-gray-600 text-sm">Activos Totales 2025 vs 2024</span>
             <FileText className="w-5 h-5 text-cyan-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${formatNumber(311430000000)}</div>
-          <div className="text-sm text-gray-600 mt-1">Pesos colombianos</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Crecimiento vs 2024</div>
-            <div className="text-lg font-semibold text-cyan-600">+127%</div>
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">${formatNumber(311430000000)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(137287000000)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">${formatNumber(311430000000)}</span></div>
+            <div className="text-sm font-bold text-green-600">Var: +127%</div>
           </div>
         </motion.div>
       </div>
@@ -155,31 +155,46 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             onClick={() => openModal('Utilidad Bruta', 'La utilidad bruta por los años de 2025 y 2024 se determinaron en: $64,781 y $58,309 MM respectivamente, generando un incremento $6,472 MM correspondiente al 11.1%.')}>
             <p className="text-sm text-gray-600 mb-2">Utilidad Bruta 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(64781000000)}</p>
-            <p className="text-xs text-green-600 mt-1">+11.1% vs 2024 ($58.309.000.000)</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(58309000000)}</span></p>
+              <p className="text-xs font-bold text-green-600">Var: +11.1%</p>
+            </div>
           </div>
           <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
             onClick={() => openModal('Utilidad Operacional', 'El valor de la utilidad operacional se determinó en $27,229 MM para el año 2025 y en $22,534 para el año 2024 reflejando crecimiento del +20.8% por valor de $4,695 MM.')}>
             <p className="text-sm text-gray-600 mb-2">Utilidad Operacional 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(27229000000)}</p>
-            <p className="text-xs text-green-600 mt-1">+20.8% vs 2024 ($22.534.000.000)</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(22534000000)}</span></p>
+              <p className="text-xs font-bold text-green-600">Var: +20.8%</p>
+            </div>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 cursor-pointer hover:border-purple-500 transition-all"
             onClick={() => openModal('Costos de Ventas', 'Pollo Fiesta S.A., cierra el ejercicio con costes de ventas por el año 2025, en cuantía de $368,749 MM y en el año 2024 en cuantía de $370,332 MM, es decir una disminución del -0.43%, hecho explicado principalmente por la disminución en el costo directo del ABA.')}>
             <p className="text-sm text-gray-600 mb-2">Costos de Ventas 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(368749000000)}</p>
-            <p className="text-xs text-green-600 mt-1">-0.43% vs 2024 ($370.332.000.000)</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(370332000000)}</span></p>
+              <p className="text-xs font-bold text-green-600">Var: -0.43%</p>
+            </div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
             onClick={() => openModal('Costo Neto Financiero', 'El coste financiero fue de $6,061 MM para el año 2025 y de $6,880 MM para el año 2024, lo que arrojó un decrecimiento de $819 MM que corresponde a un -11.91%. En relación directa con los intereses pagados por obligaciones financieras, gravamen al movimiento financiero GMF por la bancarización de los pagos.')}>
             <p className="text-sm text-gray-600 mb-2">Costo Financiero 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(6061000000)}</p>
-            <p className="text-xs text-green-600 mt-1">-11.91% vs 2024 ($6.880.000.000)</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(6880000000)}</span></p>
+              <p className="text-xs font-bold text-green-600">Var: -11.91%</p>
+            </div>
           </div>
           <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"
             onClick={() => openModal('Otros Ingresos Financieros', 'Los otros ingresos financieros fueron determinados por los intereses recibidos en la colocación de recursos en portafolios de rentabilidad, aumentando en un 61.53% es decir en $1,572 MM, al pasar de $2,555 MM en el año 2024 a $4,127 MM del año 2025, resultado producto de la mayor colocación de recursos en las fiducias.')}>
             <p className="text-sm text-gray-600 mb-2">Ingresos Financieros 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(4127000000)}</p>
-            <p className="text-xs text-cyan-600 mt-1">+61.53% vs 2024 ($2.555.000.000)</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(2555000000)}</span></p>
+              <p className="text-xs font-bold text-green-600">Var: +61.53%</p>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -196,17 +211,26 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
             <p className="text-sm text-gray-600 mb-2">Gastos de Administración</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(3928000000)}</p>
-            <p className="text-xs text-orange-600 mt-1">+4.91% vs 2024 ($3.744.000.000)</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(3744000000)}</span></p>
+              <p className="text-xs font-bold text-red-600">Var: +4.91%</p>
+            </div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
             <p className="text-sm text-gray-600 mb-2">Gastos de Ventas</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(11528000000)}</p>
-            <p className="text-xs text-red-600 mt-1">+9.90% vs 2024 ($10.490.000.000)</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(10490000000)}</span></p>
+              <p className="text-xs font-bold text-red-600">Var: +9.90%</p>
+            </div>
           </div>
           <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-300">
             <p className="text-sm text-gray-600 mb-2">Beneficios a Empleados</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(21118000000)}</p>
-            <p className="text-xs text-yellow-600 mt-1">+9% vs 2024 ($19.369.000.000)</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(19369000000)}</span></p>
+              <p className="text-xs font-bold text-red-600">Var: +9%</p>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -223,20 +247,26 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300">
             <p className="text-sm text-gray-600 mb-2">Activos Totales 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(311430000000)}</p>
-            <p className="text-xs text-cyan-600 mt-1">+127% vs 2024 ($137.287.000.000)</p>
-            <p className="text-xs text-gray-600 mt-2">Variación: +$174.143.000.000</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(137287000000)}</span></p>
+              <p className="text-xs font-bold text-green-600">Var: +127%</p>
+            </div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
             <p className="text-sm text-gray-600 mb-2">Pasivos Totales 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(66097000000)}</p>
-            <p className="text-xs text-red-600 mt-1">+23% vs 2024 ($53.756.000.000)</p>
-            <p className="text-xs text-gray-600 mt-2">Variación: +$12.340.000.000</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(53756000000)}</span></p>
+              <p className="text-xs font-bold text-red-600">Var: +23%</p>
+            </div>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
             <p className="text-sm text-gray-600 mb-2">Patrimonio 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(245333000000)}</p>
-            <p className="text-xs text-purple-600 mt-1">+194% vs 2024 ($83.530.000.000)</p>
-            <p className="text-xs text-gray-600 mt-2">Variación: +$161.802.000.000</p>
+            <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
+              <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(83530000000)}</span></p>
+              <p className="text-xs font-bold text-green-600">Var: +194%</p>
+            </div>
           </div>
         </div>
       </motion.div>

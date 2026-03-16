@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
 import { Package, TrendingUp, DollarSign, X, Info, Percent, ArrowUpRight, ArrowDownRight, ShoppingBag } from 'lucide-react';
 import CollapsibleTable, { fmt as formatNumber } from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 import { formatCurrencyFull } from './CustomTooltip';
 
 export default function ComercialProductosDashboard({ data }) {
@@ -158,11 +159,11 @@ export default function ComercialProductosDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ventas Pollo Canal 2025 (kg)</span>
             <Package className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(total2025)}</div>
-          <div className="text-sm text-gray-600 mb-1">kg vendidos</div>
-          <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionKilos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {parseFloat(variacionKilos) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-            {variacionKilos > 0 ? '+' : ''}{variacionKilos}% vs 2024
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(total2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(total2024)} kg</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(total2025)} kg</span></div>
+            <div className={`text-sm font-bold ${parseFloat(variacionKilos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionKilos > 0 ? '+' : ''}{variacionKilos}%</div>
           </div>
         </motion.div>
 
@@ -180,11 +181,11 @@ export default function ComercialProductosDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ingresos Pollo Canal 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatCurrencyFull(ingresos2025)}</div>
-          <div className="text-sm text-gray-600 mb-1">pesos colombianos</div>
-          <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {parseFloat(variacionIngresos) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-            {variacionIngresos > 0 ? '+' : ''}{variacionIngresos}% vs 2024
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">{formatCurrencyFull(ingresos2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(ingresos2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(ingresos2025)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionIngresos > 0 ? '+' : ''}{variacionIngresos}%</div>
           </div>
         </motion.div>
 
@@ -202,11 +203,11 @@ export default function ComercialProductosDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Precio Promedio $/kg Canal 2025</span>
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatCurrencyFull(precioProm2025)}/kg</div>
-          <div className="text-sm text-gray-600 mb-1">pesos por kilogramo</div>
-          <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {parseFloat(variacionPrecio) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-            {variacionPrecio > 0 ? '+' : ''}{variacionPrecio}% vs 2024
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">{formatCurrencyFull(precioProm2025)}/kg</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(precioProm2024)}/kg</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(precioProm2025)}/kg</span></div>
+            <div className={`text-sm font-bold ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionPrecio > 0 ? '+' : ''}{variacionPrecio}%</div>
           </div>
         </motion.div>
 
@@ -396,20 +397,7 @@ export default function ComercialProductosDashboard({ data }) {
       {/* Gráficos - Solo 2 gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Gráfico Comparativo */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          onClick={() => openModal(
-            'Comparativa de Ventas por Línea',
-            'Este gráfico muestra la evolución de las ventas en kilos por línea de producto entre 2024 y 2025. Las barras azules representan 2024 y las verdes 2025. Se observa claramente el crecimiento en Mayorista (+6.05%) y Pollo Entero (+4.94%), mientras que Carnes Frías (-88.69%) y Pollo Campesino (-83.26%) presentan fuertes contracciones.'
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Ventas en Kilos por Línea de Producto 2024 vs 2025</h3>
-            <Info className="w-5 h-5 text-blue-400 animate-pulse" />
-          </div>
+        <CollapsibleChart title="Ventas en Kilos por Línea de Producto 2024 vs 2025" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={datosComparativa} layout="vertical" margin={{ left: 120, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -462,23 +450,10 @@ export default function ComercialProductosDashboard({ data }) {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </motion.div>
+        </CollapsibleChart>
 
         {/* Gráfico de Participación */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          onClick={() => openModal(
-            'Participación por Línea 2025',
-            'Este gráfico muestra la participación porcentual de cada línea de producto en el total de ventas 2025. Mayorista domina con 51.24% del volumen total, seguido de Presa (22.53%) y Pollo Entero (19.13%). Estas tres líneas representan el 92.9% del total de ventas.'
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Participación en Ventas por Línea de Producto 2025 (%)</h3>
-            <Info className="w-5 h-5 text-blue-400 animate-pulse" />
-          </div>
+        <CollapsibleChart title="Participación en Ventas por Línea de Producto 2025 (%)" defaultOpen={false}>
           <div className="flex items-center justify-center">
             <ResponsiveContainer width="100%" height={380}>
               <PieChart>
@@ -542,7 +517,7 @@ export default function ComercialProductosDashboard({ data }) {
               </div>
             ))}
           </div>
-        </motion.div>
+        </CollapsibleChart>
       </div>
 
       {/* Modal */}

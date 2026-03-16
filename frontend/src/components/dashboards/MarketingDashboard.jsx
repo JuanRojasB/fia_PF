@@ -38,8 +38,11 @@ export default function MarketingDashboard({ data }) {
             <TrendingUp className="w-5 h-5 text-green-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">17.4%</div>
-          <div className="text-xs text-gray-600">ROI Promedio 2025</div>
-          <div className="text-xs text-gray-500 mt-1">Inversión: $401.7M</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">~20.4%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">17.4%</span></div>
+            <div className="text-sm font-bold text-red-600">Var: -3,0pp</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -54,8 +57,11 @@ export default function MarketingDashboard({ data }) {
             <Target className="w-5 h-5 text-orange-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">82%</div>
-          <div className="text-xs text-gray-600">Efectividad Lograda</div>
-          <div className="text-xs text-red-400 mt-1">Meta: 95% (-13pts)</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">Meta: <span className="font-semibold text-gray-700">95%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">82%</span></div>
+            <div className="text-sm font-bold text-red-600">Var: -13pp vs meta</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -70,8 +76,11 @@ export default function MarketingDashboard({ data }) {
             <DollarSign className="w-5 h-5 text-blue-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">83.7%</div>
-          <div className="text-xs text-gray-600">$401.7M de $480M</div>
-          <div className="text-xs text-blue-400 mt-1">Ahorro: $78.3M</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">Presupuesto: <span className="font-semibold text-gray-700">$480M</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">$401.7M ejecutado</span></div>
+            <div className="text-sm font-bold text-blue-600">Ahorro: $78.3M</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -86,8 +95,11 @@ export default function MarketingDashboard({ data }) {
             <Zap className="w-5 h-5 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">CTR 2.7%</div>
-          <div className="text-xs text-gray-600">Costo por Clic: $248</div>
-          <div className="text-xs text-green-400 mt-1">Seguidores: +154%</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">Meta CTR: <span className="font-semibold text-gray-700">3.0%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">CTR 2.7% / CPC $248</span></div>
+            <div className="text-sm font-bold text-green-600">Seguidores: +154%</div>
+          </div>
         </motion.div>
       </div>
 

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart } from 'recharts';
 import { CheckCircle, AlertTriangle, FileText, TrendingDown, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 import { CustomPctTooltip } from './CustomTooltip';
 
 export default function AuditoriaDashboard({ data }) {
@@ -93,7 +94,7 @@ export default function AuditoriaDashboard({ data }) {
           <h2 className="text-3xl font-bold text-gray-900">AUDITORÍA INTERNA Y CONTROL INTERNO 2025</h2>
         </div>
         <p className="text-gray-700 leading-relaxed">
-          Durante 2025, el área ejecutó auditorías mensuales a los procesos misionales de la compañía: Logística, Producción y Comercial (12 auditorías cada uno), así como a Puntos de Venta (12 auditorías por punto). Las auditorías evaluaron la correcta aplicación de controles para mitigar riesgos e impacto en inventarios, merma y eficiencia operativa. Como resultado, se realizaron alertas preventivas diarias y semanales a las áreas involucradas, contribuyendo a los objetivos estratégicos y a la mejora continua.
+          Durante 2025, el área ejecutó auditorías a 4 procesos: Posproceso, Logística y Comercial con seguimiento diario e informe mensual (12 informes/año cada uno), y Puntos de Venta con dos esquemas: PDV Yopal (4 auditorías/año a 6 PDV = 24) y PDV Bogotá, Tunja y Sogamoso (17 auditorías/año a 17 PDV = 289). Total PDV: 313 auditorías. Total general: 349 auditorías/informes ejecutados en 2025.
         </p>
       </motion.div>
 
@@ -103,8 +104,8 @@ export default function AuditoriaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
-            'Total de Auditorías Ejecutadas',
-            `Durante 2025 se ejecutaron auditorías mensuales a los procesos misionales: Logística, Producción y Comercial (12 auditorías cada uno), y a Puntos de Venta (12 auditorías por punto). Las auditorías se realizaron con base en los controles implementados por cada área, evaluando su correcta aplicación y gestión para mitigar riesgos y su impacto en la gestión de inventarios, la merma y la eficiencia operativa.`
+            'Total Auditorías / Informes Ejecutados 2025',
+            `Total general 2025: 349 auditorías e informes ejecutados.\n\n• Posproceso: auditorías diarias → 12 informes mensuales al año\n• Logística: auditorías diarias → 12 informes mensuales al año\n• Comercial: auditorías diarias → 12 informes mensuales al año\n• PDV Yopal: 4 auditorías/año × 6 PDV = 24 auditorías\n• PDV Bogotá (15 PDV), Tunja (1 PDV) y Sogamoso (1 PDV): 17 auditorías/año × 17 PDV = 289 auditorías\n\nTotal PDV: 313 | Total procesos misionales: 36 | Gran total: 349`
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
@@ -112,9 +113,9 @@ export default function AuditoriaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total Auditorías Ejecutadas 2025</span>
             <FileText className="w-5 h-5 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">12</div>
-          <div className="text-sm text-gray-600 mt-1">auditorías por proceso misional</div>
-          <div className="text-xs text-blue-600 mt-2">Logística · Producción · Comercial · PDV</div>
+          <div className="text-3xl font-bold text-gray-900">349</div>
+          <div className="text-sm text-gray-600 mt-1">auditorías e informes totales</div>
+          <div className="text-xs text-blue-600 mt-2">PDV: 313 · Procesos: 36</div>
         </motion.div>
 
         <motion.div
@@ -132,8 +133,11 @@ export default function AuditoriaDashboard({ data }) {
             <TrendingDown className="w-5 h-5 text-green-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%</div>
-          <div className="text-sm text-gray-600 mt-1">porcentaje promedio</div>
-          <div className="text-xs text-gray-600 mt-2">{totales.sedesEvaluadas} sedes evaluadas</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{variacionDevoluciones ? variacionDevoluciones.pct_2024 : '2,54'}%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{variacionDevoluciones ? variacionDevoluciones.pct_2025 : totales.promedioDevolucionGeneral}%</span></div>
+            <div className="text-sm font-bold text-green-600">Var: {variacionDevoluciones ? variacionDevoluciones.variacion_puntos_porcentuales : '-0,28'}pp</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -157,9 +161,12 @@ export default function AuditoriaDashboard({ data }) {
           <div className={`text-3xl font-bold ${totales.variacion2025vs2024 < 0 ? 'text-green-600' : 'text-red-600'}`}>
             {totales.variacion2025vs2024 < 0 ? '↓' : '↑'} {Math.abs(totales.variacion2025vs2024)}pp
           </div>
-          <div className="text-sm text-gray-600 mt-1">puntos porcentuales</div>
-          <div className={`text-xs font-medium mt-2 ${totales.variacion2025vs2024 < 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {totales.variacion2025vs2024 < 0 ? '✓ Mejora continua' : '⚠ Requiere atención'}
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{variacionDevoluciones ? variacionDevoluciones.pct_2024 : '2,54'}%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{variacionDevoluciones ? variacionDevoluciones.pct_2025 : '2,26'}%</span></div>
+            <div className={`text-sm font-bold ${totales.variacion2025vs2024 < 0 ? 'text-green-600' : 'text-red-600'}`}>
+              Var: {totales.variacion2025vs2024 < 0 ? '' : '+'}{totales.variacion2025vs2024}pp
+            </div>
           </div>
         </motion.div>
 
@@ -185,20 +192,7 @@ export default function AuditoriaDashboard({ data }) {
 
       {/* Gráfico de Devoluciones Mensuales */}
       {datosDevolucionesMes.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          onClick={() => openModal(
-            'Devoluciones Mensuales por Sede',
-            'Este gráfico muestra la evolución mensual del porcentaje de devoluciones por sede durante 2025. El indicador se calcula como los kilos devueltos sobre la venta bruta. Al cierre de 2025: Sede 1: 2,85% — Sede 2: 1,61% — Sede 3: 2,31%. El promedio de la compañía es 2,26%, una mejora de 0,28 p.p. frente al 2,54% de 2024.'
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Devoluciones Mensuales por Sede (%)</h3>
-            <Info className="w-5 h-5 text-blue-400 animate-pulse" />
-          </div>
+        <CollapsibleChart title="Devoluciones Mensuales por Sede (%)" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={400}>
             <ComposedChart data={datosDevolucionesMes}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -212,7 +206,7 @@ export default function AuditoriaDashboard({ data }) {
               <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Cía." />
             </ComposedChart>
           </ResponsiveContainer>
-        </motion.div>
+        </CollapsibleChart>
       )}
 
       {/* Devoluciones por Sede 2025 */}
@@ -288,37 +282,85 @@ export default function AuditoriaDashboard({ data }) {
       <CollapsibleTable 
         title="Auditorías Ejecutadas 2025 — Resumen por Proceso"
         defaultOpen={false}
+        totalRow={[
+          { label: 'TOTAL 2025' },
+          { label: '349 auditorías / informes', color: 'text-blue-600' },
+          { label: '4 procesos auditados', color: 'text-gray-500' },
+        ]}
       >
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-300">
-                <th className="text-left py-3 px-4 text-gray-700">Proceso / Área</th>
-                <th className="text-left py-3 px-4 text-gray-700">Tipo</th>
-                <th className="text-center py-3 px-4 text-gray-700">Auditorías ejecutadas</th>
-                <th className="text-left py-3 px-4 text-gray-700">Frecuencia</th>
-                <th className="text-left py-3 px-4 text-gray-700">Estado</th>
+              <tr className="bg-gradient-to-r from-blue-500 to-indigo-600">
+                <th className="text-left py-3 px-4 text-white font-bold">Proceso / Área</th>
+                <th className="text-left py-3 px-4 text-white font-bold">Tipo</th>
+                <th className="text-center py-3 px-4 text-white font-bold">Frecuencia</th>
+                <th className="text-center py-3 px-4 text-white font-bold">Unidades</th>
+                <th className="text-center py-3 px-4 text-white font-bold">Total Auditorías</th>
+                <th className="text-left py-3 px-4 text-white font-bold">Estado</th>
               </tr>
             </thead>
             <tbody>
-              {[
-                { proceso: 'Logística', tipo: 'Proceso Misional' },
-                { proceso: 'Producción', tipo: 'Proceso Misional' },
-                { proceso: 'Comercial', tipo: 'Proceso Misional' },
-                { proceso: 'Puntos de Venta', tipo: 'Punto de Venta' },
-              ].map((row, idx) => (
-                <tr key={idx} className="border-b border-gray-200/50 hover:bg-gray-100/30">
-                  <td className="py-3 px-4 text-gray-900 font-medium">{row.proceso}</td>
-                  <td className="py-3 px-4 text-blue-500">{row.tipo}</td>
-                  <td className="py-3 px-4 text-center font-bold text-gray-900">12</td>
-                  <td className="py-3 px-4 text-gray-600">Mensual</td>
-                  <td className="py-3 px-4">
-                    <span className="px-2 py-1 rounded text-xs bg-green-500/20 text-green-600">Completadas</span>
-                  </td>
-                </tr>
-              ))}
+              <tr className="border-b border-gray-200 hover:bg-blue-50 transition-colors">
+                <td className="py-3 px-4 text-gray-900 font-semibold">Posproceso</td>
+                <td className="py-3 px-4 text-blue-600">Proceso Misional</td>
+                <td className="py-3 px-4 text-center text-gray-700">Diaria → informe mensual</td>
+                <td className="py-3 px-4 text-center text-gray-600">1 proceso</td>
+                <td className="py-3 px-4 text-center font-bold text-gray-900">12</td>
+                <td className="py-3 px-4"><span className="px-2 py-1 rounded text-xs bg-green-100 text-green-700 font-medium">Completadas</span></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-blue-50 transition-colors">
+                <td className="py-3 px-4 text-gray-900 font-semibold">Logística</td>
+                <td className="py-3 px-4 text-blue-600">Proceso Misional</td>
+                <td className="py-3 px-4 text-center text-gray-700">Diaria → informe mensual</td>
+                <td className="py-3 px-4 text-center text-gray-600">1 proceso</td>
+                <td className="py-3 px-4 text-center font-bold text-gray-900">12</td>
+                <td className="py-3 px-4"><span className="px-2 py-1 rounded text-xs bg-green-100 text-green-700 font-medium">Completadas</span></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-blue-50 transition-colors">
+                <td className="py-3 px-4 text-gray-900 font-semibold">Comercial</td>
+                <td className="py-3 px-4 text-blue-600">Proceso Misional</td>
+                <td className="py-3 px-4 text-center text-gray-700">Diaria → informe mensual</td>
+                <td className="py-3 px-4 text-center text-gray-600">1 proceso</td>
+                <td className="py-3 px-4 text-center font-bold text-gray-900">12</td>
+                <td className="py-3 px-4"><span className="px-2 py-1 rounded text-xs bg-green-100 text-green-700 font-medium">Completadas</span></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-indigo-50 transition-colors bg-indigo-50/30">
+                <td className="py-3 px-4 text-gray-900 font-semibold">PDV Yopal</td>
+                <td className="py-3 px-4 text-indigo-600">Punto de Venta</td>
+                <td className="py-3 px-4 text-center text-gray-700">4 auditorías/año por PDV</td>
+                <td className="py-3 px-4 text-center text-gray-600">6 PDV</td>
+                <td className="py-3 px-4 text-center font-bold text-indigo-700">24</td>
+                <td className="py-3 px-4"><span className="px-2 py-1 rounded text-xs bg-green-100 text-green-700 font-medium">Completadas</span></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-indigo-50 transition-colors bg-indigo-50/30">
+                <td className="py-3 px-4 text-gray-900 font-semibold">
+                  PDV Bogotá, Tunja y Sogamoso
+                  <div className="text-xs text-gray-500 font-normal mt-0.5">Bogotá: 15 PDV · Tunja: 1 PDV · Sogamoso: 1 PDV</div>
+                </td>
+                <td className="py-3 px-4 text-indigo-600">Punto de Venta</td>
+                <td className="py-3 px-4 text-center text-gray-700">17 auditorías/año por PDV</td>
+                <td className="py-3 px-4 text-center text-gray-600">17 PDV</td>
+                <td className="py-3 px-4 text-center font-bold text-indigo-700">289</td>
+                <td className="py-3 px-4"><span className="px-2 py-1 rounded text-xs bg-green-100 text-green-700 font-medium">Completadas</span></td>
+              </tr>
+              <tr className="bg-indigo-100 border-t-2 border-indigo-400 font-bold">
+                <td className="py-3 px-4 text-indigo-900" colSpan={4}>Subtotal PDV</td>
+                <td className="py-3 px-4 text-center text-indigo-900">313</td>
+                <td className="py-3 px-4"></td>
+              </tr>
+              <tr className="bg-blue-100 border-t-2 border-blue-500 font-bold">
+                <td className="py-3 px-4 text-blue-900" colSpan={4}>TOTAL GENERAL 2025</td>
+                <td className="py-3 px-4 text-center text-blue-900 text-lg">349</td>
+                <td className="py-3 px-4"></td>
+              </tr>
             </tbody>
           </table>
+        </div>
+        <div className="mt-4 bg-blue-50 rounded-lg p-4 border border-blue-200">
+          <p className="text-sm text-gray-700">
+            <span className="font-semibold text-gray-900">Nota metodológica:</span> Posproceso, Logística y Comercial realizan seguimiento diario con consolidación en informe mensual (12 informes/año). Los PDV de Yopal tienen menor frecuencia (4/año) por su ubicación geográfica. Los PDV de Bogotá (15), Tunja (1) y Sogamoso (1) — 17 PDV en total — tienen mayor intensidad de control (17 auditorías/año cada uno).
+          </p>
         </div>
       </CollapsibleTable>
 

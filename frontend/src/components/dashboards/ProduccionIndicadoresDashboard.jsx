@@ -81,11 +81,11 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 const anterior = zootecniaPollo[1] || {};
 
                 const cards = [
-                  { label: 'Conversión Alimenticia 2025', value: formatDecimal(conversionPollo), val2025: conversionPollo, val2024: parseFloat(anterior.conversion)||0, decimals: 2, suffix: '', sub: 'kg alimento/kg carne', icon: <Target className="w-5 h-5 text-cyan-400" />, border: 'border-cyan-500/30 hover:border-cyan-500', varKey: 'conversion', invertir: true, modal: { title: 'Conversión Alimenticia', desc: `Actual 2025: ${formatDecimal(conversionPollo)} kg alimento/kg carne\nAnterior 2024: ${formatDecimal(anterior.conversion)} kg alimento/kg carne\n\nMide cuántos kg de alimento se necesitan para producir 1 kg de carne. Un valor MENOR es mejor — significa que el ave aprovecha más eficientemente el alimento.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, al contrario del estándar financiero.` } },
-                  { label: 'Mortalidad 2025', value: `${formatDecimal(mortalidadPollo)}%`, val2025: mortalidadPollo, val2024: parseFloat(anterior.mortalidad_pct)||0, decimals: 2, suffix: '%', sub: 'Tasa de mortalidad', icon: <AlertTriangle className="w-5 h-5 text-red-400" />, border: 'border-red-500/30 hover:border-red-500', varKey: 'mortalidad_pct', invertir: true, modal: { title: 'Mortalidad Pollo', desc: `Actual 2025: ${formatDecimal(mortalidadPollo)}%\nAnterior 2024: ${formatDecimal(anterior.mortalidad_pct)}%\n\nRepresenta el porcentaje de aves que mueren durante el ciclo de engorde. Un valor MENOR es mejor — indica buena bioseguridad, manejo sanitario y condiciones de bienestar animal.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, aunque el número sea negativo.` } },
-                  { label: 'Peso Promedio 2025', value: formatDecimal(pesoPromedioPollo, 2), val2025: pesoPromedioPollo, val2024: parseFloat(anterior.peso_promedio)||0, decimals: 2, suffix: ' kg', sub: 'kg por ave', icon: <Award className="w-5 h-5 text-yellow-400" />, border: 'border-yellow-500/30 hover:border-yellow-500', varKey: 'peso_promedio', invertir: false, modal: { title: 'Peso Promedio al Sacrificio', desc: `Actual 2025: ${formatDecimal(pesoPromedioPollo, 3)} kg\nAnterior 2024: ${formatDecimal(anterior.peso_promedio, 3)} kg\n\nPeso promedio del ave al momento del sacrificio. Un valor MAYOR es mejor — más peso por ave significa mayor rendimiento en canal y mejor aprovechamiento del ciclo productivo.\n\nPor eso sigue el estándar normal: VERDE cuando sube, ROJO cuando baja.` } },
-                  { label: 'Días de Engorde 2025', value: formatDecimal(diasEngordePollo), val2025: diasEngordePollo, val2024: parseFloat(anterior.dias_promedio_engorde)||0, decimals: 2, suffix: ' días', sub: 'días promedio', icon: <TrendingUp className="w-5 h-5 text-orange-400" />, border: 'border-orange-500/30 hover:border-orange-500', varKey: 'dias_promedio_engorde', invertir: true, modal: { title: 'Días de Engorde', desc: `Actual 2025: ${formatDecimal(diasEngordePollo)} días\nAnterior 2024: ${formatDecimal(anterior.dias_promedio_engorde)} días\n\nDías promedio que tarda el ave en alcanzar el peso de sacrificio. Un valor MENOR es mejor — ciclos más cortos reducen costos de alimento, mano de obra y rotación de galpones.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, al contrario del estándar financiero.` } },
-                  { label: 'Índice Productivo (IP) 2025', value: formatDecimal(efiAlimPollo), val2025: efiAlimPollo, val2024: parseFloat(anterior.efi_alim_ip)||0, decimals: 2, suffix: '', sub: 'IP (Eficiencia)', icon: <Zap className="w-5 h-5 text-purple-400" />, border: 'border-purple-500/30 hover:border-purple-500', varKey: 'efi_alim_ip', invertir: false, modal: { title: 'Índice Productivo (IP)', desc: `Actual 2025: ${formatDecimal(efiAlimPollo)}\nAnterior 2024: ${formatDecimal(anterior.efi_alim_ip)}\n\nIndicador compuesto que integra peso promedio, conversión alimenticia, mortalidad y días de engorde en una sola cifra de eficiencia global. Un valor MAYOR es mejor — refleja que la operación es más eficiente en todos los frentes simultáneamente.\n\nSigue el estándar normal: VERDE cuando sube, ROJO cuando baja.` } },
+                  { label: 'Conversión Alimenticia 2025', value: formatDecimal(conversionPollo, 3), val2025: conversionPollo, val2024: parseFloat(anterior.conversion)||0, decimals: 3, suffix: '', sub: 'kg alimento/kg carne', icon: <Target className="w-5 h-5 text-cyan-400" />, border: 'border-cyan-500/30 hover:border-cyan-500', varKey: 'conversion', invertir: true, modal: { title: 'Conversión Alimenticia', desc: `Actual 2025: ${formatDecimal(conversionPollo, 3)} kg alimento/kg carne\nAnterior 2024: ${formatDecimal(anterior.conversion, 3)} kg alimento/kg carne\n\nMide cuántos kg de alimento se necesitan para producir 1 kg de carne. Un valor MENOR es mejor — significa que el ave aprovecha más eficientemente el alimento.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, al contrario del estándar financiero.` } },
+                  { label: 'Mortalidad 2025', value: `${formatDecimal(mortalidadPollo, 3)}%`, val2025: mortalidadPollo, val2024: parseFloat(anterior.mortalidad_pct)||0, decimals: 3, suffix: '%', sub: 'Tasa de mortalidad', icon: <AlertTriangle className="w-5 h-5 text-red-400" />, border: 'border-red-500/30 hover:border-red-500', varKey: 'mortalidad_pct', invertir: true, modal: { title: 'Mortalidad Pollo', desc: `Actual 2025: ${formatDecimal(mortalidadPollo, 3)}%\nAnterior 2024: ${formatDecimal(anterior.mortalidad_pct, 3)}%\n\nRepresenta el porcentaje de aves que mueren durante el ciclo de engorde. Un valor MENOR es mejor — indica buena bioseguridad, manejo sanitario y condiciones de bienestar animal.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, aunque el número sea negativo.` } },
+                  { label: 'Peso Promedio 2025', value: formatDecimal(pesoPromedioPollo, 3), val2025: pesoPromedioPollo, val2024: parseFloat(anterior.peso_promedio)||0, decimals: 3, suffix: ' kg', sub: 'kg por ave', icon: <Award className="w-5 h-5 text-yellow-400" />, border: 'border-yellow-500/30 hover:border-yellow-500', varKey: 'peso_promedio', invertir: false, modal: { title: 'Peso Promedio al Sacrificio', desc: `Actual 2025: ${formatDecimal(pesoPromedioPollo, 3)} kg\nAnterior 2024: ${formatDecimal(anterior.peso_promedio, 3)} kg\n\nPeso promedio del ave al momento del sacrificio. Un valor MAYOR es mejor — más peso por ave significa mayor rendimiento en canal y mejor aprovechamiento del ciclo productivo.\n\nPor eso sigue el estándar normal: VERDE cuando sube, ROJO cuando baja.` } },
+                  { label: 'Días de Engorde 2025', value: formatDecimal(diasEngordePollo, 3), val2025: diasEngordePollo, val2024: parseFloat(anterior.dias_promedio_engorde)||0, decimals: 3, suffix: ' días', sub: 'días promedio', icon: <TrendingUp className="w-5 h-5 text-orange-400" />, border: 'border-orange-500/30 hover:border-orange-500', varKey: 'dias_promedio_engorde', invertir: true, modal: { title: 'Días de Engorde', desc: `Actual 2025: ${formatDecimal(diasEngordePollo, 3)} días\nAnterior 2024: ${formatDecimal(anterior.dias_promedio_engorde, 3)} días\n\nDías promedio que tarda el ave en alcanzar el peso de sacrificio. Un valor MENOR es mejor — ciclos más cortos reducen costos de alimento, mano de obra y rotación de galpones.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, al contrario del estándar financiero.` } },
+                  { label: 'Índice Productivo (IP) 2025', value: formatDecimal(efiAlimPollo, 3), val2025: efiAlimPollo, val2024: parseFloat(anterior.efi_alim_ip)||0, decimals: 3, suffix: '', sub: 'IP (Eficiencia)', icon: <Zap className="w-5 h-5 text-purple-400" />, border: 'border-purple-500/30 hover:border-purple-500', varKey: 'efi_alim_ip', invertir: false, modal: { title: 'Índice Productivo (IP)', desc: `Actual 2025: ${formatDecimal(efiAlimPollo, 3)}\nAnterior 2024: ${formatDecimal(anterior.efi_alim_ip, 3)}\n\nIndicador compuesto que integra peso promedio, conversión alimenticia, mortalidad y días de engorde en una sola cifra de eficiencia global. Un valor MAYOR es mejor — refleja que la operación es más eficiente en todos los frentes simultáneamente.\n\nSigue el estándar normal: VERDE cuando sube, ROJO cuando baja.` } },
                 ];
 
                 return cards.map((c, i) => {
@@ -107,8 +107,8 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                       <div className="text-3xl font-bold text-gray-900">{c.value}</div>
                       <div className="text-sm text-gray-600 mt-1">{c.sub}</div>
                       <div className="mt-3 pt-3 border-t border-gray-200 text-xs space-y-0.5">
-                        <div className="text-gray-500">2024: <span className="font-semibold text-gray-700">{formatDecimal(c.val2024)}{c.suffix}</span></div>
-                        <div className="text-gray-500">2025: <span className="font-semibold text-gray-700">{formatDecimal(c.val2025)}{c.suffix}</span></div>
+                        <div className="text-gray-500">2024: <span className="font-semibold text-gray-700">{formatDecimal(c.val2024, c.decimals)}{c.suffix}</span></div>
+                        <div className="text-gray-500">2025: <span className="font-semibold text-gray-700">{formatDecimal(c.val2025, c.decimals)}{c.suffix}</span></div>
                         <div className={`font-bold ${esBueno ? 'text-green-500' : 'text-red-500'}`}>
                           Var: {vr >= 0 ? '+' : ''}{formatDecimal(vr)}%
                         </div>
@@ -124,7 +124,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
           {zootecniaPollo.length >= 2 && (
             <CollapsibleTable 
               title="COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS AVES 2025-2024"
-              defaultOpen={true}
+              defaultOpen={false}
               totalRow={[
                 { label: 'Indicadores Clave 2025' },
                 { label: `Conversión: ${formatDecimal(conversionPollo)}`, color: conversionPollo <= 1.8 ? 'text-green-500' : 'text-orange-500' },
@@ -339,169 +339,8 @@ export default function ProduccionIndicadoresDashboard({ data }) {
               </div>
             </CollapsibleTable>
           )}
-
-          {/* Gráficos Comparativos de Pollo */}
-          <div className="grid grid-cols-1 gap-6">
-            {/* Gráfica 1: Tendencia indicadores zootécnicos históricos */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-cyan-500 transition-all cursor-pointer"
-              onClick={() => openModal(
-                'Tendencia Indicadores Zootécnicos',
-                'Evolución histórica de mortalidad %, peso promedio e índice productivo (IP). Permite identificar tendencias de mejora o deterioro en el desempeño de las granjas a lo largo del tiempo.'
-              )}
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-1">Tendencia Indicadores Zootécnicos — Histórico</h3>
-              <p className="text-sm text-gray-500 mb-4">Mortalidad % · Peso promedio (kg) · IP (Eficiencia)</p>
-              {(() => {
-                const d2024 = datosPolloChart.find(d => d.anio === 2024);
-                const d2025 = datosPolloChart.find(d => d.anio === 2025);
-                const varMort = d2024?.mortalidad > 0 ? (((d2025?.mortalidad - d2024?.mortalidad) / d2024.mortalidad) * 100).toFixed(1) : 0;
-                const varPeso = d2024?.peso > 0 ? (((d2025?.peso - d2024?.peso) / d2024.peso) * 100).toFixed(1) : 0;
-                const varIP = d2024?.efiAlim > 0 ? (((d2025?.efiAlim - d2024?.efiAlim) / d2024.efiAlim) * 100).toFixed(1) : 0;
-                return (
-                  <>
-                    <ResponsiveContainer width="100%" height={320}>
-                      <ComposedChart data={datosPolloChart} margin={{ top: 10, right: 30, left: 10, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                        <XAxis dataKey="anio" stroke="#6b7280" tick={{ fontSize: 12 }} />
-                        <YAxis yAxisId="left" stroke="#ef4444" width={45} tick={{ fontSize: 11 }} label={{ value: 'Mort %', angle: -90, position: 'insideLeft', fill: '#ef4444', fontSize: 11 }} />
-                        <YAxis yAxisId="right" orientation="right" stroke="#8b5cf6" width={50} tick={{ fontSize: 11 }} label={{ value: 'IP', angle: 90, position: 'insideRight', fill: '#8b5cf6', fontSize: 11 }} />
-                        <Tooltip
-                          contentStyle={{ backgroundColor: 'white', border: '2px solid #e5e7eb', borderRadius: '10px', padding: '10px' }}
-                          formatter={(v, name) => {
-                            if (name === 'Mortalidad %') return [`${formatDecimal(v)}%`, name];
-                            if (name === 'Peso (kg)') return [`${formatDecimal(v, 3)} kg`, name];
-                            if (name === 'IP') return [formatDecimal(v), name];
-                            return [v, name];
-                          }}
-                        />
-                        <Legend />
-                        <Bar yAxisId="left" dataKey="mortalidad" name="Mortalidad %" fill="#fca5a5" radius={[4, 4, 0, 0]} opacity={0.8} />
-                        <Line yAxisId="left" type="monotone" dataKey="peso" name="Peso (kg)" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 5, fill: '#f59e0b' }} />
-                        <Line yAxisId="right" type="monotone" dataKey="efiAlim" name="IP" stroke="#8b5cf6" strokeWidth={2.5} dot={{ r: 5, fill: '#8b5cf6' }} />
-                      </ComposedChart>
-                    </ResponsiveContainer>
-                    <div className="mt-4 grid grid-cols-3 gap-3">
-                      {[
-                        { label: 'Mortalidad', vr: varMort, invertir: true, color: '#ef4444' },
-                        { label: 'Peso promedio', vr: varPeso, invertir: false, color: '#f59e0b' },
-                        { label: 'IP (Eficiencia)', vr: varIP, invertir: false, color: '#8b5cf6' },
-                      ].map((item, i) => {
-                        const esBueno = item.invertir ? parseFloat(item.vr) <= 0 : parseFloat(item.vr) >= 0;
-                        return (
-                          <div key={i} className="bg-gray-50 rounded-lg p-3 text-center">
-                            <div className="text-xs mb-1 font-semibold" style={{ color: item.color }}>{item.label}</div>
-                            <div className={`text-sm font-bold ${esBueno ? 'text-green-600' : 'text-red-600'}`}>
-                              {parseFloat(item.vr) >= 0 ? '+' : ''}{item.vr}% vs 2024
-                            </div>
-                            <div className={`text-xs mt-0.5 ${esBueno ? 'text-green-500' : 'text-red-500'}`}>
-                              {esBueno ? '↑ mejora' : '↓ desmejora'}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </>
-                );
-              })()}
-            </motion.div>
-
-            {/* Gráfica 2: Pollo Procesado 2024 vs 2025 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-green-500 transition-all cursor-pointer"
-              onClick={() => openModal(
-                'Volumen de Producción',
-                'Número total de pollos procesados (sacrificados) por año. Este indicador muestra el crecimiento o reducción de la operación. Mayor volumen procesado indica expansión del negocio.'
-              )}
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-1">Pollo Procesado en Planta de Beneficio — 2024 vs 2025</h3>
-              <p className="text-sm text-gray-500 mb-6">Unidades totales procesadas</p>
-              {(() => {
-                const d2024 = datosPolloChart.find(d => d.anio === 2024);
-                const d2025 = datosPolloChart.find(d => d.anio === 2025);
-                const chartData = [
-                  { label: '2024', value: d2024?.procesado || 0 },
-                  { label: '2025', value: d2025?.procesado || 0 },
-                ];
-                const dif = d2025 && d2024 ? (d2025.procesado - d2024.procesado) : 0;
-                const varPct = d2024?.procesado > 0 ? ((dif / d2024.procesado) * 100).toFixed(1) : 0;
-                return (
-                  <>
-                    <ResponsiveContainer width="100%" height={280}>
-                      <BarChart data={chartData} margin={{ top: 30, right: 30, left: 10, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                        <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 14, fontWeight: 'bold' }} />
-                        <YAxis stroke="#6b7280" tickFormatter={(v) => formatNumber(v)} width={80} />
-                        <Tooltip formatter={(v) => [formatNumber(v), 'Procesado']} />
-                        <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-                          {chartData.map((entry, i) => <Cell key={i} fill={i === 0 ? '#3b82f6' : '#10b981'} />)}
-                          <LabelList dataKey="value" position="top" style={{ fontSize: '13px', fontWeight: 'bold', fill: '#111827' }} formatter={(v) => formatNumber(v)} />
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                    <div className="mt-3 flex justify-center">
-                      <span className={`text-sm font-bold px-3 py-1 rounded-full ${dif >= 0 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
-                        Variación: {dif >= 0 ? '+' : ''}{formatNumber(dif)} ({dif >= 0 ? '+' : ''}{varPct}%)
-                      </span>
-                    </div>
-                  </>
-                );
-              })()}
-            </motion.div>
-          </div>
         </>
       )}
-
-      {/* Modal de Explicación */}
-      {createPortal(
-      <AnimatePresence>
-        {modalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-            onClick={() => setModalOpen(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-cyan-400" />
-                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
-                </div>
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
-              </div>
-              <div className="mt-6 flex justify-end">
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                >
-                  Entendido
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>, document.body)}
     </div>
   );
 }

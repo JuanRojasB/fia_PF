@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Truck, TrendingUp, Users, X, Info, DollarSign } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import { formatCurrencyFull } from './CustomTooltip';
+import CollapsibleChart from '../CollapsibleChart';
 
 export default function LogisticaSede3Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -114,29 +115,11 @@ export default function LogisticaSede3Dashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos Sede 3 2025</span>
             <DollarSign className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrencyFull(total2025)}</div>
-          <div className={`text-xs ${parseFloat(variacionTotal) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-            {variacionTotal > 0 ? '+' : ''}{variacionTotal}% vs 2024
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          onClick={() => openModal(
-            'Variación Anual',
-            `La variación anual de ${formatCurrency(Math.abs(total2025 - total2024))} representa una reducción del ${Math.abs(variacionTotal)}% en los gastos operacionales logísticos de Sede 3. Esta optimización se logró principalmente mediante la reducción del túnel de congelación (-71.95%) y una gestión eficiente de recursos, manteniendo un crecimiento en ventas del 0.93%.`
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-violet-500/30 hover:border-violet-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Variación Gastos Sede 3 2025 vs 2024</span>
-            <TrendingUp className="w-6 h-6 text-violet-400" />
-          </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrencyFull(Math.abs(total2025 - total2024))}</div>
-          <div className={`text-xs ${parseFloat(variacionTotal) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-            {parseFloat(variacionTotal) >= 0 ? 'Incremento' : 'Reducción'}
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">{formatCurrencyFull(total2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2025)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(variacionTotal) >= 0 ? '+' : ''}{variacionTotal}%</div>
           </div>
         </motion.div>
 
@@ -260,21 +243,7 @@ export default function LogisticaSede3Dashboard({ data }) {
       </CollapsibleTable>
 
       {/* Gráfico */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        onClick={() => openModal(
-          'Detalle de Gastos Sede 3',
-          `Análisis detallado de gastos operacionales logísticos Sede 3 para 2024 vs 2025. La reducción del ${variacionTotal}% se logró mediante la optimización del túnel de congelación (-71.95%) y una gestión eficiente de recursos, manteniendo un crecimiento en ventas del 0.93% para atender clientes institucionales.`,
-          true
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Gastos Logísticos Sede 3 (U03) 2024 vs 2025</h3>
-          <Info className="w-5 h-5 text-purple-400 animate-pulse" />
-        </div>
+      <CollapsibleChart title="Gastos Logísticos Sede 3 (U03) 2024 vs 2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={conceptosArray} layout="vertical" margin={{ left: 180, right: 30 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -327,7 +296,7 @@ export default function LogisticaSede3Dashboard({ data }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Modal */}
       {createPortal(

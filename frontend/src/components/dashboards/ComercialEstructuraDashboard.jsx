@@ -4,6 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 
 export default function ComercialEstructuraDashboard({ data }) {
   const [showEquipoModal, setShowEquipoModal] = useState(false);
@@ -83,7 +84,7 @@ export default function ComercialEstructuraDashboard({ data }) {
         <div 
           className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
           onClick={() => openModal(
-            'Sede Líder en Procesamiento 2025',
+            'Sede U03 y Sede U01 en Procesamiento 2025',
             `Sede ${u03_2025?.asignacion.replace('Sede ', '') || 'U03'} lidera el procesamiento con ${formatNumber(u03_2025?.unidades2025 || 0)} unidades (${u03_2025?.participacion2025.toFixed(1) || 0}% del total). Experimentó un crecimiento de +${u03_2025?.variacionPct.toFixed(1) || 0}% respecto a 2024, consolidándose como el centro principal de selección y despacho tras la reorganización estratégica implementada este año.`
           )}
         >
@@ -92,7 +93,7 @@ export default function ComercialEstructuraDashboard({ data }) {
             <Info className="w-5 h-5 opacity-60 hover:opacity-100" />
           </div>
           <div className="text-4xl font-bold mb-2">{u03_2025?.participacion2025.toFixed(1) || 0}%</div>
-          <div className="text-sm opacity-90">Participación Sede Líder</div>
+          <div className="text-sm opacity-90">Participación Sedes UO1 y UO3</div>
           <div className="text-xs opacity-75 mt-2">
             {u03_2025?.asignacion.replace('Sede ', '') || 'U03'} • {formatNumber(u03_2025?.unidades2025 || 0)} unidades
           </div>
@@ -157,28 +158,15 @@ export default function ComercialEstructuraDashboard({ data }) {
                 return (<tr key={idx} className="border-b border-gray-200 hover:bg-blue-50 transition-colors"><td className="py-3 px-4 text-gray-900 font-semibold">{row.asignacion}</td><td className="py-3 px-4 text-right text-blue-600 font-bold">{formatNumber(row.unidades2025)}</td><td className="py-3 px-4 text-right text-blue-700 font-semibold">{row.participacion2025.toFixed(2)}%</td><td className="py-3 px-4 text-right text-gray-600">{formatNumber(row.unidades2024)}</td><td className="py-3 px-4 text-right text-gray-600">{row.participacion2024.toFixed(2)}%</td><td className="py-3 px-4 text-right text-gray-900 font-semibold">{formatNumber(row.variacion)}</td><td className="py-3 px-4 text-right"><span className={`inline-flex items-center gap-1 font-bold ${colorVariacion}`}>{iconoVariacion} {Math.abs(row.variacionPct).toFixed(2)}%</span></td></tr>);
               })}
               <tr className="bg-blue-50 border-t-2 border-blue-400 font-bold"><td className="py-3 px-4 text-blue-900">Total</td><td className="py-3 px-4 text-right text-blue-900">{formatNumber(total2025)}</td><td className="py-3 px-4 text-right text-blue-900">100.00%</td><td className="py-3 px-4 text-right text-blue-900">{formatNumber(total2024)}</td><td className="py-3 px-4 text-right text-blue-900">100.00%</td><td className="py-3 px-4 text-right text-blue-900">{formatNumber(total2025 - total2024)}</td><td className="py-3 px-4 text-right text-blue-900">{total2024 > 0 ? (((total2025 - total2024) / total2024) * 100).toFixed(2) : 0}%</td></tr>
-              <tr className="bg-amber-50 border-t-2 border-amber-400 font-bold"><td className="py-3 px-4 text-amber-900">U01 + U03</td><td className="py-3 px-4 text-right text-amber-900">{formatNumber(totalU01U03_2025)}</td><td className="py-3 px-4 text-right text-amber-900">{participacionU01U03_2025.toFixed(2)}%</td><td className="py-3 px-4 text-right text-amber-900">{formatNumber(totalU01U03_2024)}</td><td className="py-3 px-4 text-right text-amber-900">{participacionU01U03_2024.toFixed(2)}%</td><td className="py-3 px-4 text-right text-amber-900">{formatNumber(variacionU01U03)}</td><td className="py-3 px-4 text-right"><span className={`inline-flex items-center gap-1 font-bold ${variacionU01U03 > 0 ? 'text-green-600' : 'text-red-600'}`}>{variacionU01U03 > 0 ? '⬆' : '⬇'} {Math.abs(variacionU01U03Pct).toFixed(2)}%</span></td></tr>
+              <tr className="bg-amber-50 border-t-2 border-amber-400 font-bold"><td className="py-3 px-4 text-amber-900">UO1 + UO3</td><td className="py-3 px-4 text-right text-amber-900">{formatNumber(totalU01U03_2025)}</td><td className="py-3 px-4 text-right text-amber-900">{participacionU01U03_2025.toFixed(2)}%</td><td className="py-3 px-4 text-right text-amber-900">{formatNumber(totalU01U03_2024)}</td><td className="py-3 px-4 text-right text-amber-900">{participacionU01U03_2024.toFixed(2)}%</td><td className="py-3 px-4 text-right text-amber-900">{formatNumber(variacionU01U03)}</td><td className="py-3 px-4 text-right"><span className={`inline-flex items-center gap-1 font-bold ${variacionU01U03 > 0 ? 'text-green-600' : 'text-red-600'}`}>{variacionU01U03 > 0 ? '⬆' : '⬇'} {Math.abs(variacionU01U03Pct).toFixed(2)}%</span></td></tr>
             </tbody>
           </table>
         </div>
         <div className="mt-4 bg-blue-50 rounded-lg p-4 border border-blue-200"><p className="text-sm text-gray-700"><span className="font-semibold text-gray-900">Redistribución 2025:</span> Sede 1 trasladada a Sede U03 (Ángel Blanco) para selección y despacho. Incremento U03 +119.28%, disminución U01 -84.45%.</p></div>
       </CollapsibleTable>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div 
-          onClick={() => openModal(
-            'Comparativa 2024 vs 2025',
-            'Este gráfico muestra la evolución de unidades procesadas por sede entre 2024 y 2025. Se observa claramente la redistribución estratégica: Sede U03 incrementó +119.28% al asumir la selección y despacho, mientras que Sede U01 disminuyó -84.45% al trasladar operaciones. Esta reorganización busca optimizar la eficiencia operativa y centralizar el control de calidad.'
-          )}
-          className="bg-white rounded-xl p-6 border-2 border-blue-500/30 shadow-sm cursor-pointer hover:border-blue-500 transition-all"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-blue-600" />
-              Unidades Procesadas por Sede 2024 vs 2025
-            </h3>
-            <Info className="w-5 h-5 text-blue-400 animate-pulse" />
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <CollapsibleChart title="Unidades Procesadas por Sede 2024 vs 2025" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={datosGraficaComparativa}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -230,22 +218,9 @@ export default function ComercialEstructuraDashboard({ data }) {
               <Bar dataKey="2025" fill="#3b82f6" name="2025" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </CollapsibleChart>
         
-        <div 
-          onClick={() => openModal(
-            'Participación 2025',
-            'Este gráfico muestra la distribución porcentual de unidades procesadas por sede en 2025. Sede U03 lidera con la mayor participación tras asumir las operaciones de selección y redistribución. La concentración de operaciones permite mejor control de calidad y trazabilidad del producto antes de la comercialización.'
-          )}
-          className="bg-white rounded-xl p-6 border-2 border-green-500/30 shadow-sm cursor-pointer hover:border-green-500 transition-all"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Package className="w-5 h-5 text-green-600" />
-              Participación de Unidades Procesadas por Sede 2025 (%)
-            </h3>
-            <Info className="w-5 h-5 text-green-400 animate-pulse" />
-          </div>
+        <CollapsibleChart title="Participación de Unidades Procesadas por Sede 2025 (%)" defaultOpen={false}>
           <div className="flex items-center gap-6">
             <ResponsiveContainer width="60%" height={300}>
               <PieChart>
@@ -291,23 +266,10 @@ export default function ComercialEstructuraDashboard({ data }) {
               ))}
             </div>
           </div>
-        </div>
-      </motion.div>
+        </CollapsibleChart>
+      </div>
       
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} 
-        onClick={() => openModal(
-          'Variación Porcentual 2024 a 2025',
-          'Este gráfico muestra el porcentaje de cambio en unidades procesadas por sede. Las barras verdes indican crecimiento y las rojas decrecimiento. Sede U03 muestra el mayor incremento (+119.28%) al consolidar operaciones, mientras que Sede U01 presenta la mayor reducción (-84.45%) como parte de la reorganización estratégica implementada en 2025.'
-        )}
-        className="bg-white rounded-xl p-6 border-2 border-purple-500/30 shadow-sm cursor-pointer hover:border-purple-500 transition-all"
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-purple-600" />
-            Variación Porcentual de Unidades Procesadas 2024 a 2025
-          </h3>
-          <Info className="w-5 h-5 text-purple-400 animate-pulse" />
-        </div>
+      <CollapsibleChart title="Variación Porcentual de Unidades Procesadas 2024 a 2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={datosGraficaVariacion} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -359,7 +321,7 @@ export default function ComercialEstructuraDashboard({ data }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Modal */}
       {createPortal(

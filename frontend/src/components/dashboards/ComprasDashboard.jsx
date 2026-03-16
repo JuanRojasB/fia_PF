@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell, ComposedChart } from 'recharts';
 import { TrendingUp, TrendingDown, ShoppingCart, DollarSign, X, Info, ArrowUp, ArrowDown } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 import { CustomCurrencyTooltip, CustomPctTooltip, formatCurrencyFull } from './CustomTooltip';
 
 export default function ComprasDashboard({ data }) {
@@ -85,9 +86,12 @@ export default function ComprasDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium">Total Compras 2025</span>
             <ShoppingCart className="w-5 h-5 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(totales.total2025)}</div>
-          <div className="text-xs text-gray-600">Compras totales</div>
-          <div className="text-xs text-blue-400 mt-1">vs ${formatCurrency(totales.total2024)} (2024)</div>
+          <div className="text-xl font-bold text-gray-900 leading-tight mb-1 break-all">{formatCurrencyFull(totales.total2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(totales.total2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(totales.total2025)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(totales.variacion2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {parseFloat(totales.variacion2025vs2024) >= 0 ? '+' : ''}{totales.variacion2025vs2024}%</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -133,7 +137,7 @@ export default function ComprasDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium">Promedio Mensual</span>
             <DollarSign className="w-5 h-5 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(totales.total2025 / 12)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(totales.total2025 / 12)}</div>
           <div className="text-xs text-gray-600">Por mes 2025</div>
           <div className="text-xs text-purple-400 mt-1">12 meses</div>
         </motion.div>
@@ -170,20 +174,8 @@ export default function ComprasDashboard({ data }) {
       </motion.div>
 
       {/* Gráfico Comparativo Anual */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        onClick={() => openModal('Evolución Anual', 'El gráfico muestra tres años con comportamientos distintos: 2023 como año base, 2024 con ajuste y contracción, y 2025 con recuperación sostenida.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre los valores mensuales de 2025, mostrando la dirección general del gasto en el período.')}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">Comparativo Mensual 2023-2025</h3>
-            <p className="text-xs text-gray-600 mt-1">Evolución de compras por mes (en millones)</p>
-          </div>
-          <Info className="w-5 h-5 text-gray-400" />
-        </div>
+      <CollapsibleChart title="Comparativo Mensual 2023-2025" defaultOpen={false}>
+        <p className="text-xs text-gray-600 mb-4">Evolución de compras por mes (en millones)</p>
         <ResponsiveContainer width="100%" height={450}>
           <ComposedChart data={datosComparativoConTendencia} margin={{ top: 5, right: 30, left: 20, bottom: 80 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -203,23 +195,11 @@ export default function ComprasDashboard({ data }) {
             <Line type="linear" dataKey="tendencia2025" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 3, fill: '#ef4444' }} name="Tendencia 2025" />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Gráfico de Variación Mensual */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        onClick={() => openModal('Variación Mensual', '9 de 12 meses presentan crecimiento positivo. Las caídas en Febrero, Abril y Julio pueden estar relacionadas con ajustes estacionales o cambios en la estrategia de inventarios. El balance general es positivo con recuperación sostenida.')}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">Variación Mensual 2025 vs 2024</h3>
-            <p className="text-xs text-gray-600 mt-1">Porcentaje de crecimiento o caída por mes</p>
-          </div>
-          <Info className="w-5 h-5 text-gray-400" />
-        </div>
+      <CollapsibleChart title="Variación Mensual 2025 vs 2024" defaultOpen={false}>
+        <p className="text-xs text-gray-600 mb-4">Porcentaje de crecimiento o caída por mes</p>
         <ResponsiveContainer width="100%" height={450}>
           <BarChart data={datosVariacion} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -245,15 +225,10 @@ export default function ComprasDashboard({ data }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Tabla Completa de Compras Mensuales */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.65 }}
-        className="rounded-xl overflow-hidden border-4 border-indigo-500/30"
-      >
+      <div className="rounded-xl overflow-hidden border-4 border-indigo-500/30">
         <CollapsibleTable
           title="Detalle de Compras por Mes 2023-2025"
           defaultOpen={false}
@@ -330,7 +305,7 @@ export default function ComprasDashboard({ data }) {
             </div>
           </div>
         </CollapsibleTable>
-      </motion.div>
+      </div>
 
       {/* Análisis de Contracción 2024 */}
       <motion.div

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, Area, LabelList } from 'recharts';
+import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, LabelList } from 'recharts';
 import { Egg, TrendingUp, X, Info, Target, Award, Activity } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 
 export default function ProduccionHuevosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -87,6 +88,12 @@ export default function ProduccionHuevosDashboard({ data }) {
 
   return (
     <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <Activity className="w-8 h-8 text-yellow-400" />
+        <h2 className="text-2xl font-bold text-gray-900">INDICADORES TÉCNICOS - GRANJAS AVES (POSTURA DE HUEVO)</h2>
+      </div>
+
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Huevos producidos 2025 vs 2024 */}
@@ -197,7 +204,7 @@ export default function ProduccionHuevosDashboard({ data }) {
       {zootecniaHuevo.length >= 2 && (
         <CollapsibleTable 
           title="COMPARATIVO DATOS ZOOTÉCNICOS GRANJAS HUEVO 2025-2024"
-          defaultOpen={true}
+          defaultOpen={false}
           totalRow={[
             { label: 'Indicadores Clave 2025' },
             { label: `Huevos: ${formatNumber(totalHuevos2025)}`, color: 'text-yellow-500' },
@@ -389,18 +396,11 @@ export default function ProduccionHuevosDashboard({ data }) {
       )}
 
       {/* Gráfica 1: Productividad Real vs Estándar */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.5 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer"
-        onClick={() => openModal(
-          'Productividad Real vs Estándar de la Industria',
-          `Comparación de la productividad real (huevos/gallina/mes) contra el estándar de la industria. Las barras verdes muestran el desempeño real y las azules el estándar. Superar el estándar demuestra excelencia operativa y genética superior.`
-        )}
+      <CollapsibleChart
+        title="Productividad Real vs Valor de Tabla — Huevos"
+        subtitle="Comparación de desempeño contra valor de tabla"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Productividad Real vs Valor de Tabla — Huevos 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Comparación de desempeño contra valor de tabla</p>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -413,7 +413,6 @@ export default function ProduccionHuevosDashboard({ data }) {
                   const productividad = payload.find(p => p.dataKey === 'productividad')?.value || 0;
                   const diferencia = productividad - estandar;
                   const variacion = estandar > 0 ? ((diferencia / estandar) * 100).toFixed(1) : 0;
-                  
                   return (
                     <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl">
                       <p className="font-bold text-gray-900 mb-3 text-lg">Año {label}</p>
@@ -454,21 +453,14 @@ export default function ProduccionHuevosDashboard({ data }) {
             <Bar dataKey="productividad" fill="#10b981" name="Productividad Real" radius={[8, 8, 0, 0]} />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Gráfica 2: Mortalidad Real vs Tabla + Consumo de Alimento */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.6 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-red-500 transition-all cursor-pointer"
-        onClick={() => openModal(
-          'Mortalidad vs Consumo de Alimento',
-          `Análisis de la relación entre mortalidad y consumo de alimento. La mortalidad real vs tabla indica la calidad del manejo sanitario. El consumo de alimento por ave muestra la eficiencia alimenticia. Una mortalidad baja con consumo controlado indica excelente manejo integral.`
-        )}
+      <CollapsibleChart
+        title="Mortalidad Real vs Tabla + Consumo de Alimento"
+        subtitle="Análisis de sanidad y eficiencia alimenticia"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Mortalidad Real vs Tabla + Consumo de Alimento 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Análisis de sanidad y eficiencia alimenticia</p>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={datosComparativos} margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -481,7 +473,6 @@ export default function ProduccionHuevosDashboard({ data }) {
                   const mortalidadTabla = payload.find(p => p.dataKey === 'mortalidadTabla')?.value || 0;
                   const mortalidadReal = payload.find(p => p.dataKey === 'mortalidadReal')?.value || 0;
                   const consumoReal = payload.find(p => p.dataKey === 'consumoReal')?.value || 0;
-                  
                   return (
                     <div className="bg-white border-2 border-red-500 rounded-xl p-4 shadow-xl">
                       <p className="font-bold text-gray-900 mb-3 text-lg">Año {label}</p>
@@ -516,7 +507,7 @@ export default function ProduccionHuevosDashboard({ data }) {
             <Line yAxisId="right" type="monotone" dataKey="consumoReal" stroke="#06b6d4" strokeWidth={3} name="Consumo Alimento Real" dot={{ fill: '#06b6d4', r: 5 }} />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Modal de Explicación */}
       {createPortal(

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Home, TrendingUp, Layers, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 
 export default function GranjasDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -236,17 +237,7 @@ export default function GranjasDashboard({ data }) {
       {/* Gráficos principales */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Distribución por Tipo - Pie Chart */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 cursor-pointer hover:border-blue-500 transition-all"
-          onClick={() => openModal(
-            'Distribución por Zona',
-            `Aves agrupadas por zona climática:\n\n${tipoData.map(t => `${t.tipo}: ${formatNumber(t.aves)} (${((t.aves / totalAves) * 100).toFixed(1)}%)`).join('\n')}`
-          )}
-        >
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Distribución de Aves por Zona Climática 2025</h3>
+        <CollapsibleChart title="Distribución de Aves por Zona Climática 2025" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={350} key="pie-chart-clima">
             <PieChart>
               <Pie 
@@ -270,20 +261,10 @@ export default function GranjasDashboard({ data }) {
               <Tooltip content={<CustomTooltip />} />
             </PieChart>
           </ResponsiveContainer>
-        </motion.div>
+        </CollapsibleChart>
 
         {/* Comparación de Granjas por Tipo de Clima */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 cursor-pointer hover:border-green-500 transition-all"
-          onClick={() => openModal(
-            'Granjas por Zona',
-            `${tipoData.map(t => `${t.tipo}: ${t.granjas} granjas (${((t.granjas / totalGranjas) * 100).toFixed(1)}%)`).join('\n')}`
-          )}
-        >
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Número de Granjas por Zona Climática 2025</h3>
+        <CollapsibleChart title="Número de Granjas por Zona Climática 2025" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={tipoData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -307,28 +288,12 @@ export default function GranjasDashboard({ data }) {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </motion.div>
+        </CollapsibleChart>
       </div>
 
       {/* Participación Porcentual por Granja - TOP 10 con colores por zona */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-2 border-gray-200 cursor-pointer hover:border-purple-500 transition-all shadow-lg"
-        onClick={() => {
-          const top10 = granjasData.sort((a, b) => (parseFloat(b.aves) || 0) - (parseFloat(a.aves) || 0)).slice(0, 10);
-          const totalTop10 = top10.reduce((sum, g) => sum + (parseFloat(g.aves) || 0), 0);
-          const porcentajeTop10 = ((totalTop10 / totalAves) * 100).toFixed(1);
-          openModal(
-            'Participación de Aves',
-            `Participación = (Aves granja ÷ ${formatNumber(totalAves)} total) × 100\n\nEjemplo ${top10[0].granja}: ${((top10[0].aves / totalAves) * 100).toFixed(2)}%\n\nTop 10: ${porcentajeTop10}% del total\n\nColores por zona: Azul=Fría | Verde=Cálida | Naranja=Caliente`
-          );
-        }}
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Top 10 Granjas por Capacidad/Participación de Aves (%)</h3>
-          <div className="flex gap-4 text-xs">
+      <CollapsibleChart title="Top 10 Granjas por Capacidad/Participación de Aves (%)" defaultOpen={false}>
+        <div className="flex justify-end gap-4 text-xs mb-4">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded" style={{ backgroundColor: COLORS['FRIO'] }}></div>
               <span className="text-gray-600 font-medium">Zona Fría</span>
@@ -342,7 +307,6 @@ export default function GranjasDashboard({ data }) {
               <span className="text-gray-600 font-medium">Zona Caliente</span>
             </div>
           </div>
-        </div>
         <ResponsiveContainer width="100%" height={450}>
           <BarChart 
             data={granjasData
@@ -444,7 +408,7 @@ export default function GranjasDashboard({ data }) {
             );
           })}
         </div>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Tabla agrupada por tipo con participación porcentual */}
       <CollapsibleTable 

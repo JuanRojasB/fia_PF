@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LabelList } from 'recharts';
+import CollapsibleChart from '../CollapsibleChart';
 import { Users, TrendingUp, UserMinus, UserPlus, Clock, DollarSign, X, Info, ArrowUp, ArrowDown } from 'lucide-react';
 
 export default function HumanaDashboard({ data }) {
@@ -86,14 +87,11 @@ export default function HumanaDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium uppercase tracking-wide">Planta de Personal</span>
             <Users className="w-5 h-5 text-blue-600" />
           </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatNumber(kpis.personal2025)}</div>
-          <div className="text-xs text-gray-500 mb-2">colaboradores activos a dic. 2025</div>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-500">2024: {formatNumber(kpis.personal2024)}</span>
-            <span className={`flex items-center font-semibold ${kpis.variacionPersonal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {kpis.variacionPersonal >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-              {Math.abs(kpis.variacionPersonal)}%
-            </span>
+          <div className="text-4xl font-bold text-gray-900 leading-tight mb-1">{formatNumber(kpis.personal2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(kpis.personal2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(kpis.personal2025)}</span></div>
+            <div className={`text-sm font-bold ${kpis.variacionPersonal >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {kpis.variacionPersonal >= 0 ? '+' : ''}{kpis.variacionPersonal}%</div>
           </div>
         </motion.div>
 
@@ -133,14 +131,12 @@ export default function HumanaDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium uppercase tracking-wide">Costo Nómina Total</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
-          <div className="text-2xl font-bold text-gray-900 mb-0.5">{formatCOPShort(kpis.nomina2025)}</div>
-          <div className="text-xs text-gray-400 mb-2">{formatCOP(kpis.nomina2025)}</div>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-500">2024: {formatCOPShort(kpis.nomina2024)}</span>
-            <span className={`flex items-center font-semibold ${kpis.variacionNomina >= 0 ? 'text-orange-600' : 'text-green-600'}`}>
-              {kpis.variacionNomina >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-              {Math.abs(kpis.variacionNomina)}%
-            </span>
+          <div className="text-2xl font-bold text-gray-900 leading-tight mb-0.5">{formatCOPShort(kpis.nomina2025)}</div>
+          <div className="text-xs text-gray-400 mb-1">{formatCOP(kpis.nomina2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-1 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCOPShort(kpis.nomina2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCOPShort(kpis.nomina2025)}</span></div>
+            <div className={`text-sm font-bold ${kpis.variacionNomina >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionNomina >= 0 ? '+' : ''}{kpis.variacionNomina}%</div>
           </div>
         </motion.div>
 
@@ -165,14 +161,11 @@ export default function HumanaDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium uppercase tracking-wide">Retiros de Personal</span>
             <UserMinus className="w-5 h-5 text-red-600" />
           </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatNumber(kpis.retiros2025)}</div>
-          <div className="text-xs text-gray-500 mb-2">personas desvinculadas en 2025</div>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-500">2024: {formatNumber(kpis.retiros2024)}</span>
-            <span className={`flex items-center font-semibold ${kpis.variacionRetiros >= 0 ? 'text-red-600' : 'text-green-600'}`}>
-              {kpis.variacionRetiros >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-              {Math.abs(kpis.variacionRetiros)}%
-            </span>
+          <div className="text-4xl font-bold text-gray-900 leading-tight mb-1">{formatNumber(kpis.retiros2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(kpis.retiros2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(kpis.retiros2025)}</span></div>
+            <div className={`text-sm font-bold ${kpis.variacionRetiros >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionRetiros >= 0 ? '+' : ''}{kpis.variacionRetiros}%</div>
           </div>
         </motion.div>
 
@@ -199,14 +192,11 @@ export default function HumanaDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium uppercase tracking-wide">Ingresos de Personal</span>
             <UserPlus className="w-5 h-5 text-purple-600" />
           </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatNumber(kpis.ingresos2025)}</div>
-          <div className="text-xs text-gray-500 mb-2">nuevos colaboradores en 2025</div>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-500">2024: {formatNumber(kpis.ingresos2024)}</span>
-            <span className={`flex items-center font-semibold ${kpis.variacionIngresos >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {kpis.variacionIngresos >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-              {Math.abs(kpis.variacionIngresos)}%
-            </span>
+          <div className="text-4xl font-bold text-gray-900 leading-tight mb-1">{formatNumber(kpis.ingresos2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(kpis.ingresos2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(kpis.ingresos2025)}</span></div>
+            <div className={`text-sm font-bold ${kpis.variacionIngresos >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {kpis.variacionIngresos >= 0 ? '+' : ''}{kpis.variacionIngresos}%</div>
           </div>
         </motion.div>
       </div>
@@ -249,14 +239,11 @@ export default function HumanaDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium uppercase tracking-wide">Horas Extras</span>
             <Clock className="w-5 h-5 text-cyan-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(kpis.horas2025)}</div>
-          <div className="text-xs text-gray-500 mb-2">horas extras trabajadas en 2025</div>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-500">2024: {formatNumber(kpis.horas2024)} hrs</span>
-            <span className={`flex items-center font-semibold ${kpis.variacionHoras >= 0 ? 'text-orange-600' : 'text-green-600'}`}>
-              {kpis.variacionHoras >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-              {Math.abs(kpis.variacionHoras)}%
-            </span>
+          <div className="text-3xl font-bold text-gray-900 leading-tight mb-1">{formatNumber(kpis.horas2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(kpis.horas2024)} hrs</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(kpis.horas2025)} hrs</span></div>
+            <div className={`text-sm font-bold ${kpis.variacionHoras >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionHoras >= 0 ? '+' : ''}{kpis.variacionHoras}%</div>
           </div>
         </motion.div>
 
@@ -291,14 +278,12 @@ export default function HumanaDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium uppercase tracking-wide">Costo Horas Extras</span>
             <DollarSign className="w-5 h-5 text-orange-600" />
           </div>
-          <div className="text-2xl font-bold text-gray-900 mb-0.5">{formatCOPShort(kpis.valorHoras2025)}</div>
-          <div className="text-xs text-gray-400 mb-2">{formatCOP(kpis.valorHoras2025)}</div>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-500">2024: {formatCOPShort(kpis.valorHoras2024)}</span>
-            <span className={`flex items-center font-semibold ${kpis.variacionValorHoras >= 0 ? 'text-red-600' : 'text-green-600'}`}>
-              {kpis.variacionValorHoras >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-              {Math.abs(kpis.variacionValorHoras)}%
-            </span>
+          <div className="text-2xl font-bold text-gray-900 leading-tight mb-0.5">{formatCOPShort(kpis.valorHoras2025)}</div>
+          <div className="text-xs text-gray-400 mb-1">{formatCOP(kpis.valorHoras2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-1 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCOPShort(kpis.valorHoras2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCOPShort(kpis.valorHoras2025)}</span></div>
+            <div className={`text-sm font-bold ${kpis.variacionValorHoras >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionValorHoras >= 0 ? '+' : ''}{kpis.variacionValorHoras}%</div>
           </div>
         </motion.div>
       </div>
@@ -307,12 +292,9 @@ export default function HumanaDashboard({ data }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* Evolución de Nómina */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 shadow-xl"
-        >
+        <CollapsibleChart title="Evolución de Costos de Nómina" defaultOpen={false}>
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xl font-bold text-gray-900">Evolución de Costos de Nómina</h3>
+            <div></div>
             <button
               onClick={() => openModal('Evolución de Nómina 2024 vs 2025',
                 <div className="space-y-3">
@@ -366,7 +348,7 @@ export default function HumanaDashboard({ data }) {
               <Bar dataKey="horasExtras" fill="#f59e0b" name="Horas Extras" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-        </motion.div>
+        </CollapsibleChart>
 
         {/* Rotación de Personal */}
         <motion.div

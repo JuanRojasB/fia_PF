@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { MapPin, Store, Users, X, Info, Building2, UserCircle, TrendingUp, Package } from 'lucide-react';
+import CollapsibleChart from '../CollapsibleChart';
 
 export default function ComercialPDVDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -234,104 +235,61 @@ export default function ComercialPDVDashboard({ data }) {
       </motion.div>
 
       {/* Crecimiento Bogotá por Zona */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        onClick={() => openModal(
-          'Crecimiento Bogotá - Detalle Completo',
-          <div className="text-gray-700">
-            <p className="mb-4 font-semibold">Análisis de crecimiento por zona en Bogotá</p>
-            <div className="space-y-4">
-              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
-                <p className="text-sm font-semibold text-gray-900 mb-2">Zona Norte:</p>
-                <ul className="text-sm space-y-1 list-disc list-inside">
-                  <li>Crecimiento en kilos: <strong className="text-green-600">+12%</strong> (217 ton en 2024 → 244 ton en 2025)</li>
-                  <li>Crecimiento en ventas: <strong className="text-green-600">+18%</strong> (${formatNumber(2123022507)} → ${formatNumber(2503649389)})</li>
-                </ul>
-              </div>
-              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
-                <p className="text-sm font-semibold text-gray-900 mb-2">Zona Sur:</p>
-                <ul className="text-sm space-y-1 list-disc list-inside">
-                  <li>Crecimiento en kilos: <strong className="text-blue-600">+7%</strong></li>
-                  <li>Crecimiento en ventas: <strong className="text-blue-600">+7%</strong></li>
-                </ul>
-              </div>
-              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
-                <p className="text-sm font-semibold text-gray-900 mb-2">Total Bogotá:</p>
-                <ul className="text-sm space-y-1 list-disc list-inside">
-                  <li>Crecimiento en kilos: <strong className="text-purple-600">+7%</strong> (675 ton en 2024 → 723 ton en 2025)</li>
-                  <li>Crecimiento en ventas: <strong className="text-purple-600">+9%</strong> (${formatNumber(5964898060)} → ${formatNumber(6514296741)})</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-      >
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">Crecimiento Bogotá 2025 vs 2024</h3>
-            <p className="text-sm text-gray-600 mt-1">Comparación por zona (kilos y millones de pesos)</p>
-          </div>
-          <Info className="w-5 h-5 text-blue-600 animate-pulse" />
-        </div>
-        <div>
-          <ResponsiveContainer width="100%" height={450}>
-            <BarChart data={crecimientoBogota.por_zona} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
-              <XAxis 
-                dataKey="zona" 
-                stroke="#1f2937"
-                style={{ fontSize: '14px', fontWeight: '700' }}
-              />
-              <YAxis 
-                stroke="#1f2937" 
-                tickFormatter={(value) => `${value}%`}
-                label={{ value: 'Crecimiento %', angle: -90, position: 'insideLeft', style: { fontSize: '14px', fontWeight: '700' } }}
-                style={{ fontSize: '14px', fontWeight: '700' }}
-              />
-              <Tooltip 
-                content={({ active, payload, label }) => {
-                  if (active && payload && payload.length) {
-                    const zonaData = crecimientoBogota.por_zona.find(z => z.zona === label);
-                    return (
-                      <div style={{ 
-                        backgroundColor: '#ffffff', 
-                        border: '2px solid #10b981',
-                        borderRadius: '8px',
-                        padding: '12px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                      }}>
-                        <p style={{ color: '#111827', fontWeight: 'bold', marginBottom: '8px' }}>{label}</p>
-                        <div style={{ marginBottom: '8px' }}>
-                          <p style={{ color: '#059669', padding: '4px 0', margin: 0, fontSize: '16px', fontWeight: 'bold' }}>
-                            Kilos: +{zonaData.crecimiento_kilos}%
-                          </p>
-                          <p style={{ color: '#059669', padding: '0', margin: 0, fontSize: '12px' }}>
-                            {zonaData.kilos_2024} ton (2024) → {zonaData.kilos_2025} ton (2025)
-                          </p>
-                        </div>
-                        <div>
-                          <p style={{ color: '#8b5cf6', padding: '4px 0', margin: 0, fontSize: '16px', fontWeight: 'bold' }}>
-                            Ventas: +{zonaData.crecimiento_millones}%
-                          </p>
-                          <p style={{ color: '#8b5cf6', padding: '0', margin: 0, fontSize: '12px' }}>
-                            ${formatNumber(zonaData.millones_2024)}M → ${formatNumber(zonaData.millones_2025)}M
-                          </p>
-                        </div>
+      <CollapsibleChart title="Crecimiento Bogotá 2025 vs 2024" defaultOpen={false}>
+        <ResponsiveContainer width="100%" height={450}>
+          <BarChart data={crecimientoBogota.por_zona} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
+            <XAxis 
+              dataKey="zona" 
+              stroke="#1f2937"
+              style={{ fontSize: '14px', fontWeight: '700' }}
+            />
+            <YAxis 
+              stroke="#1f2937" 
+              tickFormatter={(value) => `${value}%`}
+              label={{ value: 'Crecimiento %', angle: -90, position: 'insideLeft', style: { fontSize: '14px', fontWeight: '700' } }}
+              style={{ fontSize: '14px', fontWeight: '700' }}
+            />
+            <Tooltip 
+              content={({ active, payload, label }) => {
+                if (active && payload && payload.length) {
+                  const zonaData = crecimientoBogota.por_zona.find(z => z.zona === label);
+                  return (
+                    <div style={{ 
+                      backgroundColor: '#ffffff', 
+                      border: '2px solid #10b981',
+                      borderRadius: '8px',
+                      padding: '12px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}>
+                      <p style={{ color: '#111827', fontWeight: 'bold', marginBottom: '8px' }}>{label}</p>
+                      <div style={{ marginBottom: '8px' }}>
+                        <p style={{ color: '#059669', padding: '4px 0', margin: 0, fontSize: '16px', fontWeight: 'bold' }}>
+                          Kilos: +{zonaData.crecimiento_kilos}%
+                        </p>
+                        <p style={{ color: '#059669', padding: '0', margin: 0, fontSize: '12px' }}>
+                          {zonaData.kilos_2024} ton (2024) → {zonaData.kilos_2025} ton (2025)
+                        </p>
                       </div>
-                    );
-                  }
-                  return null;
-                }}
-              />
-              <Bar dataKey="crecimiento_kilos" name="Crecimiento Kilos %" fill="#059669" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="crecimiento_millones" name="Crecimiento Ventas %" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </motion.div>
+                      <div>
+                        <p style={{ color: '#8b5cf6', padding: '4px 0', margin: 0, fontSize: '16px', fontWeight: 'bold' }}>
+                          Ventas: +{zonaData.crecimiento_millones}%
+                        </p>
+                        <p style={{ color: '#8b5cf6', padding: '0', margin: 0, fontSize: '12px' }}>
+                          ${formatNumber(zonaData.millones_2024)}M → ${formatNumber(zonaData.millones_2025)}M
+                        </p>
+                      </div>
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
+            <Bar dataKey="crecimiento_kilos" name="Crecimiento Kilos %" fill="#059669" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="crecimiento_millones" name="Crecimiento Ventas %" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </CollapsibleChart>
 
       {/* Modal */}
       {createPortal(

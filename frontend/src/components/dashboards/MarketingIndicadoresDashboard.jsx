@@ -50,12 +50,10 @@ export default function MarketingIndicadoresDashboard({ data }) {
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">17.4%</div>
-          <div className="text-sm text-gray-600 mt-1">Promedio 2025</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <div className="text-xs text-green-600">Cumplido</div>
-            </div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">~20.4%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">17.4%</span></div>
+            <div className="text-sm font-bold text-red-600">Var: -3,0pp</div>
           </div>
         </motion.div>
 
@@ -86,12 +84,10 @@ export default function MarketingIndicadoresDashboard({ data }) {
             <Target className="w-5 h-5 text-yellow-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">82%</div>
-          <div className="text-sm text-gray-600 mt-1">vs meta 95%</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-yellow-600" />
-              <div className="text-xs text-yellow-600">Acción correctiva</div>
-            </div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">85%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">82%</span></div>
+            <div className="text-sm font-bold text-red-600">Var: -3pp vs 2024</div>
           </div>
         </motion.div>
 
@@ -122,12 +118,10 @@ export default function MarketingIndicadoresDashboard({ data }) {
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">83.7%</div>
-          <div className="text-sm text-gray-600 mt-1">$401.6 MM / $480 MM</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <div className="text-xs text-green-600">Ahorro $78.3 MM</div>
-            </div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">Presupuesto: <span className="font-semibold text-gray-700">$480M</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">$401.6M ejecutado</span></div>
+            <div className="text-sm font-bold text-blue-600">Ahorro: $78.3M</div>
           </div>
         </motion.div>
 
@@ -159,12 +153,10 @@ export default function MarketingIndicadoresDashboard({ data }) {
             <Zap className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">3.7</div>
-          <div className="text-sm text-gray-600 mt-1">CPC $248 | CTR 2.7%</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-purple-600" />
-              <div className="text-xs text-purple-600">Seguidores +154%</div>
-            </div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">Meta CTR: <span className="font-semibold text-gray-700">3.0%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">CTR 2.7% / CPC $248</span></div>
+            <div className="text-sm font-bold text-green-600">Seguidores: +154%</div>
           </div>
         </motion.div>
       </div>

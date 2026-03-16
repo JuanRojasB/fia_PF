@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import CollapsibleChart from '../CollapsibleChart';
 import { Briefcase, Target, CheckCircle, X, Info } from 'lucide-react';
 import EnDesarrollo from './EnDesarrollo';
 
@@ -201,14 +202,7 @@ export default function GerenciaDashboard({ data }) {
       })()}
 
       {/* Gráfico principal de Acciones por Proceso */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        onClick={() => openModal('Iniciativas Estratégicas por Proceso 2025', `El gráfico muestra los 8 procesos con mayor número de iniciativas ejecutadas en 2025. La longitud de cada barra representa la cantidad de acciones implementadas en ese proceso. Los procesos con más iniciativas suelen ser los de mayor impacto operativo o los que enfrentaron mayores retos durante el año. Este análisis permite a la gerencia priorizar recursos y atención para el siguiente período, reforzando los procesos con menor actividad o mayor brecha de mejora.`)}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer"
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Iniciativas Estratégicas por Proceso Gerencial 2025</h3>
+      <CollapsibleChart title="Iniciativas Estratégicas por Proceso Gerencial 2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={procesoData} layout="vertical" margin={{ left: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -229,7 +223,7 @@ export default function GerenciaDashboard({ data }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Detalle de Acciones por Proceso */}
       <motion.div

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
 import { Truck, TrendingUp, Building, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 import { formatCurrencyFull } from './CustomTooltip';
 
 export default function LogisticaDashboard({ data }) {
@@ -44,6 +45,12 @@ export default function LogisticaDashboard({ data }) {
   };
 
   const conceptosMap = {};
+  // Valor completo para tooltips (sin abreviar)
+  const formatFull = (value) => {
+    if (!value && value !== 0) return '$0';
+    const v = parseFloat(value);
+    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(v));
+  };
   logisticaData.forEach(d => {
     // Filtrar registros con sede null, undefined o que no sean SEDE1, SEDE2, SEDE3
     const sedeNormalizada = (d.sede || '').toString().trim().toUpperCase();
@@ -111,21 +118,25 @@ export default function LogisticaDashboard({ data }) {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal('Total Gastos Logísticos 2025', `El área logística opera con una capacidad de aproximadamente 3 millones de kg/mes distribuidos en 3 sedes activas (Sede 1, Sede 2 y Sede 3), con 12 muelles de cargue/descargue y 197 colaboradores. Este indicador consolida todos los conceptos de gasto operacional logístico: transporte, personal, mantenimiento de flota, combustible y otros costos asociados a la distribución. La variación frente a 2024 refleja el comportamiento del costo logístico total de la compañía.`)}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
+          onClick={() => openModal('Total Gastos Logísticos 2025', `El área logística opera con una capacidad de aproximadamente 3 millones de kg/mes distribuidos en 3 sedes activas (Sede 1, Sede 2 y Sede 3), con 12 muelles de cargue/descargue y 197 colaboradores. Este indicador consolida todos los conceptos de gasto operacional logístico: transporte, personal, mantenimiento de flota, combustible y otros costos asociados a la distribución. La variación frente a 2024 refleja el comportamiento del costo logístico total de la compañía.`)}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos 2025</span>
             <Truck className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrencyFull(total2025)}</div>
-          <div className={`text-xs ${variacionTotal >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-            {variacionTotal > 0 ? '+' : ''}{variacionTotal}% vs 2024
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2025)}</span></div>
+            <div className={`text-sm font-bold ${variacionTotal >= 0 ? 'text-red-600' : 'text-green-600'}`}>
+              Var: {variacionTotal > 0 ? '+' : ''}{variacionTotal}%
+            </div>
           </div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          onClick={() => openModal('Variación de Gastos Logísticos 2025 vs 2024', `Este indicador muestra la diferencia absoluta en pesos entre el gasto logístico total de 2025 y el de 2024. Un incremento puede estar asociado a mayor volumen de operación, aumento en costos de combustible, ajustes salariales o expansión de rutas. Una reducción indica eficiencias operativas o menor actividad. Se debe analizar en conjunto con el volumen de kg distribuidos para determinar si el costo por kg mejoró o empeoró frente al año anterior.`)}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
+          onClick={() => openModal('Variación de Gastos Logísticos 2025 vs 2024', `Este indicador muestra la diferencia absoluta en pesos entre el gasto logístico total de 2025 y el de 2024. Un incremento puede estar asociado a mayor volumen de operación, aumento en costos de combustible, ajustes salariales o expansión de rutas. Una reducción indica eficiencias operativas o menor actividad. Se debe analizar en conjunto con el volumen de kg distribuidos para determinar si el costo por kg mejoró o empeoró frente al año anterior.`)}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Variación Gastos Logísticos 2025 vs 2024</span>
             <TrendingUp className="w-6 h-6 text-green-400" />
@@ -137,8 +148,8 @@ export default function LogisticaDashboard({ data }) {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          onClick={() => openModal('Sedes Logísticas Activas 2025', `La operación logística de Pollo Fiesta se distribuye en 3 centros de distribución: Sede 1, Sede 2 y Sede 3. Cada sede tiene su propia estructura de costos operacionales que incluye personal, transporte, mantenimiento y otros gastos. La distribución por sede permite identificar cuál concentra mayor costo y dónde existen oportunidades de optimización. El gráfico de distribución porcentual muestra el peso relativo de cada sede sobre el gasto logístico total.`)}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
+          onClick={() => openModal('Sedes Logísticas Activas 2025', `La operación logística de Pollo Fiesta se distribuye en 3 centros de distribución: Sede 1, Sede 2 y Sede 3. Cada sede tiene su propia estructura de costos operacionales que incluye personal, transporte, mantenimiento y otros gastos. La distribución por sede permite identificar cuál concentra mayor costo y dónde existen oportunidades de optimización. El gráfico de distribución porcentual muestra el peso relativo de cada sede sobre el gasto logístico total.`)}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Sedes Logísticas Activas 2025</span>
             <Building className="w-6 h-6 text-purple-400" />
@@ -149,10 +160,7 @@ export default function LogisticaDashboard({ data }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          onClick={() => openModal('Gastos Logísticos por Sede 2024 vs 2025', `El gráfico compara el gasto operacional logístico de cada sede entre 2024 (azul) y 2025 (verde). Permite identificar qué sede tuvo mayor incremento o reducción de costos y si el comportamiento fue homogéneo entre sedes. Las diferencias entre sedes pueden explicarse por variaciones en volumen de despacho, cambios en rutas, rotación de personal o inversiones en mantenimiento de flota. El detalle por concepto está disponible en las tablas desplegables de cada sede.`)}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer">
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Gastos Logísticos por Sede (2024 vs 2025)</h3>
+        <CollapsibleChart title="Gastos Logísticos por Sede (2024 vs 2025)" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={sedesData} margin={{ left: 20, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -164,32 +172,15 @@ export default function LogisticaDashboard({ data }) {
                   const val2025 = payload.find(p => p.dataKey === 'total2025')?.value || 0;
                   const diferencia = val2025 - val2024;
                   const variacion = val2024 > 0 ? ((diferencia / val2024) * 100).toFixed(1) : 0;
-                  
                   return (
                     <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl">
                       <p className="font-bold text-gray-900 mb-3 text-lg">{label}</p>
                       <div className="space-y-2">
-                        <div className="flex justify-between items-center gap-4">
-                          <span className="text-indigo-600 font-medium">2024:</span>
-                          <span className="font-bold text-gray-900">{formatCurrency(val2024)}</span>
-                        </div>
-                        <div className="flex justify-between items-center gap-4">
-                          <span className="text-green-600 font-medium">2025:</span>
-                          <span className="font-bold text-gray-900">{formatCurrency(val2025)}</span>
-                        </div>
+                        <div className="flex justify-between items-center gap-4"><span className="text-indigo-600 font-medium">2024:</span><span className="font-bold text-gray-900">{formatFull(val2024)}</span></div>
+                        <div className="flex justify-between items-center gap-4"><span className="text-green-600 font-medium">2025:</span><span className="font-bold text-gray-900">{formatFull(val2025)}</span></div>
                         <div className="border-t border-gray-200 pt-2 mt-2">
-                          <div className="flex justify-between items-center gap-4">
-                            <span className="text-gray-600 font-medium">Diferencia:</span>
-                            <span className={`font-bold ${diferencia >= 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {diferencia >= 0 ? '+' : ''}{formatCurrency(diferencia)}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center gap-4 mt-1">
-                            <span className="text-gray-600 font-medium">Variación:</span>
-                            <span className={`font-bold ${variacion >= 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {variacion >= 0 ? '+' : ''}{variacion}%
-                            </span>
-                          </div>
+                          <div className="flex justify-between items-center gap-4"><span className="text-gray-600 font-medium">Diferencia:</span><span className={`font-bold ${diferencia >= 0 ? 'text-red-600' : 'text-green-600'}`}>{diferencia >= 0 ? '+' : ''}{formatFull(diferencia)}</span></div>
+                          <div className="flex justify-between items-center gap-4 mt-1"><span className="text-gray-600 font-medium">Variación:</span><span className={`font-bold ${variacion >= 0 ? 'text-red-600' : 'text-green-600'}`}>{variacion >= 0 ? '+' : ''}{variacion}%</span></div>
                         </div>
                       </div>
                     </div>
@@ -205,11 +196,9 @@ export default function LogisticaDashboard({ data }) {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Distribución de Gastos por Sede 2025 (%)</h3>
+        </CollapsibleChart>
+</div>
+        <CollapsibleChart title="Distribución de Gastos por Sede 2025 (%)" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={350}>
             <PieChart>
               <Pie 
@@ -228,19 +217,12 @@ export default function LogisticaDashboard({ data }) {
                   const data = payload[0];
                   const total = sedesData.reduce((sum, s) => sum + s.total2025, 0);
                   const porcentaje = total > 0 ? ((data.value / total) * 100).toFixed(1) : 0;
-                  
                   return (
                     <div className="bg-white border-2 border-green-500 rounded-xl p-4 shadow-xl">
                       <p className="font-bold text-gray-900 mb-3 text-lg">{data.name}</p>
                       <div className="space-y-2">
-                        <div className="flex justify-between items-center gap-4">
-                          <span className="text-gray-600 font-medium">Gasto 2025:</span>
-                          <span className="font-bold text-gray-900">{formatCurrency(data.value)}</span>
-                        </div>
-                        <div className="flex justify-between items-center gap-4">
-                          <span className="text-green-600 font-medium">Participación:</span>
-                          <span className="font-bold text-gray-900">{porcentaje}%</span>
-                        </div>
+                        <div className="flex justify-between items-center gap-4"><span className="text-gray-600 font-medium">Gasto 2025:</span><span className="font-bold text-gray-900">{formatFull(data.value)}</span></div>
+                        <div className="flex justify-between items-center gap-4"><span className="text-green-600 font-medium">Participación:</span><span className="font-bold text-gray-900">{porcentaje}%</span></div>
                       </div>
                     </div>
                   );
@@ -249,9 +231,7 @@ export default function LogisticaDashboard({ data }) {
               }} />
             </PieChart>
           </ResponsiveContainer>
-        </motion.div>
-      </div>
-
+        </CollapsibleChart>
       {/* Tablas detalladas por sede */}
       {['SEDE1', 'SEDE2', 'SEDE3'].map((sede, idx) => {
         const conceptosSede = conceptosData.filter(d => d.sede === sede);
@@ -476,50 +456,51 @@ export default function LogisticaDashboard({ data }) {
 
       {/* Modal */}
       {createPortal(
-      <AnimatePresence>
-        {modalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-            onClick={() => setModalOpen(false)}
-          >
+        <AnimatePresence>
+          {modalOpen && (
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+              onClick={() => setModalOpen(false)}
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-blue-400" />
-                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Info className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
+                  </div>
+                  <button
+                    onClick={() => setModalOpen(false)}
+                    className="text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
-              </div>
-              <div className="mt-6 flex justify-end">
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors"
-                >
-                  Entendido
-                </button>
-              </div>
+                <div className="text-gray-700 leading-relaxed">
+                  {modalContent.description}
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <button
+                    onClick={() => setModalOpen(false)}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors"
+                  >
+                    Entendido
+                  </button>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>, document.body)}
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }
-

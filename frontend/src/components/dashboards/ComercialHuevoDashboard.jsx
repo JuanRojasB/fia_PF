@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LabelList } from 'recharts';
 import { Egg, TrendingDown, DollarSign, X, Info, AlertTriangle, Package } from 'lucide-react';
 import { formatCurrencyFull } from './CustomTooltip';
+import CollapsibleChart from '../CollapsibleChart';
 
 export default function ComercialHuevoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -136,9 +137,12 @@ export default function ComercialHuevoDashboard({ data }) {
             <Package className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.unidades_vendidas)}</div>
-          <div className={`text-xs flex items-center gap-1 ${parseFloat(varUnidades2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            <TrendingDown className="w-4 h-4" />
-            {varUnidades2025vs2024}% vs 2024
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.unidades_vendidas)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.unidades_vendidas)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(varUnidades2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              Var: {parseFloat(varUnidades2025vs2024) >= 0 ? '+' : ''}{varUnidades2025vs2024}%
+            </div>
           </div>
         </motion.div>
 
@@ -156,10 +160,11 @@ export default function ComercialHuevoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Precio Promedio/Unidad Huevo 2025</span>
             <TrendingDown className="w-6 h-6 text-red-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(datos2025.precio_promedio_unidad)}</div>
-          <div className="text-xs flex items-center gap-1 text-red-600">
-            <AlertTriangle className="w-4 h-4" />
-            {varPrecio2025vs2024}% vs 2024
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(datos2025.precio_promedio_unidad)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2024.precio_promedio_unidad)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2025.precio_promedio_unidad)}</span></div>
+            <div className="text-sm font-bold text-red-600">Var: {varPrecio2025vs2024}%</div>
           </div>
         </motion.div>
 
@@ -177,10 +182,13 @@ export default function ComercialHuevoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ingresos Huevo 2025</span>
             <DollarSign className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(datos2025.ingresos_totales_calculados)}</div>
-          <div className={`text-xs flex items-center gap-1 ${parseFloat(varIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            <TrendingDown className="w-4 h-4" />
-            {varIngresos}% vs 2024
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(datos2025.ingresos_totales_calculados)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2024.ingresos_totales_calculados)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2025.ingresos_totales_calculados)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(varIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              Var: {parseFloat(varIngresos) >= 0 ? '+' : ''}{varIngresos}%
+            </div>
           </div>
         </motion.div>
 
@@ -199,8 +207,10 @@ export default function ComercialHuevoDashboard({ data }) {
             <AlertTriangle className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-3xl font-bold text-red-600 mb-1">{Math.abs(varPrecio3años)}%</div>
-          <div className="text-xs text-gray-600">
-            2023 → 2025
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2023: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2023.precio_promedio_unidad)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2025.precio_promedio_unidad)}</span></div>
+            <div className="text-sm font-bold text-red-600">Var: -{Math.abs(varPrecio3años)}%</div>
           </div>
         </motion.div>
       </div>
@@ -261,20 +271,7 @@ export default function ComercialHuevoDashboard({ data }) {
       </div>
 
       {/* Gráfico Combinado */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        onClick={() => openModal(
-          'Evolución de Ventas de Huevo',
-          'Este gráfico muestra la evolución de unidades vendidas (barras azules) y precio promedio (línea naranja) durante los años 2023-2025. Se observa claramente cómo el volumen se mantiene estable alrededor de 34 millones de unidades, mientras que el precio cae continuamente desde $512 en 2023 hasta $403 en 2025, una reducción del 21.29%.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el precio promedio anual, confirmando la dirección descendente sostenida del precio en el período.'
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-yellow-400 transition-all"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Evolución Unidades y Precio Promedio Huevo 2023-2025</h3>
-          <Info className="w-5 h-5 text-yellow-400 animate-pulse" />
-        </div>
+      <CollapsibleChart title="Evolución Unidades y Precio Promedio Huevo 2023-2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={datosGrafico}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -341,7 +338,7 @@ export default function ComercialHuevoDashboard({ data }) {
             <Line yAxisId="right" type="linear" dataKey="tendenciaPrecio" stroke="#7c3aed" strokeWidth={2} strokeDasharray="8 4" dot={false} name="Tendencia Precio" />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Modal */}
       {createPortal(

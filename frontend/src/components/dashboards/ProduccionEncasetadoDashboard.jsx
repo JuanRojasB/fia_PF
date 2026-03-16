@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart, Area, Cell, ReferenceLine, Customized } from 'recharts';
 import { Factory, TrendingUp, Calendar, X, Info, Target, AlertCircle, CheckCircle2 } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 
 export default function ProduccionEncasetadoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -357,18 +358,11 @@ export default function ProduccionEncasetadoDashboard({ data }) {
       </motion.div>
 
       {/* Gráfico Comparativo Programado vs Real */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer"
-        onClick={() => openModal(
-          'Cumplimiento Mensual del Programa',
-          `Comparación mes a mes entre el encasetamiento programado y el real. Las barras azules muestran lo programado y las verdes lo ejecutado. Un cumplimiento consistente cercano al 100% indica buena planificación y ejecución.`
-        )}
+      <CollapsibleChart
+        title="Cumplimiento del Programado de Encasetamiento 2025"
+        subtitle="Pollitos programados vs real mensual + % cumplimiento acumulado"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Cumplimiento del Programado de Encasetamiento 2025</h3>
-        <p className="text-sm text-gray-600 mb-4">Pollitos programados vs real mensual + % cumplimiento acumulado</p>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={encasetadoMeses} margin={{ left: 20, right: 40, bottom: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -441,21 +435,14 @@ export default function ProduccionEncasetadoDashboard({ data }) {
             ))}
           </div>
         </div>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Gráfico de Comparación Anual 2024 vs 2025 */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.5 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
-        onClick={() => openModal(
-          'Comparación Anual 2024 vs 2025',
-          `Comparación del encasetamiento real entre 2024 y 2025 mes a mes. Permite identificar patrones estacionales y crecimiento de la operación.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el encasetamiento real mensual de 2025, mostrando la dirección general del volumen productivo en el año.`
-        )}
+      <CollapsibleChart
+        title="Encasetamiento Real 2024 vs 2025"
+        subtitle="Encasetamiento real mensual en pollitos — comparación interanual"
+        defaultOpen={false}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Encasetamiento Real 2024 vs 2025</h3>
-        <p className="text-sm text-gray-600 mb-4">Encasetamiento real mensual en pollitos — comparación interanual</p>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={encasetadoConTend} margin={{ left: 20, right: 20, bottom: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -532,7 +519,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
             </div>
           );
         })()}
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Análisis de Encasetamiento */}
       {(() => {

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend, ComposedChart, ReferenceLine, LabelList } from 'recharts';
 import { Package, TrendingUp, Target, X, Info, Percent, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 
 export default function ComercialPolloEnteroDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -123,10 +124,11 @@ export default function ComercialPolloEnteroDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Producción Pollo Entero Planta 2025</span>
             <Package className="w-6 h-6 text-orange-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.polloEnteroPlanta)}</div>
-          <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionPlanta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {parseFloat(variacionPlanta2025vs2024) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-            {variacionPlanta2025vs2024 > 0 ? '+' : ''}{variacionPlanta2025vs2024}% vs 2024
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.polloEnteroPlanta)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.polloEnteroPlanta)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.polloEnteroPlanta)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(variacionPlanta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionPlanta2025vs2024 > 0 ? '+' : ''}{variacionPlanta2025vs2024}%</div>
           </div>
         </motion.div>
 
@@ -144,10 +146,11 @@ export default function ComercialPolloEnteroDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Ventas Línea Asadero 2025 (und)</span>
             <TrendingUp className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatNumber(datos2025.ventaLineaAsadero)}</div>
-          <div className={`text-xs flex items-center gap-1 ${parseFloat(variacionVenta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {parseFloat(variacionVenta2025vs2024) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-            {variacionVenta2025vs2024 > 0 ? '+' : ''}{variacionVenta2025vs2024}% vs 2024
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.ventaLineaAsadero)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.ventaLineaAsadero)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.ventaLineaAsadero)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(variacionVenta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionVenta2025vs2024 > 0 ? '+' : ''}{variacionVenta2025vs2024}%</div>
           </div>
         </motion.div>
 
@@ -165,10 +168,11 @@ export default function ComercialPolloEnteroDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Participación Asadero vs Planta 2025</span>
             <Percent className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{datos2025.participacionLograda}%</div>
-          <div className={`text-xs flex items-center gap-1 ${parseFloat(mejoraParticipacion) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {parseFloat(mejoraParticipacion) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-            {mejoraParticipacion > 0 ? '+' : ''}{mejoraParticipacion} pts vs 2024
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{datos2025.participacionLograda}%</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{datos2024.participacionLograda}%</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{datos2025.participacionLograda}%</span></div>
+            <div className={`text-sm font-bold ${parseFloat(mejoraParticipacion) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {mejoraParticipacion > 0 ? '+' : ''}{mejoraParticipacion} pts</div>
           </div>
         </motion.div>
 
@@ -282,20 +286,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
       </CollapsibleTable>
 
       {/* Gráfico Comparativo */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        onClick={() => openModal(
-          'Evolución Histórica 2023-2025',
-          `Análisis de la evolución de la producción y ventas de pollo entero durante los últimos 3 años. 2023: Producción ${formatNumber(datos2023.polloEnteroPlanta)}, Ventas ${formatNumber(datos2023.ventaLineaAsadero)} (${datos2023.participacionLograda}%). 2024: Producción ${formatNumber(datos2024.polloEnteroPlanta)}, Ventas ${formatNumber(datos2024.ventaLineaAsadero)} (${datos2024.participacionLograda}%). 2025: Producción ${formatNumber(datos2025.polloEnteroPlanta)}, Ventas ${formatNumber(datos2025.ventaLineaAsadero)} (${datos2025.participacionLograda}%). La tendencia muestra una mejora sostenida en la participación de la línea Asadero.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el volumen de planta anual, indicando la dirección general del crecimiento productivo.`
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-orange-500 transition-all cursor-pointer"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Evolución Histórica Ventas Pollo Entero 2023-2025</h3>
-          <Info className="w-5 h-5 text-orange-400 animate-pulse" />
-        </div>
+      <CollapsibleChart title="Evolución Histórica Ventas Pollo Entero 2023-2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={350}>
           <ComposedChart data={datosConTendenciaPlanta}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -351,23 +342,10 @@ export default function ComercialPolloEnteroDashboard({ data }) {
             <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 4, fill: '#ef4444' }} name="Tendencia Planta" />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Gráfico de Participación */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        onClick={() => openModal(
-          'Evolución de Participación vs Meta',
-          `Seguimiento de la participación de la línea Asadero vs la meta del 50%. 2023: ${datos2023.participacionLograda}% (faltaban ${datos2023.puntosFaltantes} pts). 2024: ${datos2024.participacionLograda}% (faltaban ${datos2024.puntosFaltantes} pts). 2025: ${datos2025.participacionLograda}% (faltan ${datos2025.puntosFaltantes} pts). La tendencia es positiva, acercándose cada vez más a la meta estratégica del 50%.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre la participación anual, mostrando si el avance hacia la meta del 50% está acelerando o estancándose.`
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-green-500 transition-all cursor-pointer"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Evolución de Participación Pollo Entero vs Meta 2025</h3>
-          <Info className="w-5 h-5 text-green-400 animate-pulse" />
-        </div>
+      <CollapsibleChart title="Evolución de Participación Pollo Entero vs Meta 2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={datosConTendenciaParticipacion}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -417,7 +395,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
             <Legend />
           </LineChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Modal */}
       {createPortal(

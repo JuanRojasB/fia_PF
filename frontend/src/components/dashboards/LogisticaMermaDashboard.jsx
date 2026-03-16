@@ -240,119 +240,7 @@ export default function LogisticaMermaDashboard({ data }) {
             </tbody>
           </table>
       </CollapsibleTable>
-
-      {/* Gráfico Unificado — igual al comparativo de referencia */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-2 border-gray-200"
-      >
-        <div className="flex items-center justify-between mb-2">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">COMPARATIVO DE MERMAS AÑOS 2025/24/23</h3>
-            <p className="text-xs text-gray-500 mt-1">Suma de % — U02 presenta valores negativos (ganancia de peso en proceso)</p>
-          </div>
-          <Info
-            className="w-5 h-5 text-red-400 cursor-pointer hover:text-red-600 transition-colors"
-            onClick={() => openModal(
-              'Comparativo de Mermas 2025/24/23',
-              'Gráfico unificado con las 4 sedes:\n\n• GENERAL: 11.70% (2025) vs meta 10% — brecha 1.70pp\n• U01: 9.49% (2025) vs meta 10% — ✓ Cumple meta\n• U02: -22.31% (2025) vs meta -25% — valores negativos = ganancia de peso\n• U03: 13.05% (2025) vs meta 12% — brecha 1.05pp\n\nLas barras grises representan la meta establecida para cada sede.'
-            )}
-          />
-        </div>
-
-        <ResponsiveContainer width="100%" height={480}>
-          <BarChart
-            data={datosGrafico}
-            margin={{ top: 30, right: 30, left: 20, bottom: 20 }}
-            barCategoryGap="25%"
-            barGap={2}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis
-              dataKey="sede"
-              stroke="#6b7280"
-              tick={{ fontSize: 13, fontWeight: 'bold', fontStyle: 'italic' }}
-            />
-            <YAxis
-              stroke="#6b7280"
-              tick={{ fontSize: 11 }}
-              tickFormatter={(v) => `${v.toFixed(2)}%`}
-              domain={['auto', 'auto']}
-              label={{ value: 'Suma de %', angle: -90, position: 'insideLeft', offset: -5, style: { fontSize: 12, fill: '#6b7280' } }}
-            />
-            <ReferenceLine y={0} stroke="#374151" strokeWidth={2} />
-            <Tooltip
-              content={({ active, payload, label }) => {
-                if (!active || !payload?.length) return null;
-                const sedeLabel = label === 'U01' ? 'Sede 1 (U01)' : label === 'U02' ? 'Sede 2 (U02)' : label === 'U03' ? 'Sede 3 (U03)' : label;
-                return (
-                  <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl min-w-[180px]">
-                    <p className="font-bold text-gray-900 mb-3">{sedeLabel}</p>
-                    <div className="space-y-1.5">
-                      {payload.map((entry, i) => (
-                        entry.value != null && (
-                          <div key={i} className="flex justify-between items-center gap-4">
-                            <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: entry.color }} />
-                              <span className="text-gray-600 text-sm">{entry.name}:</span>
-                            </div>
-                            <span className="font-bold text-gray-900 text-sm">{parseFloat(entry.value).toFixed(2)}%</span>
-                          </div>
-                        )
-                      ))}
-                    </div>
-                    {label === 'U02' && (
-                      <p className="text-xs text-green-600 mt-2 pt-2 border-t border-gray-100">Negativo = ganancia de peso</p>
-                    )}
-                  </div>
-                );
-              }}
-            />
-            <Legend
-              wrapperStyle={{ paddingTop: '16px' }}
-              iconType="rect"
-              iconSize={14}
-              formatter={(value) => <span style={{ fontSize: 13, fontWeight: 500 }}>{value}</span>}
-            />
-            {/* Etiquetas de valor dentro/sobre las barras */}
-            <Bar dataKey="2025" fill="#f59e0b" name="2025" barSize={28}
-              label={{ position: 'insideTop', fontSize: 10, fontWeight: 'bold', fill: '#78350f', formatter: (v) => v != null ? `${parseFloat(v).toFixed(2)}%` : '' }}
-            />
-            <Bar dataKey="2024" fill="#3b82f6" name="2024" barSize={28}
-              label={{ position: 'insideTop', fontSize: 10, fontWeight: 'bold', fill: '#1e3a8a', formatter: (v) => v != null ? `${parseFloat(v).toFixed(2)}%` : '' }}
-            />
-            <Bar dataKey="2023" fill="#f97316" name="2023" barSize={28}
-              label={{ position: 'insideTop', fontSize: 10, fontWeight: 'bold', fill: '#7c2d12', formatter: (v) => v != null ? `${parseFloat(v).toFixed(2)}%` : '' }}
-            />
-            <Bar dataKey="meta" fill="#9ca3af" name="Meta" barSize={28}
-              label={{ position: 'insideTop', fontSize: 10, fontWeight: 'bold', fill: '#374151', formatter: (v) => v != null ? `${parseFloat(v).toFixed(2)}%` : '' }}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-
-        {/* Resumen por sede debajo del gráfico */}
-        <div className="grid grid-cols-4 gap-3 mt-6 pt-5 border-t border-gray-200">
-          {[
-            { label: 'General', val: general2025.merma_2025, meta: general2025.meta_establecida, brecha: general2025.brecha_puntos_porcentuales, color: 'text-red-600' },
-            { label: 'Sede 1 (U01)', val: u01_2025.merma_2025, meta: u01_2025.meta_establecida, brecha: u01_2025.brecha_puntos_porcentuales, color: 'text-green-600' },
-            { label: 'Sede 2 (U02)', val: u02_2025.merma_2025, meta: u02_2025.meta_establecida, brecha: u02_2025.brecha_puntos_porcentuales, color: 'text-blue-600' },
-            { label: 'Sede 3 (U03)', val: u03_2025.merma_2025, meta: u03_2025.meta_establecida, brecha: u03_2025.brecha_puntos_porcentuales, color: 'text-orange-600' },
-          ].map(({ label, val, meta, brecha, color }) => (
-            <div key={label} className="text-center bg-gray-50 rounded-lg p-3 border border-gray-200">
-              <div className="text-xs text-gray-500 mb-1">{label}</div>
-              <div className={`text-xl font-bold ${color}`}>{val}%</div>
-              <div className="text-xs text-gray-500 mt-1">Meta: {meta}%</div>
-              <div className={`text-xs font-semibold mt-0.5 ${parseFloat(brecha) === 0 ? 'text-green-600' : 'text-orange-600'}`}>
-                {parseFloat(brecha) === 0 ? '✓ Cumple' : `Brecha: ${brecha}pp`}
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Análisis Contextual */}
+{/* Análisis Contextual */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -477,6 +365,118 @@ export default function LogisticaMermaDashboard({ data }) {
         )}
       </AnimatePresence>, document.body)}
 
+      {/* Gráfico Unificado — igual al comparativo de referencia */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-2 border-gray-200"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <h3 className="text-xl font-bold text-gray-900">COMPARATIVO DE MERMAS AÑOS 2025/24/23</h3>
+            <p className="text-xs text-gray-500 mt-1">Suma de % — U02 presenta valores negativos (ganancia de peso en proceso)</p>
+          </div>
+          <Info
+            className="w-5 h-5 text-red-400 cursor-pointer hover:text-red-600 transition-colors"
+            onClick={() => openModal(
+              'Comparativo de Mermas 2025/24/23',
+              'Gráfico unificado con las 4 sedes:\n\n• GENERAL: 11.70% (2025) vs meta 10% — brecha 1.70pp\n• U01: 9.49% (2025) vs meta 10% — ✓ Cumple meta\n• U02: -22.31% (2025) vs meta -25% — valores negativos = ganancia de peso\n• U03: 13.05% (2025) vs meta 12% — brecha 1.05pp\n\nLas barras grises representan la meta establecida para cada sede.'
+            )}
+          />
+        </div>
+
+        <ResponsiveContainer width="100%" height={480}>
+          <BarChart
+            data={datosGrafico}
+            margin={{ top: 30, right: 30, left: 20, bottom: 20 }}
+            barCategoryGap="25%"
+            barGap={2}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <XAxis
+              dataKey="sede"
+              stroke="#6b7280"
+              tick={{ fontSize: 13, fontWeight: 'bold', fontStyle: 'italic' }}
+            />
+            <YAxis
+              stroke="#6b7280"
+              tick={{ fontSize: 11 }}
+              tickFormatter={(v) => `${v.toFixed(2)}%`}
+              domain={['auto', 'auto']}
+              label={{ value: 'Suma de %', angle: -90, position: 'insideLeft', offset: -5, style: { fontSize: 12, fill: '#6b7280' } }}
+            />
+            <ReferenceLine y={0} stroke="#374151" strokeWidth={2} />
+            <Tooltip
+              content={({ active, payload, label }) => {
+                if (!active || !payload?.length) return null;
+                const sedeLabel = label === 'U01' ? 'Sede 1 (U01)' : label === 'U02' ? 'Sede 2 (U02)' : label === 'U03' ? 'Sede 3 (U03)' : label;
+                return (
+                  <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl min-w-[180px]">
+                    <p className="font-bold text-gray-900 mb-3">{sedeLabel}</p>
+                    <div className="space-y-1.5">
+                      {payload.map((entry, i) => (
+                        entry.value != null && (
+                          <div key={i} className="flex justify-between items-center gap-4">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: entry.color }} />
+                              <span className="text-gray-600 text-sm">{entry.name}:</span>
+                            </div>
+                            <span className="font-bold text-gray-900 text-sm">{parseFloat(entry.value).toFixed(2)}%</span>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                    {label === 'U02' && (
+                      <p className="text-xs text-green-600 mt-2 pt-2 border-t border-gray-100">Negativo = ganancia de peso</p>
+                    )}
+                  </div>
+                );
+              }}
+            />
+            <Legend
+              wrapperStyle={{ paddingTop: '16px' }}
+              iconType="rect"
+              iconSize={14}
+              formatter={(value) => <span style={{ fontSize: 13, fontWeight: 500 }}>{value}</span>}
+            />
+            {/* Etiquetas de valor dentro/sobre las barras */}
+            <Bar dataKey="2025" fill="#f59e0b" name="2025" barSize={28}
+              label={{ position: 'insideTop', fontSize: 10, fontWeight: 'bold', fill: '#78350f', formatter: (v) => v != null ? `${parseFloat(v).toFixed(2)}%` : '' }}
+            />
+            <Bar dataKey="2024" fill="#3b82f6" name="2024" barSize={28}
+              label={{ position: 'insideTop', fontSize: 10, fontWeight: 'bold', fill: '#1e3a8a', formatter: (v) => v != null ? `${parseFloat(v).toFixed(2)}%` : '' }}
+            />
+            <Bar dataKey="2023" fill="#f97316" name="2023" barSize={28}
+              label={{ position: 'insideTop', fontSize: 10, fontWeight: 'bold', fill: '#7c2d12', formatter: (v) => v != null ? `${parseFloat(v).toFixed(2)}%` : '' }}
+            />
+            <Bar dataKey="meta" fill="#9ca3af" name="Meta" barSize={28}
+              label={{ position: 'insideTop', fontSize: 10, fontWeight: 'bold', fill: '#374151', formatter: (v) => v != null ? `${parseFloat(v).toFixed(2)}%` : '' }}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+
+        {/* Resumen por sede debajo del gráfico */}
+        <div className="grid grid-cols-4 gap-3 mt-6 pt-5 border-t border-gray-200">
+          {[
+            { label: 'General', val: general2025.merma_2025, meta: general2025.meta_establecida, brecha: general2025.brecha_puntos_porcentuales, color: 'text-red-600' },
+            { label: 'Sede 1 (U01)', val: u01_2025.merma_2025, meta: u01_2025.meta_establecida, brecha: u01_2025.brecha_puntos_porcentuales, color: 'text-green-600' },
+            { label: 'Sede 2 (U02)', val: u02_2025.merma_2025, meta: u02_2025.meta_establecida, brecha: u02_2025.brecha_puntos_porcentuales, color: 'text-blue-600' },
+            { label: 'Sede 3 (U03)', val: u03_2025.merma_2025, meta: u03_2025.meta_establecida, brecha: u03_2025.brecha_puntos_porcentuales, color: 'text-orange-600' },
+          ].map(({ label, val, meta, brecha, color }) => (
+            <div key={label} className="text-center bg-gray-50 rounded-lg p-3 border border-gray-200">
+              <div className="text-xs text-gray-500 mb-1">{label}</div>
+              <div className={`text-xl font-bold ${color}`}>{val}%</div>
+              <div className="text-xs text-gray-500 mt-1">Meta: {meta}%</div>
+              <div className={`text-xs font-semibold mt-0.5 ${parseFloat(brecha) === 0 ? 'text-green-600' : 'text-orange-600'}`}>
+                {parseFloat(brecha) === 0 ? '✓ Cumple' : `Brecha: ${brecha}pp`}
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      
     </div>
   );
 }

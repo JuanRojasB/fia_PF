@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend, LabelList } from 'recharts';
 import { Truck, TrendingUp, Building, X, Info, Users, Package, DollarSign, TrendingDown } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 import { formatCurrencyFull } from './CustomTooltip';
 
 export default function GestionLogisticaDashboard({ data }) {
@@ -146,7 +147,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos 2025 (3 Sedes)</span>
             <DollarSign className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(total2025)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(total2025)}</div>
           <div className={`text-xs ${parseFloat(variacionTotal) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {variacionTotal > 0 ? '+' : ''}{variacionTotal}% vs 2024
           </div>
@@ -166,7 +167,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 1 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[0]?.variacion || 0}% vs 2024
           </div>
@@ -186,7 +187,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 2 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[1]?.variacion || 0}% vs 2024
           </div>
@@ -206,7 +207,7 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 3 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-orange-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</div>
           <div className={`text-xs ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
             {sedesData[2]?.variacion || 0}% vs 2024
           </div>
@@ -214,20 +215,7 @@ export default function GestionLogisticaDashboard({ data }) {
       </div>
 
       {/* Gráfico Comparativo por Sede */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        onClick={() => openModal(
-          'Comparativa por Sede 2024 vs 2025',
-          `Análisis comparativo de gastos operacionales logísticos por sede. Sede 1: ${formatCurrency(sedesData[0]?.total2025 || 0)} (${sedesData[0]?.variacion || 0}% vs 2024) - Reducción por optimización de fletes y personal. Sede 2: ${formatCurrency(sedesData[1]?.total2025 || 0)} (${sedesData[1]?.variacion || 0}% vs 2024) - Incremento por crecimiento del 31.3% en ventas. Sede 3: ${formatCurrency(sedesData[2]?.total2025 || 0)} (${sedesData[2]?.variacion || 0}% vs 2024) - Crecimiento operativo y consolidación de procesos.`
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Gastos Operacionales Logísticos por Sede 2024 vs 2025</h3>
-          <Info className="w-5 h-5 text-purple-400 animate-pulse" />
-        </div>
+      <CollapsibleChart title="Gastos Operacionales Logísticos por Sede 2024 vs 2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={450}>
           <BarChart data={sedesData} margin={{ top: 20, right: 30, bottom: 20, left: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -263,24 +251,10 @@ export default function GestionLogisticaDashboard({ data }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
-      {/* Gráfico Consolidado por Concepto - Clickeable */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        onClick={() => openModal(
-          'Detalle de Gastos Consolidados',
-          `Análisis detallado de gastos operacionales logísticos consolidados de las 3 sedes. El incremento del ${variacionTotal}% refleja el crecimiento operativo, especialmente en Sede 2 y Sede 3, mientras que Sede 1 optimizó procesos logrando una reducción.`,
-          true
-        )}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-purple-500 transition-all cursor-pointer"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Gastos Operacionales por Tipo de Gasto (Consolidado 3 Sedes)</h3>
-          <Info className="w-5 h-5 text-purple-400 animate-pulse" />
-        </div>
+      {/* Gráfico Consolidado por Concepto */}
+      <CollapsibleChart title="Gastos Operacionales por Tipo de Gasto (Consolidado 3 Sedes)" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={500}>
           <BarChart data={consolidadoArray} layout="vertical" margin={{ left: 250, right: 40, top: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -320,7 +294,7 @@ export default function GestionLogisticaDashboard({ data }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Modal con Tabla Consolidada */}
       {createPortal(

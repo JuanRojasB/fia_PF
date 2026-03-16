@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList } from 'recharts';
 import { Truck, TrendingDown, Package, AlertCircle, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 import { getValueColor } from '../../utils/colorUtils';
 
 export default function ProduccionPolloEntregadoDashboard({ data }) {
@@ -124,11 +125,16 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Programado Aves 2025</span>
             <Package className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(datos2025.programado)}</div>
-          <div className="text-xs text-gray-600 mt-1">2024: {formatNumber(datos2024.programado)}</div>
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.programado)}</div>
           {(() => {
             const vPct = datos2024.programado > 0 ? (((datos2025.programado - datos2024.programado) / datos2024.programado) * 100).toFixed(1) : 0;
-            return <div className={`text-xs mt-1 font-semibold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>{parseFloat(vPct) >= 0 ? '+' : ''}{vPct}% vs 2024</div>;
+            return (
+              <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+                <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.programado)}</span></div>
+                <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.programado)}</span></div>
+                <div className={`text-sm font-bold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {parseFloat(vPct) >= 0 ? '+' : ''}{vPct}%</div>
+              </div>
+            );
           })()}
         </motion.div>
 
@@ -146,11 +152,16 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Real Aves Entregadas en 2025</span>
             <Truck className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(datos2025.real_granjas)}</div>
-          <div className="text-xs text-gray-600 mt-1">2024: {formatNumber(datos2024.real_granjas)}</div>
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.real_granjas)}</div>
           {(() => {
             const vPct = datos2024.real_granjas > 0 ? (((datos2025.real_granjas - datos2024.real_granjas) / datos2024.real_granjas) * 100).toFixed(1) : 0;
-            return <div className={`text-xs mt-1 font-semibold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>{parseFloat(vPct) >= 0 ? '+' : ''}{vPct}% vs 2024</div>;
+            return (
+              <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+                <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.real_granjas)}</span></div>
+                <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.real_granjas)}</span></div>
+                <div className={`text-sm font-bold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {parseFloat(vPct) >= 0 ? '+' : ''}{vPct}%</div>
+              </div>
+            );
           })()}
         </motion.div>
 
@@ -168,11 +179,16 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Comprado de Aves(Avi/cambulos) en 2025</span>
             <Package className="w-6 h-6 text-orange-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(datos2025.comprado)}</div>
-          <div className="text-xs text-gray-600 mt-1">2024: {formatNumber(datos2024.comprado)}</div>
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.comprado)}</div>
           {(() => {
             const vPct = datos2024.comprado > 0 ? (((datos2025.comprado - datos2024.comprado) / datos2024.comprado) * 100).toFixed(1) : 0;
-            return <div className={`text-xs mt-1 font-semibold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>{parseFloat(vPct) >= 0 ? '+' : ''}{vPct}% vs 2024</div>;
+            return (
+              <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+                <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.comprado)}</span></div>
+                <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.comprado)}</span></div>
+                <div className={`text-sm font-bold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {parseFloat(vPct) >= 0 ? '+' : ''}{vPct}%</div>
+              </div>
+            );
           })()}
         </motion.div>
 
@@ -190,9 +206,11 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total de Aves en 2025</span>
             <TrendingDown className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(datos2025.total)}</div>
-          <div className={`text-xs mt-1 font-semibold px-2 py-1 rounded inline-block ${getValueColor(datos2025.var_pct).bg} ${getValueColor(datos2025.var_pct).text}`}>
-            {datos2025.var_pct}% vs 2024
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.total)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.total)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.total)}</span></div>
+            <div className={`text-sm font-bold ${datos2025.var_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {datos2025.var_pct >= 0 ? '+' : ''}{datos2025.var_pct}%</div>
           </div>
         </motion.div>
       </div>
@@ -257,20 +275,10 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
       {/* Gráficos Mejorados */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Gráfico 1: Comparativo Barras */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          onClick={() => openModal(
-            'Comparativo Real vs Programado',
-            'Gráfico de barras que compara el pollo Real recibido de granjas contra el Programado entre 2024 (azul) y 2025 (verde). Permite visualizar el cumplimiento del programa de producción y las diferencias entre lo planificado y lo ejecutado. El resumen debajo muestra las diferencias para todas las categorías incluyendo Comprado y Total.'
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-blue-400 transition-all"
+        <CollapsibleChart
+          title="Aves Entregadas Real vs Programado por Año"
+          defaultOpen={false}
         >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Aves Entregadas Real vs Programado por Año</h3>
-            <Info className="w-5 h-5 text-blue-400 animate-pulse" />
-          </div>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={datosComparativo} margin={{ top: 5, right: 20, left: 60, bottom: 40 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -355,24 +363,13 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               })}
             </div>
           </div>
-        </motion.div>
+        </CollapsibleChart>
 
         {/* Gráfico 2: Composición Real vs Comprado */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          onClick={() => openModal(
-            'Composición: Real vs Comprado',
-            'Muestra la proporción entre pollos de granjas propias (Real) y pollos comprados a avi/cambulos. La alta proporción de Real indica autosuficiencia en la producción.'
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-green-400 transition-all"
+        <CollapsibleChart
+          title="Composición Aves Entregadas: Granjas Propias vs Comprado 2025"
+          defaultOpen={false}
         >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Composición Aves Entregadas: Granjas Propias vs Comprado (Avi/Cambulos) 2025</h3>
-            <Info className="w-5 h-5 text-green-400 animate-pulse" />
-          </div>
-          
           <div className="grid grid-cols-2 gap-6">
             {/* 2024 */}
             <div>
@@ -454,7 +451,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               </div>
             </div>
           </div>
-        </motion.div>
+        </CollapsibleChart>
       </div>
 
       {/* Análisis */}

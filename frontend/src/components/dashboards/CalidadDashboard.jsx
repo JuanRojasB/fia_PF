@@ -32,8 +32,11 @@ export default function CalidadDashboard({ data }) {
             <AlertTriangle className="w-5 h-5 text-orange-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">112</div>
-          <div className="text-xs text-gray-600">Registrados en 2025</div>
-          <div className="text-xs text-gray-500 mt-1">Planta y posproceso</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">referencia</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">112 accidentes</span></div>
+            <div className="text-sm font-bold text-orange-600">Planta y posproceso</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -48,8 +51,11 @@ export default function CalidadDashboard({ data }) {
             <TrendingDown className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">-28.45%</div>
-          <div className="text-xs text-gray-600">vs 2024</div>
-          <div className="text-xs text-green-600 mt-1">Mejora continua</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">base comparación</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">reducción lograda</span></div>
+            <div className="text-sm font-bold text-green-600">Var: -28,45% vs 2024</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -64,8 +70,11 @@ export default function CalidadDashboard({ data }) {
             <FileCheck className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">154</div>
-          <div className="text-xs text-gray-600">Ejecutados en 2025</div>
-          <div className="text-xs text-blue-600 mt-1">+27.92% vs 2024</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">~120 planes</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">154 planes</span></div>
+            <div className="text-sm font-bold text-green-600">Var: +27,92% vs 2024</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -80,8 +89,11 @@ export default function CalidadDashboard({ data }) {
             <Shield className="w-5 h-5 text-purple-600" />
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">14</div>
-          <div className="text-xs text-gray-600">Procesos auditados</div>
-          <div className="text-xs text-purple-600 mt-1">ISO 9001:2015</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">Norma: <span className="font-semibold text-gray-700">ISO 9001:2015</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">14 procesos auditados</span></div>
+            <div className="text-sm font-bold text-purple-600">Transición → 2026</div>
+          </div>
         </motion.div>
       </div>
 

@@ -125,13 +125,12 @@ export default function CarteraDashboard({ data }) {
             <span className="text-gray-600 text-sm">Rotación Cartera Dic 2025 vs Meta</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{resumenAnual.rotacion_dic_2025} días</div>
-          <div className="text-sm text-gray-600 mt-1">Meta ISO: 15 días</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">vs Dic 2024</div>
-            <div className="text-lg font-semibold text-green-600">{resumenAnual.rotacion_dic_2024} días</div>
+          <div className="text-3xl font-bold text-gray-900 leading-tight">{resumenAnual.rotacion_dic_2025} días</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">14,99 días</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{resumenAnual.rotacion_dic_2025} días</span></div>
+            <div className="text-sm font-bold text-green-600">Meta ISO ≤15 días ✓</div>
           </div>
-          <Info className="w-4 h-4 text-green-600 animate-pulse mt-2" />
         </motion.div>
 
         <motion.div
@@ -163,12 +162,11 @@ export default function CarteraDashboard({ data }) {
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumenAnual.ventas_contado_promedio}%</div>
-          <div className="text-sm text-gray-600 mt-1">Promedio anual contado</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Ventas de crédito</div>
-            <div className="text-lg font-semibold text-blue-600">62,09%</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">Contado 2025: <span className="font-semibold text-gray-700">{resumenAnual.ventas_contado_promedio}%</span></div>
+            <div className="text-xs text-gray-500">Crédito 2025: <span className="font-semibold text-gray-700">{resumenAnual.ventas_credito_promedio}%</span></div>
+            <div className="text-sm font-bold text-blue-600">Promedio anual 2025</div>
           </div>
-          <Info className="w-4 h-4 text-blue-600 animate-pulse mt-2" />
         </motion.div>
 
         <motion.div
@@ -202,8 +200,11 @@ export default function CarteraDashboard({ data }) {
             <AlertTriangle className="w-5 h-5 text-yellow-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumenAnual.morosidad_promedio}%</div>
-          <div className="text-sm text-gray-600 mt-1">Cartera vencida por recaudar</div>
-          <Info className="w-4 h-4 text-yellow-600 animate-pulse mt-2" />
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{resumenAnual.morosidad_promedio}% promedio</span></div>
+            <div className="text-xs text-gray-500">Cartera vencida por recaudar</div>
+            <div className="text-sm font-bold text-yellow-600">Requiere seguimiento</div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -236,13 +237,12 @@ export default function CarteraDashboard({ data }) {
             <span className="text-gray-600 text-sm">Saldo Cartera Dic 2025 vs Dic 2024</span>
             <CreditCard className="w-5 h-5 text-purple-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatCurrencyFull((resumenAnual.cartera_dic_2025 || 0) * 1000000)}</div>
-          <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Variación vs Dic 2024</div>
-            <div className="text-lg font-semibold text-green-600">{resumenAnual.variacion_dic}%</div>
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">{formatCurrencyFull((resumenAnual.cartera_dic_2025 || 0) * 1000000)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(16971 * 1000000)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull((resumenAnual.cartera_dic_2025 || 0) * 1000000)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(resumenAnual.variacion_dic) <= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {resumenAnual.variacion_dic}%</div>
           </div>
-          <Info className="w-4 h-4 text-purple-600 animate-pulse mt-2" />
         </motion.div>
       </div>
 
@@ -414,7 +414,7 @@ export default function CarteraDashboard({ data }) {
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">Tiempo Promedio de Cobro 2025 (Días - Meta ≤15)</h3>
+            <h3 className="text-xl font-bold text-gray-900">Evolución mensual de los días de rotación de cartera en 2025</h3>
             <p className="text-sm text-gray-600 mt-1">Días que tardan los clientes en pagar (Meta: ≤15 días)</p>
           </div>
           <Info className="w-5 h-5 text-blue-600 animate-pulse" />
@@ -666,6 +666,8 @@ export default function CarteraDashboard({ data }) {
                 content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
                     const mesData = datosMensuales.find(m => m.mes === label);
+                    if (!mesData) return null;
+                    const tendencia = payload.find(p => p.dataKey === 'tendencia')?.value;
                     return (
                       <div style={{ 
                         backgroundColor: '#ffffff', 
@@ -680,17 +682,24 @@ export default function CarteraDashboard({ data }) {
                             <strong>Contado:</strong> {mesData.pct_contado}%
                           </p>
                           <p style={{ color: '#2563eb', padding: '0 0 4px 0', margin: 0, fontSize: '12px' }}>
-                            ${formatCurrency(mesData.ventas_contado)}
+                            {new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(parseFloat(mesData.ventas_contado) || 0)}
                           </p>
                         </div>
-                        <div>
+                        <div style={{ marginBottom: '8px' }}>
                           <p style={{ color: '#8b5cf6', padding: '4px 0', margin: 0 }}>
                             <strong>Crédito:</strong> {mesData.pct_credito}%
                           </p>
                           <p style={{ color: '#8b5cf6', padding: '0', margin: 0, fontSize: '12px' }}>
-                            ${formatCurrency(mesData.ventas_credito)}
+                            {new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(parseFloat(mesData.ventas_credito) || 0)}
                           </p>
                         </div>
+                        {tendencia != null && (
+                          <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '6px', marginTop: '4px' }}>
+                            <p style={{ color: '#ef4444', padding: '0', margin: 0, fontSize: '12px' }}>
+                              <strong>Tendencia Contado:</strong> {Number(tendencia).toFixed(2)}%
+                            </p>
+                          </div>
+                        )}
                       </div>
                     );
                   }
@@ -719,7 +728,7 @@ export default function CarteraDashboard({ data }) {
           </h4>
           <div className="space-y-2 text-xs sm:text-sm text-gray-700">
             <div>• Rotación: {resumenAnual.rotacion_dic_2025} días (Meta ISO cumplida)</div>
-            <div>• Mejora vs 2024: de {resumenAnual.rotacion_dic_2024} a {resumenAnual.rotacion_dic_2025} días</div>
+            <div>• Mejora vs 2024: de 14,99 a {resumenAnual.rotacion_dic_2025} días</div>
             <div>• Cartera Dic: ${formatNumber(resumenAnual.cartera_dic_2025)}M ({resumenAnual.variacion_dic}% vs 2024)</div>
             <div>• Año de cambios estructurales en el área</div>
           </div>
