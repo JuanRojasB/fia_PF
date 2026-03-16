@@ -333,10 +333,9 @@ export default function ProduccionEncasetadoDashboard({ data }) {
                   // Var Real: total real2025 vs total real2024 (todos los meses, igual que la imagen)
                   const tVarRealAbs = totReal2025 - totReal2024;
                   const tVarRealRel = totReal2024 > 0 ? ((tVarRealAbs / totReal2024) * 100).toFixed(2) : 0;
-                  // Var Prog vs Real: solo meses con real2025 > 0
-                  const mesesConReal = encasetadoMeses.filter(m => m.real2025 > 0);
-                  const tProg2025ParaVar = mesesConReal.reduce((s, m) => s + m.prog2025, 0);
-                  const tReal2025ParaVar = mesesConReal.reduce((s, m) => s + m.real2025, 0);
+                  // Var Prog vs Real: todos los meses (incluyendo Diciembre sin real)
+                  const tProg2025ParaVar = encasetadoMeses.reduce((s, m) => s + m.prog2025, 0);
+                  const tReal2025ParaVar = encasetadoMeses.reduce((s, m) => s + m.real2025, 0);
                   const tVarPvsRAbs = tReal2025ParaVar - tProg2025ParaVar;
                   const tVarPvsRRel = tProg2025ParaVar > 0 ? ((tVarPvsRAbs / tProg2025ParaVar) * 100).toFixed(2) : 0;
                   return (

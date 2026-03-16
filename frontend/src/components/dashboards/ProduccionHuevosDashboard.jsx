@@ -89,92 +89,106 @@ export default function ProduccionHuevosDashboard({ data }) {
     <div className="space-y-8">
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* KPI 1: Huevos producidos 2025 vs 2024 */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Producción Total de Huevos 2025',
-            `Se produjeron ${formatNumber(totalHuevos2025)} huevos durante el año 2025 con ${formatNumber(aves2025)} aves en producción. La productividad real fue de ${formatDecimal(productividadReal2025)} huevos por gallina al mes. La producción de huevos es el resultado de la eficiencia reproductiva de las gallinas ponedoras, influenciada por genética, nutrición, manejo, bioseguridad y condiciones ambientales. El estándar de la industria es de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes.`
+            'Huevos Producidos 2025 vs 2024',
+            `Se produjeron ${formatNumber(totalHuevos2025)} huevos en 2025 vs ${formatNumber(totalHuevos2024)} en 2024. Variación: ${variacionHuevos > 0 ? '+' : ''}${variacionHuevos}%. Con ${formatNumber(aves2025)} aves en producción en 2025 vs ${formatNumber(aves2024)} en 2024.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Huevos Producidos 2025 vs Programado</span>
+            <span className="text-gray-600 text-sm">Huevos Producidos 2025 vs 2024</span>
             <Egg className="w-5 h-5 text-yellow-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{formatNumber(totalHuevos2025)}</div>
-          <div className="text-sm text-gray-600 mt-1">Total anual</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Aves en producción 2025</div>
-            <div className="text-lg font-semibold text-yellow-400">{formatNumber(aves2025)}</div>
+          <div className="text-sm text-gray-600 mt-1">Total anual 2025</div>
+          <div className="mt-3 pt-3 border-t border-gray-200 text-xs space-y-0.5">
+            <div className="text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(totalHuevos2024)}</span></div>
+            <div className="text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(totalHuevos2025)}</span></div>
+            <div className={`font-bold ${parseFloat(variacionHuevos) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              Var: {parseFloat(variacionHuevos) >= 0 ? '+' : ''}{variacionHuevos}%
+            </div>
           </div>
         </motion.div>
 
+        {/* KPI 2: Aves en producción 2025 vs 2024 */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.1 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Producción Total de Huevos 2024',
-            `Se produjeron ${formatNumber(totalHuevos2024)} huevos durante el año 2024 con ${formatNumber(aves2024)} aves en producción. La productividad real fue de ${formatDecimal(productividadReal2024)} huevos por gallina al mes. Este valor sirve como base de comparación para evaluar el crecimiento y mejoras en la operación de postura entre años.`
+            'Aves en Producción 2025 vs 2024',
+            `Saldo inicial de aves en producción: ${formatNumber(aves2025)} en 2025 vs ${formatNumber(aves2024)} en 2024. Este es el inventario de gallinas ponedoras al inicio del período, base para calcular la productividad por ave.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Huevos Producidos 2024 vs Programado</span>
+            <span className="text-gray-600 text-sm">Aves en Producción 2025 vs 2024</span>
             <Egg className="w-5 h-5 text-green-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(totalHuevos2024)}</div>
-          <div className="text-sm text-gray-600 mt-1">Total anual</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Aves en producción 2024</div>
-            <div className="text-lg font-semibold text-green-400">{formatNumber(aves2024)}</div>
+          <div className="text-3xl font-bold text-gray-900">{formatNumber(aves2025)}</div>
+          <div className="text-sm text-gray-600 mt-1">Saldo inicial aves 2025</div>
+          <div className="mt-3 pt-3 border-t border-gray-200 text-xs space-y-0.5">
+            <div className="text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(aves2024)}</span></div>
+            <div className="text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(aves2025)}</span></div>
+            <div className={`font-bold ${aves2025 >= aves2024 ? 'text-green-500' : 'text-red-500'}`}>
+              Var: {aves2024 > 0 ? `${aves2025 >= aves2024 ? '+' : ''}${(((aves2025 - aves2024) / aves2024) * 100).toFixed(1)}%` : 'N/A'}
+            </div>
           </div>
         </motion.div>
 
+        {/* KPI 3: Productividad Real vs Tabla 2025 */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.2 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Comparación Productividad 2025 vs 2024',
-            `La productividad por gallina ${diferenciaProductividad > 0 ? 'aumentó' : 'disminuyó'} ${formatDecimal(Math.abs(diferenciaProductividad))} huevos/gallina/mes entre 2025 y 2024. En 2025 se alcanzaron ${formatDecimal(productividadReal2025)} huevos/gallina/mes vs ${formatDecimal(productividadReal2024)} en 2024. Esto representa una variación del ${variacionProductividad > 0 ? '+' : ''}${variacionProductividad}%. Fórmula: (2025 - 2024) / 2024 × 100 = (${formatDecimal(productividadReal2025)} - ${formatDecimal(productividadReal2024)}) / ${formatDecimal(productividadReal2024)} × 100 = ${variacionProductividad}%. ${diferenciaProductividad > 0 ? 'Esta mejora indica avances en genética, nutrición y manejo.' : 'Hay oportunidad de recuperar niveles anteriores.'}`
+            'Productividad Real vs Tabla 2025',
+            `La productividad real de 2025 es ${formatDecimal(productividadReal2025)} huevos/gallina/mes vs el estándar de tabla de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes. Diferencia: ${formatDecimal(productividadReal2025 - productividadTabla2025)} huevos/gallina/mes (${productividadReal2025 >= productividadTabla2025 ? 'por encima' : 'por debajo'} del estándar). El valor de tabla proviene de la genética Hy-Line Brown.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Comparación Huevos Producidos 2025 vs 2024</span>
+            <span className="text-gray-600 text-sm">Productividad Real vs Tabla 2025</span>
             <TrendingUp className="w-5 h-5 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{diferenciaProductividad > 0 ? '+' : ''}{formatDecimal(diferenciaProductividad)}</div>
-          <div className="text-sm text-gray-600 mt-1">huevos/gallina/mes</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Variación porcentual</div>
-            <div className={`text-lg font-semibold ${variacionProductividad >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {variacionProductividad > 0 ? '+' : ''}{variacionProductividad}%
+          <div className="text-3xl font-bold text-gray-900">{formatDecimal(productividadReal2025)}</div>
+          <div className="text-sm text-gray-600 mt-1">huevos/gallina/mes (real)</div>
+          <div className="mt-3 pt-3 border-t border-gray-200 text-xs space-y-0.5">
+            <div className="text-gray-500">Tabla: <span className="font-semibold text-gray-700">{formatDecimal(productividadTabla2025)}</span></div>
+            <div className="text-gray-500">Real: <span className="font-semibold text-gray-700">{formatDecimal(productividadReal2025)}</span></div>
+            <div className={`font-bold ${productividadReal2025 >= productividadTabla2025 ? 'text-green-500' : 'text-red-500'}`}>
+              Dif: {productividadReal2025 >= productividadTabla2025 ? '+' : ''}{formatDecimal(productividadReal2025 - productividadTabla2025)}
             </div>
           </div>
         </motion.div>
 
+        {/* KPI 4: Productividad Real 2025 vs 2024 */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.3 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Diferencia vs Valor de Tabla 2025',
-            `La productividad real de 2025 es de ${formatDecimal(productividadReal2025)} huevos/gallina/mes, comparado con el valor de tabla de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes. La diferencia absoluta es de ${formatDecimal(productividadReal2025 - productividadTabla2025)} huevos ${productividadReal2025 > productividadTabla2025 ? 'por encima' : 'por debajo'} del valor de tabla.`
+            'Productividad Real 2025 vs 2024',
+            `La productividad real ${diferenciaProductividad > 0 ? 'mejoró' : 'bajó'} de ${formatDecimal(productividadReal2024)} en 2024 a ${formatDecimal(productividadReal2025)} en 2025. Diferencia: ${diferenciaProductividad > 0 ? '+' : ''}${formatDecimal(diferenciaProductividad)} huevos/gallina/mes (${variacionProductividad > 0 ? '+' : ''}${variacionProductividad}%). Fórmula: (${formatDecimal(productividadReal2025)} - ${formatDecimal(productividadReal2024)}) / ${formatDecimal(productividadReal2024)} × 100.`
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Productividad Real vs Valor de Tabla 2025</span>
-            {productividadReal2025 > productividadTabla2025 ? <Award className="w-5 h-5 text-blue-400" /> : <Target className="w-5 h-5 text-orange-400" />}
+            <span className="text-gray-600 text-sm">Productividad Real 2025 vs 2024</span>
+            {diferenciaProductividad >= 0 ? <Award className="w-5 h-5 text-blue-400" /> : <Target className="w-5 h-5 text-orange-400" />}
           </div>
-          <div className="text-3xl font-bold text-gray-900">{productividadReal2025 > productividadTabla2025 ? '+' : ''}{formatDecimal(productividadReal2025 - productividadTabla2025)}</div>
+          <div className="text-3xl font-bold text-gray-900">{diferenciaProductividad > 0 ? '+' : ''}{formatDecimal(diferenciaProductividad)}</div>
           <div className="text-sm text-gray-600 mt-1">huevos/gallina/mes</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Estándar industria 2025</div>
-            <div className="text-lg font-semibold text-blue-400">{formatDecimal(productividadTabla2025)}</div>
+          <div className="mt-3 pt-3 border-t border-gray-200 text-xs space-y-0.5">
+            <div className="text-gray-500">2024: <span className="font-semibold text-gray-700">{formatDecimal(productividadReal2024)}</span></div>
+            <div className="text-gray-500">2025: <span className="font-semibold text-gray-700">{formatDecimal(productividadReal2025)}</span></div>
+            <div className={`font-bold ${parseFloat(variacionProductividad) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              Var: {parseFloat(variacionProductividad) >= 0 ? '+' : ''}{variacionProductividad}%
+            </div>
           </div>
         </motion.div>
       </div>
