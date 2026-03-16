@@ -503,7 +503,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
                 <p className="text-xs text-gray-600">(Costo de Mcia / Prom. de Inventarios)</p>
               </div>
             </div>
-            <p className="text-2xl font-bold text-emerald-600">30,2</p>
+            <p className="text-2xl font-bold text-emerald-600">39,2</p>
             <p className="text-xs text-gray-600 mt-1">2024: 22,2</p>
             <p className="text-xs text-gray-500 mt-2 italic">Es la cantidad de tiempo que estuvo el inventario en la compañía.</p>
           </div>
