@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Monitor, CheckCircle2, Clock, Database, Info, X, Zap, Shield, Cloud, Video, FileText, Code } from 'lucide-react';
+import { Monitor, CheckCircle2, Clock, Database, Info, X, Zap, Shield, Cloud, Video, FileText, Code, FileCheck, CreditCard, QrCode } from 'lucide-react';
 
 export default function TecnologiasInformacionDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -58,8 +58,8 @@ export default function TecnologiasInformacionDashboard({ data }) {
     },
     { 
       icono: Code, 
-      titulo: 'Marketplace Corporativo', 
-      descripcion: 'Construcción del Marketplace corporativo, una plataforma orientada a fortalecer la visibilidad comercial, la interacción con clientes y la integración de canales digitales para ventas. Proyecto clave para la modernización digital y la expansión comercial.',
+      titulo: 'Marketplace', 
+      descripcion: 'Construcción del Marketplace, una plataforma orientada a fortalecer la visibilidad comercial, la interacción con clientes y la integración de canales digitales para ventas. Proyecto clave para la modernización digital y la expansión comercial.',
       color: 'orange'
     },
     { 
@@ -67,6 +67,24 @@ export default function TecnologiasInformacionDashboard({ data }) {
       titulo: 'Seguridad Informática', 
       descripcion: 'Fortalecimiento de la seguridad informática y física, consolidación de plataformas en cloud y continuidad operativa basada en buenas prácticas digitales.',
       color: 'pink'
+    },
+    { 
+      icono: FileCheck, 
+      titulo: 'Gestión de Contratos', 
+      descripcion: 'Sistema digital para consultar, comparar y visualizar contratos de los colaboradores, permitiendo el seguimiento y administración eficiente de contratos laborales, garantizando trazabilidad y cumplimiento normativo.',
+      color: 'teal'
+    },
+    { 
+      icono: CreditCard, 
+      titulo: 'Carnets Digitales', 
+      descripcion: 'Implementación de sistema de carnets digitales con tecnología de escaneo para control de acceso del personal en entradas, mejorando la seguridad, agilizando el ingreso y generando registros automáticos de asistencia.',
+      color: 'emerald'
+    },
+    { 
+      icono: QrCode, 
+      titulo: 'Control de Vigías QR', 
+      descripcion: 'Sistema de control mediante códigos QR para supervisión de vigías por zonas, permitiendo verificar que realicen sus rondas en los puntos asignados y conocer el estado de las diferentes áreas, con registro automático de ubicación y horarios.',
+      color: 'violet'
     }
   ];
 
@@ -79,7 +97,10 @@ export default function TecnologiasInformacionDashboard({ data }) {
       yellow: 'border-yellow-500/50 hover:border-yellow-500',
       orange: 'border-orange-500/50 hover:border-orange-500',
       indigo: 'border-indigo-500/50 hover:border-indigo-500',
-      pink: 'border-pink-500/50 hover:border-pink-500'
+      pink: 'border-pink-500/50 hover:border-pink-500',
+      teal: 'border-teal-500/50 hover:border-teal-500',
+      emerald: 'border-emerald-500/50 hover:border-emerald-500',
+      violet: 'border-violet-500/50 hover:border-violet-500'
     };
     return colors[color] || colors.blue;
   };
@@ -107,23 +128,23 @@ export default function TecnologiasInformacionDashboard({ data }) {
       </motion.div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Proyectos Activos 2025',
-            `Durante el año 2025 se consolidaron ${proyectos.filter(p => p.estado === 'Activo').length} proyectos tecnológicos activos: Transformación Digital y Gestión Documental (digitalización con tablas de retención, cumplimiento normativo 90 años), Fortalecimiento de Seguridad y Supervisión Tecnológica (CCTV en toda la cadena empresarial), Automatización y Eficiencia Operativa (BOT certificados de calidad, Power Apps), Uso Corporativo de Plataformas Microsoft (Teams, 365, OneDrive con backup automático), Gestión de Sistemas ERP ENTERPRISE (nómina, comercial, finanzas en cloud), y Desarrollo del Marketplace Corporativo (plataforma para visibilidad comercial y ventas digitales).`
+            'Iniciativas Tecnológicas 2025',
+            `El año 2025 representó un periodo de importantes avances con ${iniciativas.length} iniciativas tecnológicas principales: Transformación Digital (gestión documental), Seguridad y CCTV (videovigilancia integral), Automatización (BOT y Power Apps), Microsoft 365 (Teams y suite de productividad), Backup y Continuidad (OneDrive automático), ERP ENTERPRISE (nómina, comercial, finanzas), Marketplace (plataforma de ventas digitales), Seguridad Informática (fortalecimiento integral), Gestión de Contratos (contratos de personal), Carnets Digitales (control de acceso) y Control de Vigías QR (supervisión por zonas). Los logros alcanzados contribuyen directamente a la eficiencia operativa, la mejora de procesos empresariales y la preparación de la organización para los retos tecnológicos del 2026.`
           )}
-          className="bg-white/95 rounded-xl p-5 border-4 border-green-500/30 shadow-lg cursor-pointer hover:border-green-500 transition-all"
+          className="bg-white/95 rounded-xl p-5 border-4 border-blue-500/30 shadow-lg cursor-pointer hover:border-blue-500 transition-all"
         >
           <div className="flex items-center gap-3 mb-2">
-            <CheckCircle2 className="w-7 h-7 text-green-600" />
-            <h3 className="text-lg font-bold text-gray-900">Proyectos TI Activos 2025</h3>
+            <Database className="w-7 h-7 text-blue-600" />
+            <h3 className="text-lg font-bold text-gray-900">Iniciativas Tecnológicas 2025</h3>
           </div>
-          <div className="text-3xl font-bold text-green-600">{proyectos.filter(p => p.estado === 'Activo').length}</div>
-          <p className="text-xs text-gray-600 mt-1">Proyectos operando</p>
+          <div className="text-3xl font-bold text-blue-600">{iniciativas.length} proyectos activos</div>
+          <p className="text-xs text-gray-600 mt-1">Transformación digital en marcha</p>
         </motion.div>
 
         <motion.div
@@ -131,35 +152,17 @@ export default function TecnologiasInformacionDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
-            'Marketplace Corporativo - En Desarrollo',
-            `Durante el año 2025 se avanzó en la construcción del Marketplace corporativo, una plataforma orientada a fortalecer la visibilidad comercial, la interacción con clientes y la integración de canales digitales para ventas. Este proyecto es clave para la modernización digital y la expansión comercial de la organización. El Marketplace permitirá a los clientes acceder a productos, realizar pedidos en línea y gestionar sus compras de forma digital, integrándose con el ERP ENTERPRISE para una operación fluida. Se espera completar el desarrollo e implementación durante 2026.`
+            'Plataformas Microsoft',
+            'Consolidación del uso institucional de Microsoft Teams como plataforma de reuniones, comunicación y trabajo colaborativo, Microsoft 365 como suite principal de productividad, y OneDrive para backup automático en la nube. Todos los usuarios cuentan con acceso seguro, licenciamiento formal y operación remota estable, garantizando la continuidad del negocio y la seguridad de la información.'
           )}
-          className="bg-white/95 rounded-xl p-5 border-4 border-yellow-500/30 shadow-lg cursor-pointer hover:border-yellow-500 transition-all"
+          className="bg-white/95 rounded-xl p-5 border-4 border-cyan-500/30 shadow-lg cursor-pointer hover:border-cyan-500 transition-all"
         >
           <div className="flex items-center gap-3 mb-2">
-            <Clock className="w-7 h-7 text-yellow-600" />
-            <h3 className="text-lg font-bold text-gray-900">Proyectos TI en Desarrollo 2025</h3>
+            <Monitor className="w-7 h-7 text-cyan-600" />
+            <h3 className="text-lg font-bold text-gray-900">Plataformas Microsoft</h3>
           </div>
-          <div className="text-3xl font-bold text-yellow-600">{proyectos.filter(p => p.estado === 'En Proceso').length}</div>
-          <p className="text-xs text-gray-600 mt-1">Marketplace Corporativo</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          onClick={() => openModal(
-            'Iniciativas Tecnológicas 2025',
-            `El año 2025 representó un periodo de importantes avances con ${iniciativas.length} iniciativas tecnológicas principales: Transformación Digital (gestión documental), Seguridad y CCTV (videovigilancia integral), Automatización (BOT y Power Apps), Microsoft 365 (Teams y suite de productividad), Backup y Continuidad (OneDrive automático), ERP ENTERPRISE (nómina, comercial, finanzas), Marketplace Corporativo (plataforma de ventas digitales) y Seguridad Informática (fortalecimiento integral). Los logros alcanzados contribuyen directamente a la eficiencia operativa, la mejora de procesos empresariales y la preparación de la organización para los retos tecnológicos del 2026.`
-          )}
-          className="bg-white/95 rounded-xl p-5 border-4 border-purple-500/30 shadow-lg cursor-pointer hover:border-purple-500 transition-all"
-        >
-          <div className="flex items-center gap-3 mb-2">
-            <Database className="w-7 h-7 text-purple-600" />
-            <h3 className="text-lg font-bold text-gray-900">Iniciativas Tecnológicas 2025</h3>
-          </div>
-          <div className="text-3xl font-bold text-purple-600">{iniciativas.length}</div>
-          <p className="text-xs text-gray-600 mt-1">Proyectos tecnológicos</p>
+          <div className="text-2xl font-bold text-cyan-600">Teams, 365, OneDrive</div>
+          <p className="text-xs text-gray-600 mt-1">Suite completa de productividad</p>
         </motion.div>
       </div>
 

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Heart, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import orbLogo from '../../assets/orb-logo.png';
 
 export default function AgradecimientosDashboard({ onBack }) {
   return (
@@ -19,16 +20,14 @@ export default function AgradecimientosDashboard({ onBack }) {
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-200/20 rounded-full -translate-y-32 translate-x-32 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-orange-200/20 rounded-full translate-y-24 -translate-x-24 pointer-events-none" />
 
-          {/* Icono */}
+          {/* Logo */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
             className="flex justify-center mb-8"
           >
-            <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center shadow-lg">
-              <Heart className="w-8 h-8 text-white fill-white" />
-            </div>
+            <img src={orbLogo} alt="Logo" className="h-20 object-contain" />
           </motion.div>
 
           {/* Título */}

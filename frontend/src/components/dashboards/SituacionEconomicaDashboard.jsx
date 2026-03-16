@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TrendingUp, DollarSign, Building, FileText, X, Info, Users, Scale, Briefcase, Heart } from 'lucide-react';
+import { TrendingUp, DollarSign, Building, FileText, X, Info, Users, Scale, Briefcase } from 'lucide-react';
 import CollapsibleTable, { fmt as formatNumber } from '../CollapsibleTable';
 
 export default function SituacionEconomicaDashboard({ onNavigate }) {
@@ -319,6 +319,190 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         </div>
       </motion.div>
 
+      {/* 1. INDICADORES DE LIQUIDEZ */}
+      <CollapsibleTable title="1. INDICADORES DE LIQUIDEZ" defaultOpen={false} className="border-4 border-blue-500/30">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="bg-gray-100 border-b-2 border-gray-300">
+                <th className="text-left py-3 px-4 font-bold text-gray-900"></th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">2.025</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">2.024</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">SECTOR AVÍCOLA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">CAPITAL DE TRABAJO</div><div className="text-xs text-gray-600">(Activo Corriente - Pasivo Corriente)</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">96.138.091.362</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">57.705.588.903</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Son los recursos con que se dispone para desarrollar su actividad fluidamente.</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">RAZÓN CORRIENTE</div><div className="text-xs text-gray-600">Activo corriente / Pasivo corriente</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">$ 4,22</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">$ 3,35</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Por cada peso de deuda en cte. se dispone de n veces de respaldo para cumplir con la obligación.</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">PRUEBA ÁCIDA</div><div className="text-xs text-gray-600">(Activo corriente - inventario) / pasivo corriente</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">$ 4,05</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">$ 3,31</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es el respaldo que se tiene para cancelar un peso en el corto plazo sin comprometer los inventarios.</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">SOLIDEZ</div><div className="text-xs text-gray-600">Activo total / Pasivo total</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">$ 4,71</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">$ 2,55</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es la consistencia financiera para cubrir su deuda total.</span></div></td>
+              </tr>
+              <tr className="bg-blue-50 border-b-2 border-blue-300">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">EBITDA</div><div className="text-xs text-gray-600">Margen Ebitda = Ebitda / Ingresos Totales</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold"><div>29.712.979.101</div><div className="text-blue-600">6,8%</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div>25.734.246.272</div><div className="text-blue-600">6,0%</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Beneficio Bruto sin gastos financieros amortizaciones e impuestos</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CollapsibleTable>
+
+      {/* 2. INDICADORES DE ENDEUDAMIENTO */}
+      <CollapsibleTable title="2. INDICADORES DE ENDEUDAMIENTO" defaultOpen={false} className="border-4 border-red-500/30">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="bg-gray-100 border-b-2 border-gray-300">
+                <th className="text-left py-3 px-4 font-bold text-gray-900"></th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">2.025</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">2.024</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">SECTOR AVÍCOLA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">NIVEL DE ENDEUDAMIENTO</div><div className="text-xs text-gray-600">Pasivo / Activo</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">21,2%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">39,2%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es el % en que participan los acreedores en los activos de la empresa</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">ENDEUDAMIENTO A CORTO PLAZO</div><div className="text-xs text-gray-600">Pasivo Corriente / Pasivo Total</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">45,1%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">45,7%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es el % en que participan los acreedores del corto plazo en los activos de la compañía.</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">COBERTURA DE GASTOS FINANCIEROS</div><div className="text-xs text-gray-600">Costos financieros / Ventas netas</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">1,4%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">1,6%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es el % en que participa de la parte de las ventas</span></div></td>
+              </tr>
+              <tr className="bg-red-50 border-b border-gray-200">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">INDICADOR DE APALANCAMIENTO</div><div className="text-xs text-gray-600">Pasivo / Capital contable</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">26,9%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">64,4%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200" rowSpan="3"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Mide el grado de compromiso de los accionistas para con el sector financiero.</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4 text-gray-600">Pasivo corriente / Capital Contable</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">12,2%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">29,4%</td>
+              </tr>
+              <tr className="border-b-2 border-red-300 hover:bg-gray-50">
+                <td className="py-3 px-4 text-gray-600">Pasivo Financiero / Capital Contable</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">14,3%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">37,4%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CollapsibleTable>
+
+      {/* 3. INDICADORES DE ACTIVIDAD */}
+      <CollapsibleTable title="3. INDICADORES DE ACTIVIDAD" defaultOpen={false} className="border-4 border-green-500/30">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="bg-gray-100 border-b-2 border-gray-300">
+                <th className="text-left py-3 px-4 font-bold text-gray-900"></th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">2.025</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">2.024</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">SECTOR AVÍCOLA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">ROTACIÓN DE CARTERA</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">15,40</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">14,99</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es el número de veces en que rota la cartera respecto a las ventas del año.</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">ROTACIÓN DE INVENTARIOS</div><div className="text-xs text-gray-600">(Costo de Mcia / Prom. de Inventarios)</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">39,2</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">22,2</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es la cantidad de tiempo que estuvo el inventario en la compañía.</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">ROTACIÓN DEL PATRIMONIO</div><div className="text-xs text-gray-600">(Vtas Netas / Patrimonio)</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">1,8</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">5,1</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es el volumen de ventas generado con el patrimonio invertido.</span></div></td>
+              </tr>
+              <tr className="bg-green-50 border-b-2 border-green-300">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">VARIACIÓN DE LAS VENTAS NETAS</div><div className="text-xs text-gray-600">(Vtas Presente Ejercicio / Ventas Ejercicio Anterior)</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">1,5%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">-1,6%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es el % de crecimiento o decrecimiento con respecto al año anterior.</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CollapsibleTable>
+
+      {/* 4. INDICADORES DE RENDIMIENTO */}
+      <CollapsibleTable title="4. INDICADORES DE RENDIMIENTO" defaultOpen={false} className="border-4 border-purple-500/30">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="bg-gray-100 border-b-2 border-gray-300">
+                <th className="text-left py-3 px-4 font-bold text-gray-900"></th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">2.025</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">2.024</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-900 border-l border-gray-300">SECTOR AVÍCOLA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">MARGEN BRUTO DE UTILIDAD</div><div className="text-xs text-gray-600">Utilidad Bruta / Ventas netas</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">15,0%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">13,7%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es la participación de la utilidad operacional en las ventas del año.</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">MARGEN OPERACIONAL DE UTILIDAD</div><div className="text-xs text-gray-600">Utilidad Operativa / Ventas netas</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">6,3%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">5,3%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Indica la rentabilidad si el negocio es o no lucrativo</span></div></td>
+              </tr>
+              <tr className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">RENTABILIDAD DEL PATRIMONIO</div><div className="text-xs text-gray-600">(Utilidad Antes de Impuesto / Patrimonio)</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">10,3%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">21,8%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Es el rendimiento de la inversión de los socios en el ejercicio económico.</span></div></td>
+              </tr>
+              <tr className="bg-purple-50 border-b-2 border-purple-300">
+                <td className="py-3 px-4"><div className="font-semibold text-gray-900">RENDIMIENTO DEL CAPITAL CONTABLE - ROE</div><div className="text-xs text-gray-600">Utilidad Neta / Capital Contable</div></td>
+                <td className="text-center py-3 px-4 border-l border-gray-200 font-semibold">6,8%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200">14,5%</td>
+                <td className="text-center py-3 px-4 border-l border-gray-200"><div className="flex items-center justify-center gap-2"><span className="text-2xl">⟺</span><span className="text-xs text-gray-600">Representa que por cada peso invertido en activo cuanto se genera en utilidad.</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CollapsibleTable>
+
       {/* Agradecimientos — botón para ir al dashboard dedicado */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -330,7 +514,6 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           onClick={() => onNavigate && onNavigate('agradecimientos')}
           className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all"
         >
-          <Heart className="w-6 h-6 fill-white" />
           Ver Agradecimientos
         </button>
       </motion.div>
