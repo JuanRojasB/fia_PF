@@ -1,8 +1,32 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import orbLogo from '../../assets/orb-logo.png';
 
 export default function AgradecimientosDashboard({ onBack }) {
+  useEffect(() => {
+    // Hacer scroll al inicio cuando se monta el componente
+    setTimeout(() => {
+      // Intentar múltiples selectores
+      const scrollContainer = document.querySelector('.dashboard-content')?.parentElement;
+      const mainContent = document.querySelector('main');
+      const overflowAuto = document.querySelector('[class*="overflow-auto"]');
+      
+      if (scrollContainer) {
+        scrollContainer.scrollTo({ top: 0, behavior: 'instant' });
+      }
+      if (mainContent) {
+        mainContent.scrollTo({ top: 0, behavior: 'instant' });
+      }
+      if (overflowAuto) {
+        overflowAuto.scrollTo({ top: 0, behavior: 'instant' });
+      }
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 100);
+  }, []);
+
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center space-y-8 px-4">
 
