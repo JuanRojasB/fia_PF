@@ -108,7 +108,7 @@ export const CustomCurrencyTooltip = ({ active, payload, label, borderColor = '#
               <span className="text-sm text-gray-600">{entry.name}:</span>
             </div>
             <span className="text-sm font-bold text-gray-900">
-              ${typeof entry.value === 'number' ? fmtDec(entry.value, 1) : entry.value}{suffix}
+              ${typeof entry.value === 'number' ? fmt(entry.value * 1000000) : entry.value}
             </span>
           </div>
         ))}

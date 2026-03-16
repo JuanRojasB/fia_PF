@@ -20,7 +20,7 @@ export default function ComprasDashboard({ data }) {
     return <div className="text-gray-400">No hay datos disponibles</div>;
   }
 
-  const { comprasMensuales, totales, mesesMayorCrecimiento, mesesCaidas2024 } = data;
+  const { comprasMensuales, totales, mesesMayorCrecimiento, mesesCaidas2024, mesesCaidas2025 } = data;
 
   const formatCurrency = (value) => {
     if (!value || isNaN(value)) return "$0";
@@ -75,7 +75,7 @@ export default function ComprasDashboard({ data }) {
       </div>
 
       {/* KPIs Principales */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,19 +86,16 @@ export default function ComprasDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium">Total Compras 2025</span>
             <ShoppingCart className="w-5 h-5 text-blue-400" />
           </div>
-          <div className="text-xl font-bold text-gray-900 leading-tight mb-1 break-all">{formatCurrencyFull(totales.total2025)}</div>
-          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(totales.total2024)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(totales.total2025)}</span></div>
-            <div className={`text-sm font-bold ${parseFloat(totales.variacion2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {parseFloat(totales.variacion2025vs2024) >= 0 ? '+' : ''}{totales.variacion2025vs2024}%</div>
-          </div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(totales.total2025)}</div>
+          <div className="text-xs text-gray-600">Compras totales</div>
+          <div className="text-xs text-blue-400 mt-1">vs ${formatCurrency(totales.total2024)} (2024)</div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          onClick={() => openModal('Crecimiento 2025', `Después de un año de contracción en 2024 (-2.97%), las compras se recuperaron con fuerza. Los meses de mayor impulso fueron Octubre (+49.83%), Agosto (+35.59%) y Septiembre (+31.87%), sugiriendo un mejor flujo de abastecimiento y restablecimiento de la demanda.`)}
+          onClick={() => openModal('Crecimiento 2025', `Después de un año de contracción en 2024 (-2.97%), las compras se recuperaron con fuerza. Los meses de mayor impulso fueron Julio (+36.12%), Septiembre (+32.49%) y Enero (+12.62%), sugiriendo un mejor flujo de abastecimiento y restablecimiento de la demanda.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -114,22 +111,6 @@ export default function ComprasDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          onClick={() => openModal('Ajuste 2024', `El año 2024 representó un periodo de ajuste con los descensos más fuertes en Agosto (-30.83%), Marzo (-28.25%) y Enero (-21.00%). Sin embargo, estos mismos meses lograron recuperarse con fuerza en 2025, demostrando la capacidad de respuesta del área.`)}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Ajuste 2024</span>
-            <TrendingDown className="w-5 h-5 text-orange-400" />
-          </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{totales.variacion2024vs2023}%</div>
-          <div className="text-xs text-gray-600">vs 2023</div>
-          <div className="text-xs text-orange-400 mt-1">Año de ajuste</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
           onClick={() => openModal('Promedio Mensual', `La distribución mensual muestra estacionalidad con picos en el último trimestre. Octubre fue el mes más alto, seguido de Septiembre y Agosto. Los meses de menor actividad fueron Junio, Febrero y Abril, coincidiendo con periodos de menor demanda.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -137,7 +118,7 @@ export default function ComprasDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium">Promedio Mensual</span>
             <DollarSign className="w-5 h-5 text-purple-400" />
           </div>
-          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(totales.total2025 / 12)}</div>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(totales.total2025 / 12)}</div>
           <div className="text-xs text-gray-600">Por mes 2025</div>
           <div className="text-xs text-purple-400 mt-1">12 meses</div>
         </motion.div>
@@ -174,9 +155,19 @@ export default function ComprasDashboard({ data }) {
       </motion.div>
 
       {/* Gráfico Comparativo Anual */}
-      <CollapsibleChart title="Comparativo Mensual 2023-2025" defaultOpen={false}>
-        <p className="text-xs text-gray-600 mb-4">Evolución de compras por mes (en millones)</p>
-        <ResponsiveContainer width="100%" height={450}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <CollapsibleChart
+          title="Comparativo Mensual 2023-2025"
+          subtitle="Evolución de compras por mes (en millones)"
+          defaultOpen={true}
+          className="border-blue-500/30 hover:border-blue-500"
+        >
+          <div onClick={() => openModal('Evolución Anual', 'El gráfico muestra tres años con comportamientos distintos: 2023 como año base, 2024 con ajuste y contracción, y 2025 con recuperación sostenida.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre los valores mensuales de 2025, mostrando la dirección general del gasto en el período.')} className="cursor-pointer">
+            <ResponsiveContainer width="100%" height={450}>
           <ComposedChart data={datosComparativoConTendencia} margin={{ top: 5, right: 30, left: 20, bottom: 80 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis 
@@ -195,12 +186,24 @@ export default function ComprasDashboard({ data }) {
             <Line type="linear" dataKey="tendencia2025" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 3, fill: '#ef4444' }} name="Tendencia 2025" />
           </ComposedChart>
         </ResponsiveContainer>
-      </CollapsibleChart>
+          </div>
+        </CollapsibleChart>
+      </motion.div>
 
       {/* Gráfico de Variación Mensual */}
-      <CollapsibleChart title="Variación Mensual 2025 vs 2024" defaultOpen={false}>
-        <p className="text-xs text-gray-600 mb-4">Porcentaje de crecimiento o caída por mes</p>
-        <ResponsiveContainer width="100%" height={450}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <CollapsibleChart
+          title="Variación Mensual 2025 vs 2024"
+          subtitle="Porcentaje de crecimiento o caída por mes"
+          defaultOpen={true}
+          className="border-purple-500/30 hover:border-purple-500"
+        >
+          <div onClick={() => openModal('Variación Mensual', '9 de 12 meses presentan crecimiento positivo. Las caídas en Febrero, Abril y Julio pueden estar relacionadas con ajustes estacionales o cambios en la estrategia de inventarios. El balance general es positivo con recuperación sostenida.')} className="cursor-pointer">
+            <ResponsiveContainer width="100%" height={450}>
           <BarChart data={datosVariacion} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis 
@@ -225,10 +228,17 @@ export default function ComprasDashboard({ data }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </CollapsibleChart>
+          </div>
+        </CollapsibleChart>
+      </motion.div>
 
       {/* Tabla Completa de Compras Mensuales */}
-      <div className="rounded-xl overflow-hidden border-4 border-indigo-500/30">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.65 }}
+        className="rounded-xl overflow-hidden border-4 border-indigo-500/30"
+      >
         <CollapsibleTable
           title="Detalle de Compras por Mes 2023-2025"
           defaultOpen={false}
@@ -305,33 +315,33 @@ export default function ComprasDashboard({ data }) {
             </div>
           </div>
         </CollapsibleTable>
-      </div>
+      </motion.div>
 
-      {/* Análisis de Contracción 2024 */}
+      {/* Análisis de Caídas 2025 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        onClick={() => openModal('Contracción 2024', 'El análisis de estos meses críticos permite identificar patrones de riesgo. La recuperación exitosa en 2025 demuestra que las medidas correctivas implementadas fueron efectivas. Se recomienda mantener monitoreo especial en estos periodos.')}
+        onClick={() => openModal('Caídas 2025', 'Aunque 2025 fue un año de recuperación general, estos tres meses presentaron caídas menores. Las reducciones fueron moderadas comparadas con las caídas de 2024, lo que indica una mayor estabilidad en la gestión de compras.')}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 cursor-pointer hover:border-red-500 transition-all"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">Meses con Mayor Caída 2024 vs 2023</h3>
-            <p className="text-sm text-gray-600 mt-1">Análisis del año de ajuste</p>
+            <h3 className="text-xl font-bold text-gray-900">Meses con Mayor Caída 2025 vs 2024</h3>
+            <p className="text-sm text-gray-600 mt-1">Caídas moderadas en año de recuperación</p>
           </div>
           <Info className="w-6 h-6 text-gray-400" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {mesesCaidas2024.map((mes, idx) => (
+          {mesesCaidas2025.map((mes, idx) => (
             <div key={idx} className="bg-red-50 rounded-xl p-5 border-2 border-red-500/30">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-lg font-bold text-red-600">{mes.mes}</h4>
                 <ArrowDown className="w-6 h-6 text-red-400" />
               </div>
               <div className="text-4xl font-bold text-gray-900 mb-2">{mes.variacion}%</div>
-              <div className="text-xs text-gray-600">Caída 2024 vs 2023</div>
+              <div className="text-xs text-gray-600">Caída 2025 vs 2024</div>
             </div>
           ))}
         </div>
@@ -391,7 +401,7 @@ export default function ComprasDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">

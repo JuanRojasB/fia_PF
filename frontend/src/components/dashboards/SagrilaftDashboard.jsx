@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Shield, AlertTriangle, CheckCircle, X, Info, Users, FileCheck, Target } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
-import CollapsibleChart from '../CollapsibleChart';
 
 export default function SagrilaftDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -234,7 +233,49 @@ export default function SagrilaftDashboard({ data }) {
       {/* Gráficos Principales */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Rechazados por Contraparte */}
-        <CollapsibleChart title="Stakeholders Rechazados por Contraparte SAGRILAFT 2025" defaultOpen={false}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          onClick={() => openModal(
+            'Distribución de Rechazos por Contraparte',
+            <div className="text-gray-700">
+              <p className="mb-4">Distribución de los {formatNumber(totalNoConformes.rechazados)} stakeholders rechazados:</p>
+              <div className="space-y-3">
+                {stakeholders.map((s, idx) => {
+                  const porcentaje = calcularPorcentaje(s.rechazados, totalNoConformes.rechazados);
+                  return (
+                    <div key={idx} className="bg-gray-100/50 rounded-lg p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-gray-900 font-semibold">{s.contraparte}</span>
+                        <span className="text-red-600 font-bold text-lg">{formatNumber(s.rechazados)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Porcentaje del total rechazados</span>
+                        <span className="text-orange-600 font-semibold">{porcentaje}%</span>
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="bg-red-50 rounded-lg p-3 border-2 border-red-500/50">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-900 font-bold">TOTAL RECHAZADOS</span>
+                    <span className="text-red-600 font-bold text-xl">{formatNumber(totalNoConformes.rechazados)}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm mt-2">
+                    <span className="text-gray-600">Del total evaluados</span>
+                    <span className="text-orange-600 font-semibold">{resumen.porcentaje_rechazo}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 cursor-pointer hover:border-red-500 transition-all"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-gray-900">Stakeholders Rechazados por Contraparte SAGRILAFT 2025</h3>
+            <Info className="w-5 h-5 text-blue-600" />
+          </div>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={rechazadosData} margin={{ left: 20, right: 20, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -262,10 +303,110 @@ export default function SagrilaftDashboard({ data }) {
               <Bar dataKey="rechazados" fill="#ef4444" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-        </CollapsibleChart>
+        </motion.div>
 
         {/* Distribución de Motivos */}
-        <CollapsibleChart title="Motivos de Rechazo SAGRILAFT 2025" defaultOpen={false}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          onClick={() => openModal(
+            'Motivos de No Conformidad - Tabla Completa',
+            <div className="text-gray-700">
+              <div className="mb-4 bg-blue-50 rounded-lg p-3 border border-blue-300">
+                <p className="text-sm">
+                  <strong className="text-gray-900">Total Stakeholders Validados:</strong> {formatNumber(resumen.total_validados)} personas naturales y jurídicas
+                </p>
+              </div>
+              <p className="mb-4">Tabla No. 1: Análisis de Stakeholders No Conformes por SAGRILAFT 2022-2025</p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-gray-300">
+                      <th className="text-left py-2 px-3 text-gray-900 font-bold">Contraparte</th>
+                      <th className="text-right py-2 px-3 text-gray-900 font-bold">Rechazados</th>
+                      <th className="text-right py-2 px-3 text-gray-900 font-bold">LA</th>
+                      <th className="text-right py-2 px-3 text-gray-900 font-bold">FT</th>
+                      <th className="text-right py-2 px-3 text-gray-900 font-bold">Doc.</th>
+                      <th className="text-right py-2 px-3 text-gray-900 font-bold">Ant.</th>
+                      <th className="text-right py-2 px-3 text-gray-900 font-bold">PEPs</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stakeholders.map((row, idx) => {
+                      const porcentaje = calcularPorcentaje(row.rechazados, totalNoConformes.rechazados);
+                      return (
+                        <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                          <td className="py-2 px-3 text-gray-900 font-semibold">{row.contraparte}</td>
+                          <td className="py-2 px-3 text-right">
+                            <div className="text-red-600 font-bold">{formatNumber(row.rechazados)}</div>
+                            <div className="text-orange-600 text-xs">({porcentaje}%)</div>
+                          </td>
+                          <td className="py-2 px-3 text-right text-red-600">{row.la_pct}%</td>
+                          <td className="py-2 px-3 text-right text-orange-600">{row.ft_pct}%</td>
+                          <td className="py-2 px-3 text-right text-yellow-400">{row.documentacion_pct}%</td>
+                          <td className="py-2 px-3 text-right text-amber-400">{row.antecedentes_pct}%</td>
+                          <td className="py-2 px-3 text-right text-purple-400">{row.peps_pct}%</td>
+                        </tr>
+                      );
+                    })}
+                    <tr className="border-t-2 border-gray-300 bg-gray-100/50">
+                      <td className="py-2 px-3 text-gray-900 font-bold">{totalNoConformes.contraparte}</td>
+                      <td className="py-2 px-3 text-right">
+                        <div className="text-red-600 font-bold">{formatNumber(totalNoConformes.rechazados)}</div>
+                        <div className="text-orange-600 text-xs">(100%)</div>
+                      </td>
+                      <td className="py-2 px-3 text-right text-red-600 font-bold">{totalNoConformes.la_pct}%</td>
+                      <td className="py-2 px-3 text-right text-orange-600 font-bold">{totalNoConformes.ft_pct}%</td>
+                      <td className="py-2 px-3 text-right text-yellow-400 font-bold">{totalNoConformes.documentacion_pct}%</td>
+                      <td className="py-2 px-3 text-right text-amber-400 font-bold">{totalNoConformes.antecedentes_pct}%</td>
+                      <td className="py-2 px-3 text-right text-purple-400 font-bold">{totalNoConformes.peps_pct}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-4 text-xs space-y-1 bg-gray-100/50 rounded-lg p-3">
+                <p><strong className="text-gray-900">LA:</strong> Lavado de Activos</p>
+                <p><strong className="text-gray-900">FT:</strong> Financiación del Terrorismo</p>
+                <p><strong className="text-gray-900">Doc.:</strong> Documentación Inadecuada</p>
+                <p><strong className="text-gray-900">Ant.:</strong> Antecedentes</p>
+                <p><strong className="text-gray-900">PEPs:</strong> Personas Expuestas Políticamente</p>
+              </div>
+
+              <div className="mt-6 bg-gray-50 rounded-lg p-4 border border-gray-300">
+                <p className="text-sm font-bold text-gray-900 mb-3">Cálculo de Cantidades por Motivo de Rechazo</p>
+                <p className="text-sm text-gray-700 mb-4">Los valores mostrados en el gráfico se calculan aplicando los porcentajes de la fila "TOTAL NO CONFORMES" sobre el total de {formatNumber(totalNoConformes.rechazados)} stakeholders rechazados:</p>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-900">Documentación (24%):</span>
+                    <span className="text-gray-700">{formatNumber(totalNoConformes.rechazados)} × 24% = <strong className="text-gray-900 ml-1">{Math.round(totalNoConformes.rechazados * 0.24)}</strong></span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-900">Antecedentes (20%):</span>
+                    <span className="text-gray-700">{formatNumber(totalNoConformes.rechazados)} × 20% = <strong className="text-gray-900 ml-1">{Math.round(totalNoConformes.rechazados * 0.20)}</strong></span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-900">FT (18%):</span>
+                    <span className="text-gray-700">{formatNumber(totalNoConformes.rechazados)} × 18% = <strong className="text-gray-900 ml-1">{Math.round(totalNoConformes.rechazados * 0.18)}</strong></span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-900">LA (3%):</span>
+                    <span className="text-gray-700">{formatNumber(totalNoConformes.rechazados)} × 3% = <strong className="text-gray-900 ml-1">{Math.round(totalNoConformes.rechazados * 0.03)}</strong></span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-900">PEPs (3%):</span>
+                    <span className="text-gray-700">{formatNumber(totalNoConformes.rechazados)} × 3% = <strong className="text-gray-900 ml-1">{Math.round(totalNoConformes.rechazados * 0.03)}</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-gray-900">Motivos de Rechazo SAGRILAFT 2025</h3>
+            <Info className="w-5 h-5 text-blue-600" />
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
             <ResponsiveContainer width="100%" height={350}>
               <PieChart>
@@ -308,7 +449,7 @@ export default function SagrilaftDashboard({ data }) {
               })}
             </div>
           </div>
-        </CollapsibleChart>
+        </motion.div>
       </div>
 
       {/* Acciones por Área */}
@@ -485,10 +626,10 @@ export default function SagrilaftDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-4xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-4 flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-red-600" />
                   <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
@@ -497,10 +638,10 @@ export default function SagrilaftDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
                 {modalContent.content}
               </div>
-              <div className="mt-6 flex justify-end">
+              <div className="mt-6 flex justify-end flex-shrink-0">
                 <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                   Entendido
                 </button>

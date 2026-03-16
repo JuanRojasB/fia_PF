@@ -19,7 +19,7 @@ export default function OperacionesDashboard({ data }) {
     return <div className="text-gray-600">No hay datos disponibles</div>;
   }
 
-  const { kpisTpm, kpisTpmDetalle, equiposOfensores, ordenesTrabajo, mantenimientoVehiculos, novedadesArquitectura, novedadesInfraestructura, totales } = data;
+  const { kpisTpm, kpisTpmDetalle, equiposOfensores, ordenesTrabajo, mantenimientoVehiculos, novedadesArquitectura, novedadesInfraestructura, novedadesDetalladas, totales } = data;
 
   // Obtener KPIs 2024 y 2025
   const kpi2025 = kpisTpm.find(k => k.anio === 2025) || {};
@@ -367,7 +367,7 @@ export default function OperacionesDashboard({ data }) {
                     <td className="py-3 px-3 text-gray-900 font-semibold">{mes.mes_nombre}</td>
                     <td className="py-3 px-3 text-right text-red-600 font-bold">{mes.ot_correctivas}</td>
                     <td className="py-3 px-3 text-right text-green-600">{mes.ot_preventivas}</td>
-                    <td className="py-3 px-3 text-right text-gray-900">{mes.total_ot}</td>
+                    <td className="py-3 px-3 text-right text-gray-900 font-bold">{mes.total}</td>
                     <td className={`py-3 px-3 text-right font-bold ${pct > 15 ? 'text-red-600' : 'text-green-600'}`}>
                       {mes.porcentaje_correctivas}%
                     </td>
@@ -376,10 +376,10 @@ export default function OperacionesDashboard({ data }) {
               })}
               <tr className="border-t-2 border-gray-300 bg-gray-100 font-bold">
                 <td className="py-3 px-3 text-gray-900">Total general</td>
-                <td className="py-3 px-3 text-right text-red-600">{totales.totalCorrectivas}</td>
-                <td className="py-3 px-3 text-right text-green-600">{totales.totalPreventivas}</td>
-                <td className="py-3 px-3 text-right text-gray-900">{totales.totalOT}</td>
-                <td className="py-3 px-3 text-right text-green-600">10,70%</td>
+                <td className="py-3 px-3 text-right text-red-600">{totales.totalOtCorrectivas}</td>
+                <td className="py-3 px-3 text-right text-green-600">{totales.totalOtPreventivas}</td>
+                <td className="py-3 px-3 text-right text-gray-900">{totales.totalOt}</td>
+                <td className="py-3 px-3 text-right text-gray-900">{totales.porcentajeCorrectivas}%</td>
               </tr>
             </tbody>
           </table>
@@ -445,13 +445,14 @@ export default function OperacionesDashboard({ data }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
         onClick={() => {
-          const tableData = [...novedadesArquitectura, ...novedadesInfraestructura].map(n => ({
-            'Área': n.planta.includes('BENEFICIO') ? 'Arquitectura' : 'Mantenimiento',
+          const tableData = novedadesDetalladas.map(n => ({
+            'Área': n.area,
             'Planta': n.planta,
             'Abiertas': n.abiertas,
             'Cerradas': n.cerradas,
             'Total': n.total,
-            'Ejecución': `${n.ejecucion_pct}%`
+            'Ejecución': `${n.ejecucion_pct}%`,
+            isSubtotal: n.isSubtotal || false
           }));
           
           // Agregar fila de totales
@@ -461,7 +462,8 @@ export default function OperacionesDashboard({ data }) {
             'Abiertas': 237,
             'Cerradas': 564,
             'Total': 801,
-            'Ejecución': '70%'
+            'Ejecución': '70%',
+            isTotal: true
           });
           
           openModal('Novedades Correctivas', 'Cumplimiento global del 70% en la gestión de novedades correctivas reportadas por líderes de sedes. Mantenimiento presenta un desempeño del 84% (buen nivel). Arquitectura tiene 58%, principalmente impactada por la baja ejecución en Sede 1 (15%) y Sede 4 (36%). Esta área cuenta con 4 técnicos ejecutando tareas por todas las sedes. Factores: vacaciones del señor Cástulo del 2 al 20 de enero y renuncia de Edwin Torres hace 5 meses. Se solicita al área de RH resolver lo antes posible.', tableData);
@@ -621,7 +623,7 @@ export default function OperacionesDashboard({ data }) {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="bg-gradient-to-r from-cyan-500 to-blue-600 border-b-2 border-gray-300">
-                          {Object.keys(modalContent.table[0]).map((key) => (
+                          {Object.keys(modalContent.table[0]).filter(key => key !== 'isTotal' && key !== 'isSubtotal').map((key) => (
                             <th key={key} className="text-left py-3 px-4 text-white font-bold">
                               {key}
                             </th>
@@ -630,24 +632,35 @@ export default function OperacionesDashboard({ data }) {
                       </thead>
                       <tbody>
                         {modalContent.table.map((row, idx) => {
-                          const isTotal = row['Área'] === 'Total general' || row['Mes'] === 'Total general';
-                          const keys = Object.keys(row);
+                          const isTotal = row.isTotal || row['Área'] === 'Total general' || row['Mes'] === 'Total general';
+                          const isSubtotal = row.isSubtotal || false;
+                          const keys = Object.keys(row).filter(k => k !== 'isTotal' && k !== 'isSubtotal');
                           return (
-                            <tr key={idx} className={`border-b border-gray-200 ${isTotal ? 'bg-gray-100 font-bold border-t-2 border-gray-400' : idx % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100'}`}>
-                              {Object.entries(row).map(([key, value], i) => {
+                            <tr key={idx} className={`border-b border-gray-200 ${
+                              isTotal ? 'bg-white font-bold border-t-2 border-gray-900' : 
+                              isSubtotal ? 'bg-cyan-400 font-bold border-t border-gray-300' :
+                              idx % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100'
+                            }`}>
+                              {Object.entries(row).filter(([key]) => key !== 'isTotal' && key !== 'isSubtotal').map(([key, value], i) => {
                                 const isCorrectiva = key === 'OT Correctiva' || key === 'Correctivas';
                                 const isPreventiva = key === 'OT Preventiva' || key === 'Preventivas';
                                 const isPct = key === '% Correctivas';
                                 const pctVal = isPct ? parseFloat(value) : 0;
+                                const isEmpty = value === '' || value === null || value === undefined;
+                                // Columnas de texto (Área, Planta, Mes) van a la izquierda, números a la derecha
+                                const isTextColumn = key === 'Área' || key === 'Planta' || key === 'Mes';
+                                const alignment = isTextColumn ? 'text-left' : 'text-right';
+                                
                                 return (
-                                  <td key={i} className={`py-2 px-4 ${
+                                  <td key={i} className={`py-2 px-4 ${alignment} ${
                                     isTotal ? 'text-gray-900 font-bold' :
-                                    isCorrectiva ? 'text-red-600 font-semibold text-right' :
-                                    isPreventiva ? 'text-green-600 text-right' :
-                                    isPct ? `text-right font-bold ${pctVal > 15 ? 'text-red-600' : 'text-green-600'}` :
-                                    i > 0 ? 'text-right text-gray-700' : 'text-gray-900 font-semibold'
+                                    isSubtotal ? 'text-gray-900 font-bold' :
+                                    isCorrectiva ? 'text-red-600 font-semibold' :
+                                    isPreventiva ? 'text-green-600' :
+                                    isPct ? `font-bold ${pctVal > 15 ? 'text-red-600' : 'text-green-600'}` :
+                                    isTextColumn ? 'text-gray-900 font-semibold' : 'text-gray-700'
                                   }`}>
-                                    {value}
+                                    {isEmpty ? '' : value}
                                   </td>
                                 );
                               })}

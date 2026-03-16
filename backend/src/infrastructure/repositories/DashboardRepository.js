@@ -1898,11 +1898,19 @@ class DashboardRepository extends IDashboardRepository {
       { mes: 'Enero', variacion: -21.00 }
     ];
 
+    // Meses con mayor caída 2025 vs 2024
+    const mesesCaidas2025 = [
+      { mes: 'Julio', variacion: -6.26 },
+      { mes: 'Junio', variacion: -2.38 },
+      { mes: 'Febrero', variacion: -1.76 }
+    ];
+
     return {
       comprasMensuales,
       totales,
       mesesMayorCrecimiento,
       mesesCaidas2024,
+      mesesCaidas2025,
       analisis: {
         recuperacion2025: true,
         crecimientoTotal: 9.66,

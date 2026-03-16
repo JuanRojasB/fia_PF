@@ -196,9 +196,9 @@ export default function SituacionJuridicaDashboard() {
             className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
             onClick={() => setModalOpen(false)}>
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-4xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-4 flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-blue-600" />
                   <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
@@ -207,8 +207,8 @@ export default function SituacionJuridicaDashboard() {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">{modalContent.content}</div>
-              <div className="mt-6 flex justify-end">
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">{modalContent.content}</div>
+              <div className="mt-6 flex justify-end flex-shrink-0">
                 <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                   Entendido
                 </button>
