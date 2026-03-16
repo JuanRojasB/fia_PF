@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend, LabelList } from 'recharts';
 import { Truck, TrendingUp, Building, X, Info, Users, Package, DollarSign, TrendingDown } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import { formatCurrencyFull } from './CustomTooltip';
@@ -254,8 +255,12 @@ export default function GestionLogisticaDashboard({ data }) {
               }
               return null;
             }} />
-            <Bar dataKey="total2024" fill="#6366f1" name="2024" radius={[8, 8, 0, 0]} />
-            <Bar dataKey="total2025" fill="#10b981" name="2025" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="total2024" fill="#6366f1" name="2024" radius={[8, 8, 0, 0]}>
+              <LabelList dataKey="total2024" position="top" style={{ fontSize: '11px', fill: '#6366f1', fontWeight: 'bold' }} formatter={() => '2024'} />
+            </Bar>
+            <Bar dataKey="total2025" fill="#10b981" name="2025" radius={[8, 8, 0, 0]}>
+              <LabelList dataKey="total2025" position="top" style={{ fontSize: '11px', fill: '#10b981', fontWeight: 'bold' }} formatter={() => '2025'} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </motion.div>
@@ -307,13 +312,18 @@ export default function GestionLogisticaDashboard({ data }) {
               }
               return null;
             }} />
-            <Bar dataKey="valor2024" fill="#6366f1" name="2024" radius={[0, 8, 8, 0]} />
-            <Bar dataKey="valor2025" fill="#10b981" name="2025" radius={[0, 8, 8, 0]} />
+            <Bar dataKey="valor2024" fill="#6366f1" name="2024" radius={[0, 8, 8, 0]}>
+              <LabelList dataKey="valor2024" position="insideRight" style={{ fontSize: '10px', fill: '#fff', fontWeight: 'bold' }} formatter={() => '2024'} />
+            </Bar>
+            <Bar dataKey="valor2025" fill="#10b981" name="2025" radius={[0, 8, 8, 0]}>
+              <LabelList dataKey="valor2025" position="insideRight" style={{ fontSize: '10px', fill: '#fff', fontWeight: 'bold' }} formatter={() => '2025'} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </motion.div>
 
       {/* Modal con Tabla Consolidada */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -441,15 +451,15 @@ export default function GestionLogisticaDashboard({ data }) {
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-gray-900 rounded-lg transition-colors"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                 >
-                  Cerrar
+                  Entendido
                 </button>
               </div>
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

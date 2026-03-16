@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Home, TrendingUp, Layers, X, Info } from 'lucide-react';
@@ -644,6 +645,7 @@ export default function GranjasDashboard({ data }) {
       </motion.div>
 
       {/* Modal de Explicación */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -686,7 +688,7 @@ export default function GranjasDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

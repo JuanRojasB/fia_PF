@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart, LabelList } from 'recharts';
 import { Factory, TrendingDown, Info, X, Activity, Award, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { CustomBarTooltip, CustomPctTooltip } from './CustomTooltip';
 
@@ -692,8 +693,12 @@ export default function PlantaBeneficioDashboard({ data }) {
             <YAxis stroke="#9ca3af" tickFormatter={(v) => formatNumber(v)} style={{ fontSize: '13px' }} width={90} />
             <Tooltip content={<TooltipKg />} />
             <Legend />
-            <Bar dataKey="2024" fill="#3b82f6" name="2024" radius={[8, 8, 0, 0]} />
-            <Bar dataKey="2025" fill="#f97316" name="2025" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="2024" fill="#3b82f6" name="2024" radius={[8, 8, 0, 0]}>
+              <LabelList dataKey="2024" position="top" style={{ fontSize: '10px', fontWeight: 'bold', fill: '#3b82f6' }} formatter={() => '2024'} />
+            </Bar>
+            <Bar dataKey="2025" fill="#f97316" name="2025" radius={[8, 8, 0, 0]}>
+              <LabelList dataKey="2025" position="top" style={{ fontSize: '10px', fontWeight: 'bold', fill: '#f97316' }} formatter={() => '2025'} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </motion.div>
@@ -785,6 +790,7 @@ export default function PlantaBeneficioDashboard({ data }) {
       </motion.div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -813,14 +819,14 @@ export default function PlantaBeneficioDashboard({ data }) {
               <div className="text-gray-700 leading-relaxed">{modalContent.content}</div>
 
               <div className="mt-6 flex justify-end">
-                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors">
+                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                   Entendido
                 </button>
               </div>
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
 import { Truck, TrendingUp, Building, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import { formatCurrencyFull } from './CustomTooltip';
@@ -110,7 +111,7 @@ export default function LogisticaDashboard({ data }) {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal('Gastos Logísticos', '3M kg/mes, 12 muelles, 197 colaboradores.')}
+          onClick={() => openModal('Total Gastos Logísticos 2025', `El área logística opera con una capacidad de aproximadamente 3 millones de kg/mes distribuidos en 3 sedes activas (Sede 1, Sede 2 y Sede 3), con 12 muelles de cargue/descargue y 197 colaboradores. Este indicador consolida todos los conceptos de gasto operacional logístico: transporte, personal, mantenimiento de flota, combustible y otros costos asociados a la distribución. La variación frente a 2024 refleja el comportamiento del costo logístico total de la compañía.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos 2025</span>
@@ -123,7 +124,7 @@ export default function LogisticaDashboard({ data }) {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          onClick={() => openModal('Variación Anual', 'Diferencia en gastos 2025 vs 2024.')}
+          onClick={() => openModal('Variación de Gastos Logísticos 2025 vs 2024', `Este indicador muestra la diferencia absoluta en pesos entre el gasto logístico total de 2025 y el de 2024. Un incremento puede estar asociado a mayor volumen de operación, aumento en costos de combustible, ajustes salariales o expansión de rutas. Una reducción indica eficiencias operativas o menor actividad. Se debe analizar en conjunto con el volumen de kg distribuidos para determinar si el costo por kg mejoró o empeoró frente al año anterior.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Variación Gastos Logísticos 2025 vs 2024</span>
@@ -136,7 +137,7 @@ export default function LogisticaDashboard({ data }) {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          onClick={() => openModal('Sedes Activas', 'Centros de distribución operativos.')}
+          onClick={() => openModal('Sedes Logísticas Activas 2025', `La operación logística de Pollo Fiesta se distribuye en 3 centros de distribución: Sede 1, Sede 2 y Sede 3. Cada sede tiene su propia estructura de costos operacionales que incluye personal, transporte, mantenimiento y otros gastos. La distribución por sede permite identificar cuál concentra mayor costo y dónde existen oportunidades de optimización. El gráfico de distribución porcentual muestra el peso relativo de cada sede sobre el gasto logístico total.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Sedes Logísticas Activas 2025</span>
@@ -149,7 +150,7 @@ export default function LogisticaDashboard({ data }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          onClick={() => openModal('Gastos por Sede', 'Comparación de costos operativos.')}
+          onClick={() => openModal('Gastos Logísticos por Sede 2024 vs 2025', `El gráfico compara el gasto operacional logístico de cada sede entre 2024 (azul) y 2025 (verde). Permite identificar qué sede tuvo mayor incremento o reducción de costos y si el comportamiento fue homogéneo entre sedes. Las diferencias entre sedes pueden explicarse por variaciones en volumen de despacho, cambios en rutas, rotación de personal o inversiones en mantenimiento de flota. El detalle por concepto está disponible en las tablas desplegables de cada sede.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer">
           <h3 className="text-xl font-bold text-gray-900 mb-6">Gastos Logísticos por Sede (2024 vs 2025)</h3>
           <ResponsiveContainer width="100%" height={350}>
@@ -196,8 +197,12 @@ export default function LogisticaDashboard({ data }) {
                 }
                 return null;
               }} />
-              <Bar dataKey="total2024" fill="#6366f1" name="2024" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="total2025" fill="#10b981" name="2025" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="total2024" fill="#6366f1" name="2024" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="total2024" position="top" style={{ fontSize: '11px', fill: '#6366f1', fontWeight: 'bold' }} formatter={() => '2024'} />
+              </Bar>
+              <Bar dataKey="total2025" fill="#10b981" name="2025" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="total2025" position="top" style={{ fontSize: '11px', fill: '#10b981', fontWeight: 'bold' }} formatter={() => '2025'} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
@@ -470,6 +475,7 @@ export default function LogisticaDashboard({ data }) {
       </motion.div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -512,7 +518,7 @@ export default function LogisticaDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

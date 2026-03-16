@@ -40,8 +40,9 @@ export default function EncasetamientoColombiaDashboard() {
   const formatNumber = (value) => {
     if (value === null || value === undefined) return '';
     
-    // Convertir a string y eliminar el punto decimal (los datos están en millones)
-    let numString = value.toString().replace('.', '');
+    // Usar toFixed(6) para preservar siempre 6 decimales antes de quitar el punto
+    // Ej: 80.29975 → "80.299750" → "80299750" → "80.299.750"
+    let numString = parseFloat(value).toFixed(6).replace('.', '');
     
     // Agregar puntos como separadores cada 3 dígitos de derecha a izquierda
     let formatted = '';
@@ -89,26 +90,40 @@ export default function EncasetamientoColombiaDashboard() {
         transition={{ delay: 0.1 }}
         className="grid grid-cols-2 md:grid-cols-4 gap-4"
       >
-        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-violet-500/30 shadow-lg text-center">
-          <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1">Total Encasetamiento Nacional Colombia 2025</p>
-          <p className="text-3xl font-bold text-violet-700">963.3M</p>
-          <p className="text-xs text-gray-500 mt-1">millones de aves encasetadas en el año</p>
-        </div>
-        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 shadow-lg text-center">
-          <p className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">Crecimiento Sector Avícola Colombia 2025 vs 2024</p>
-          <p className="text-3xl font-bold text-green-600">+5.7%</p>
-          <p className="text-xs text-gray-500 mt-1">variación porcentual anual en aves encasetadas</p>
-        </div>
-        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 shadow-lg text-center">
-          <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-1">Incremento Absoluto Aves Encasetadas 2025 vs 2024</p>
-          <p className="text-3xl font-bold text-purple-700">+51.8M</p>
-          <p className="text-xs text-gray-500 mt-1">aves adicionales encasetadas respecto a 2024</p>
-        </div>
-        <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-violet-500/30 shadow-lg text-center">
-          <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1">Participación Pollo Fiesta en Encasetamiento Nacional 2025</p>
-          <p className="text-3xl font-bold text-violet-700">3.3%</p>
-          <p className="text-xs text-gray-500 mt-1">del total nacional de aves encasetadas en Colombia</p>
-        </div>
+        {(() => {
+          const t2025 = totalesEncasetamiento[2025];
+          const t2024 = totalesEncasetamiento[2024];
+          const incrementoAbs = t2025 - t2024;
+          const crecPct = ((incrementoAbs / t2024) * 100).toFixed(1);
+          // Formatear millones con separador de miles colombiano
+          const fmtM = (v) => new Intl.NumberFormat('es-CO', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(v);
+          const pfEnc = 32.4; // millones Pollo Fiesta
+          const participacion = ((pfEnc / t2025) * 100).toFixed(1);
+          return (
+            <>
+              <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-violet-500/30 shadow-lg text-center">
+                <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1">Total Encasetamiento Nacional Colombia 2025</p>
+                <p className="text-2xl font-bold text-violet-700">{fmtM(t2025)}</p>
+                <p className="text-xs text-gray-500 mt-1">millones de aves encasetadas en el año</p>
+              </div>
+              <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 shadow-lg text-center">
+                <p className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">Crecimiento Sector Avícola Colombia 2025 vs 2024</p>
+                <p className="text-3xl font-bold text-green-600">+{crecPct}%</p>
+                <p className="text-xs text-gray-500 mt-1">variación porcentual anual en aves encasetadas</p>
+              </div>
+              <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 shadow-lg text-center">
+                <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-1">Incremento Absoluto Aves Encasetadas 2025 vs 2024</p>
+                <p className="text-2xl font-bold text-purple-700">+{fmtM(incrementoAbs)}</p>
+                <p className="text-xs text-gray-500 mt-1">millones de aves adicionales respecto a 2024</p>
+              </div>
+              <div className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-violet-500/30 shadow-lg text-center">
+                <p className="text-xs font-semibold text-violet-500 uppercase tracking-wide mb-1">Participación Pollo Fiesta en Encasetamiento Nacional 2025</p>
+                <p className="text-3xl font-bold text-violet-700">{participacion}%</p>
+                <p className="text-xs text-gray-500 mt-1">del total nacional de aves encasetadas en Colombia</p>
+              </div>
+            </>
+          );
+        })()}
       </motion.div>
 
       {/* Main Content */}

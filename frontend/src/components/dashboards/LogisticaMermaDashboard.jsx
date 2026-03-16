@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
 import { TrendingDown, TrendingUp, AlertTriangle, X, Info, Target, CheckCircle2 } from 'lucide-react';
@@ -431,44 +432,50 @@ export default function LogisticaMermaDashboard({ data }) {
       </div>
 
       {/* Modal de Información */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
             onClick={() => setModalOpen(false)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl p-8 max-w-2xl w-full shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
-                <h3 className="text-2xl font-bold text-gray-900">{modalContent.title}</h3>
+                <div className="flex items-center gap-3">
+                  <Info className="w-6 h-6 text-blue-400" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
+                </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              <div className="text-gray-700 leading-relaxed whitespace-pre-line">
                 {modalContent.description}
-              </p>
-              <button
-                onClick={() => setModalOpen(false)}
-                className="mt-6 w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all"
-              >
-                Cerrar
-              </button>
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => setModalOpen(false)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                >
+                  Entendido
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
 
     </div>
   );

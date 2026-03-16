@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LabelList } from 'recharts';
 import { Egg, TrendingDown, DollarSign, X, Info, AlertTriangle, Package } from 'lucide-react';
 import { formatCurrencyFull } from './CustomTooltip';
 
@@ -333,7 +334,9 @@ export default function ComercialHuevoDashboard({ data }) {
               }}
             />
             <Legend />
-            <Bar yAxisId="left" dataKey="unidades" fill="#3b82f6" name="Unidades Vendidas" radius={[8, 8, 0, 0]} />
+            <Bar yAxisId="left" dataKey="unidades" fill="#3b82f6" name="Unidades Vendidas" radius={[8, 8, 0, 0]}>
+              <LabelList dataKey="año" position="top" style={{ fontSize: '11px', fontWeight: 'bold', fill: '#374151' }} />
+            </Bar>
             <Line yAxisId="right" type="monotone" dataKey="precio" stroke="#f97316" strokeWidth={3} name="Precio Promedio ($/Unidad)" dot={{ r: 6 }} />
             <Line yAxisId="right" type="linear" dataKey="tendenciaPrecio" stroke="#7c3aed" strokeWidth={2} strokeDasharray="8 4" dot={false} name="Tendencia Precio" />
           </ComposedChart>
@@ -341,6 +344,7 @@ export default function ComercialHuevoDashboard({ data }) {
       </motion.div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -354,7 +358,7 @@ export default function ComercialHuevoDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-yellow-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -383,7 +387,7 @@ export default function ComercialHuevoDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

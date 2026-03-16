@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Package, Users, Info, TrendingUp, X } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import CollapsibleTable from '../CollapsibleTable';
 
 export default function ComercialEstructuraDashboard({ data }) {
@@ -117,11 +118,11 @@ export default function ComercialEstructuraDashboard({ data }) {
       </motion.div>
 
       {showEquipoModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowEquipoModal(false)}>
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowEquipoModal(false)}>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto border-4 border-blue-500 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Estructura del Equipo Comercial</h2>
-              <button onClick={() => setShowEquipoModal(false)} className="text-gray-500 hover:text-gray-700">
+              <h2 className="text-xl font-bold text-gray-900">Estructura del Equipo Comercial</h2>
+              <button onClick={() => setShowEquipoModal(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -361,6 +362,7 @@ export default function ComercialEstructuraDashboard({ data }) {
       </motion.div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -403,7 +405,7 @@ export default function ComercialEstructuraDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

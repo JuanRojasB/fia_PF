@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LabelList } from 'recharts';
 import { Users, TrendingUp, UserMinus, UserPlus, Clock, DollarSign, X, Info, ArrowUp, ArrowDown } from 'lucide-react';
 
 export default function HumanaDashboard({ data }) {
@@ -359,7 +360,9 @@ export default function HumanaDashboard({ data }) {
                 ]}
               />
               <Legend wrapperStyle={{ paddingTop: '20px' }} />
-              <Bar dataKey="nomina" fill="#10b981" name="Nómina Total" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="nomina" fill="#10b981" name="Nómina Total" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="anio" position="top" style={{ fontSize: '11px', fontWeight: 'bold', fill: '#374151' }} />
+              </Bar>
               <Bar dataKey="horasExtras" fill="#f59e0b" name="Horas Extras" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -434,6 +437,7 @@ export default function HumanaDashboard({ data }) {
       </div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -443,7 +447,7 @@ export default function HumanaDashboard({ data }) {
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -457,14 +461,14 @@ export default function HumanaDashboard({ data }) {
               </div>
               <div className="text-gray-700 leading-relaxed">{modalContent.description}</div>
               <div className="mt-6 flex justify-end">
-                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors">
+                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                   Entendido
                 </button>
               </div>
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, Area } from 'recharts';
+import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, Area, LabelList } from 'recharts';
 import { Egg, TrendingUp, X, Info, Target, Award, Activity } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 
@@ -433,7 +434,9 @@ export default function ProduccionHuevosDashboard({ data }) {
               }}
             />
             <Legend />
-            <Bar dataKey="estandar" fill="#3b82f6" name="Estándar Industria" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="estandar" fill="#3b82f6" name="Estándar Industria" radius={[8, 8, 0, 0]}>
+              <LabelList dataKey="anio" position="top" style={{ fontSize: '11px', fontWeight: 'bold', fill: '#374151' }} />
+            </Bar>
             <Bar dataKey="productividad" fill="#10b981" name="Productividad Real" radius={[8, 8, 0, 0]} />
           </ComposedChart>
         </ResponsiveContainer>
@@ -553,6 +556,7 @@ export default function ProduccionHuevosDashboard({ data }) {
       </motion.div>
 
       {/* Modal de Explicación */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -566,7 +570,7 @@ export default function ProduccionHuevosDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-yellow-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -595,7 +599,7 @@ export default function ProduccionHuevosDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

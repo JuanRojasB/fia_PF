@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TrendingUp, DollarSign, Building, FileText, X, Info, Users, Scale, Briefcase } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
@@ -351,13 +352,14 @@ export default function SituacionEconomicaDashboard() {
       </motion.div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
             onClick={() => setModalOpen(false)}
           >
             <motion.div
@@ -367,16 +369,16 @@ export default function SituacionEconomicaDashboard() {
               className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Info className="w-6 h-6 text-blue-600" />
-                  <h3 className="text-2xl font-bold text-gray-900">{modalContent.title}</h3>
+                  <Info className="w-6 h-6 text-blue-400" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
-                  <X className="w-6 h-6 text-gray-600" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
               <div className="text-gray-700 leading-relaxed">
@@ -393,7 +395,7 @@ export default function SituacionEconomicaDashboard() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

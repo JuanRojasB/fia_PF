@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
 import { Package, TrendingUp, DollarSign, X, Info, Percent, ArrowUpRight, ArrowDownRight, Building2 } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import { formatCurrencyFull } from './CustomTooltip';
@@ -480,8 +481,12 @@ export default function ComercialInstitucionalDashboard({ data }) {
                 }
                 return null;
               }} />
-              <Bar dataKey="2024" fill="#3b82f6" name="2024" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="2025" fill="#10b981" name="2025" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="2024" fill="#3b82f6" name="2024" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="2024" position="top" style={{ fontSize: '10px', fontWeight: 'bold', fill: '#3b82f6' }} formatter={() => '2024'} />
+              </Bar>
+              <Bar dataKey="2025" fill="#10b981" name="2025" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="2025" position="top" style={{ fontSize: '10px', fontWeight: 'bold', fill: '#10b981' }} formatter={() => '2025'} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
@@ -554,6 +559,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
       </div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -596,7 +602,7 @@ export default function ComercialInstitucionalDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

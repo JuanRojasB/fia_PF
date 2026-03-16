@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, PieChart as PieChartIcon, AlertCircle, Scale, X, Info, Shield, CheckCircle } from 'lucide-react';
 
@@ -188,6 +189,7 @@ export default function SituacionJuridicaDashboard() {
       </motion.div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -214,7 +216,7 @@ export default function SituacionJuridicaDashboard() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

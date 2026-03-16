@@ -362,8 +362,7 @@ export default function Dashboard() {
       <div 
         className="p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 transition-[margin-left] duration-200 ease-out"
         style={{ 
-          marginLeft: isDesktop ? (isSidebarCollapsed ? '64px' : '256px') : '0',
-          transform: 'translateZ(0)'
+          marginLeft: isDesktop ? (isSidebarCollapsed ? '64px' : '256px') : '0'
         }}
       >
         <div 

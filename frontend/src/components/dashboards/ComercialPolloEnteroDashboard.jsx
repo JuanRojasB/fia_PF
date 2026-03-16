@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend, ComposedChart, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend, ComposedChart, ReferenceLine, LabelList } from 'recharts';
 import { Package, TrendingUp, Target, X, Info, Percent, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 
@@ -343,7 +344,9 @@ export default function ComercialPolloEnteroDashboard({ data }) {
               return null;
             }} />
             <Legend />
-            <Bar dataKey="planta" fill="#f97316" name="Pollo Entero Planta" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="planta" fill="#f97316" name="Pollo Entero Planta" radius={[8, 8, 0, 0]}>
+              <LabelList dataKey="anio" position="top" style={{ fontSize: '11px', fontWeight: 'bold', fill: '#374151' }} />
+            </Bar>
             <Bar dataKey="asadero" fill="#3b82f6" name="Línea Asadero" radius={[8, 8, 0, 0]} />
             <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 4, fill: '#ef4444' }} name="Tendencia Planta" />
           </ComposedChart>
@@ -417,6 +420,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
       </motion.div>
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -430,7 +434,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-orange-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -459,7 +463,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

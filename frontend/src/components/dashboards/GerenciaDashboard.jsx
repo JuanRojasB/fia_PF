@@ -1,12 +1,12 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Briefcase, Target, CheckCircle, X, Info } from 'lucide-react';
 import EnDesarrollo from './EnDesarrollo';
 
 export default function GerenciaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', description: '' });
 
   const openModal = (title, description) => {
@@ -46,9 +46,6 @@ export default function GerenciaDashboard({ data }) {
   });
   const uniqueData = Object.values(uniqueMap);
 
-  // Agrupar por sección (solo para contexto, no para gráficos principales)
-  const seccionOrder = ['Introducción', 'Líneas de Acción', 'Acciones por Proceso', 'Conclusiones'];
-  
   // Contar secciones únicas
   const seccionesUnicas = [...new Set(uniqueData.map(d => d.seccion))];
   
@@ -70,8 +67,6 @@ export default function GerenciaDashboard({ data }) {
     }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 8);
-
-  const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
 
   // Colores únicos por proceso (solo los necesarios)
   const procesoColors = {
@@ -107,7 +102,7 @@ export default function GerenciaDashboard({ data }) {
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal('Secciones Estratégicas', 'Áreas clave del plan: Introducción, Líneas de Acción, Acciones por Proceso, Conclusiones.')}
+          onClick={() => openModal('Secciones Estratégicas del Plan Gerencial 2025', `El plan gerencial 2025 está estructurado en ${seccionesUnicas.length} secciones: Introducción (contexto y objetivos del año), Líneas de Acción (ejes estratégicos que guían la gestión), Acciones por Proceso (iniciativas concretas ejecutadas en cada área operativa) y Conclusiones (resultados y aprendizajes del período). Esta estructura garantiza coherencia entre la visión estratégica y la ejecución operativa, permitiendo trazabilidad desde los objetivos corporativos hasta las acciones de cada proceso.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Secciones Estratégicas Plan 2025</span>
@@ -118,7 +113,7 @@ export default function GerenciaDashboard({ data }) {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          onClick={() => openModal('Procesos en Gestión', 'Áreas operativas: Calidad, SST, Ambiental, Compras, Bienestar Animal, etc.')}
+          onClick={() => openModal('Procesos en Gestión Gerencial 2025', `Se gestionaron ${Object.keys(procesoCount).length} procesos durante 2025, incluyendo Aseguramiento de Calidad, SST, Gestión Ambiental, Compras, Bienestar Animal, Transformación Digital, entre otros. Cada proceso tiene asignadas iniciativas específicas que contribuyen a los objetivos estratégicos de la compañía. La distribución de iniciativas por proceso permite identificar cuáles áreas tuvieron mayor actividad y cuáles requieren mayor atención en el siguiente período.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Procesos en Gestión 2025</span>
@@ -129,7 +124,7 @@ export default function GerenciaDashboard({ data }) {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          onClick={() => openModal('Iniciativas 2025', 'Acciones concretas implementadas en cada proceso durante el año.')}
+          onClick={() => openModal('Iniciativas Ejecutadas 2025', `Se ejecutaron ${accionesReales} iniciativas concretas durante 2025 distribuidas entre los diferentes procesos gerenciales. Cada iniciativa representa una acción específica implementada para mejorar la operación, cumplir objetivos estratégicos o resolver problemáticas identificadas. El gráfico de barras muestra los 8 procesos con mayor número de iniciativas, permitiendo visualizar dónde se concentró el esfuerzo de mejora durante el año.`)}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Iniciativas Ejecutadas 2025</span>
@@ -210,7 +205,7 @@ export default function GerenciaDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        onClick={() => openModal('Acciones por Proceso', 'Número de iniciativas implementadas en cada área. Identifica procesos con mayor actividad.')}
+        onClick={() => openModal('Iniciativas Estratégicas por Proceso 2025', `El gráfico muestra los 8 procesos con mayor número de iniciativas ejecutadas en 2025. La longitud de cada barra representa la cantidad de acciones implementadas en ese proceso. Los procesos con más iniciativas suelen ser los de mayor impacto operativo o los que enfrentaron mayores retos durante el año. Este análisis permite a la gerencia priorizar recursos y atención para el siguiente período, reforzando los procesos con menor actividad o mayor brecha de mejora.`)}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-gray-200 hover:border-blue-500 transition-all cursor-pointer"
       >
         <h3 className="text-xl font-bold text-gray-900 mb-6">Iniciativas Estratégicas por Proceso Gerencial 2025</h3>
@@ -313,6 +308,7 @@ export default function GerenciaDashboard({ data }) {
       })()}
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -326,7 +322,7 @@ export default function GerenciaDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-purple-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -347,7 +343,7 @@ export default function GerenciaDashboard({ data }) {
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-gray-900 rounded-lg transition-colors"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                 >
                   Entendido
                 </button>
@@ -355,7 +351,7 @@ export default function GerenciaDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

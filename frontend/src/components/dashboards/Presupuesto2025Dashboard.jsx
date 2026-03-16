@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ComposedChart } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ComposedChart, LabelList } from 'recharts';
 import { TrendingUp, DollarSign, AlertCircle, X, Info, PieChart as PieChartIcon, FileText, Scale } from 'lucide-react';
 
 const CustomTooltip = ({ active, payload, label, formatNumber }) => {
@@ -235,9 +236,15 @@ export default function Presupuesto2025Dashboard({ data }) {
               <YAxis stroke="#1f2937" tickFormatter={(v) => `${formatMiles(v)}M`} style={{ fontSize: '14px', fontWeight: '700' }} domain={[700000, 1100000]} ticks={[700000, 800000, 900000, 1000000, 1100000]} width={75} />
               <Tooltip content={<CustomTooltip formatNumber={formatNumber} />} />
               <Legend wrapperStyle={{ paddingTop: '24px', fontSize: '14px', fontWeight: '600' }} iconType="rect" />
-              <Bar dataKey="real_2025" name="Real 2025" fill="#059669" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="ppto_2025" name="Ppto 2025" fill="#2563eb" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="real_2024" name="Real 2024" fill="#374151" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="real_2025" name="Real 2025" fill="#059669" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="real_2025" position="top" style={{ fontSize: '10px', fontWeight: 'bold', fill: '#059669' }} formatter={() => '2025'} />
+              </Bar>
+              <Bar dataKey="ppto_2025" name="Ppto 2025" fill="#2563eb" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="ppto_2025" position="top" style={{ fontSize: '10px', fontWeight: 'bold', fill: '#2563eb' }} formatter={() => 'Ppto'} />
+              </Bar>
+              <Bar dataKey="real_2024" name="Real 2024" fill="#374151" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="real_2024" position="top" style={{ fontSize: '10px', fontWeight: 'bold', fill: '#374151' }} formatter={() => '2024'} />
+              </Bar>
               <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
             </ComposedChart>
           </ResponsiveContainer>
@@ -392,6 +399,7 @@ export default function Presupuesto2025Dashboard({ data }) {
       )}
 
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -424,7 +432,7 @@ export default function Presupuesto2025Dashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

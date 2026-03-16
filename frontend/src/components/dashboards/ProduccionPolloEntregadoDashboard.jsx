@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList } from 'recharts';
 import { Truck, TrendingDown, Package, AlertCircle, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import { getValueColor } from '../../utils/colorUtils';
@@ -305,8 +306,12 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
                   return null;
                 }}
               />
-              <Bar dataKey="2024" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="2025" fill="#10b981" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="2024" fill="#3b82f6" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="2024" position="top" style={{ fontSize: '10px', fill: '#3b82f6', fontWeight: 'bold' }} formatter={() => '2024'} />
+              </Bar>
+              <Bar dataKey="2025" fill="#10b981" radius={[8, 8, 0, 0]}>
+                <LabelList dataKey="2025" position="top" style={{ fontSize: '10px', fill: '#10b981', fontWeight: 'bold' }} formatter={() => '2025'} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
           
@@ -425,7 +430,96 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
         </motion.div>
       </div>
 
+      {/* Totales comparativos */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.85 }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-4"
+      >
+        {[
+          { label: 'Total Programado 2025', value: datos2025.programado, color: 'border-purple-400', textColor: 'text-purple-700' },
+          { label: 'Total Real Granjas 2025', value: datos2025.real_granjas, color: 'border-green-400', textColor: 'text-green-700' },
+          { label: 'Total Comprado 2025', value: datos2025.comprado, color: 'border-orange-400', textColor: 'text-orange-700' },
+          { label: 'Total Aves 2025', value: datos2025.total, color: 'border-blue-400', textColor: 'text-blue-700' },
+        ].map((item, i) => (
+          <div key={i} className={`bg-white rounded-xl p-4 border-2 ${item.color} text-center`}>
+            <div className="text-xs text-gray-500 mb-1">{item.label}</div>
+            <div className={`text-xl font-bold ${item.textColor}`}>{formatNumber(item.value)}</div>
+          </div>
+        ))}
+      </motion.div>
+
+      {/* Análisis */}
+      {(() => {
+        const varTotal = datos2024.total > 0 ? (((datos2025.total - datos2024.total) / datos2024.total) * 100).toFixed(1) : 0;
+        const varReal = datos2024.real_granjas > 0 ? (((datos2025.real_granjas - datos2024.real_granjas) / datos2024.real_granjas) * 100).toFixed(1) : 0;
+        const varComprado = datos2024.comprado > 0 ? (((datos2025.comprado - datos2024.comprado) / datos2024.comprado) * 100).toFixed(1) : 0;
+        const pctRealGranjas2025 = datos2025.total > 0 ? ((datos2025.real_granjas / datos2025.total) * 100).toFixed(1) : 0;
+        const pctRealGranjas2024 = datos2024.total > 0 ? ((datos2024.real_granjas / datos2024.total) * 100).toFixed(1) : 0;
+        const cumplProg = datos2025.programado > 0 ? ((datos2025.total / datos2025.programado) * 100).toFixed(1) : 0;
+
+        // Tendencia histórica: últimos 3 años
+        const ultimos3 = historico.slice(-3);
+        const tendenciaHistorica = ultimos3.every((r, i) => i === 0 || r.total >= ultimos3[i - 1].total)
+          ? 'creciente' : ultimos3.every((r, i) => i === 0 || r.total <= ultimos3[i - 1].total)
+          ? 'decreciente' : 'variable';
+
+        const insights = [
+          {
+            icon: <TrendingDown className={`w-5 h-5 ${parseFloat(varTotal) >= 0 ? 'text-green-500' : 'text-red-500'}`} />,
+            color: parseFloat(varTotal) >= 0 ? 'border-green-400 bg-green-50' : 'border-red-400 bg-red-50',
+            title: 'Variación total 2025 vs 2024',
+            text: `El total de aves entregadas en 2025 fue ${formatNumber(datos2025.total)}, una variación de ${varTotal >= 0 ? '+' : ''}${varTotal}% frente a 2024 (${formatNumber(datos2024.total)}). Diferencia absoluta: ${parseFloat(varTotal) >= 0 ? '+' : ''}${formatNumber(datos2025.total - datos2024.total)} aves.`
+          },
+          {
+            icon: <Truck className={`w-5 h-5 ${parseFloat(varReal) >= 0 ? 'text-green-500' : 'text-red-500'}`} />,
+            color: parseFloat(varReal) >= 0 ? 'border-green-400 bg-green-50' : 'border-red-400 bg-red-50',
+            title: 'Real de granjas propias',
+            text: `Las granjas propias entregaron ${formatNumber(datos2025.real_granjas)} aves en 2025 (${varReal >= 0 ? '+' : ''}${varReal}% vs 2024). Representan el ${pctRealGranjas2025}% del total 2025 vs ${pctRealGranjas2024}% en 2024, indicando ${parseFloat(pctRealGranjas2025) >= parseFloat(pctRealGranjas2024) ? 'mayor' : 'menor'} autosuficiencia productiva.`
+          },
+          {
+            icon: <Package className={`w-5 h-5 ${parseFloat(varComprado) <= 0 ? 'text-green-500' : 'text-orange-500'}`} />,
+            color: parseFloat(varComprado) <= 0 ? 'border-green-400 bg-green-50' : 'border-orange-400 bg-orange-50',
+            title: 'Pollo comprado (Avi/Cambulos)',
+            text: `El pollo comprado fue ${formatNumber(datos2025.comprado)} aves en 2025 (${varComprado >= 0 ? '+' : ''}${varComprado}% vs 2024). ${parseFloat(varComprado) < 0 ? 'La reducción en compras externas refleja mayor capacidad de producción propia.' : 'El incremento en compras externas puede indicar déficit en producción propia.'}`
+          },
+          {
+            icon: <Info className="w-5 h-5 text-blue-500" />,
+            color: 'border-blue-400 bg-blue-50',
+            title: 'Cumplimiento y tendencia histórica',
+            text: `Cumplimiento del programado 2025: ${cumplProg}% (${formatNumber(datos2025.total)} de ${formatNumber(datos2025.programado)} aves). La tendencia histórica de los últimos 3 años es ${tendenciaHistorica}. El año 2025 registra ${parseFloat(varTotal) >= 0 ? 'crecimiento' : 'decrecimiento'} frente al año anterior.`
+          },
+        ];
+
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+            className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 border-2 border-blue-200"
+          >
+            <div className="flex items-center gap-3 mb-5">
+              <Info className="w-6 h-6 text-blue-500" />
+              <h3 className="text-xl font-bold text-gray-900">Análisis de Pollo Entregado</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {insights.map((item, i) => (
+                <div key={i} className={`rounded-xl p-4 border-2 ${item.color}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    {item.icon}
+                    <span className="font-bold text-gray-800 text-sm">{item.title}</span>
+                  </div>
+                  <p className="text-gray-700 text-sm leading-relaxed">{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        );
+      })()}
+
       {/* Modal */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -468,7 +562,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }
