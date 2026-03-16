@@ -98,7 +98,7 @@ export default function LogisticaSede1Dashboard({ data }) {
           <h2 className="text-3xl font-bold text-gray-900">GESTIÓN LOGÍSTICA - SEDE 1</h2>
         </div>
         <p className="text-gray-700 leading-relaxed mb-4">
-          La Sede 1 se dedica a la comercialización de pollo entero tipo asadero, registrando una disminución en ventas del -9,4% durante el 2025 frente al año 2024.
+          La Sede 1 se dedica a la comercialización de pollo entero tipo asadero.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <div className="bg-white/95 rounded-lg p-4 border border-gray-300">
@@ -246,8 +246,7 @@ export default function LogisticaSede1Dashboard({ data }) {
         <div className="mt-6 bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
           <p className="text-sm text-gray-700 leading-relaxed">
             <span className="font-semibold text-gray-900">Análisis Sede 1:</span> La reducción del -2.59% en gastos totales se debe principalmente a la optimización 
-            de fletes (-0.86%) y la reducción de personal de postproceso (-16.09%) por la unificación de procesos en la Sede 3. A pesar de la disminución en ventas 
-            del -9.4%, se logró mantener una gestión eficiente de costos.
+            de fletes (-0.86%) y la reducción de personal de postproceso (-16.09%) por la unificación de procesos en la Sede 3, logrando mantener una gestión eficiente de costos.
           </p>
         </div>
         </div>

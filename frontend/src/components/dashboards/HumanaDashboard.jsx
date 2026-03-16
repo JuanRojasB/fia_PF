@@ -29,15 +29,6 @@ export default function HumanaDashboard({ data }) {
     }).format(parseFloat(value));
   };
 
-  // Formato abreviado para tarjetas: $1.234M o $123.4M
-  const formatCOPShort = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
-    if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000) return `$${(v / 1_000).toFixed(0)}mil`;
-    return `$${v.toFixed(0)}`;
-  };
 
   const formatNumber = (value) => {
     if (!value || isNaN(value)) return '0';
@@ -131,11 +122,10 @@ export default function HumanaDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium uppercase tracking-wide">Costo Nómina Total</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
-          <div className="text-2xl font-bold text-gray-900 leading-tight mb-0.5">{formatCOPShort(kpis.nomina2025)}</div>
-          <div className="text-xs text-gray-400 mb-1">{formatCOP(kpis.nomina2025)}</div>
-          <div className="border-t border-gray-200 pt-2 mt-1 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCOPShort(kpis.nomina2024)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCOPShort(kpis.nomina2025)}</span></div>
+          <div className="text-xl font-bold text-gray-900 leading-tight mb-1 break-all">{formatCOP(kpis.nomina2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCOP(kpis.nomina2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCOP(kpis.nomina2025)}</span></div>
             <div className={`text-sm font-bold ${kpis.variacionNomina >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionNomina >= 0 ? '+' : ''}{kpis.variacionNomina}%</div>
           </div>
         </motion.div>
@@ -278,11 +268,10 @@ export default function HumanaDashboard({ data }) {
             <span className="text-gray-600 text-xs font-medium uppercase tracking-wide">Costo Horas Extras</span>
             <DollarSign className="w-5 h-5 text-orange-600" />
           </div>
-          <div className="text-2xl font-bold text-gray-900 leading-tight mb-0.5">{formatCOPShort(kpis.valorHoras2025)}</div>
-          <div className="text-xs text-gray-400 mb-1">{formatCOP(kpis.valorHoras2025)}</div>
-          <div className="border-t border-gray-200 pt-2 mt-1 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCOPShort(kpis.valorHoras2024)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCOPShort(kpis.valorHoras2025)}</span></div>
+          <div className="text-xl font-bold text-gray-900 leading-tight mb-1 break-all">{formatCOP(kpis.valorHoras2025)}</div>
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCOP(kpis.valorHoras2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCOP(kpis.valorHoras2025)}</span></div>
             <div className={`text-sm font-bold ${kpis.variacionValorHoras >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionValorHoras >= 0 ? '+' : ''}{kpis.variacionValorHoras}%</div>
           </div>
         </motion.div>
