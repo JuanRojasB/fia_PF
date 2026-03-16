@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Globe, DollarSign, TrendingUp, Target, AlertTriangle, Info, ChevronDown, ChevronUp } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Globe, DollarSign, TrendingUp, Target, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import { useState } from 'react';
 
