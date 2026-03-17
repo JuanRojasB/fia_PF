@@ -77,7 +77,7 @@ export default function AuditoriaDashboard({ data }) {
           <h2 className="text-2xl font-bold text-gray-900">Auditoría Interna y Control Interno 2025</h2>
         </div>
         <p className="text-gray-700 leading-relaxed text-sm">
-          Durante el año 2025, el área ejecutó auditorías mensuales a los procesos misionales: Logística, Producción y Comercial (12 auditorías cada uno), así como a Puntos de Venta, donde se realizaron 12 auditorías por cada punto. Las auditorías evaluaron la correcta aplicación de controles para mitigar riesgos y su impacto en la gestión de inventarios, la merma y la eficiencia operativa.
+          Durante el año 2025, el área ejecutó auditorías a los procesos misionales con frecuencias diferenciadas: Posproceso (diaria con informe mensual), Logística y Comercial (mensual — 12 al año). Los PDV de Bogotá, Tunja, Sogamoso y Chiquinquirá reciben 17 auditorías al año por punto, mientras que los 4 PDV de Yopal reciben 6 auditorías al año. Las auditorías evaluaron la correcta aplicación de controles para mitigar riesgos y su impacto en la gestión de inventarios, la merma y la eficiencia operativa.
         </p>
       </motion.div>
 
@@ -89,16 +89,23 @@ export default function AuditoriaDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
-            'Auditorías Mensuales por Proceso 2025',
+            'Auditorías por Proceso Misional 2025',
             <div className="space-y-3 text-gray-700">
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
-                <p className="text-sm">En 2025 se ejecutaron <strong>12 auditorías mensuales</strong> a cada uno de los procesos misionales de la compañía, con base en los controles implementados por cada área.</p>
+                <p className="text-sm">Frecuencias diferenciadas según el proceso. Posproceso se audita diariamente pero el informe es mensual. Logística y Comercial tienen auditoría mensual (12 al año).</p>
               </div>
               <div className="space-y-2 text-sm">
-                {['Logística', 'Producción', 'Comercial'].map(p => (
-                  <div key={p} className="flex justify-between bg-indigo-50 rounded p-3 border border-indigo-200">
-                    <span className="font-medium">{p}</span>
-                    <strong className="text-indigo-600">12 auditorías</strong>
+                {[
+                  { p: 'Posproceso', f: 'Diaria (informe mensual)', n: '12 informes/año' },
+                  { p: 'Logística', f: 'Mensual', n: '12 auditorías/año' },
+                  { p: 'Comercial', f: 'Mensual', n: '12 auditorías/año' },
+                ].map(({ p, f, n }) => (
+                  <div key={p} className="flex justify-between items-center bg-indigo-50 rounded p-3 border border-indigo-200">
+                    <div>
+                      <span className="font-medium">{p}</span>
+                      <span className="text-xs text-gray-500 ml-2">— {f}</span>
+                    </div>
+                    <strong className="text-indigo-600">{n}</strong>
                   </div>
                 ))}
               </div>
@@ -115,7 +122,7 @@ export default function AuditoriaDashboard({ data }) {
           </div>
           <div className="text-3xl font-bold text-gray-900">12</div>
           <div className="text-sm text-gray-600 mt-1">auditorías por proceso / año</div>
-          <div className="text-xs text-blue-600 mt-2">Logística · Producción · Comercial</div>
+          <div className="text-xs text-blue-600 mt-2">Posproceso (diaria) · Logística · Comercial</div>
           <Info className="w-4 h-4 text-blue-500 animate-pulse mt-2" />
         </motion.div>
 
@@ -128,10 +135,23 @@ export default function AuditoriaDashboard({ data }) {
             'Auditorías a Puntos de Venta 2025',
             <div className="space-y-3 text-gray-700">
               <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
-                <p className="text-sm">Se realizaron <strong>12 auditorías por cada punto de venta</strong> durante 2025, evaluando los controles aplicados en cada PDV.</p>
+                <p className="text-sm">La frecuencia de auditoría varía según la ciudad. Los PDV de Bogotá, Tunja, Sogamoso y Chiquinquirá reciben <strong>17 auditorías al año</strong> cada uno (14 PDV en total). Los 4 PDV de Yopal reciben <strong>6 auditorías al año</strong> cada uno.</p>
               </div>
-              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300 text-sm">
-                <p>Los puntos de venta están distribuidos en Bogotá (sur y norte), Fusagasugá, Chiquinquirá, Tunja, Sogamoso, Yopal, Aguazul, Guadalupe y Visión Colombia, coordinados por 7 líderes comerciales.</p>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between items-center bg-purple-50 rounded p-3 border border-purple-200">
+                  <div>
+                    <span className="font-medium">Bogotá · Tunja · Sogamoso · Chiquinquirá</span>
+                    <span className="text-xs text-gray-500 ml-2">— 14 PDV</span>
+                  </div>
+                  <strong className="text-purple-600">17 auditorías/año c/u</strong>
+                </div>
+                <div className="flex justify-between items-center bg-indigo-50 rounded p-3 border border-indigo-200">
+                  <div>
+                    <span className="font-medium">Yopal</span>
+                    <span className="text-xs text-gray-500 ml-2">— 4 PDV</span>
+                  </div>
+                  <strong className="text-indigo-600">6 auditorías/año c/u</strong>
+                </div>
               </div>
             </div>
           )}
@@ -141,9 +161,9 @@ export default function AuditoriaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Auditorías por Punto de Venta</span>
             <CheckCircle className="w-5 h-5 text-purple-500" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">12</div>
-          <div className="text-sm text-gray-600 mt-1">auditorías por PDV / año</div>
-          <div className="text-xs text-purple-600 mt-2">Todos los puntos de venta</div>
+          <div className="text-3xl font-bold text-gray-900">17 / 6</div>
+          <div className="text-sm text-gray-600 mt-1">auditorías/año por PDV</div>
+          <div className="text-xs text-purple-600 mt-2">Bogotá+: 17 · Yopal (4 PDV): 6</div>
           <Info className="w-4 h-4 text-purple-500 animate-pulse mt-2" />
         </motion.div>
 

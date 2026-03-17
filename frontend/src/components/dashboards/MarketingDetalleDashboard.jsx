@@ -37,8 +37,8 @@ export default function MarketingDetalleDashboard({ data }) {
             </div>
             <div className="bg-orange-50 rounded-lg p-3 border border-orange-200 mb-3">
               <p className="font-semibold text-orange-900 mb-2">Meses de Mayor Inversión</p>
-              <p className="text-sm">• Octubre: $163MM (obsequios corporativos)</p>
-              <p className="text-sm">• Diciembre: $124MM (medios masivos: RCN, Caracol, Red+, radio)</p>
+              <p className="text-sm">• Octubre: $163.175.712 (obsequios corporativos)</p>
+              <p className="text-sm">• Diciembre: $123.995.310 (medios masivos: RCN, Caracol, Red+, radio)</p>
               <p className="text-sm">• ROI diciembre: 11.07% (impactado por pauta extraordinaria)</p>
             </div>
             <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
@@ -68,8 +68,8 @@ export default function MarketingDetalleDashboard({ data }) {
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
             <p className="font-semibold text-orange-900 mb-2">Mayor Inversión</p>
             <ul className="space-y-1 text-sm text-gray-700">
-              <li>• Oct: $163MM</li>
-              <li>• Dic: $124MM</li>
+              <li>• Oct: $163.175.712</li>
+              <li>• Dic: $123.995.310</li>
               <li>• ROI Dic: 11.07%</li>
             </ul>
           </div>
@@ -142,17 +142,17 @@ export default function MarketingDetalleDashboard({ data }) {
         onClick={() => openModal(
           'Cumplimiento Presupuesto - Detalle',
           <div className="text-gray-700">
-            <p className="mb-3">Presupuesto aprobado: <strong>$480MM</strong> (distribución mensual: $40MM). Ejecución real: <strong>$401.6MM</strong> (83.7%). Ahorro: <strong>$78.3MM</strong>.</p>
+            <p className="mb-3">Presupuesto aprobado: <strong>$480.000.000</strong> (distribución mensual: $40.000.000). Ejecución real: <strong>$401.661.665</strong> (83.7%). Ahorro: <strong>$78.338.335</strong>.</p>
             <div className="bg-blue-50 rounded-lg p-3 border border-blue-200 mb-3">
               <p className="font-semibold text-blue-900 mb-2">Ejecución</p>
-              <p className="text-sm">• Promedio mensual real: $33.5MM vs $40MM presupuestado</p>
+              <p className="text-sm">• Promedio mensual real: $33.471.805 vs $40.000.000 presupuestado</p>
               <p className="text-sm">• Eficiencia: 83.7%</p>
-              <p className="text-sm">• Mes de menor inversión: Junio $5.3MM (brecha de continuidad)</p>
+              <p className="text-sm">• Mes de menor inversión: Junio $5.297.343 (brecha de continuidad)</p>
             </div>
             <div className="bg-orange-50 rounded-lg p-3 border border-orange-200 mb-3">
               <p className="font-semibold text-orange-900 mb-2">Inversión Atípica (justificada)</p>
-              <p className="text-sm">• Octubre: $163MM (obsequios corporativos fin de año)</p>
-              <p className="text-sm">• Diciembre: $124MM (pauta medios masivos - cierre comercial)</p>
+              <p className="text-sm">• Octubre: $163.175.712 (obsequios corporativos fin de año)</p>
+              <p className="text-sm">• Diciembre: $123.995.310 (pauta medios masivos - cierre comercial)</p>
             </div>
           </div>
         )}
@@ -170,20 +170,20 @@ export default function MarketingDetalleDashboard({ data }) {
             <p className="font-semibold text-blue-900 mb-2">Ejecución</p>
             <ul className="space-y-1 text-sm text-gray-700">
               <li>• Ejecutado: 83.7%</li>
-              <li>• Ahorro: $78.3MM</li>
-              <li>• Promedio: $33.5MM</li>
+              <li>• Ahorro: $78.338.335</li>
+              <li>• Promedio: $33.471.805</li>
             </ul>
           </div>
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
             <p className="font-semibold text-orange-900 mb-2">Atípica</p>
             <ul className="space-y-1 text-sm text-gray-700">
-              <li>• Oct: $163MM</li>
-              <li>• Dic: $124MM</li>
+              <li>• Oct: $163.175.712</li>
+              <li>• Dic: $123.995.310</li>
             </ul>
           </div>
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <p className="font-semibold text-red-900 mb-2">Menor Inversión</p>
-            <p className="text-sm text-gray-700">Junio: $5.3MM</p>
+            <p className="text-sm text-gray-700">Junio: $5.297.343</p>
           </div>
         </div>
       </motion.div>
@@ -262,7 +262,7 @@ export default function MarketingDetalleDashboard({ data }) {
             <li>• Efectividad Campañas Digitales 3.7</li>
             <li>• Seguidores digitales +154%</li>
             <li>• ROI promedio 17.4%</li>
-            <li>• Ahorro presupuestal $78.3MM</li>
+            <li>• Ahorro presupuestal $78.338.335</li>
           </ul>
         </div>
 

@@ -46,6 +46,15 @@ const SECTION_META = {
   'presupuesto-2025':           { label: 'Presupuesto 2025',                  icon: '💼', color: '#0f766e' },
   'situacion-juridica':         { label: 'Situación Jurídica',               icon: '⚖️', color: '#6d28d9' },
   'situacion-economica':        { label: 'Situación Económica',              icon: '📊', color: '#065f46' },
+  'gerencia-estrategica':             { label: 'Gerencia Estratégica y Mejoramiento Continuo', icon: '🏆', color: '#4f46e5' },
+  'gerencia-estrategica-calidad':     { label: 'Aseguramiento de Calidad',          icon: '✅', color: '#16a34a' },
+  'gerencia-estrategica-compras':     { label: 'Compras',                           icon: '🛒', color: '#f59e0b' },
+  'gerencia-estrategica-bienestar':   { label: 'Bienestar Animal',                  icon: '🐔', color: '#ec4899' },
+  'gerencia-estrategica-hseq':        { label: 'HSEQ — Seguridad y Salud',          icon: '🦺', color: '#f97316' },
+  'gerencia-estrategica-ambiental':   { label: 'Gestión Ambiental',                 icon: '🌿', color: '#10b981' },
+  'gerencia-estrategica-sgc':         { label: 'Sistema de Gestión de Calidad',     icon: '📋', color: '#0ea5e9' },
+  'gerencia-estrategica-satisfaccion':{ label: 'Satisfacción del Cliente',          icon: '⭐', color: '#8b5cf6' },
+  'gerencia-estrategica-vigia':       { label: 'Vigía de Riesgos',                  icon: '👁️', color: '#14b8a6' },
 };
 
 export default function SectionSplash({ section, trigger }) {

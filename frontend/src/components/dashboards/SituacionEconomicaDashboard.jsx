@@ -416,153 +416,90 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
       {/* 1. INDICADORES DE LIQUIDEZ */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
-        <h3 className="text-xl font-bold text-gray-900 mb-4">1. INDICADORES DE LIQUIDEZ</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 cursor-pointer hover:border-blue-500 transition-all"
-            onClick={() => openModal('Capital de Trabajo 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">$57.705.588.903</p></div>
-                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200"><p className="text-xs text-blue-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-blue-700">$96.138.091.362</p></div>
+        <div className="bg-blue-600 rounded-t-xl px-5 py-3">
+          <h3 className="text-lg font-bold text-white">1. Indicadores de Liquidez</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200 rounded-b-xl overflow-hidden">
+          {[
+            { nombre: 'CAPITAL DE TRABAJO', formula: 'Activo Corriente − Pasivo Corriente', desc: 'Son los recursos con que se dispone para desarrollar su actividad fluidamente.', v2025: '$96.138.091.362', v2024: '$57.705.588.903', color: 'blue', up: true },
+            { nombre: 'RAZÓN CORRIENTE', formula: 'Activo corriente / Pasivo corriente', desc: 'Por cada peso de deuda en cte. se dispone de n veces de respaldo para cumplir con la obligación.', v2025: '$4,22', v2024: '$3,35', color: 'cyan', up: true },
+            { nombre: 'PRUEBA ÁCIDA', formula: '(Activo corriente − inventario) / Pasivo corriente', desc: 'Es el respaldo que se tiene para cancelar un peso en el corto plazo sin comprometer los inventarios.', v2025: '$4,05', v2024: '$3,31', color: 'indigo', up: true },
+            { nombre: 'SOLIDEZ', formula: 'Activo total / Pasivo total', desc: 'Es la consistencia financiera para cubrir su deuda total.', v2025: '$4,71', v2024: '$2,55', color: 'sky', up: true },
+            { nombre: 'EBITDA', formula: 'Margen Ebitda = Ebitda / Ingresos Totales', desc: 'Beneficio bruto sin gastos financieros, amortizaciones e impuestos.', v2025: '$29.712.979.101 (6,8%)', v2024: '$25.734.246.272 (6,0%)', color: 'blue', up: true, span2: true },
+          ].map(({ nombre, formula, desc, v2025, v2024, color, up, span2 }, i) => (
+            <div key={i} className={`bg-white p-5 flex flex-col gap-2${span2 ? ' md:col-span-2' : ''}`}>
+              <p className={`text-xs font-bold uppercase tracking-wide text-${color}-700`}>{nombre}</p>
+              <p className="text-xs text-gray-500 italic">{formula}</p>
+              <p className="text-xs text-gray-600 leading-snug">{desc}</p>
+              <div className="mt-auto pt-3 border-t border-gray-100 grid grid-cols-2 gap-2">
+                <div className="bg-gray-50 rounded-lg p-2 border border-gray-200">
+                  <p className="text-xs text-gray-400 mb-0.5">2024</p>
+                  <p className="text-sm font-bold text-gray-700">{v2024}</p>
                 </div>
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300"><p className="text-sm text-gray-700">Son los recursos con que se dispone para desarrollar la actividad fluidamente. Se calcula restando el Pasivo Corriente del Activo Corriente.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">CAPITAL DE TRABAJO</p>
-            <p className="text-xs text-gray-600">(Activo Corriente - Pasivo Corriente)</p>
-            <p className="text-2xl font-bold text-blue-600 mt-2">96.138.091.362</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 57.705.588.903</p>
-          </div>
-          <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"
-            onClick={() => openModal('Razón Corriente 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">$3,35</p></div>
-                  <div className="bg-cyan-50 rounded-lg p-3 border border-cyan-200"><p className="text-xs text-cyan-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-cyan-700">$4,22</p></div>
+                <div className={`bg-${color}-50 rounded-lg p-2 border border-${color}-200`}>
+                  <p className={`text-xs text-${color}-500 font-semibold mb-0.5`}>2025</p>
+                  <p className={`text-sm font-bold text-${color}-700`}>{v2025}</p>
                 </div>
-                <div className="bg-cyan-50 rounded-lg p-4 border border-cyan-300"><p className="text-sm text-gray-700">Por cada peso de deuda en el corto plazo, la empresa dispone de $4.22 de respaldo para cumplir con la obligación.</p></div>
               </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">RAZÓN CORRIENTE</p>
-            <p className="text-xs text-gray-600">Activo corriente / Pasivo corriente</p>
-            <p className="text-2xl font-bold text-cyan-600 mt-2">$ 4,22</p>
-            <p className="text-xs text-gray-600 mt-1">2024: $ 3,35</p>
-          </div>
-          <div className="bg-indigo-50 rounded-lg p-4 border-2 border-indigo-300 cursor-pointer hover:border-indigo-500 transition-all"
-            onClick={() => openModal('Prueba Ácida 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">$3,31</p></div>
-                  <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-200"><p className="text-xs text-indigo-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-indigo-700">$4,05</p></div>
-                </div>
-                <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-300"><p className="text-sm text-gray-700">Es el respaldo para cancelar un peso en el corto plazo sin comprometer los inventarios. Fórmula: (Activo corriente - Inventario) / Pasivo corriente.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">PRUEBA ÁCIDA</p>
-            <p className="text-xs text-gray-600">(Activo corriente - inventario) / pasivo corriente</p>
-            <p className="text-2xl font-bold text-indigo-600 mt-2">$ 4,05</p>
-            <p className="text-xs text-gray-600 mt-1">2024: $ 3,31</p>
-          </div>
-          <div className="bg-sky-50 rounded-lg p-4 border-2 border-sky-300 cursor-pointer hover:border-sky-500 transition-all"
-            onClick={() => openModal('Solidez Financiera 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">$2,55</p></div>
-                  <div className="bg-sky-50 rounded-lg p-3 border border-sky-200"><p className="text-xs text-sky-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-sky-700">$4,71</p></div>
-                </div>
-                <div className="bg-sky-50 rounded-lg p-4 border border-sky-300"><p className="text-sm text-gray-700">Mide la consistencia financiera para cubrir la deuda total. Por cada peso de deuda total, la empresa tiene $4.71 en activos.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">SOLIDEZ</p>
-            <p className="text-xs text-gray-600">Activo total / Pasivo total</p>
-            <p className="text-2xl font-bold text-sky-600 mt-2">$ 4,71</p>
-            <p className="text-xs text-gray-600 mt-1">2024: $ 2,55</p>
-          </div>
-          <div className="bg-blue-100 rounded-lg p-4 border-2 border-blue-400 md:col-span-2 cursor-pointer hover:border-blue-600 transition-all"
-            onClick={() => openModal('EBITDA 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">$25.734.246.272</p><p className="text-sm font-semibold text-gray-600">Margen: 6.0%</p></div>
-                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200"><p className="text-xs text-blue-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-blue-700">$29.712.979.101</p><p className="text-sm font-semibold text-blue-600">Margen: 6.8%</p></div>
-                </div>
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300"><p className="text-sm text-gray-700">Beneficio Bruto sin gastos financieros, amortizaciones e impuestos. Mide la rentabilidad operativa pura de la empresa.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">EBITDA</p>
-            <p className="text-xs text-gray-600">Margen Ebitda = Ebitda / Ingresos Totales</p>
-            <div className="flex gap-8 mt-2">
-              <div><p className="text-2xl font-bold text-blue-600">29.712.979.101</p><p className="text-lg font-semibold text-blue-600">6,8%</p></div>
-              <div><p className="text-sm text-gray-600">2024:</p><p className="text-xl font-bold text-gray-700">25.734.246.272</p><p className="text-md font-semibold text-gray-700">6,0%</p></div>
+              <p className={`text-xs font-bold ${up ? 'text-green-600' : 'text-red-600'}`}>{up ? '▲ Mejora vs 2024' : '▼ Baja vs 2024'}</p>
             </div>
-          </div>
+          ))}
         </div>
       </motion.div>
 
       {/* 2. INDICADORES DE ENDEUDAMIENTO */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
-        <h3 className="text-xl font-bold text-gray-900 mb-4">2. INDICADORES DE ENDEUDAMIENTO</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
-            onClick={() => openModal('Nivel de Endeudamiento 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">39,2%</p></div>
-                  <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-green-700">21,2%</p></div>
+        <div className="bg-red-600 rounded-t-xl px-5 py-3">
+          <h3 className="text-lg font-bold text-white">2. Indicadores de Endeudamiento</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200 rounded-b-xl overflow-hidden">
+          {[
+            { nombre: 'NIVEL DE ENDEUDAMIENTO', formula: 'Pasivo / Activo', desc: 'Es el % en que participan los acreedores en los activos de la empresa.', v2025: '21,2%', v2024: '39,2%', up: false },
+            { nombre: 'ENDEUDAMIENTO A CORTO PLAZO', formula: 'Pasivo Corriente / Pasivo Total', desc: 'Es el % en que participan los acreedores del corto plazo en los activos de la compañía.', v2025: '45,1%', v2024: '45,7%', up: false },
+            { nombre: 'COBERTURA DE GASTOS FINANCIEROS', formula: 'Costos financieros / Ventas netas', desc: 'Es el % en que participa de la parte de las ventas.', v2025: '1,4%', v2024: '1,6%', up: false },
+          ].map(({ nombre, formula, desc, v2025, v2024, up }, i) => (
+            <div key={i} className="bg-white p-5 flex flex-col gap-2">
+              <p className="text-xs font-bold uppercase tracking-wide text-red-700">{nombre}</p>
+              <p className="text-xs text-gray-500 italic">{formula}</p>
+              <p className="text-xs text-gray-600 leading-snug">{desc}</p>
+              <div className="mt-auto pt-3 border-t border-gray-100 grid grid-cols-2 gap-2">
+                <div className="bg-gray-50 rounded-lg p-2 border border-gray-200">
+                  <p className="text-xs text-gray-400 mb-0.5">2024</p>
+                  <p className="text-sm font-bold text-gray-700">{v2024}</p>
                 </div>
-                <div className="bg-red-50 rounded-lg p-4 border border-red-300"><p className="text-sm text-gray-700">Es el porcentaje en que participan los acreedores en los activos de la empresa. Fórmula: Pasivo / Activo.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">NIVEL DE ENDEUDAMIENTO</p>
-            <p className="text-xs text-gray-600">Pasivo / Activo</p>
-            <p className="text-2xl font-bold text-red-600 mt-2">21,2%</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 39,2%</p>
-          </div>
-          <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300 cursor-pointer hover:border-orange-500 transition-all"
-            onClick={() => openModal('Endeudamiento a Corto Plazo 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">45,7%</p></div>
-                  <div className="bg-orange-50 rounded-lg p-3 border border-orange-200"><p className="text-xs text-orange-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-orange-700">45,1%</p></div>
-                </div>
-                <div className="bg-orange-50 rounded-lg p-4 border border-orange-300"><p className="text-sm text-gray-700">Es el porcentaje en que participan los acreedores de corto plazo en el pasivo total. Fórmula: Pasivo Corriente / Pasivo Total.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">ENDEUDAMIENTO A CORTO PLAZO</p>
-            <p className="text-xs text-gray-600">Pasivo Corriente / Pasivo Total</p>
-            <p className="text-2xl font-bold text-orange-600 mt-2">45,1%</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 45,7%</p>
-          </div>
-          <div className="bg-rose-50 rounded-lg p-4 border-2 border-rose-300 cursor-pointer hover:border-rose-500 transition-all"
-            onClick={() => openModal('Cobertura de Gastos Financieros 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">1,6%</p></div>
-                  <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-green-700">1,4%</p></div>
-                </div>
-                <div className="bg-rose-50 rounded-lg p-4 border border-rose-300"><p className="text-sm text-gray-700">Es el porcentaje que representan los costos financieros sobre las ventas netas. Fórmula: Costos financieros / Ventas netas.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">COBERTURA DE GASTOS FINANCIEROS</p>
-            <p className="text-xs text-gray-600">Costos financieros / Ventas netas</p>
-            <p className="text-2xl font-bold text-rose-600 mt-2">1,4%</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 1,6%</p>
-          </div>
-          <div className="bg-red-100 rounded-lg p-4 border-2 border-red-400 md:col-span-3 cursor-pointer hover:border-red-600 transition-all"
-            onClick={() => openModal('Indicador de Apalancamiento 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="bg-red-50 rounded-lg p-4 border border-red-300"><p className="text-sm text-gray-700">Mide el grado de compromiso de los accionistas para con el sector financiero. Relaciona el pasivo con el capital contable desde tres perspectivas.</p></div>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white rounded-lg p-3 border border-red-200 text-center"><p className="text-xs text-gray-600 mb-1">Pasivo / Capital</p><p className="text-lg font-bold text-red-600">26,9%</p><p className="text-xs text-gray-500">2024: 64,4%</p></div>
-                  <div className="bg-white rounded-lg p-3 border border-red-200 text-center"><p className="text-xs text-gray-600 mb-1">Pasivo Cte / Capital</p><p className="text-lg font-bold text-red-600">12,2%</p><p className="text-xs text-gray-500">2024: 29,4%</p></div>
-                  <div className="bg-white rounded-lg p-3 border border-red-200 text-center"><p className="text-xs text-gray-600 mb-1">Pasivo Fin / Capital</p><p className="text-lg font-bold text-red-600">14,3%</p><p className="text-xs text-gray-500">2024: 37,4%</p></div>
+                <div className="bg-red-50 rounded-lg p-2 border border-red-200">
+                  <p className="text-xs text-red-500 font-semibold mb-0.5">2025</p>
+                  <p className="text-sm font-bold text-red-700">{v2025}</p>
                 </div>
               </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900 mb-3">INDICADOR DE APALANCAMIENTO</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white rounded-lg p-3 border border-red-300"><p className="text-xs text-gray-600 mb-1">Pasivo / Capital contable</p><p className="text-xl font-bold text-red-600">26,9%</p><p className="text-xs text-gray-600 mt-1">2024: 64,4%</p></div>
-              <div className="bg-white rounded-lg p-3 border border-red-300"><p className="text-xs text-gray-600 mb-1">Pasivo corriente / Capital Contable</p><p className="text-xl font-bold text-red-600">12,2%</p><p className="text-xs text-gray-600 mt-1">2024: 29,4%</p></div>
-              <div className="bg-white rounded-lg p-3 border border-red-300"><p className="text-xs text-gray-600 mb-1">Pasivo Financiero / Capital Contable</p><p className="text-xl font-bold text-red-600">14,3%</p><p className="text-xs text-gray-600 mt-1">2024: 37,4%</p></div>
+              <p className="text-xs font-bold text-green-600">▼ Mejora (menor endeudamiento)</p>
+            </div>
+          ))}
+          {/* Apalancamiento — fila completa */}
+          <div className="bg-white p-5 flex flex-col gap-2 md:col-span-2 lg:col-span-3">
+            <p className="text-xs font-bold uppercase tracking-wide text-red-700">INDICADOR DE APALANCAMIENTO</p>
+            <p className="text-xs text-gray-600 leading-snug">Mide el grado de compromiso de los accionistas para con el sector financiero.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+              {[
+                { sub: 'Pasivo / Capital contable', v2025: '26,9%', v2024: '64,4%' },
+                { sub: 'Pasivo corriente / Capital contable', v2025: '12,2%', v2024: '29,4%' },
+                { sub: 'Pasivo financiero / Capital contable', v2025: '14,3%', v2024: '37,4%' },
+              ].map(({ sub, v2025, v2024 }, i) => (
+                <div key={i} className="bg-red-50 rounded-lg p-3 border border-red-200">
+                  <p className="text-xs text-gray-500 italic mb-2">{sub}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-white rounded p-1.5 border border-gray-200 text-center">
+                      <p className="text-xs text-gray-400">2024</p>
+                      <p className="text-sm font-bold text-gray-700">{v2024}</p>
+                    </div>
+                    <div className="bg-red-100 rounded p-1.5 border border-red-300 text-center">
+                      <p className="text-xs text-red-500">2025</p>
+                      <p className="text-sm font-bold text-red-700">{v2025}</p>
+                    </div>
+                  </div>
+                  <p className="text-xs font-bold text-green-600 mt-1.5">▼ Mejora vs 2024</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -570,134 +507,65 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
       {/* 3. INDICADORES DE ACTIVIDAD */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }}>
-        <h3 className="text-xl font-bold text-gray-900 mb-4">3. INDICADORES DE ACTIVIDAD</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
-            onClick={() => openModal('Rotación de Cartera 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">14,99 veces</p></div>
-                  <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-green-700">15,40 veces</p></div>
+        <div className="bg-green-700 rounded-t-xl px-5 py-3">
+          <h3 className="text-lg font-bold text-white">3. Indicadores de Actividad</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-200 border border-gray-200 rounded-b-xl overflow-hidden">
+          {[
+            { nombre: 'ROTACIÓN DE CARTERA', formula: 'Ventas netas / Promedio de cartera', desc: 'Es el número de veces en que rota la cartera respecto a las ventas del año.', v2025: '15,40', v2024: '14,99', up: true },
+            { nombre: 'ROTACIÓN DE INVENTARIOS', formula: 'Costo de Mcía / Prom. de Inventarios', desc: 'Es la cantidad de tiempo que estuvo el inventario en la compañía.', v2025: '39,2', v2024: '22,2', up: true },
+            { nombre: 'ROTACIÓN DEL PATRIMONIO', formula: 'Vtas Netas / Patrimonio', desc: 'Es el volumen de ventas generado con el patrimonio invertido.', v2025: '1,8', v2024: '5,1', up: false, note: 'Baja por crecimiento del patrimonio +194%' },
+            { nombre: 'VARIACIÓN DE LAS VENTAS NETAS', formula: 'Vtas Presente Ejercicio / Ventas Ejercicio Anterior', desc: 'Es el % de crecimiento o decrecimiento con respecto al año anterior.', v2025: '1,5%', v2024: '-1,6%', up: true },
+          ].map(({ nombre, formula, desc, v2025, v2024, up, note }, i) => (
+            <div key={i} className="bg-white p-5 flex flex-col gap-2">
+              <p className="text-xs font-bold uppercase tracking-wide text-green-700">{nombre}</p>
+              <p className="text-xs text-gray-500 italic">{formula}</p>
+              <p className="text-xs text-gray-600 leading-snug">{desc}</p>
+              <div className="mt-auto pt-3 border-t border-gray-100 grid grid-cols-2 gap-2">
+                <div className="bg-gray-50 rounded-lg p-2 border border-gray-200">
+                  <p className="text-xs text-gray-400 mb-0.5">2024</p>
+                  <p className="text-sm font-bold text-gray-700">{v2024}</p>
                 </div>
-                <div className="bg-green-50 rounded-lg p-4 border border-green-300"><p className="text-sm text-gray-700">Es el número de veces que rota la cartera respecto a las ventas del año.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">ROTACIÓN DE CARTERA</p>
-            <p className="text-2xl font-bold text-green-600 mt-2">15,40</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 14,99</p>
-          </div>
-          <div className="bg-emerald-50 rounded-lg p-4 border-2 border-emerald-300 cursor-pointer hover:border-emerald-500 transition-all"
-            onClick={() => openModal('Rotación de Inventarios 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">22,2 veces</p></div>
-                  <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200"><p className="text-xs text-emerald-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-emerald-700">39,2 veces</p></div>
+                <div className="bg-green-50 rounded-lg p-2 border border-green-200">
+                  <p className="text-xs text-green-500 font-semibold mb-0.5">2025</p>
+                  <p className="text-sm font-bold text-green-700">{v2025}</p>
                 </div>
-                <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-300"><p className="text-sm text-gray-700">Es la cantidad de veces que el inventario se renueva en el año. Fórmula: Costo de mercancía / Promedio de inventarios.</p></div>
               </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">ROTACIÓN DE INVENTARIOS</p>
-            <p className="text-xs text-gray-600">(Costo de Mcia / Prom. de Inventarios)</p>
-            <p className="text-2xl font-bold text-emerald-600 mt-2">39,2</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 22,2</p>
-          </div>
-          <div className="bg-teal-50 rounded-lg p-4 border-2 border-teal-300 cursor-pointer hover:border-teal-500 transition-all"
-            onClick={() => openModal('Rotación del Patrimonio 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">5,1 veces</p></div>
-                  <div className="bg-teal-50 rounded-lg p-3 border border-teal-200"><p className="text-xs text-teal-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-teal-700">1,8 veces</p></div>
-                </div>
-                <div className="bg-teal-50 rounded-lg p-4 border border-teal-300"><p className="text-sm text-gray-700">Es el volumen de ventas generado por cada peso de patrimonio invertido. La reducción se explica por el crecimiento extraordinario del patrimonio (+194%).</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">ROTACIÓN DEL PATRIMONIO</p>
-            <p className="text-xs text-gray-600">(Vtas Netas / Patrimonio)</p>
-            <p className="text-2xl font-bold text-teal-600 mt-2">1,8</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 5,1</p>
-          </div>
-          <div className="bg-green-100 rounded-lg p-4 border-2 border-green-400 cursor-pointer hover:border-green-600 transition-all"
-            onClick={() => openModal('Variación de las Ventas Netas 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-red-600">-1,6%</p></div>
-                  <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-green-700">+1,5%</p></div>
-                </div>
-                <div className="bg-green-50 rounded-lg p-4 border border-green-300"><p className="text-sm text-gray-700">La empresa revirtió la tendencia negativa de 2024 (-1.6%) para crecer 1.5% en 2025. Los ingresos operacionales pasaron de $426.000 millones a $431.000 millones.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">VARIACIÓN DE LAS VENTAS NETAS</p>
-            <p className="text-xs text-gray-600">(Vtas Presente / Ventas Anterior)</p>
-            <p className="text-2xl font-bold text-green-600 mt-2">1,5%</p>
-            <p className="text-xs text-gray-600 mt-1">2024: -1,6%</p>
-          </div>
+              <p className={`text-xs font-bold ${up ? 'text-green-600' : 'text-amber-600'}`}>{note || (up ? '▲ Mejora vs 2024' : '▼ Baja vs 2024')}</p>
+            </div>
+          ))}
         </div>
       </motion.div>
 
       {/* 4. INDICADORES DE RENDIMIENTO */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}>
-        <h3 className="text-xl font-bold text-gray-900 mb-4">4. INDICADORES DE RENDIMIENTO</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-violet-50 rounded-lg p-4 border-2 border-violet-300 cursor-pointer hover:border-violet-500 transition-all"
-            onClick={() => openModal('Margen Bruto de Utilidad 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">13,6%</p></div>
-                  <div className="bg-violet-50 rounded-lg p-3 border border-violet-200"><p className="text-xs text-violet-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-violet-700">15,0%</p></div>
+        <div className="bg-violet-700 rounded-t-xl px-5 py-3">
+          <h3 className="text-lg font-bold text-white">4. Indicadores de Rendimiento</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-200 border border-gray-200 rounded-b-xl overflow-hidden">
+          {[
+            { nombre: 'MARGEN BRUTO DE UTILIDAD', formula: 'Utilidad Bruta / Ventas netas', desc: 'Es la participación de la utilidad bruta en las ventas del año.', v2025: '15,0%', v2024: '13,7%', up: true },
+            { nombre: 'MARGEN OPERACIONAL DE UTILIDAD', formula: 'Utilidad Operativa / Ventas netas', desc: 'Indica la rentabilidad si el negocio es o no lucrativo.', v2025: '6,3%', v2024: '5,3%', up: true },
+            { nombre: 'RENTABILIDAD DEL PATRIMONIO', formula: 'Utilidad Antes de Impuesto / Patrimonio', desc: 'Es el rendimiento de la inversión de los socios en el ejercicio económico.', v2025: '10,3%', v2024: '21,8%', up: false, note: '▼ Baja por crecimiento del patrimonio +194%' },
+            { nombre: 'RENDIMIENTO DEL CAPITAL CONTABLE — ROE', formula: 'Utilidad Neta / Capital Contable', desc: 'Representa que por cada peso invertido en activo cuánto se genera en utilidad.', v2025: '6,8%', v2024: '14,5%', up: false, note: '▼ Baja por crecimiento del patrimonio +194%' },
+          ].map(({ nombre, formula, desc, v2025, v2024, up, note }, i) => (
+            <div key={i} className="bg-white p-5 flex flex-col gap-2">
+              <p className="text-xs font-bold uppercase tracking-wide text-violet-700">{nombre}</p>
+              <p className="text-xs text-gray-500 italic">{formula}</p>
+              <p className="text-xs text-gray-600 leading-snug">{desc}</p>
+              <div className="mt-auto pt-3 border-t border-gray-100 grid grid-cols-2 gap-2">
+                <div className="bg-gray-50 rounded-lg p-2 border border-gray-200">
+                  <p className="text-xs text-gray-400 mb-0.5">2024</p>
+                  <p className="text-sm font-bold text-gray-700">{v2024}</p>
                 </div>
-                <div className="bg-violet-50 rounded-lg p-4 border border-violet-300"><p className="text-sm text-gray-700">Es el porcentaje de utilidad bruta sobre las ventas netas. Fórmula: Utilidad Bruta / Ventas Netas.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">MARGEN BRUTO DE UTILIDAD</p>
-            <p className="text-xs text-gray-600">Utilidad Bruta / Ventas Netas</p>
-            <p className="text-2xl font-bold text-violet-600 mt-2">15,0%</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 13,6%</p>
-          </div>
-          <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 cursor-pointer hover:border-purple-500 transition-all"
-            onClick={() => openModal('Margen Operacional de Utilidad 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">5,3%</p></div>
-                  <div className="bg-purple-50 rounded-lg p-3 border border-purple-200"><p className="text-xs text-purple-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-purple-700">6,3%</p></div>
+                <div className="bg-violet-50 rounded-lg p-2 border border-violet-200">
+                  <p className="text-xs text-violet-500 font-semibold mb-0.5">2025</p>
+                  <p className="text-sm font-bold text-violet-700">{v2025}</p>
                 </div>
-                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300"><p className="text-sm text-gray-700">Es el porcentaje de utilidad operacional sobre las ventas netas. Fórmula: Utilidad Operacional / Ventas Netas.</p></div>
               </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">MARGEN OPERACIONAL</p>
-            <p className="text-xs text-gray-600">Utilidad Operacional / Ventas Netas</p>
-            <p className="text-2xl font-bold text-purple-600 mt-2">6,3%</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 5,3%</p>
-          </div>
-          <div className="bg-fuchsia-50 rounded-lg p-4 border-2 border-fuchsia-300 cursor-pointer hover:border-fuchsia-500 transition-all"
-            onClick={() => openModal('Margen Neto de Utilidad 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">2,8%</p></div>
-                  <div className="bg-fuchsia-50 rounded-lg p-3 border border-fuchsia-200"><p className="text-xs text-fuchsia-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-fuchsia-700">3,9%</p></div>
-                </div>
-                <div className="bg-fuchsia-50 rounded-lg p-4 border border-fuchsia-300"><p className="text-sm text-gray-700">Es el porcentaje de utilidad neta sobre las ventas netas. Fórmula: Utilidad Neta / Ventas Netas.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">MARGEN NETO DE UTILIDAD</p>
-            <p className="text-xs text-gray-600">Utilidad Neta / Ventas Netas</p>
-            <p className="text-2xl font-bold text-fuchsia-600 mt-2">3,9%</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 2,8%</p>
-          </div>
-          <div className="bg-pink-50 rounded-lg p-4 border-2 border-pink-300 cursor-pointer hover:border-pink-500 transition-all"
-            onClick={() => openModal('Rendimiento del Patrimonio (ROE) 2025 vs 2024',
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">14,5%</p></div>
-                  <div className="bg-pink-50 rounded-lg p-3 border border-pink-200"><p className="text-xs text-pink-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-pink-700">6,8%</p></div>
-                </div>
-                <div className="bg-pink-50 rounded-lg p-4 border border-pink-300"><p className="text-sm text-gray-700">Es el rendimiento de la inversión de los accionistas. La reducción se explica por el crecimiento extraordinario del patrimonio (+194%). Fórmula: Utilidad Neta / Patrimonio.</p></div>
-              </div>
-            )}>
-            <p className="text-sm font-bold text-gray-900">RENDIMIENTO DEL PATRIMONIO</p>
-            <p className="text-xs text-gray-600">Utilidad Neta / Patrimonio</p>
-            <p className="text-2xl font-bold text-pink-600 mt-2">6,8%</p>
-            <p className="text-xs text-gray-600 mt-1">2024: 14,5%</p>
-          </div>
+              <p className={`text-xs font-bold ${up ? 'text-green-600' : 'text-amber-600'}`}>{note || (up ? '▲ Mejora vs 2024' : '▼ Baja vs 2024')}</p>
+            </div>
+          ))}
         </div>
       </motion.div>
 

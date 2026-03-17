@@ -122,9 +122,9 @@ export default function MarketingDashboard({ data }) {
               <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
                 <p className="text-sm font-semibold text-gray-900 mb-2">Meses de mayor y menor inversión</p>
                 <ul className="text-sm space-y-1 list-disc list-inside">
-                  <li>Mayor inversión: <strong>Octubre $163.2M</strong> (compra centralizada de obsequios corporativos fin de año)</li>
-                  <li>Segunda mayor: <strong>Diciembre $124.0M</strong> (pauta medios masivos: RCN TV, Caracol TV, Red+ TV y radio)</li>
-                  <li>Menor inversión: <strong>Junio $5.3M</strong> (brecha de continuidad en pauta)</li>
+                  <li>Mayor inversión: <strong>Octubre $163.175.712</strong> (compra centralizada de obsequios corporativos fin de año)</li>
+                  <li>Segunda mayor: <strong>Diciembre $123.995.310</strong> (pauta medios masivos: RCN TV, Caracol TV, Red+ TV y radio)</li>
+                  <li>Menor inversión: <strong>Junio $5.297.343</strong> (brecha de continuidad en pauta)</li>
                 </ul>
               </div>
               <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
@@ -133,7 +133,7 @@ export default function MarketingDashboard({ data }) {
               </div>
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
                 <p className="text-sm font-semibold text-gray-900 mb-2">Recomendación para 2026</p>
-                <p className="text-sm">Redistribuir el ahorro de $78.3M hacia canales de alto ROI (Cencosud 29.9%) y garantizar pauta digital activa los 12 meses del año para evitar brechas de continuidad como la de junio.</p>
+                <p className="text-sm">Redistribuir el ahorro de $78.338.335 hacia canales de alto ROI (Cencosud 29.9%) y garantizar pauta digital activa los 12 meses del año para evitar brechas de continuidad como la de junio.</p>
               </div>
             </div>
           ))}
@@ -145,9 +145,9 @@ export default function MarketingDashboard({ data }) {
           </div>
           <div className="text-4xl font-bold text-gray-900 mb-1">83.7%</div>
           <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">Presupuesto: <span className="font-semibold text-gray-700">$480M</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">$401.7M ejecutado</span></div>
-            <div className="text-sm font-bold text-blue-600">Ahorro: $78.3M</div>
+            <div className="text-xs text-gray-500">Presupuesto: <span className="font-semibold text-gray-700">$480.000.000</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">$401.661.665 ejecutado</span></div>
+            <div className="text-sm font-bold text-blue-600">Ahorro: $78.338.335</div>
           </div>
         </motion.div>
 
@@ -241,7 +241,7 @@ export default function MarketingDashboard({ data }) {
             </div>
             <div className="bg-white rounded-lg p-4 border-2 border-red-500/30 shadow">
               <div className="text-sm text-gray-600 mb-1">Junio 2025</div>
-              <div className="text-4xl font-bold text-gray-900 mb-2">$5.3M</div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">$5.297.343</div>
               <div className="text-xs text-gray-600 leading-relaxed">
                 Brecha de continuidad en pauta publicitaria
               </div>
@@ -257,14 +257,14 @@ export default function MarketingDashboard({ data }) {
             <div className="space-y-3">
               <div className="bg-white rounded-lg p-4 border-2 border-blue-500/30 shadow">
                 <div className="text-sm text-gray-600 mb-1">Octubre 2025</div>
-                <div className="text-4xl font-bold text-gray-900 mb-2">$163.2M</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">$163.175.712</div>
                 <div className="text-xs text-gray-600 leading-relaxed">
                   Compra centralizada de obsequios corporativos fin de año
                 </div>
               </div>
               <div className="bg-white rounded-lg p-4 border-2 border-purple-500/30 shadow">
                 <div className="text-sm text-gray-600 mb-1">Diciembre 2025</div>
-                <div className="text-4xl font-bold text-gray-900 mb-2">$124.0M</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">$123.995.310</div>
                 <div className="text-xs text-gray-600 leading-relaxed">
                   Pauta medios masivos: RCN TV, Caracol TV, Red+ TV y radial
                 </div>

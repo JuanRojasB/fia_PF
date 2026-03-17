@@ -10,6 +10,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 
 // ── Datos ──────────────────────────────────────────────────────────────────
 
@@ -154,12 +155,11 @@ function TooltipCompras({ active, payload, label }) {
   const a24 = payload.find(p => p.dataKey === 'c2024');
   const diff = a25 && a24 ? a25.value - a24.value : null;
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[230px]">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
       <p className="font-bold text-gray-800 mb-2">{label}</p>
       {a25 && <p className="text-amber-600 font-semibold">2025: ${n(a25.value)}</p>}
       {a24 && <p className="text-gray-500">2024: ${n(a24.value)}</p>}
       {diff !== null && <p className={`mt-1 font-bold ${diff >= 0 ? 'text-red-500' : 'text-green-600'}`}>vs 2024: {diff >= 0 ? '+' : ''}${n(diff)}</p>}
-      <p className="text-gray-400 mt-1.5 leading-tight">Compras de insumos. El alza en 2025 responde al +51% en volumen de producción.</p>
     </div>
   );
 }
@@ -170,12 +170,11 @@ function TooltipPolloSangrado({ active, payload, label }) {
   const p24 = payload.find(p => p.dataKey === 'p2024');
   const mejora = p25 && p24 && p24.value > 0 ? Math.round(((p24.value - p25.value) / p24.value) * 100) : null;
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[200px]">
       <p className="font-bold text-gray-800 mb-2">{label} — Pollos mal sangrados</p>
       {p25 && <p className="text-blue-600 font-semibold">2025: {n(p25.value)} unidades</p>}
       {p24 && <p className="text-yellow-600">2024: {n(p24.value)} unidades</p>}
       {mejora !== null && mejora > 0 && <p className="mt-1 font-bold text-green-600">Mejora vs 2024: –{mejora}%</p>}
-      <p className="text-gray-400 mt-1.5 leading-tight">Reducción por mejoras en insensibilizado y capacitación del personal.</p>
     </div>
   );
 }
@@ -184,12 +183,10 @@ function TooltipAccidentes({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   const val = payload[0]?.value;
   const pctVal = val ? Math.round((val / 112) * 100) : 0;
-  const ctx = { Planta: 'Mayor riesgo osteomuscular por manipulación de canales.', Posproceso: 'Cortes y movimientos repetitivos en empaque.', Calidad: 'Superficies húmedas y riesgo de caídas.', Granjas: 'Manejo de animales y condiciones de terreno.', Otros: 'Logística, administración y mantenimiento.' };
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[180px]">
       <p className="font-bold text-gray-800 mb-1">{label}</p>
       <p className="text-red-600 font-semibold">{val} accidentes ({pctVal}% del total)</p>
-      <p className="text-gray-400 mt-1.5 leading-tight">{ctx[label] || ''}</p>
     </div>
   );
 }
@@ -198,12 +195,10 @@ function TooltipRehabilitacion({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   const val = payload[0]?.value;
   const pctVal = Math.round((val / 49) * 100);
-  const ctx = { Gestantes: 'Reubicación temporal en puestos de menor riesgo.', 'Accidente Laboral': 'Reintegro tras accidente con incapacidad.', 'Enfermedad Laboral': 'Principalmente osteomuscular en rehabilitación.', 'Enfermedad Común': 'Reintegro gradual o adaptación del puesto.' };
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[180px]">
       <p className="font-bold text-gray-800 mb-1">{label}</p>
       <p className="text-indigo-600 font-semibold">{val} personas ({pctVal}% de 49 total)</p>
-      <p className="text-gray-400 mt-1.5 leading-tight">{ctx[label] || ''}</p>
     </div>
   );
 }
@@ -213,11 +208,10 @@ function TooltipAgua({ unidad, meta }) {
     if (!active || !payload?.length) return null;
     const val = payload[0]?.value;
     return (
-      <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[180px]">
         <p className="font-bold text-gray-800 mb-1">Año {label}</p>
         <p className="text-blue-600 font-semibold">{val} {unidad}</p>
         {meta && <p className={`font-bold mt-1 ${val <= meta ? 'text-green-600' : 'text-red-500'}`}>{val <= meta ? `✓ Bajo meta (${meta})` : `⚠ Sobre meta (${meta})`}</p>}
-        <p className="text-gray-400 mt-1.5 leading-tight">Reducción sostenida = eficiencia hídrica y cumplimiento ambiental.</p>
       </div>
     );
   };
@@ -226,13 +220,11 @@ function TooltipAgua({ unidad, meta }) {
 function TooltipSatisfaccion({ active, payload }) {
   if (!active || !payload?.length) return null;
   const { name, value, pct: p } = payload[0]?.payload || {};
-  const ctx = { Excelente: 'Servicio sobresaliente en todos los atributos.', Bueno: 'Satisfecho con oportunidades menores de mejora.', Regular: 'Experiencia mixta. Requiere seguimiento.', Malo: 'Insatisfecho. Genera plan de acción obligatorio.' };
   const clr = { Excelente: '#1e3a8a', Bueno: '#38bdf8', Regular: '#7c3aed', Malo: '#f97316' };
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[180px]">
       <p className="font-bold mb-1" style={{ color: clr[name] }}>{name}</p>
       <p className="text-gray-700 font-semibold">{n(value)} encuestas — {p}%</p>
-      <p className="text-gray-400 mt-1.5 leading-tight">{ctx[name] || ''}</p>
     </div>
   );
 }
@@ -265,7 +257,7 @@ function SeccionCalidad() {
         className="bg-gradient-to-r from-indigo-500/20 to-blue-600/10 rounded-xl p-6 border-2 border-indigo-500/30">
         <div className="flex items-center gap-3 mb-2">
           <Shield className="w-7 h-7 text-indigo-600" />
-          <h2 className="text-2xl font-bold text-gray-900">1. Aseguramiento de Calidad — 2025</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Aseguramiento de Calidad — 2025</h2>
         </div>
         <p className="text-gray-700 text-sm">Se garantizó la inocuidad y conformidad normativa bajo HACCP e INVIMA.</p>
       </motion.div>
@@ -390,7 +382,7 @@ function SeccionCompras() {
         className="bg-gradient-to-r from-amber-500/20 to-yellow-600/10 rounded-xl p-6 border-2 border-amber-500/30">
         <div className="flex items-center gap-3 mb-2">
           <ShoppingCart className="w-7 h-7 text-amber-600" />
-          <h2 className="text-2xl font-bold text-gray-900">2. Compras — 2025</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Compras — 2025</h2>
         </div>
         <p className="text-gray-700 text-sm">Compras de insumos y materiales. Fuente: SIESA / doccompra por ítem/grupo bodega L01.</p>
       </motion.div>
@@ -458,8 +450,7 @@ function SeccionCompras() {
         />
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <p className="text-sm font-semibold text-gray-600 mb-3">Compras mensuales 2023 – 2025 (valores en pesos)</p>
+      <CollapsibleChart title="Compras mensuales 2023 – 2025" subtitle="Valores en pesos" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={260}>
           <LineChart data={comprasData} margin={{ top: 10, right: 20, left: 10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -472,6 +463,27 @@ function SeccionCompras() {
             <Line type="monotone" dataKey="c2023" name="2023" stroke="#d1d5db" strokeWidth={1.5} dot={{ r: 2 }} strokeDasharray="2 2" />
           </LineChart>
         </ResponsiveContainer>
+      </CollapsibleChart>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-700 mb-3">Factores del comportamiento anual</p>
+          <Bullet color="#f59e0b" items={[
+            'Aumento del 51% en producción',
+            'Crecimiento de demanda de clientes estratégicos (D1, ARA, Frisby)',
+            'Eventos extraordinarios del sector y mantenimientos OVERHAUL',
+          ]} />
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-700 mb-3">Hallazgos clave</p>
+          <Bullet color="#ef4444" items={[
+            'Consumo promedio del 73,42% sobre las compras (ajuste positivo frente a 2024)',
+            'Cierre del año con compras a la baja, excepto picos por auditorías HACCP y dotaciones',
+            'Aumento en volumen y costo del inventario por repuestos importados',
+            'Evaluación de 36 proveedores y visitas conjuntas con Calidad para proveedores críticos (HACCP)',
+            'Avance en la aplicación de la matriz Kraljic',
+          ]} />
+        </div>
       </div>
 
       <CollapsibleTable title="Compras mensuales 2023 – 2025 con variaciones" defaultOpen={false}>
@@ -535,21 +547,21 @@ function SeccionBienestar() {
         className="bg-gradient-to-r from-pink-500/20 to-rose-600/10 rounded-xl p-6 border-2 border-pink-500/30">
         <div className="flex items-center gap-3 mb-2">
           <Heart className="w-7 h-7 text-pink-600" />
-          <h2 className="text-2xl font-bold text-gray-900">3. Bienestar Animal — 2025</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Bienestar Animal — 2025</h2>
         </div>
         <p className="text-gray-700 text-sm">Indicadores de bienestar en transporte, insensibilizado y proceso de beneficio.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <KpiClickCard label="Promedio mensual pollos mal sangrados" value2025={n(prom2025Sangrado)} value2024={n(prom2024Sangrado)}
-          varPct={varSangrado} varAbs={`${n(Math.abs(prom2025Sangrado - prom2024Sangrado))} unidades/mes`}
+        <KpiClickCard label="Reducción pollo mal sangrado vs 2024" value2025="–63,3%" value2024={n(prom2024Sangrado) + ' u/mes prom.'}
+          varPct="-63.3" varAbs="Disminución de pérdidas económicas"
           color="#10b981" icon={TrendingDown} good={false}
           onClick={() => open('Pollo mal sangrado 2025 vs 2024', <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">Promedio 2024</p><p className="text-xl font-bold text-gray-900">{n(prom2024Sangrado)} u/mes</p></div>
               <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">Promedio 2025</p><p className="text-xl font-bold text-green-700">{n(prom2025Sangrado)} u/mes</p></div>
             </div>
-            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción: {varSangrado}%</p><p className="text-sm">Diferencia: {n(Math.abs(prom2025Sangrado - prom2024Sangrado))} unidades/mes menos. Logrado mediante mejoras en insensibilizado, capacitación del personal y ajustes técnicos en planta.</p></div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción: –63,3% vs 2024</p><p className="text-sm">Logrado mediante mejoras en insensibilizado, capacitación del personal y ajustes técnicos en planta. Disminuyó pérdidas económicas significativamente.</p></div>
           </div>)} />
 
         <KpiClickCard label="Aves mal aturdidas" value2025="–8,21%" value2024="Base 2024" varPct="-8.21" varAbs="Mejora sostenida en planta" color="#10b981" icon={TrendingDown} good={false}
@@ -568,8 +580,28 @@ function SeccionBienestar() {
           </div>)} />
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <p className="text-sm font-semibold text-gray-600 mb-3">Pollo mal sangrado mensual 2023 – 2025 (unidades)</p>
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-700 mb-3">Fortalecimiento del programa</p>
+          <Bullet color="#ec4899" items={[
+            'Capacitación del personal operativo, supervisores y calidad',
+            'Certificación de transportadores (ICA/Mintransporte)',
+            'Diseño de mejoras en insensibilizado y sangrado',
+          ]} />
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-700 mb-3">Resultados destacados</p>
+          <Bullet color="#10b981" items={[
+            'Reducción del 63,3% de pollo mal sangrado vs. 2024, disminuyendo pérdidas económicas',
+            'Disminución del 8,21% en aves mal aturdidas, gracias a ajustes en la entrada a la cuba de aturdido',
+            'Migración del 100% al sistema de cargue en tubo',
+            'Implementación del monitoreo de lesiones en granja y planta',
+            'Consolidación del Programa de Bienestar Animal bajo estándares ISO',
+          ]} />
+        </div>
+      </div>
+
+      <CollapsibleChart title="Pollo mal sangrado mensual 2023 – 2025" subtitle="Unidades por mes" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={280}>
           <LineChart data={polloMalSangradoData} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -582,7 +614,7 @@ function SeccionBienestar() {
             <Line type="monotone" dataKey="p2025" name="2025" stroke="#3b82f6" strokeWidth={2.5} dot={{ r: 3 }} />
           </LineChart>
         </ResponsiveContainer>
-      </div>
+      </CollapsibleChart>
 
       <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
@@ -600,7 +632,7 @@ function SeccionHSEQ() {
         className="bg-gradient-to-r from-orange-500/20 to-red-600/10 rounded-xl p-6 border-2 border-orange-500/30">
         <div className="flex items-center gap-3 mb-2">
           <AlertTriangle className="w-7 h-7 text-orange-600" />
-          <h2 className="text-2xl font-bold text-gray-900">4. HSEQ — 2025</h2>
+          <h2 className="text-2xl font-bold text-gray-900">HSEQ — 2025</h2>
         </div>
         <p className="text-gray-700 text-sm">Seguridad, salud, medio ambiente y calidad. Accidentalidad, agua y residuos.</p>
       </motion.div>
@@ -609,7 +641,12 @@ function SeccionHSEQ() {
         <KpiClickCard label="Accidentes laborales 2025" value2025="112" value2024="~95 (ref.)" varPct="17.89" varAbs="Planta 27 · Posproceso 21 · Calidad 17" color="#ef4444" icon={AlertTriangle} good={false}
           onClick={() => open('Accidentes laborales 2025', <div className="space-y-3">
             <div className="bg-red-50 rounded-lg p-4 border border-red-200"><p className="font-semibold text-red-700 mb-1">112 accidentes en 2025</p><p className="text-sm">Distribución por área: Planta 27 (24%), Posproceso 21 (19%), Calidad 17 (15%), Granjas 16 (14%), Otros 31 (28%). El riesgo osteomuscular es el principal factor.</p></div>
-            <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">Acción: gimnasia laboral</p><p className="text-sm">Se implementó el programa de gimnasia laboral con 22 jornadas de capacitación y 347 asistentes para mitigar el riesgo osteomuscular.</p></div>
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">Acción: gimnasia laboral</p><p className="text-sm">Se implementó el programa de gimnasia laboral con 22 capacitaciones y 347 asistentes para mitigar el riesgo osteomuscular.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Capacitaciones SST realizadas" value2025="22" value2024="N/A" varPct="100" varAbs="347 asistentes en total" color="#f97316" icon={TrendingUp} good={true}
+          onClick={() => open('Capacitaciones SST 2025', <div className="space-y-3">
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">22 capacitaciones — 347 asistentes</p><p className="text-sm">Incluye el programa de gimnasia laboral para mitigar riesgo osteomuscular, principal causa de accidentalidad en planta y posproceso.</p></div>
           </div>)} />
 
         <KpiClickCard label="Agua/ave planta beneficio" value2025="10,76 L/ave" value2024="11,44 L/ave" varPct="-5.94" varAbs="–0,68 L/ave ahorrados" color="#10b981" icon={TrendingDown} good={false}
@@ -635,70 +672,37 @@ function SeccionHSEQ() {
           </div>)} />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-600 mb-3">Accidentes por área — 112 total 2025</p>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={[
-              { area: 'Planta', n: 27 }, { area: 'Posproceso', n: 21 }, { area: 'Calidad', n: 17 },
-              { area: 'Granjas', n: 16 }, { area: 'Otros', n: 31 },
-            ]} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="area" tick={{ fontSize: 10 }} />
-              <YAxis tick={{ fontSize: 10 }} />
-              <Tooltip content={<TooltipAccidentes />} />
-              <Bar dataKey="n" name="Accidentes" radius={[4, 4, 0, 0]}>
-                {['#ef4444','#f97316','#fbbf24','#84cc16','#94a3b8'].map((fill, i) => <Cell key={i} fill={fill} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-600 mb-3">Rehabilitación y Reintegro — 49 personas</p>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={rehabilitacionData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="categoria" tick={{ fontSize: 9 }} />
-              <YAxis tick={{ fontSize: 10 }} />
-              <Tooltip content={<TooltipRehabilitacion />} />
-              <Bar dataKey="valor" name="Personas" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 11, fontWeight: 700 }}>
-                {rehabilitacionData.map((e, i) => <Cell key={i} fill={e.color} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+      <CollapsibleChart title="Accidentes por área — 112 total 2025" defaultOpen={false}>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={[
+            { area: 'Planta', n: 27 }, { area: 'Posproceso', n: 21 }, { area: 'Calidad', n: 17 },
+            { area: 'Granjas', n: 16 }, { area: 'Otros', n: 31 },
+          ]} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+            <XAxis dataKey="area" tick={{ fontSize: 10 }} />
+            <YAxis tick={{ fontSize: 10 }} />
+            <Tooltip content={<TooltipAccidentes />} />
+            <Bar dataKey="n" name="Accidentes" radius={[4, 4, 0, 0]}>
+              {['#ef4444','#f97316','#fbbf24','#84cc16','#94a3b8'].map((fill, i) => <Cell key={i} fill={fill} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </CollapsibleChart>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua planta beneficio (L/ave)</p>
-          <ResponsiveContainer width="100%" height={180}>
-            <BarChart data={aguaPlantaData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="año" tick={{ fontSize: 12 }} />
-              <YAxis domain={[0, 16]} tick={{ fontSize: 10 }} />
-              <Tooltip content={TooltipAgua({ unidad: 'L/ave', meta: 11 })} />
-              <Bar dataKey="valor" name="L/ave" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
-                {aguaPlantaData.map((e, i) => <Cell key={i} fill={e.fill} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua Sede 2 (L/kg)</p>
-          <ResponsiveContainer width="100%" height={180}>
-            <BarChart data={aguaSede2Data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="año" tick={{ fontSize: 12 }} />
-              <YAxis domain={[0, 6]} tick={{ fontSize: 10 }} />
-              <Tooltip content={TooltipAgua({ unidad: 'L/kg', meta: 4 })} />
-              <Bar dataKey="valor" name="L/kg" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
-                {aguaSede2Data.map((e, i) => <Cell key={i} fill={e.fill} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+      <CollapsibleChart title="Rehabilitación y Reintegro — 49 personas" defaultOpen={false}>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={rehabilitacionData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+            <XAxis dataKey="categoria" tick={{ fontSize: 9 }} />
+            <YAxis tick={{ fontSize: 10 }} />
+            <Tooltip content={<TooltipRehabilitacion />} />
+            <Bar dataKey="valor" name="Personas" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 11, fontWeight: 700 }}>
+              {rehabilitacionData.map((e, i) => <Cell key={i} fill={e.color} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </CollapsibleChart>
+
 
       <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
@@ -716,7 +720,7 @@ function SeccionAmbiental() {
         className="bg-gradient-to-r from-green-500/20 to-emerald-600/10 rounded-xl p-6 border-2 border-green-500/30">
         <div className="flex items-center gap-3 mb-2">
           <TrendingDown className="w-7 h-7 text-green-600" />
-          <h2 className="text-2xl font-bold text-gray-900">5. Gestión Ambiental — 2025</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Gestión Ambiental — 2025</h2>
         </div>
         <p className="text-gray-700 text-sm">Consumo hídrico, gestión de residuos y cumplimiento de reportes ambientales.</p>
       </motion.div>
@@ -754,36 +758,53 @@ function SeccionAmbiental() {
           </div>)} />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua planta beneficio (L/ave)</p>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={aguaPlantaData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="año" tick={{ fontSize: 12 }} />
-              <YAxis domain={[0, 16]} tick={{ fontSize: 10 }} />
-              <Tooltip content={TooltipAgua({ unidad: 'L/ave', meta: 11 })} />
-              <Bar dataKey="valor" name="L/ave" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
-                {aguaPlantaData.map((e, i) => <Cell key={i} fill={e.fill} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua Sede 2 (L/kg)</p>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={aguaSede2Data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="año" tick={{ fontSize: 12 }} />
-              <YAxis domain={[0, 6]} tick={{ fontSize: 10 }} />
-              <Tooltip content={TooltipAgua({ unidad: 'L/kg', meta: 4 })} />
-              <Bar dataKey="valor" name="L/kg" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
-                {aguaSede2Data.map((e, i) => <Cell key={i} fill={e.fill} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <KpiClickCard label="Canastillas rotas" value2025="–20,02%" value2024="Base 2024"
+          varPct="-20.02" varAbs="Reducción de pérdidas en logística" color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Canastillas rotas 2025 vs 2024', <div className="space-y-3">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción del 20,02%</p><p className="text-sm">La reducción en canastillas rotas refleja mejoras en el manejo logístico y el cuidado de activos durante el transporte y proceso de beneficio.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Cumplimiento reportes ambientales" value2025="100%" value2024="100%"
+          varPct="0" varAbs="DANE, IDEAM y SDA" color="#0ea5e9" icon={FileCheck} good={true}
+          onClick={() => open('Reportes ambientales 2025', <div className="space-y-3">
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200"><p className="font-semibold text-blue-700 mb-1">100% cumplimiento</p><p className="text-sm">Todos los reportes ambientales exigidos por DANE, IDEAM y SDA fueron entregados en tiempo y forma. Avances en concesiones de agua y gestión ante CAR en múltiples granjas.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Agua/ave planta — reducción total 2023→2025" value2025="–16%" value2024="12,82 L/ave (2023)"
+          varPct="-16" varAbs="De 12,82 a 10,76 L/ave" color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Reducción hídrica acumulada', <div className="space-y-3">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">–16% en 3 años</p><p className="text-sm">De 12,82 L/ave en 2023 a 10,76 L/ave en 2025. Reducción sostenida que refleja eficiencia hídrica y cumplimiento ambiental.</p></div>
+          </div>)} />
       </div>
+
+      <CollapsibleChart title="Consumo agua planta beneficio (L/ave)" subtitle="2023 – 2025" defaultOpen={false}>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={aguaPlantaData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+            <XAxis dataKey="año" tick={{ fontSize: 12 }} />
+            <YAxis domain={[0, 16]} tick={{ fontSize: 10 }} />
+            <Tooltip content={TooltipAgua({ unidad: 'L/ave', meta: 11 })} />
+            <Bar dataKey="valor" name="L/ave" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
+              {aguaPlantaData.map((e, i) => <Cell key={i} fill={e.fill} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </CollapsibleChart>
+
+      <CollapsibleChart title="Consumo agua Sede 2 (L/kg)" subtitle="2023 – 2025" defaultOpen={false}>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={aguaSede2Data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+            <XAxis dataKey="año" tick={{ fontSize: 12 }} />
+            <YAxis domain={[0, 6]} tick={{ fontSize: 10 }} />
+            <Tooltip content={TooltipAgua({ unidad: 'L/kg', meta: 4 })} />
+            <Bar dataKey="valor" name="L/kg" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
+              {aguaSede2Data.map((e, i) => <Cell key={i} fill={e.fill} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </CollapsibleChart>
 
       <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
@@ -801,7 +822,7 @@ function SeccionSGC() {
         className="bg-gradient-to-r from-sky-500/20 to-blue-600/10 rounded-xl p-6 border-2 border-sky-500/30">
         <div className="flex items-center gap-3 mb-2">
           <FileCheck className="w-7 h-7 text-sky-600" />
-          <h2 className="text-2xl font-bold text-gray-900">5. Sistema de Gestión de Calidad — 2025</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Sistema de Gestión de Calidad — 2025</h2>
         </div>
         <p className="text-gray-700 text-sm">Auditorías internas, migración a ISOLUCION e integración CRM SIESA.</p>
       </motion.div>
@@ -828,6 +849,17 @@ function SeccionSGC() {
           </div>)} />
       </div>
 
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <p className="text-sm font-semibold text-gray-700 mb-3">Logros del Sistema de Gestión de Calidad 2025</p>
+        <Bullet color="#0ea5e9" items={[
+          'Actualización de matrices estratégicas y políticas',
+          'Ejecución de auditorías internas en 15 procesos',
+          'Implementación de metodologías de análisis causal',
+          'Migración del sistema a ISOLUCION, con módulos de Actas, Tareas y Mejora implementados al 100%',
+          'Integración del CRM SIESA para unificar requisitos de clientes',
+        ]} />
+      </div>
+
       <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
   );
@@ -838,11 +870,11 @@ function SeccionSatisfaccion() {
   const open = (title, content) => setModal({ open: true, title, content });
   const close = () => setModal(m => ({ ...m, open: false }));
 
-  const pos2025 = 47.17 + 48.11;
-  const pos2024 = 58.21 + 38.54;
+  const pos2025 = 47.17 + 48.11;   // 95.28%
+  const pos2024 = 58.21 + 38.54;   // 96.75%
   const varPos = pct(pos2025, pos2024);
-  const varPQRS = pct(259, 362);
-  const varPlanes = pct(154, 120);
+  const varPQRS = (((259 - 362) / 362) * 100).toFixed(2);   // –28,45%
+  const varPlanes = (((154 - 120) / 120) * 100).toFixed(2); // +27,92% (exacto del texto fuente)
 
   return (
     <div className="space-y-4">
@@ -850,75 +882,129 @@ function SeccionSatisfaccion() {
         className="bg-gradient-to-r from-violet-500/20 to-purple-600/10 rounded-xl p-6 border-2 border-violet-500/30">
         <div className="flex items-center gap-3 mb-2">
           <Star className="w-7 h-7 text-violet-600" />
-          <h2 className="text-2xl font-bold text-gray-900">6. Satisfacción del Cliente — 2025</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Satisfacción del Cliente, PQRS y Planes de Acción — 2025</h2>
         </div>
-        <p className="text-gray-700 text-sm">Encuestas de satisfacción, PQRS y planes de acción correctiva.</p>
+        <p className="text-gray-700 text-sm leading-relaxed">
+          1.166 encuestas realizadas (–38% frente a 2024), principalmente por caída del canal PDV. Distribución más equilibrada entre canales Asadores y Tienda a Tienda.
+          154 planes de acción (+27,92%), con incremento del 34,78% en No Conformidades.
+          PQRs disminuyeron 28,45% (259 casos), mostrando mayor control y reducción de incidencias.
+        </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <KpiClickCard label="Satisfacción positiva (Excelente+Bueno)" value2025={`${pos2025.toFixed(2)}%`} value2024={`${pos2024.toFixed(2)}%`}
-          varPct={varPos} varAbs={`${Math.abs(pos2025 - pos2024).toFixed(2)}pp de diferencia`}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <KpiClickCard label="Encuestas realizadas" value2025="1.166" value2024="1.894"
+          varPct="-38.44" varAbs="–728 encuestas · caída canal PDV"
+          color="#8b5cf6" icon={Star} good={false}
+          onClick={() => open('Encuestas de satisfacción 2025 vs 2024', <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">1.894 encuestas</p></div>
+              <div className="bg-violet-50 rounded-lg p-3 border border-violet-200"><p className="text-xs text-violet-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-violet-700">1.166 encuestas</p></div>
+            </div>
+            <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+              <p className="font-semibold text-yellow-700 mb-1">–38,44% · caída del canal PDV</p>
+              <p className="text-sm">La reducción se explica por la caída del canal Puntos de Venta. La distribución entre canales Asadores y Tienda a Tienda fue más equilibrada en 2025.</p>
+            </div>
+          </div>)} />
+
+        <KpiClickCard label="PQRs recibidas" value2025="259" value2024="362"
+          varPct={varPQRS} varAbs="–103 PQRs · mayor control de incidencias"
+          color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('PQRs 2025 vs 2024', <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">362 PQRs</p></div>
+              <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-green-700">259 PQRs</p></div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+              <p className="font-semibold text-green-700 mb-1">–28,45% · reducción de incidencias</p>
+              <p className="text-sm">Las PQRs bajaron 103 casos (–28,45%), mostrando mayor control y reducción de incidencias en el servicio al cliente.</p>
+            </div>
+          </div>)} />
+
+        <KpiClickCard label="Planes de acción generados" value2025="154" value2024="120"
+          varPct={varPlanes} varAbs="+34 planes · mayor madurez del sistema"
+          color="#f59e0b" icon={TrendingUp} good={true}
+          onClick={() => open('Planes de acción 2025 vs 2024', <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">120 planes</p></div>
+              <div className="bg-amber-50 rounded-lg p-3 border border-amber-200"><p className="text-xs text-amber-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-amber-700">154 planes</p></div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+              <p className="font-semibold text-green-700 mb-1">+27,92% · mayor rigurosidad</p>
+              <p className="text-sm">El aumento refleja mayor rigurosidad en la detección y gestión proactiva de oportunidades de mejora, no necesariamente más problemas.</p>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 border border-red-200">
+              <p className="font-semibold text-red-700 mb-1">No Conformidades: +34,78%</p>
+              <p className="text-sm">El incremento en No Conformidades puede indicar mayor rigurosidad en la detección interna. Requiere análisis causal para determinar la causa raíz.</p>
+            </div>
+          </div>)} />
+      </div>
+
+      {/* Satisfacción positiva + No Conformidades — fila secundaria */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <KpiClickCard label="Satisfacción positiva (Excelente + Bueno)" value2025={`${pos2025.toFixed(2)}%`} value2024={`${pos2024.toFixed(2)}%`}
+          varPct={varPos} varAbs={`${Math.abs(pos2025 - pos2024).toFixed(2)} pp de diferencia`}
           color="#8b5cf6" icon={Star} good={false}
           onClick={() => open('Satisfacción positiva 2025 vs 2024', <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024 — 1.894 encuestas</p><p className="text-xl font-bold text-gray-900">{pos2024.toFixed(2)}%</p></div>
               <div className="bg-violet-50 rounded-lg p-3 border border-violet-200"><p className="text-xs text-violet-600 font-semibold mb-1">2025 — 1.166 encuestas</p><p className="text-xl font-bold text-violet-700">{pos2025.toFixed(2)}%</p></div>
             </div>
-            <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200"><p className="font-semibold text-yellow-700 mb-1">Variación: {varPos}%</p><p className="text-sm">La satisfacción positiva bajó {Math.abs(pos2025 - pos2024).toFixed(2)}pp. Aunque sigue siendo alta, la tendencia requiere atención. El volumen de encuestas también bajó de 1.894 a 1.166.</p></div>
-          </div>)} />
-
-        <KpiClickCard label="PQRs recibidas" value2025="259" value2024="362" varPct={varPQRS} varAbs={`${Math.abs(259 - 362)} PQRs menos`} color="#10b981" icon={TrendingDown} good={false}
-          onClick={() => open('PQRs 2025 vs 2024', <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">362 PQRs</p></div>
-              <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-green-700">259 PQRs</p></div>
+            <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+              <p className="font-semibold text-yellow-700 mb-1">Variación: {varPos}%</p>
+              <p className="text-sm">La satisfacción positiva bajó {Math.abs(pos2025 - pos2024).toFixed(2)} pp. Aunque sigue siendo alta, la tendencia requiere atención.</p>
             </div>
-            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción: {varPQRS}%</p><p className="text-sm">Las PQRs bajaron {Math.abs(259 - 362)} unidades ({varPQRS}%), indicando mejora en la experiencia del cliente y reducción de fallas en el servicio.</p></div>
           </div>)} />
 
-        <KpiClickCard label="Planes de acción generados" value2025="154" value2024="120" varPct={varPlanes} varAbs={`${154 - 120} planes adicionales`} color="#f59e0b" icon={TrendingUp} good={true}
-          onClick={() => open('Planes de acción 2025 vs 2024', <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">120 planes</p></div>
-              <div className="bg-amber-50 rounded-lg p-3 border border-amber-200"><p className="text-xs text-amber-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-amber-700">154 planes</p></div>
-            </div>
-            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">+{varPlanes}% — mayor madurez del sistema</p><p className="text-sm">El aumento refleja mayor rigurosidad en la detección y gestión proactiva de oportunidades de mejora, no necesariamente más problemas.</p></div>
-          </div>)} />
-
-        <KpiClickCard label="No Conformidades detectadas" value2025="+34,78%" value2024="Base 2024" varPct="34.78" varAbs="Mayor detección interna" color="#ef4444" icon={AlertTriangle} good={false}
+        <KpiClickCard label="No Conformidades detectadas" value2025="+34,78%" value2024="Base 2024"
+          varPct="34.78" varAbs="Mayor detección interna"
+          color="#ef4444" icon={AlertTriangle} good={false}
           onClick={() => open('No Conformidades 2025 vs 2024', <div className="space-y-3">
-            <div className="bg-red-50 rounded-lg p-4 border border-red-200"><p className="font-semibold text-red-700 mb-1">+34,78% — señal de alerta</p><p className="text-sm">El incremento puede indicar mayor rigurosidad en la detección interna, pero también deterioro en la ejecución de procesos. Requiere análisis causal para determinar la causa raíz.</p></div>
+            <div className="bg-red-50 rounded-lg p-4 border border-red-200">
+              <p className="font-semibold text-red-700 mb-1">+34,78% — señal de alerta</p>
+              <p className="text-sm">El incremento puede indicar mayor rigurosidad en la detección interna, pero también deterioro en la ejecución de procesos. Requiere análisis causal para determinar la causa raíz.</p>
+            </div>
           </div>)} />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-600 mb-1 text-center">Satisfacción 2025 — 1.166 encuestas</p>
-          <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie data={satisfaccion2025} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
-                label={({ pct: p }) => `${p}%`} labelLine={false}>
-                {satisfaccion2025.map((e, i) => <Cell key={i} fill={e.color} />)}
-              </Pie>
-              <Tooltip content={<TooltipSatisfaccion />} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+      <CollapsibleChart title="Satisfacción del Cliente, PQRS y Planes de Acción" subtitle="Distribución de calificaciones 2025 vs 2024" defaultOpen={false}>
+        <div className="grid md:grid-cols-2 gap-4 pt-2">
+          {[
+            { title: 'Satisfacción 2025 — 1.166 encuestas', data: satisfaccion2025 },
+            { title: 'Satisfacción 2024 — 1.894 encuestas', data: satisfaccion2024 },
+          ].map(({ title, data }, idx) => (
+            <div key={idx} className="bg-gray-50 rounded-xl border border-gray-200 p-4">
+              <p className="text-sm font-semibold text-gray-600 mb-3 text-center">{title}</p>
+              <ResponsiveContainer width="100%" height={220}>
+                <PieChart>
+                  <Pie
+                    data={data}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%" cy="48%"
+                    innerRadius={55}
+                    outerRadius={95}
+                    paddingAngle={2}
+                    label={false}
+                    labelLine={false}
+                  >
+                    {data.map((e, i) => <Cell key={i} fill={e.color} />)}
+                  </Pie>
+                  <Tooltip content={<TooltipSatisfaccion />} />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5">
+                {data.map((e, i) => (
+                  <div key={i} className="flex items-center gap-2 text-xs text-gray-700">
+                    <span className="w-3 h-3 rounded-sm flex-shrink-0" style={{ background: e.color }} />
+                    <span className="font-medium">{e.name}</span>
+                    <span className="ml-auto font-bold">{e.value} ({e.pct}%)</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-600 mb-1 text-center">Satisfacción 2024 — 1.894 encuestas</p>
-          <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie data={satisfaccion2024} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
-                label={({ pct: p }) => `${p}%`} labelLine={false}>
-                {satisfaccion2024.map((e, i) => <Cell key={i} fill={e.color} />)}
-              </Pie>
-              <Tooltip content={<TooltipSatisfaccion />} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+      </CollapsibleChart>
 
       <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
@@ -936,9 +1022,9 @@ function SeccionVigia() {
         className="bg-gradient-to-r from-teal-500/20 to-cyan-600/10 rounded-xl p-6 border-2 border-teal-500/30">
         <div className="flex items-center gap-3 mb-2">
           <Eye className="w-7 h-7 text-teal-600" />
-          <h2 className="text-2xl font-bold text-gray-900">7. Vigía de Riesgos — 2025</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Vigía de Riesgos — 2025</h2>
         </div>
-        <p className="text-gray-700 text-sm">Control de acceso, trazabilidad de activos y seguridad patrimonial.</p>
+        <p className="text-gray-700 text-sm">Control de acceso, trazabilidad de activos, seguridad patrimonial y gestión de alarmas y carrotanques.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -961,6 +1047,18 @@ function SeccionVigia() {
           onClick={() => open('Digitalización de procesos', <div className="space-y-3">
             <div className="bg-amber-50 rounded-lg p-4 border border-amber-200"><p className="font-semibold text-amber-700 mb-1">2 procesos digitalizados</p><p className="text-sm">Gestión de parqueaderos y control de correspondencia ahora operan mediante plataformas digitales, mejorando trazabilidad y reduciendo tiempos de gestión.</p></div>
           </div>)} />
+      </div>
+
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <p className="text-sm font-semibold text-gray-700 mb-3">Acciones de seguridad operativa 2025</p>
+        <Bullet color="#14b8a6" items={[
+          'Protocolos de control de acceso, carnetización y registro de visitantes',
+          'Trazabilidad de activos: tinas, motores y precintos de seguridad',
+          'Gestión de parqueaderos y correspondencia mediante plataformas digitales',
+          'Instalación de alarmas y redes de apoyo empresarial',
+          'Control de carrotanques para ahorro de agua',
+          'Eliminación de quejas administrativas y garantía de seguridad patrimonial y trazabilidad operacional',
+        ]} />
       </div>
 
       <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>

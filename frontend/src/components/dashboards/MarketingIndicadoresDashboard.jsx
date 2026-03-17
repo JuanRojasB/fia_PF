@@ -119,9 +119,9 @@ export default function MarketingIndicadoresDashboard({ data }) {
           </div>
           <div className="text-3xl font-bold text-gray-900">83.7%</div>
           <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">Presupuesto: <span className="font-semibold text-gray-700">$480M</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">$401.6M ejecutado</span></div>
-            <div className="text-sm font-bold text-blue-600">Ahorro: $78.3M</div>
+            <div className="text-xs text-gray-500">Presupuesto: <span className="font-semibold text-gray-700">$480.000.000</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">$401.661.665 ejecutado</span></div>
+            <div className="text-sm font-bold text-blue-600">Ahorro: $78.338.335</div>
           </div>
         </motion.div>
 
@@ -187,7 +187,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
             <div className="space-y-3">
               <div className="bg-green-50 rounded-lg p-3 border border-green-200">
                 <p className="font-semibold text-green-900 mb-1">ROI de Campañas: 17.4%</p>
-                <p className="text-sm">Inversión $401.6MM. Cumplido con oportunidad de mejora. Mejor mes: Enero 41.01%. Canal destacado: Cencosud 29.9%.</p>
+                <p className="text-sm">Inversión $401.661.665. Cumplido con oportunidad de mejora. Mejor mes: Enero 41.01%. Canal destacado: Cencosud 29.9%.</p>
               </div>
 
               <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
@@ -197,7 +197,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
 
               <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
                 <p className="font-semibold text-blue-900 mb-1">Cumplimiento Presupuesto: 83.7%</p>
-                <p className="text-sm">Ejecutado $401.6MM de $480MM. Ahorro logrado: $78.3MM. Gestión eficiente con inversión atípica en octubre y diciembre.</p>
+                <p className="text-sm">Ejecutado $401.661.665 de $480.000.000. Ahorro logrado: $78.338.335. Gestión eficiente con inversión atípica en octubre y diciembre.</p>
               </div>
 
               <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
