@@ -146,6 +146,7 @@ export default function LogisticaSede1Dashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2024)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2025)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(variacionTotal) >= 0 ? '+' : ''}{variacionTotal}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull(total2025 - total2024)}</div>
           </div>
         </motion.div>
 

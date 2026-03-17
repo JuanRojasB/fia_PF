@@ -87,6 +87,7 @@ export default function HumanaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(kpis.personal2024)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(kpis.personal2025)}</span></div>
             <div className={`text-sm font-bold ${kpis.variacionPersonal >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {kpis.variacionPersonal >= 0 ? '+' : ''}{kpis.variacionPersonal}%</div>
+            <div className={`text-xs font-semibold ${kpis.variacionPersonal >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {kpis.personal2025 - kpis.personal2024 >= 0 ? '+' : ''}{kpis.personal2025 - kpis.personal2024} personas</div>
           </div>
         </motion.div>
 
@@ -131,6 +132,7 @@ export default function HumanaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCOP(kpis.nomina2024)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCOP(kpis.nomina2025)}</span></div>
             <div className={`text-sm font-bold ${kpis.variacionNomina >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionNomina >= 0 ? '+' : ''}{kpis.variacionNomina}%</div>
+            <div className={`text-xs font-semibold ${kpis.variacionNomina >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCOP(parseFloat(kpis.nomina2025) - parseFloat(kpis.nomina2024))}</div>
           </div>
         </motion.div>
 
@@ -160,6 +162,7 @@ export default function HumanaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(kpis.retiros2024)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(kpis.retiros2025)}</span></div>
             <div className={`text-sm font-bold ${kpis.variacionRetiros >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionRetiros >= 0 ? '+' : ''}{kpis.variacionRetiros}%</div>
+            <div className={`text-xs font-semibold ${kpis.variacionRetiros >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {kpis.retiros2025 - kpis.retiros2024 >= 0 ? '+' : ''}{kpis.retiros2025 - kpis.retiros2024} personas</div>
           </div>
         </motion.div>
 
@@ -191,6 +194,7 @@ export default function HumanaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(kpis.ingresos2024)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(kpis.ingresos2025)}</span></div>
             <div className={`text-sm font-bold ${kpis.variacionIngresos >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {kpis.variacionIngresos >= 0 ? '+' : ''}{kpis.variacionIngresos}%</div>
+            <div className={`text-xs font-semibold ${kpis.variacionIngresos >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {kpis.ingresos2025 - kpis.ingresos2024 >= 0 ? '+' : ''}{kpis.ingresos2025 - kpis.ingresos2024} personas</div>
           </div>
         </motion.div>
       </div>
@@ -238,6 +242,7 @@ export default function HumanaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(kpis.horas2024)} hrs</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(kpis.horas2025)} hrs</span></div>
             <div className={`text-sm font-bold ${kpis.variacionHoras >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionHoras >= 0 ? '+' : ''}{kpis.variacionHoras}%</div>
+            <div className={`text-xs font-semibold ${kpis.variacionHoras >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {kpis.horas2025 - kpis.horas2024 >= 0 ? '+' : ''}{formatNumber(kpis.horas2025 - kpis.horas2024)} hrs</div>
           </div>
         </motion.div>
 
@@ -277,6 +282,7 @@ export default function HumanaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCOP(kpis.valorHoras2024)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCOP(kpis.valorHoras2025)}</span></div>
             <div className={`text-sm font-bold ${kpis.variacionValorHoras >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {kpis.variacionValorHoras >= 0 ? '+' : ''}{kpis.variacionValorHoras}%</div>
+            <div className={`text-xs font-semibold ${kpis.variacionValorHoras >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCOP(parseFloat(kpis.valorHoras2025) - parseFloat(kpis.valorHoras2024))}</div>
           </div>
         </motion.div>
       </div>

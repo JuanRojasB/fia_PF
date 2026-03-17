@@ -112,6 +112,9 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                         <div className={`font-bold ${esBueno ? 'text-green-500' : 'text-red-500'}`}>
                           Var: {vr >= 0 ? '+' : ''}{formatDecimal(vr)}%
                         </div>
+                        <div className={`text-xs font-semibold ${esBueno ? 'text-green-500' : 'text-red-500'}`}>
+                          Dif: {c.val2025 - c.val2024 >= 0 ? '+' : ''}{formatDecimal(c.val2025 - c.val2024, c.decimals)}{c.suffix}
+                        </div>
                       </div>
                     </motion.div>
                   );

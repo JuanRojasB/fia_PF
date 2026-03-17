@@ -138,6 +138,9 @@ export default function ProduccionHuevosDashboard({ data }) {
             <div className={`font-bold ${parseFloat(variacionHuevos) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
               Var: {parseFloat(variacionHuevos) >= 0 ? '+' : ''}{variacionHuevos}%
             </div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionHuevos) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              Dif: {totalHuevos2025 - totalHuevos2024 >= 0 ? '+' : ''}{formatNumber(totalHuevos2025 - totalHuevos2024)}
+            </div>
           </div>
         </motion.div>
 
@@ -182,6 +185,9 @@ export default function ProduccionHuevosDashboard({ data }) {
             <div className="text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(aves2025)}</span></div>
             <div className={`font-bold ${aves2025 >= aves2024 ? 'text-green-500' : 'text-red-500'}`}>
               Var: {aves2024 > 0 ? `${aves2025 >= aves2024 ? '+' : ''}${(((aves2025 - aves2024) / aves2024) * 100).toFixed(1)}%` : 'N/A'}
+            </div>
+            <div className={`text-xs font-semibold ${aves2025 >= aves2024 ? 'text-green-500' : 'text-red-500'}`}>
+              Dif: {aves2025 - aves2024 >= 0 ? '+' : ''}{formatNumber(aves2025 - aves2024)} aves
             </div>
           </div>
         </motion.div>
@@ -276,6 +282,9 @@ export default function ProduccionHuevosDashboard({ data }) {
             <div className="text-gray-500">2025: <span className="font-semibold text-gray-700">{formatDecimal(productividadReal2025)}</span></div>
             <div className={`font-bold ${parseFloat(variacionProductividad) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
               Var: {parseFloat(variacionProductividad) >= 0 ? '+' : ''}{variacionProductividad}%
+            </div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionProductividad) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              Dif: {diferenciaProductividad >= 0 ? '+' : ''}{formatDecimal(diferenciaProductividad)} h/g/mes
             </div>
           </div>
         </motion.div>

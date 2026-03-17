@@ -152,6 +152,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.polloEnteroPlanta)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.polloEnteroPlanta)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionPlanta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionPlanta2025vs2024 > 0 ? '+' : ''}{variacionPlanta2025vs2024}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionPlanta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {datos2025.polloEnteroPlanta - datos2024.polloEnteroPlanta >= 0 ? '+' : ''}{formatNumber(datos2025.polloEnteroPlanta - datos2024.polloEnteroPlanta)} uds</div>
           </div>
         </motion.div>
 
@@ -197,6 +198,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.ventaLineaAsadero)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.ventaLineaAsadero)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionVenta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionVenta2025vs2024 > 0 ? '+' : ''}{variacionVenta2025vs2024}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionVenta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {datos2025.ventaLineaAsadero - datos2024.ventaLineaAsadero >= 0 ? '+' : ''}{formatNumber(datos2025.ventaLineaAsadero - datos2024.ventaLineaAsadero)} uds</div>
           </div>
         </motion.div>
 

@@ -138,6 +138,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.totalKilos)} kg</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.totalKilos)} kg</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionKilosTotal) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionKilosTotal > 0 ? '+' : ''}{variacionKilosTotal}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionKilosTotal) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {parseFloat(variacionKilosTotal) >= 0 ? '+' : ''}{formatNumber(datos2025.totalKilos - datos2024.totalKilos)} kg</div>
           </div>
         </motion.div>
 
@@ -172,6 +173,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2024.totalIngresos)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2025.totalIngresos)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionIngresos > 0 ? '+' : ''}{variacionIngresos}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {formatCurrencyFull(datos2025.totalIngresos - datos2024.totalIngresos)}</div>
           </div>
         </motion.div>
 
@@ -206,6 +208,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(precioProm2024)}/kg</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(precioProm2025)}/kg</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionPrecio > 0 ? '+' : ''}{variacionPrecio}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {formatCurrencyFull(precioProm2025 - precioProm2024)}/kg</div>
           </div>
         </motion.div>
 
