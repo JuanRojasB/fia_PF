@@ -175,7 +175,7 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               value={formatNumber(datos2025.comprado)}
               value2024={formatNumber(datos2024.comprado)}
               varPct={vComp}
-              varAbs={`${formatNumber(datos2025.comprado - datos2024.comprado)} aves`}
+              varAbs={`${vComp >= 0 ? '+' : ''}${formatNumber(datos2025.comprado - datos2024.comprado)} aves`}
               icon={<Package className="w-6 h-6 text-orange-500" />}
               borderColor="border-orange-400"
               delay={0.4}

@@ -239,7 +239,7 @@ export default function PlantaBeneficioDashboard({ data }) {
           unit="Por ave"
           value2024={`${totales.promedioPeso2024}g`}
           varPct={totales.promedioPeso2024 > 0 ? (((totales.promedioPeso2025 - totales.promedioPeso2024) / totales.promedioPeso2024) * 100) : 0}
-          varAbs={`${totales.promedioPeso2025 - totales.promedioPeso2024}g`}
+          varAbs={`${(totales.promedioPeso2025 - totales.promedioPeso2024) >= 0 ? '+' : ''}${totales.promedioPeso2025 - totales.promedioPeso2024}g`}
           icon={<Activity className="w-5 h-5 text-green-400" />}
           borderColor="border-green-400"
           delay={0.1}

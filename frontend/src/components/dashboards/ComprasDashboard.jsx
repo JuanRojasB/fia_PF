@@ -78,7 +78,7 @@ export default function ComprasDashboard({ data }) {
           unit="Compras totales"
           value2024={formatCurrencyFull(totales.total2024)}
           varPct={parseFloat(totales.variacion2025vs2024)}
-          varAbs={formatCurrencyFull(totales.total2025 - totales.total2024)}
+          varAbs={`${parseFloat(totales.variacion2025vs2024) >= 0 ? '+' : ''}${formatCurrencyFull(totales.total2025 - totales.total2024)}`}
           icon={<ShoppingCart className="w-5 h-5 text-blue-400" />}
           borderColor="border-blue-400"
           delay={0}
@@ -115,7 +115,7 @@ export default function ComprasDashboard({ data }) {
           unit="Variación anual"
           value2024={formatCurrencyFull(totales.total2024)}
           varPct={parseFloat(totales.variacion2025vs2024)}
-          varAbs={formatCurrencyFull(totales.total2025 - totales.total2024)}
+          varAbs={`${parseFloat(totales.variacion2025vs2024) >= 0 ? '+' : ''}${formatCurrencyFull(totales.total2025 - totales.total2024)}`}
           icon={<TrendingUp className="w-5 h-5 text-green-400" />}
           borderColor="border-green-400"
           delay={0.1}
@@ -151,7 +151,7 @@ export default function ComprasDashboard({ data }) {
           unit="Por mes"
           value2024={formatCurrencyFull(totales.total2024 / 12)}
           varPct={parseFloat(totales.variacion2025vs2024)}
-          varAbs={formatCurrencyFull((totales.total2025 - totales.total2024) / 12)}
+          varAbs={`${parseFloat(totales.variacion2025vs2024) >= 0 ? '+' : ''}${formatCurrencyFull((totales.total2025 - totales.total2024) / 12)}`}
           icon={<DollarSign className="w-5 h-5 text-purple-400" />}
           borderColor="border-purple-400"
           delay={0.2}

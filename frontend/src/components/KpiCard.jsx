@@ -83,7 +83,7 @@ export default function KpiCard({
           {/* Diferencia absoluta */}
           {varAbs !== undefined && (
             <div className={`text-sm font-semibold ${varColor}`}>
-              {varSign}{varAbs}
+              {varAbs}
             </div>
           )}
         </div>

@@ -246,7 +246,7 @@ export default function ProduccionEncasetadoDashboard({ data }) {
               value2024={`${formatNumber(promedioMensual2024)} pollitos/mes`}
               label2024="Promedio 2024"
               varPct={promedioMensual2024 > 0 ? (((promedioMensual2025 - promedioMensual2024) / promedioMensual2024) * 100) : 0}
-              varAbs={`${formatNumber(Math.round(promedioMensual2025 - promedioMensual2024))} pollitos/mes`}
+              varAbs={`${(promedioMensual2025 - promedioMensual2024) >= 0 ? '+' : ''}${formatNumber(Math.round(promedioMensual2025 - promedioMensual2024))} pollitos/mes`}
               icon={<Calendar className="w-5 h-5 text-orange-500" />}
               borderColor="border-orange-400"
               delay={0.3}
