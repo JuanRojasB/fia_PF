@@ -6,6 +6,7 @@ export const authService = {
     if (response.data.success) {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
+      sessionStorage.removeItem('ordenDelDiaChecks');
     }
     return response.data;
   },
@@ -14,6 +15,7 @@ export const authService = {
     await api.post('/auth/logout');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    sessionStorage.removeItem('ordenDelDiaChecks');
   },
 
   async verifyToken() {
