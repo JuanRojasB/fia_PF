@@ -13,6 +13,7 @@ const SECTION_META = {
   'produccion-pollo-entregado': { label: 'Pollo Entregado',                   icon: '🚚', color: '#f97316' },
   'produccion-indicadores':     { label: 'Indicadores de Producción',          icon: '📈', color: '#22c55e' },
   'produccion-huevos':          { label: 'Producción de Huevos',               icon: '🥚', color: '#eab308' },
+  'comercial-estructura-equipo': { label: 'Estructura Comercial',              icon: '👥', color: '#3b82f6' },
   'comercial-resumen':          { label: 'Asignación Pollo Mayorista',         icon: '🛒', color: '#ef4444' },
   'comercial-ventas-compania':  { label: 'Ventas Compañía',                   icon: '💰', color: '#f43f5e' },
   'comercial-pollo-entero':     { label: 'Pollo Entero',                      icon: '🍗', color: '#fb923c' },
