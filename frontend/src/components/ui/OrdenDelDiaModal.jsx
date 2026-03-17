@@ -1,6 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle, Circle } from 'lucide-react';
+import { X, CheckCircle, Circle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import acta1 from '../../assets/ACTA N° 42 ASAMBLEA GNRAL ORD ACC miercoles 19 mar2025 esfa 2024-2023_page-0001.jpg';
+import acta2 from '../../assets/ACTA N° 42 ASAMBLEA GNRAL ORD ACC miercoles 19 mar2025 esfa 2024-2023_page-0002.jpg';
+import acta3 from '../../assets/ACTA N° 42 ASAMBLEA GNRAL ORD ACC miercoles 19 mar2025 esfa 2024-2023_page-0003.jpg';
+import acta4 from '../../assets/ACTA N° 42 ASAMBLEA GNRAL ORD ACC miercoles 19 mar2025 esfa 2024-2023_page-0004.jpg';
+import acta5 from '../../assets/ACTA N° 42 ASAMBLEA GNRAL ORD ACC miercoles 19 mar2025 esfa 2024-2023_page-0005.jpg';
+import acta6 from '../../assets/ACTA N° 42 ASAMBLEA GNRAL ORD ACC miercoles 19 mar2025 esfa 2024-2023_page-0006.jpg';
+
+const actaPages = [acta1, acta2, acta3, acta4, acta5, acta6];
 
 export function OrdenDelDiaModal({ isOpen, onClose }) {
   const [checkedItems, setCheckedItems] = useState(() => {
@@ -10,6 +18,9 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
 
   const [showQuorumModal, setShowQuorumModal] = useState(false);
   const [selectedAccionistas, setSelectedAccionistas] = useState([]);
+  const [showActaModal, setShowActaModal] = useState(false);
+  const [actaPage, setActaPage] = useState(0);
+  const actaScrollRef = useRef(null);
 
   const itemRefs = useRef({});
   const modalContentRef = useRef(null);
@@ -93,14 +104,12 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
 
   const toggleCheck = (index) => {
     if (index === 1) {
-      // Si es "Verificación del Quorum", abrir el modal de quórum
       setShowQuorumModal(true);
+    } else if (index === 4) {
+      setActaPage(0);
+      setShowActaModal(true);
     } else {
-      // Solo permitir marcar otros items si el quórum ya fue verificado
-      if (!checkedItems[1]) {
-        // Si el quórum no ha sido verificado, no permitir avanzar
-        return;
-      }
+      if (!checkedItems[1]) return;
       setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
       setTimeout(() => {
         const nextNum = index + 1;
@@ -119,6 +128,13 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
         return [...prev, idx];
       }
     });
+  };
+
+  const goToActaPage = (page) => {
+    setActaPage(page);
+    setTimeout(() => {
+      if (actaScrollRef.current) actaScrollRef.current.scrollTop = 0;
+    }, 100);
   };
 
   const confirmarQuorum = () => {
@@ -282,6 +298,86 @@ export function OrdenDelDiaModal({ isOpen, onClose }) {
               </div>
             </div>
           </motion.div>
+
+          {/* Modal Visor Acta Anterior */}
+          <AnimatePresence>
+            {showActaModal && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 z-20 flex items-center justify-center p-4 bg-black/80"
+                onClick={() => setShowActaModal(false)}
+              >
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Header */}
+                  <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 flex items-center justify-between flex-shrink-0">
+                    <h3 className="text-white font-bold text-lg">Acta N° 42 — Página {actaPage + 1} de {actaPages.length}</h3>
+                    <button onClick={() => setShowActaModal(false)} className="text-white/70 hover:text-white p-1 rounded-lg hover:bg-white/10">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Imagen */}
+                  <div ref={actaScrollRef} className="flex-1 overflow-y-auto bg-gray-100 p-3">
+                    <img
+                      src={actaPages[actaPage]}
+                      alt={`Acta página ${actaPage + 1}`}
+                      className="w-full object-contain rounded shadow block"
+                    />
+                  </div>
+
+                  {/* Navegación */}
+                  <div className="p-4 border-t border-gray-200 flex items-center justify-between flex-shrink-0">
+                    <button
+                      onClick={() => goToActaPage(Math.max(0, actaPage - 1))}
+                      disabled={actaPage === 0}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${actaPage === 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
+                    >
+                      <ChevronLeft className="w-5 h-5" /> Anterior
+                    </button>
+
+                    <div className="flex gap-1">
+                      {actaPages.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => goToActaPage(i)}
+                          className={`w-8 h-8 rounded-full text-sm font-bold transition-all ${i === actaPage ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
+                        >
+                          {i + 1}
+                        </button>
+                      ))}
+                    </div>
+
+                    {actaPage < actaPages.length - 1 ? (
+                      <button
+                        onClick={() => goToActaPage(Math.min(actaPages.length - 1, actaPage + 1))}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-all"
+                      >
+                        Siguiente <ChevronRight className="w-5 h-5" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setShowActaModal(false);
+                          setCheckedItems(prev => ({ ...prev, 4: true }));
+                        }}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white transition-all"
+                      >
+                        <CheckCircle className="w-5 h-5" /> Leída
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Modal de Verificación de Quórum */}
           <AnimatePresence>
