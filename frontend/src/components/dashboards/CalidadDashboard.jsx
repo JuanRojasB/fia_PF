@@ -27,17 +27,17 @@ const comprasData = [
 ];
 
 const polloMalSangradoData = [
-  { mes: 'Ene', p2023: 134, p2024: 229, p2025: 92 },
+  { mes: 'Ene', p2023: 134, p2024: 229, p2025: 94 },
   { mes: 'Feb', p2023: 217, p2024: 419, p2025: 106 },
   { mes: 'Mar', p2023: 282, p2024: 529, p2025: 170 },
-  { mes: 'Abr', p2023: 247, p2024: 614, p2025: 169 },
-  { mes: 'May', p2023: 243, p2024: 488, p2025: 183 },
+  { mes: 'Abr', p2023: 247, p2024: 614, p2025: 150 },
+  { mes: 'May', p2023: 243, p2024: 488, p2025: 153 },
   { mes: 'Jun', p2023: 297, p2024: 556, p2025: 143 },
-  { mes: 'Jul', p2023: 249, p2024: 310, p2025: 209 },
-  { mes: 'Ago', p2023: 179, p2024: 370, p2025: 129 },
-  { mes: 'Sep', p2023: 304, p2024: 356, p2025: 115 },
-  { mes: 'Oct', p2023: 549, p2024: 394, p2025: 140 },
-  { mes: 'Nov', p2023: 105, p2024: 315, p2025: 176 },
+  { mes: 'Jul', p2023: 219, p2024: 310, p2025: 203 },
+  { mes: 'Ago', p2023: 174, p2024: 374, p2025: 134 },
+  { mes: 'Sep', p2023: 304, p2024: 398, p2025: 115 },
+  { mes: 'Oct', p2023: 475, p2024: 394, p2025: 146 },
+  { mes: 'Nov', p2023: 549, p2024: 315, p2025: 105 },
   { mes: 'Dic', p2023: 545, p2024: 289, p2025: 176 },
 ];
 
@@ -107,18 +107,15 @@ function Section({ icon: Icon, title, color, children, defaultOpen = false }) {
 
 // trend: 'up' | 'down' | 'neutral'  — up=verde, down=rojo, neutral=gris
 // upIsGood: true → up verde; false → up rojo (ej. accidentes)
-function KpiCard({ label, value, sub, color, trend, upIsGood = true, tooltip }) {
-  const [show, setShow] = useState(false);
+function KpiCard({ label, value, sub, color, trend, upIsGood = true }) {
   const isPositive = (trend === 'up' && upIsGood) || (trend === 'down' && !upIsGood);
   const isNegative = (trend === 'up' && !upIsGood) || (trend === 'down' && upIsGood);
   const arrow = trend === 'up' ? '▲' : trend === 'down' ? '▼' : null;
   const arrowColor = isPositive ? '#10b981' : isNegative ? '#ef4444' : '#94a3b8';
   return (
     <div
-      className="rounded-xl p-4 flex flex-col gap-1 relative cursor-default"
+      className="rounded-xl p-4 flex flex-col gap-1"
       style={{ background: `${color}10`, border: `1.5px solid ${color}35` }}
-      onMouseEnter={() => setShow(true)}
-      onMouseLeave={() => setShow(false)}
     >
       <p className="text-xs text-gray-500 leading-tight">{label}</p>
       <div className="flex items-end gap-1.5">
@@ -126,13 +123,6 @@ function KpiCard({ label, value, sub, color, trend, upIsGood = true, tooltip }) 
         {arrow && <span className="text-sm font-bold mb-0.5" style={{ color: arrowColor }}>{arrow}</span>}
       </div>
       {sub && <p className="text-xs font-medium" style={{ color: isPositive ? '#10b981' : isNegative ? '#ef4444' : '#6b7280' }}>{sub}</p>}
-      {tooltip && show && (
-        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl leading-relaxed pointer-events-none"
-          style={{ whiteSpace: 'normal' }}>
-          {tooltip}
-          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
-        </div>
-      )}
     </div>
   );
 }
