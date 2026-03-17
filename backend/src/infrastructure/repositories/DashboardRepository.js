@@ -356,10 +356,7 @@ class DashboardRepository extends IDashboardRepository {
   // ==================== COMERCIAL PDV ====================
   
   async getComercialPDV() {
-    const db = getInstance();
-    const pool = db.getPool();
-    
-    // Datos basados en el texto proporcionado (hardcodeados según el texto del usuario)
+    // Datos completamente hardcodeados, no requiere BD
     const resumen = {
       total_pdv: 22,
       total_coordinadores: 7
@@ -403,54 +400,24 @@ class DashboardRepository extends IDashboardRepository {
       }
     ];
 
-    // Datos de crecimiento Bogotá según el texto (2024 vs 2025)
-    const crecimientoBogota = {
-      // Total Bogotá
-      kilos_2024_ton: 675,
-      kilos_2025_ton: 723,
-      crecimiento_kilos_pct: 7,
-      millones_2024: 5965,
-      millones_2025: 6514,
-      crecimiento_millones_pct: 9,
-      
-      // Por zona
-      por_zona: [
-        {
-          zona: 'Norte',
-          kilos_2024: 217,
-          kilos_2025: 244,
-          crecimiento_kilos: 12,
-          millones_2024: 2123,
-          millones_2025: 2504,
-          crecimiento_millones: 18
-        },
-        {
-          zona: 'Sur',
-          kilos_2024: 458,
-          kilos_2025: 479,
-          crecimiento_kilos: 7,
-          millones_2024: 3842,
-          millones_2025: 4010,
-          crecimiento_millones: 7
-        }
+    // Crecimiento general PDV 2024 vs 2025 (valores completos)
+    const crecimiento = {
+      kilos_2024: 2013000,
+      kilos_2025: 2451000,
+      crecimiento_kilos_pct: 21.76,
+      pesos_2024: 18830000000,
+      pesos_2025: 23818000000,
+      crecimiento_pesos_pct: 26.49,
+      destacados: [
+        { nombre: 'Toberín', aporte_pesos: 2222000000, kilos: 171000 },
+        { nombre: 'Distribuidora Yopal', aporte_pesos: 6922000000, kilos: 755000 }
       ]
     };
-
-    // Datos reales de la BD para complementar
-    const [ventasZonales] = await pool.query(`
-      SELECT * FROM com_pdv_ventas_zonales ORDER BY anio DESC, zona_geografica
-    `);
-    
-    const [topDesempeno] = await pool.query(`
-      SELECT * FROM com_pdv_top_desempeno WHERE anio = 2024 ORDER BY kilos_pollo DESC LIMIT 10
-    `);
 
     return {
       resumen,
       coordinadores,
-      crecimientoBogota,
-      ventasZonales,
-      topDesempeno
+      crecimiento
     };
   }
 
@@ -822,35 +789,51 @@ class DashboardRepository extends IDashboardRepository {
       ORDER BY fecha_auditoria DESC
     `);
     
-    // Devoluciones mensuales por sede - ACTUALIZADO
-    const [devolucionesMensuales] = await pool.query(`
-      SELECT 
-        anio,
-        mes_num,
-        mes_nombre,
-        sede_1_pct,
-        sede_2_pct,
-        sede_3_pct
-      FROM aud_devoluciones_mensuales
-      ORDER BY anio DESC, mes_num
-    `);
+    // Devoluciones mensuales por sede - datos hardcodeados según imagen de referencia
+    const devolucionesMensuales = [
+      // 2024 — leídos uno a uno de la imagen de referencia
+      //                                                  S1    S2    S3
+      { anio: 2024, mes_num: 1,  mes_nombre: 'Enero',      sede_1_pct: 3.30, sede_2_pct: 1.30, sede_3_pct: 2.00 },
+      { anio: 2024, mes_num: 2,  mes_nombre: 'Febrero',    sede_1_pct: 3.70, sede_2_pct: 1.80, sede_3_pct: 2.00 },
+      { anio: 2024, mes_num: 3,  mes_nombre: 'Marzo',      sede_1_pct: 3.80, sede_2_pct: 1.80, sede_3_pct: 2.80 },
+      { anio: 2024, mes_num: 4,  mes_nombre: 'Abril',      sede_1_pct: 3.90, sede_2_pct: 3.30, sede_3_pct: 1.50 },
+      { anio: 2024, mes_num: 5,  mes_nombre: 'Mayo',       sede_1_pct: 3.40, sede_2_pct: 0.90, sede_3_pct: 1.30 },
+      { anio: 2024, mes_num: 6,  mes_nombre: 'Junio',      sede_1_pct: 2.70, sede_2_pct: 0.70, sede_3_pct: 1.30 },
+      { anio: 2024, mes_num: 7,  mes_nombre: 'Julio',      sede_1_pct: 2.70, sede_2_pct: 0.80, sede_3_pct: 1.40 },
+      { anio: 2024, mes_num: 8,  mes_nombre: 'Agosto',     sede_1_pct: 4.10, sede_2_pct: 1.00, sede_3_pct: 1.40 },
+      { anio: 2024, mes_num: 9,  mes_nombre: 'Septiembre', sede_1_pct: 3.00, sede_2_pct: 1.00, sede_3_pct: 1.50 },
+      { anio: 2024, mes_num: 10, mes_nombre: 'Octubre',    sede_1_pct: 3.00, sede_2_pct: 0.40, sede_3_pct: 1.50 },
+      { anio: 2024, mes_num: 11, mes_nombre: 'Noviembre',  sede_1_pct: 3.20, sede_2_pct: 0.50, sede_3_pct: 1.80 },
+      { anio: 2024, mes_num: 12, mes_nombre: 'Diciembre',  sede_1_pct: 2.80, sede_2_pct: 0.40, sede_3_pct: 2.10 },
+      // 2025 — leídos uno a uno de la imagen de referencia
+      //                                                  S1    S2    S3
+      { anio: 2025, mes_num: 1,  mes_nombre: 'Enero',      sede_1_pct: 3.20, sede_2_pct: 0.80, sede_3_pct: 1.50 },
+      { anio: 2025, mes_num: 2,  mes_nombre: 'Febrero',    sede_1_pct: 2.70, sede_2_pct: 0.80, sede_3_pct: 1.50 },
+      { anio: 2025, mes_num: 3,  mes_nombre: 'Marzo',      sede_1_pct: 4.20, sede_2_pct: 0.80, sede_3_pct: 1.50 },
+      { anio: 2025, mes_num: 4,  mes_nombre: 'Abril',      sede_1_pct: 2.80, sede_2_pct: 0.80, sede_3_pct: 1.50 },
+      { anio: 2025, mes_num: 5,  mes_nombre: 'Mayo',       sede_1_pct: 2.80, sede_2_pct: 0.80, sede_3_pct: 1.80 },
+      { anio: 2025, mes_num: 6,  mes_nombre: 'Junio',      sede_1_pct: 2.80, sede_2_pct: 1.80, sede_3_pct: 2.00 },
+      { anio: 2025, mes_num: 7,  mes_nombre: 'Julio',      sede_1_pct: 2.80, sede_2_pct: 0.30, sede_3_pct: 2.00 },
+      { anio: 2025, mes_num: 8,  mes_nombre: 'Agosto',     sede_1_pct: 2.80, sede_2_pct: 4.10, sede_3_pct: 1.80 },
+      { anio: 2025, mes_num: 9,  mes_nombre: 'Septiembre', sede_1_pct: 2.00, sede_2_pct: 0.40, sede_3_pct: 2.00 },
+      { anio: 2025, mes_num: 10, mes_nombre: 'Octubre',    sede_1_pct: 2.40, sede_2_pct: 5.00, sede_3_pct: 4.00 },
+      { anio: 2025, mes_num: 11, mes_nombre: 'Noviembre',  sede_1_pct: 2.50, sede_2_pct: 3.00, sede_3_pct: 3.00 },
+      { anio: 2025, mes_num: 12, mes_nombre: 'Diciembre',  sede_1_pct: 3.00, sede_2_pct: 1.50, sede_3_pct: 2.80 },
+    ];
     
-    // Resumen anual de devoluciones - NUEVO
-    const [devolucionesResumen] = await pool.query(`
-      SELECT 
-        anio,
-        promedio_compania_pct,
-        promedio_sede_1_pct,
-        promedio_sede_2_pct,
-        promedio_sede_3_pct
-      FROM aud_devoluciones_resumen_anual
-      ORDER BY anio DESC
-    `);
-    
-    // Vista de variación 2025 vs 2024 - NUEVO
-    const [variacionDevoluciones] = await pool.query(`
-      SELECT * FROM vista_aud_variacion_devoluciones_25_vs_24
-    `);
+    // Resumen anual hardcodeado
+    const devolucionesResumen = [
+      { anio: 2025, promedio_compania_pct: 2.26, promedio_sede_1_pct: 2.85, promedio_sede_2_pct: 1.61, promedio_sede_3_pct: 2.31 },
+      { anio: 2024, promedio_compania_pct: 2.54, promedio_sede_1_pct: null, promedio_sede_2_pct: null, promedio_sede_3_pct: null },
+    ];
+
+    // Variación hardcodeada
+    const variacionDevoluciones = {
+      pct_2025: 2.26,
+      pct_2024: 2.54,
+      variacion_puntos_porcentuales: -0.28,
+      estado_auditoria: 'Mejora'
+    };
     
     let hallazgos = [];
     let planesAccion = [];
@@ -952,7 +935,7 @@ class DashboardRepository extends IDashboardRepository {
       auditorias,
       devolucionesMensuales,
       devolucionesResumen,
-      variacionDevoluciones: variacionDevoluciones[0] || null,
+      variacionDevoluciones: variacionDevoluciones || null,
       devolucionesPorSede,
       hallazgos,
       planesAccion,
