@@ -61,7 +61,6 @@ export default function Dashboard() {
     'marketing': 'Gestión de Publicidad y Mercadeo',
     'gerencia-estrategica': 'Gerencia Estratégica y Mejoramiento Continuo',
     'humana': 'Gestión Humana',
-    'compras': 'Gestión en Compras',
     'operaciones': 'Operaciones y Mantenimiento',
     'planta-beneficio': 'Planta de Beneficio',
     'tecnologias-informacion': 'Tecnologías de la Información',
@@ -93,7 +92,6 @@ export default function Dashboard() {
     'gerencia-estrategica-sgc':          'gerencia-estrategica',
     'gerencia-estrategica-satisfaccion': 'gerencia-estrategica',
     'gerencia-estrategica-vigia':        'gerencia-estrategica',
-    'compras': 'compras',
     'operaciones': 'operaciones',
     'operaciones-tpm': 'operaciones',
     'operaciones-ot': 'operaciones',
@@ -139,7 +137,7 @@ export default function Dashboard() {
   };
 
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo', 'operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura', 'gerencia-estrategica', 'gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'gerencia-estrategica-vigia'];
+  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo', 'operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura', 'gerencia-estrategica', 'gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'gerencia-estrategica-vigia', 'compras'];
 
   // Función para cambiar de sección que actualiza tanto el estado como la URL
   const handleSectionChange = useCallback((newSection) => {
@@ -214,7 +212,6 @@ export default function Dashboard() {
     'humana-rotacion',
     'humana-causas',
     'humana-smlv',
-    'compras',
     'operaciones-tpm',
     'operaciones-ot',
     'operaciones-vehiculos',
@@ -347,7 +344,6 @@ export default function Dashboard() {
       'gerencia-estrategica-sgc':         'Sistema de Gestión de Calidad',
       'gerencia-estrategica-satisfaccion':'Satisfacción del Cliente',
       'gerencia-estrategica-vigia':       'Vigía de Riesgos',
-      'compras': 'Gestión en Compras',
       'operaciones': 'Operaciones y Mantenimiento',
       'operaciones-tpm': 'Mantenimiento',
       'operaciones-ot': 'Órdenes de Trabajo SIESA',

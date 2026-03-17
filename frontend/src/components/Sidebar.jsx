@@ -168,7 +168,6 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       type: 'expandable',
       subitems: [
         { id: 'gerencia-estrategica-calidad',      label: 'Aseguramiento de Calidad' },
-        { id: 'gerencia-estrategica-compras',      label: 'Compras' },
         { id: 'gerencia-estrategica-bienestar',    label: 'Bienestar Animal' },
         { id: 'gerencia-estrategica-hseq',         label: 'HSEQ — Seguridad y Salud' },
         { id: 'gerencia-estrategica-ambiental',    label: 'Gestión Ambiental' },
