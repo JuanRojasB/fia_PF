@@ -9,7 +9,6 @@ import SituacionEconomicaDashboard from './SituacionEconomicaDashboard';
 import CarteraDashboard from './CarteraDashboard';
 import FuentesUsosDashboard from './FuentesUsosDashboard';
 import HumanaDashboard from './HumanaDashboard';
-import HumanaCausasDashboard from './HumanaCausasDashboard';
 import MarketingDashboard from './MarketingDashboard';
 import MarketingIndicadoresDashboard from './MarketingIndicadoresDashboard';
 import MarketingDetalleDashboard from './MarketingDetalleDashboard';
@@ -50,7 +49,7 @@ import EnDesarrollo from './EnDesarrollo';
 
 export default function DashboardRenderer({ type, data, onNavigate }) {
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos', 'comercial-estructura-equipo', 'operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura'];
+  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos', 'comercial-estructura-equipo', 'operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura', 'gerencia-estrategica', 'gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'gerencia-estrategica-vigia'];
   
   if (!data || (Array.isArray(data) && data.length === 0)) {
     // Si el dashboard no requiere datos, continuar normalmente
@@ -80,8 +79,24 @@ export default function DashboardRenderer({ type, data, onNavigate }) {
       return <FuentesUsosDashboard data={data} />;
     case 'auditoria':
       return <AuditoriaDashboard data={data} />;
-    case 'calidad':
+    case 'gerencia-estrategica':
       return <CalidadDashboard data={data} />;
+    case 'gerencia-estrategica-calidad':
+      return <CalidadDashboard data={data} section="calidad" />;
+    case 'gerencia-estrategica-compras':
+      return <CalidadDashboard data={data} section="compras" />;
+    case 'gerencia-estrategica-bienestar':
+      return <CalidadDashboard data={data} section="bienestar" />;
+    case 'gerencia-estrategica-hseq':
+      return <CalidadDashboard data={data} section="hseq" />;
+    case 'gerencia-estrategica-ambiental':
+      return <CalidadDashboard data={data} section="ambiental" />;
+    case 'gerencia-estrategica-sgc':
+      return <CalidadDashboard data={data} section="sgc" />;
+    case 'gerencia-estrategica-satisfaccion':
+      return <CalidadDashboard data={data} section="satisfaccion" />;
+    case 'gerencia-estrategica-vigia':
+      return <CalidadDashboard data={data} section="vigia" />;
     case 'compras':
       return <ComprasDashboard data={data} />;
     case 'operaciones-tpm':
@@ -116,10 +131,14 @@ export default function DashboardRenderer({ type, data, onNavigate }) {
       return <ComercialInstitucionalDashboard data={data} />;
     case 'comercial-huevo':
       return <ComercialHuevoDashboard data={data} />;
-    case 'humana-general':
-      return <HumanaDashboard data={data} />;
+    case 'humana-nomina':
+      return <HumanaDashboard data={data} section="nomina" />;
+    case 'humana-rotacion':
+      return <HumanaDashboard data={data} section="rotacion" />;
     case 'humana-causas':
-      return <HumanaCausasDashboard data={data} />;
+      return <HumanaDashboard data={data} section="causas" />;
+    case 'humana-smlv':
+      return <HumanaDashboard data={data} section="smlv" />;
     case 'marketing':
     case 'marketing-general':
       return <MarketingDashboard data={data} />;

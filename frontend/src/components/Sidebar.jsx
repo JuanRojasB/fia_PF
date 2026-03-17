@@ -1,6 +1,6 @@
 // Sidebar Component - Optimized Collapsible Version
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shield, TrendingUp, UserCheck, Truck, Menu, X, Store, ShoppingCart, Wrench, Monitor, Scale } from 'lucide-react';
+import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shield, TrendingUp, UserCheck, Truck, Menu, X, Store, Wrench, Monitor, Scale } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
@@ -162,10 +162,20 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       ]
     },
     { 
-      id: 'calidad', 
-      label: 'Aseguramiento de Calidad', 
+      id: 'gerencia-estrategica', 
+      label: 'Gerencia Estratégica y Mejoramiento Continuo', 
       icon: Shield,
-      type: 'single'
+      type: 'expandable',
+      subitems: [
+        { id: 'gerencia-estrategica-calidad',      label: 'Aseguramiento de Calidad' },
+        { id: 'gerencia-estrategica-compras',      label: 'Compras' },
+        { id: 'gerencia-estrategica-bienestar',    label: 'Bienestar Animal' },
+        { id: 'gerencia-estrategica-hseq',         label: 'HSEQ — Seguridad y Salud' },
+        { id: 'gerencia-estrategica-ambiental',    label: 'Gestión Ambiental' },
+        { id: 'gerencia-estrategica-sgc',          label: 'Sistema de Gestión de Calidad' },
+        { id: 'gerencia-estrategica-satisfaccion', label: 'Satisfacción del Cliente' },
+        { id: 'gerencia-estrategica-vigia',        label: 'Vigía de Riesgos' },
+      ]
     },
     { 
       id: 'humana', 
@@ -173,15 +183,11 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       icon: UserCheck,
       type: 'expandable',
       subitems: [
-        { id: 'humana-general', label: 'Nómina y Rotación' },
-        { id: 'humana-causas', label: 'Causas de Desvinculación' }
+        { id: 'humana-nomina', label: 'Costo de la Nómina' },
+        { id: 'humana-rotacion', label: 'Rotación de Personal' },
+        { id: 'humana-causas', label: 'Causas de Desvinculación' },
+        { id: 'humana-smlv', label: 'Impacto Salario Mínimo' },
       ]
-    },
-    { 
-      id: 'compras', 
-      label: 'Gestión en Compras', 
-      icon: ShoppingCart,
-      type: 'single'
     },
     { 
       id: 'operaciones', 
