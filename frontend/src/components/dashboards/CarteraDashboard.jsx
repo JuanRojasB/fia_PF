@@ -348,7 +348,162 @@ export default function CarteraDashboard({ data }) {
         </ResponsiveContainer>
       </CollapsibleChart>
 
+      {/* Análisis de cartera x mes: tabla izquierda + gráfico derecha */}
+      <CollapsibleChart title="Análisis de Cartera x Mes (2025 vs 2024)" defaultOpen={false}>
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 items-start">
+            {/* Tabla resumen */}
+            <div>
+              <table className="text-sm border-collapse w-full">
+                <thead>
+                  <tr className="bg-blue-600 text-white">
+                    <th className="text-center py-2 px-3 font-bold w-10">Mes</th>
+                    <th className="text-right py-2 px-3 font-bold">Cartera 2025</th>
+                    <th className="text-right py-2 px-3 font-bold">Cartera 2024</th>
+                    <th className="text-right py-2 px-3 font-bold whitespace-nowrap">% Var.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {exposicionCartera.map((row, idx) => {
+                    const varPct = row.t2024 > 0 ? parseFloat(((row.t2024 - row.t2025) / row.t2024 * 100).toFixed(2)) : 0;
+                    const bajó = varPct > 0;
+                    return (
+                      <tr key={idx} className={`border-b border-gray-200 ${idx % 2 === 0 ? 'bg-white' : 'bg-blue-50/40'}`}>
+                        <td className="py-1.5 px-3 text-center font-bold text-gray-700">{idx + 1}</td>
+                        <td className="py-1.5 px-3 text-right tabular-nums text-gray-900 font-medium">${formatNumber(row.t2025)}</td>
+                        <td className="py-1.5 px-3 text-right tabular-nums text-gray-500">${formatNumber(row.t2024)}</td>
+                        <td className="py-1.5 px-3 text-right tabular-nums whitespace-nowrap">
+                          <span className={`inline-flex items-center gap-0.5 font-bold ${bajó ? 'text-red-600' : 'text-green-600'}`}>
+                            <span>{bajó ? '▼' : '▲'}</span>
+                            {varPct.toFixed(2)}%
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {/* Gráfico */}
+            <ResponsiveContainer width="100%" height={580}>
+              <ComposedChart
+                data={(() => {
+                  const tend = calcTendencia(exposicionCartera, 't2024');
+                  return tend.map(row => ({
+                    ...row,
+                    varPct: row.t2024 > 0 ? parseFloat(((row.t2024 - row.t2025) / row.t2024 * 100).toFixed(2)) : 0,
+                  }));
+                })()}
+                margin={{ left: 10, right: 50, top: 10, bottom: 10 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
+                <XAxis dataKey="mes" stroke="#1f2937" style={{ fontSize: '18px' }} interval={0} tickFormatter={v => v?.substring(0, 3)} />
+                <YAxis yAxisId="left" stroke="#1f2937" style={{ fontSize: '12px' }} tickFormatter={v => `${v}M`} />
+                <YAxis yAxisId="right" orientation="right" stroke="#16a34a" style={{ fontSize: '18px' }}
+                  tickFormatter={v => `${v.toFixed(0)}%`}
+                  domain={[-30, 25]}
+                  ticks={[-25, -20, -15, -10, -5, 0, 5, 10, 15, 20]}
+                />
+                <Tooltip content={({ active, payload, label }) => {
+                  if (!active || !payload?.length) return null;
+                  const v2025 = payload.find(p => p.dataKey === 't2025')?.value || 0;
+                  const v2024 = payload.find(p => p.dataKey === 't2024')?.value || 0;
+                  const varP = payload.find(p => p.dataKey === 'varPct')?.value ?? 0;
+                  return (
+                    <div className="bg-white border-2 border-blue-400 rounded-xl p-3 shadow-xl text-sm">
+                      <p className="font-bold text-gray-900 mb-2">{label}</p>
+                      <p className="text-blue-600">2025: {formatCurrencyFull(v2025 * 1000000)}</p>
+                      <p className="text-orange-500">2024: {formatCurrencyFull(v2024 * 1000000)}</p>
+                      <p className={`font-semibold ${varP >= 0 ? 'text-red-600' : 'text-green-600'}`}>Variación: {varP.toFixed(2)}%</p>
+                      <p className={`font-semibold ${varP >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull((v2025 - v2024) * 1000000)}</p>
+                    </div>
+                  );
+                }} />
+                <Bar yAxisId="left" dataKey="t2025" name="Saldo Cartera 2025" fill="#4e9fd4" radius={[3, 3, 0, 0]} />
+                <Bar yAxisId="left" dataKey="t2024" name="Saldo Cartera 2024" fill="#f97316" radius={[3, 3, 0, 0]} />
+                <Line yAxisId="right" type="monotone" dataKey="varPct" name="% Variación vs 2024" stroke="#16a34a" strokeWidth={2.5} dot={{ r: 4, fill: '#16a34a' }} />
+                <Line yAxisId="left" type="linear" dataKey="tendencia" name="Tendencia lineal 2024" stroke="#f97316" strokeWidth={1.5} strokeDasharray="6 3" dot={false} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+          {/* Leyenda explicativa */}
+          <div className="border-t border-gray-200 pt-3 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs text-gray-600">
+            <div className="flex items-center gap-2">
+              <span className="w-4 h-4 rounded-sm flex-shrink-0" style={{ backgroundColor: '#4e9fd4' }}></span>
+              <span>Saldo de cartera 2025</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-4 h-4 rounded-sm flex-shrink-0" style={{ backgroundColor: '#f97316' }}></span>
+              <span>Saldo de cartera 2024</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-4 h-1 flex-shrink-0 rounded" style={{ backgroundColor: '#16a34a', marginTop: 6 }}></span>
+              <span>% variación mensual 2025 vs 2024</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-4 h-0 flex-shrink-0 border-t-2 border-dashed" style={{ borderColor: '#f97316', marginTop: 6 }}></span>
+              <span>Tendencia lineal del saldo 2024</span>
+            </div>
+          </div>
+        </div>
+      </CollapsibleChart>
+
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+        className="bg-white/95 backdrop-blur-xl rounded-xl border-4 border-orange-500/30 overflow-hidden"
+      >
+        <CollapsibleTable
+          title="Detalle Mensual de Gestión de Cartera 2024"
+          defaultOpen={false}
+          totalRow={[
+            { label: 'CARTERA DIC 2024' },
+            { label: formatCurrency(17161524439), color: 'text-orange-600' },
+            { label: 'Rotación: 20,86 días', color: 'text-red-600' },
+            { label: 'Morosidad: 50,67%', color: 'text-yellow-600' },
+          ]}
+        >
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b-2 border-gray-300 bg-gray-50">
+                  <th className="text-left py-3 px-2 font-bold text-gray-900">Mes</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Total Cartera</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Cartera Vencida</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Morosidad</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Var. Cartera Vencida</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Días Rotación</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">% Contado</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Contado</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">% Crédito</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Crédito</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Netas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(datosMensuales2024 || []).map((mes, idx) => {
+                  const varPos = mes.variacion_cartera_vencida >= 0;
+                  return (
+                    <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-2 px-2 font-semibold text-gray-900">{mes.mes}</td>
+                      <td className="py-2 px-2 text-right text-gray-900">{formatCurrency(mes.total_cartera)}</td>
+                      <td className="py-2 px-2 text-right text-amber-700 font-semibold">{formatCurrency(mes.cartera_vencida)}</td>
+                      <td className="py-2 px-2 text-right"><span className={mes.indice_morosidad > 50 ? 'text-red-600 font-bold' : 'text-gray-700'}>{mes.indice_morosidad}%</span></td>
+                      <td className={`py-2 px-2 text-right font-semibold ${varPos ? 'text-red-600' : 'text-green-600'}`}>{formatCurrency(mes.variacion_cartera_vencida)}</td>
+                      <td className="py-2 px-2 text-right"><span className={mes.dias_rotacion <= 15 ? 'text-green-600 font-bold' : mes.dias_rotacion <= 17 ? 'text-yellow-600' : 'text-red-600'}>{mes.dias_rotacion}</span></td>
+                      <td className="py-2 px-2 text-right text-blue-600">{mes.pct_contado}%</td>
+                      <td className="py-2 px-2 text-right text-blue-700">{formatCurrency(mes.ventas_contado)}</td>
+                      <td className="py-2 px-2 text-right text-purple-600">{mes.pct_credito}%</td>
+                      <td className="py-2 px-2 text-right text-purple-700">{formatCurrency(mes.ventas_credito)}</td>
+                      <td className="py-2 px-2 text-right font-bold text-gray-900">{formatCurrency(mes.ventas_netas)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </CollapsibleTable>
+      </motion.div>
+
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 }}
         className="bg-white/95 backdrop-blur-xl rounded-xl border-4 border-indigo-500/30 overflow-hidden"
       >
         <CollapsibleTable
@@ -389,61 +544,6 @@ export default function CarteraDashboard({ data }) {
                       <td className="py-2 px-2 text-right text-amber-700 font-semibold">{formatCurrency(mes.cartera_vencida)}</td>
                       <td className="py-2 px-2 text-right"><span className={mes.indice_morosidad > 50 ? 'text-red-600 font-bold' : 'text-gray-700'}>{mes.indice_morosidad}%</span></td>
                       <td className={`py-2 px-2 text-right font-semibold ${varPos ? 'text-red-600' : 'text-green-600'}`}>{varPos ? '' : ''}{formatCurrency(mes.variacion_cartera_vencida)}</td>
-                      <td className="py-2 px-2 text-right"><span className={mes.dias_rotacion <= 15 ? 'text-green-600 font-bold' : mes.dias_rotacion <= 17 ? 'text-yellow-600' : 'text-red-600'}>{mes.dias_rotacion}</span></td>
-                      <td className="py-2 px-2 text-right text-blue-600">{mes.pct_contado}%</td>
-                      <td className="py-2 px-2 text-right text-blue-700">{formatCurrency(mes.ventas_contado)}</td>
-                      <td className="py-2 px-2 text-right text-purple-600">{mes.pct_credito}%</td>
-                      <td className="py-2 px-2 text-right text-purple-700">{formatCurrency(mes.ventas_credito)}</td>
-                      <td className="py-2 px-2 text-right font-bold text-gray-900">{formatCurrency(mes.ventas_netas)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </CollapsibleTable>
-      </motion.div>
-
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl border-4 border-orange-500/30 overflow-hidden"
-      >
-        <CollapsibleTable
-          title="Detalle Mensual de Gestión de Cartera 2024"
-          defaultOpen={false}
-          totalRow={[
-            { label: 'CARTERA DIC 2024' },
-            { label: formatCurrency(17161524439), color: 'text-orange-600' },
-            { label: 'Rotación: 20,86 días', color: 'text-red-600' },
-            { label: 'Morosidad: 50,67%', color: 'text-yellow-600' },
-          ]}
-        >
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b-2 border-gray-300 bg-gray-50">
-                  <th className="text-left py-3 px-2 font-bold text-gray-900">Mes</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">Total Cartera</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">Cartera Vencida</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">Morosidad</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">Var. Cartera Vencida</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">Días Rotación</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">% Contado</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Contado</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">% Crédito</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Crédito</th>
-                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Netas</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(datosMensuales2024 || []).map((mes, idx) => {
-                  const varPos = mes.variacion_cartera_vencida >= 0;
-                  return (
-                    <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
-                      <td className="py-2 px-2 font-semibold text-gray-900">{mes.mes}</td>
-                      <td className="py-2 px-2 text-right text-gray-900">{formatCurrency(mes.total_cartera)}</td>
-                      <td className="py-2 px-2 text-right text-amber-700 font-semibold">{formatCurrency(mes.cartera_vencida)}</td>
-                      <td className="py-2 px-2 text-right"><span className={mes.indice_morosidad > 50 ? 'text-red-600 font-bold' : 'text-gray-700'}>{mes.indice_morosidad}%</span></td>
-                      <td className={`py-2 px-2 text-right font-semibold ${varPos ? 'text-red-600' : 'text-green-600'}`}>{formatCurrency(mes.variacion_cartera_vencida)}</td>
                       <td className="py-2 px-2 text-right"><span className={mes.dias_rotacion <= 15 ? 'text-green-600 font-bold' : mes.dias_rotacion <= 17 ? 'text-yellow-600' : 'text-red-600'}>{mes.dias_rotacion}</span></td>
                       <td className="py-2 px-2 text-right text-blue-600">{mes.pct_contado}%</td>
                       <td className="py-2 px-2 text-right text-blue-700">{formatCurrency(mes.ventas_contado)}</td>
