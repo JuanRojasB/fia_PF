@@ -342,6 +342,7 @@ class DashboardRepository extends IDashboardRepository {
       ventas_credito_promedio: '62.09',
       morosidad_promedio: '46.63',
       cartera_dic_2025: 16787,
+      cartera_dic_2025_exacto: 16786699697,
       variacion_dic: '-2'
     };
     

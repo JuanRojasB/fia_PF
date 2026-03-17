@@ -511,7 +511,7 @@ export default function CarteraDashboard({ data }) {
           defaultOpen={false}
           totalRow={[
             { label: 'CARTERA DIC 2025' },
-            { label: `${formatNumber(resumenAnual.cartera_dic_2025)}M`, color: 'text-purple-600' },
+            { label: `$${new Intl.NumberFormat('es-CO').format(resumenAnual.cartera_dic_2025_exacto || (resumenAnual.cartera_dic_2025 || 0) * 1000000)}`, color: 'text-purple-600' },
             { label: `Rotación: ${resumenAnual.rotacion_dic_2025} días`, color: 'text-green-600' },
             { label: `Morosidad: ${resumenAnual.morosidad_promedio}%`, color: 'text-yellow-600' },
           ]}
