@@ -107,6 +107,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(12129000000)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">${formatNumber(16714000000)}</span></div>
             <div className="text-sm font-bold text-green-600">Var: +37.8%</div>
+            <div className="text-xs font-semibold text-green-600">Dif: +${formatNumber(16714000000 - 12129000000)}</div>
           </div>
         </motion.div>
 
@@ -148,6 +149,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(426000000000)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(431000000000)}</span></div>
             <div className="text-sm font-bold text-green-600">Var: +1.04%</div>
+            <div className="text-xs font-semibold text-green-600">Dif: +${formatNumber(431000000000 - 426000000000)}</div>
           </div>
         </motion.div>
 
@@ -193,6 +195,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(83530000000)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">${formatNumber(245333000000)}</span></div>
             <div className="text-sm font-bold text-green-600">Var: +194%</div>
+            <div className="text-xs font-semibold text-green-600">Dif: +${formatNumber(245333000000 - 83530000000)}</div>
           </div>
         </motion.div>
 
@@ -238,6 +241,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(137287000000)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">${formatNumber(311430000000)}</span></div>
             <div className="text-sm font-bold text-green-600">Var: +127%</div>
+            <div className="text-xs font-semibold text-green-600">Dif: +${formatNumber(311430000000 - 137287000000)}</div>
           </div>
         </motion.div>
       </div>
@@ -283,6 +287,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(58309000000)}</span></p>
               <p className="text-xs font-bold text-green-600">Var: +11.1%</p>
+              <p className="text-xs font-semibold text-green-600">Dif: +${formatNumber(64781000000 - 58309000000)}</p>
             </div>
           </div>
           <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
@@ -317,6 +322,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(22534000000)}</span></p>
               <p className="text-xs font-bold text-green-600">Var: +20.8%</p>
+              <p className="text-xs font-semibold text-green-600">Dif: +${formatNumber(27229000000 - 22534000000)}</p>
             </div>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 cursor-pointer hover:border-purple-500 transition-all"
@@ -351,6 +357,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(370332000000)}</span></p>
               <p className="text-xs font-bold text-green-600">Var: -0.43%</p>
+              <p className="text-xs font-semibold text-green-600">Dif: -${formatNumber(370332000000 - 368749000000)}</p>
             </div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
@@ -385,6 +392,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(6880000000)}</span></p>
               <p className="text-xs font-bold text-green-600">Var: -11.91%</p>
+              <p className="text-xs font-semibold text-green-600">Dif: -${formatNumber(6880000000 - 6061000000)}</p>
             </div>
           </div>
           <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"
@@ -419,6 +427,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(2555000000)}</span></p>
               <p className="text-xs font-bold text-green-600">Var: +61.53%</p>
+              <p className="text-xs font-semibold text-green-600">Dif: +${formatNumber(4127000000 - 2555000000)}</p>
             </div>
           </div>
         </div>
@@ -439,6 +448,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(3744000000)}</span></p>
               <p className="text-xs font-bold text-red-600">Var: +4.91%</p>
+              <p className="text-xs font-semibold text-red-600">Dif: +${formatNumber(3928000000 - 3744000000)}</p>
             </div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
@@ -447,6 +457,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(10490000000)}</span></p>
               <p className="text-xs font-bold text-red-600">Var: +9.90%</p>
+              <p className="text-xs font-semibold text-red-600">Dif: +${formatNumber(11528000000 - 10490000000)}</p>
             </div>
           </div>
           <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-300">
@@ -455,6 +466,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(19369000000)}</span></p>
               <p className="text-xs font-bold text-red-600">Var: +9%</p>
+              <p className="text-xs font-semibold text-red-600">Dif: +${formatNumber(21118000000 - 19369000000)}</p>
             </div>
           </div>
         </div>
@@ -475,6 +487,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(137287000000)}</span></p>
               <p className="text-xs font-bold text-green-600">Var: +127%</p>
+              <p className="text-xs font-semibold text-green-600">Dif: +${formatNumber(311430000000 - 137287000000)}</p>
             </div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
@@ -483,6 +496,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(53756000000)}</span></p>
               <p className="text-xs font-bold text-red-600">Var: +23%</p>
+              <p className="text-xs font-semibold text-red-600">Dif: +${formatNumber(66097000000 - 53756000000)}</p>
             </div>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
@@ -491,6 +505,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
               <p className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(83530000000)}</span></p>
               <p className="text-xs font-bold text-green-600">Var: +194%</p>
+              <p className="text-xs font-semibold text-green-600">Dif: +${formatNumber(245333000000 - 83530000000)}</p>
             </div>
           </div>
         </div>
