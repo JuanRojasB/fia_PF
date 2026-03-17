@@ -163,7 +163,7 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
     },
     { 
       id: 'calidad', 
-      label: 'Aseguramiento de Calidad', 
+      label: 'Gerencia Estratégica y Mejoramiento Continuo', 
       icon: Shield,
       type: 'single'
     },

@@ -302,7 +302,7 @@ export default function Dashboard() {
       'bienvenida': 'Bienvenida',
       'fuentes-usos': 'Balance General',
       'auditoria': 'Auditoría',
-      'calidad': 'Aseguramiento de Calidad',
+      'calidad': 'Gerencia Estratégica y Mejoramiento Continuo',
       'compras': 'Gestión en Compras',
       'operaciones': 'Operaciones y Mantenimiento',
       'planta-beneficio': 'Planta de Beneficio',

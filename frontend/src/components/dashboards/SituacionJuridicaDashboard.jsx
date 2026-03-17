@@ -111,80 +111,104 @@ export default function SituacionJuridicaDashboard() {
           <Scale className="w-6 h-6 text-orange-600" />
           Marco Tributario 2025
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <div className="bg-white/95 rounded-xl p-4 border-2 border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
-            onClick={() => openModal('Tasa Mínima de Tributación — Art. 240 Par. 6',
+        {/* Tarjetas resumen */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+          {/* Cumplimiento */}
+          <div className="bg-green-50 rounded-xl p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
+            onClick={() => openModal('Cumplimiento Tributario 2025',
               <div className="text-gray-700 space-y-4">
-                <p>El artículo 240, parágrafo 6 establece una <strong className="text-orange-600">tasa mínima de tributación del 15%</strong> para los contribuyentes del impuesto sobre la renta.</p>
-                <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
-                  <p className="text-sm font-semibold text-gray-900 mb-2">Tasa de Tributación Depurada (TTD):</p>
-                  <p className="text-sm mb-3">La TTD es el resultado de dividir el Impuesto Depurado (ID) sobre la Utilidad Depurada (UD). La TTD no podrá ser inferior al 15%.</p>
-                  <div className="flex items-center justify-center my-4 gap-4">
-                    <span className="text-2xl font-bold italic text-gray-900">TTD =</span>
-                    <div className="text-center">
-                      <div className="text-xl font-bold italic text-gray-900 border-b-2 border-gray-900 pb-1 px-4">ID</div>
-                      <div className="text-xl font-bold italic text-gray-900 pt-1 px-4">UD</div>
-                    </div>
-                  </div>
-                  <p className="text-sm">Para contribuyentes cuyos estados financieros no sean objeto de consolidación, la diferencia positiva entre (UD x 15%) - ID será un mayor valor del impuesto sobre la renta a adicionar (IA).</p>
-                  <div className="mt-3 bg-white rounded p-3 border border-orange-200 text-center font-bold text-orange-700">
-                    IA = (UD x 15%) - ID
-                  </div>
-                </div>
+                <p>En materia tributaria por el año gravable 2.025, Pollo Fiesta S.A. elaboró y presentó oportunamente todas las declaraciones de impuestos nacionales y territoriales.</p>
                 <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
-                  <p className="text-sm font-semibold text-gray-900 mb-1">Resultado Pollo Fiesta 2025:</p>
-                  <p className="text-sm">Para el año gravable 2025, Pollo Fiesta incrementó su tasa de tributación en <strong className="text-green-600">36%</strong> con relación al impuesto neto de renta del año 2023.</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">Recuperación IVA ante la DIAN:</p>
+                  <p className="text-3xl font-black text-green-700 text-center my-3">$13.966.302.000</p>
+                  <p className="text-sm text-center text-gray-600">Recuperados por saldos a favor en IVA, sin ningún tipo de glosa.</p>
                 </div>
               </div>
             )}>
-            <Scale className="w-8 h-8 text-orange-600 mb-3" />
-            <div className="text-orange-600 font-semibold mb-2">Tasa Mínima</div>
-            <div className="text-gray-900 text-2xl font-bold">15%</div>
-            <div className="text-xs text-gray-600 mt-2">Incremento Pollo Fiesta 2025: +36%</div>
+            <CheckCircle className="w-8 h-8 text-green-600 mb-3" />
+            <div className="text-green-700 font-bold mb-1">Cumplimiento Tributario</div>
+            <div className="text-gray-900 text-xl font-black">$13.966.302.000</div>
+            <div className="text-xs text-gray-600 mt-2">IVA recuperado ante la DIAN — sin glosa</div>
           </div>
 
-          <div className="bg-white/95 rounded-xl p-4 border-2 border-red-500/30 cursor-pointer hover:border-red-500 transition-all"
+          {/* Impuestos Saludables */}
+          <div className="bg-red-50 rounded-xl p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
             onClick={() => openModal('Impuestos Saludables',
               <div className="text-gray-700 space-y-4">
-                <p>Continúa vigente el impuesto que se paga por importar o producir bebidas ultra procesadas azucaradas y alimentos ultra procesados o azucarados. Son dos grupos distintos con tarifas distintas.</p>
-                <p className="text-sm font-semibold">En el caso de los alimentos ultra procesados o azucarados, se aplican las siguientes tarifas:</p>
+                <p>Continúa vigente el impuesto que se paga por importar o producir <strong>bebidas ultra procesadas azucaradas</strong> y <strong>alimentos ultra procesados o azucarados</strong>. Son dos grupos distintos con tarifas distintas.</p>
+                <p className="text-sm font-semibold text-gray-800">Tarifas para alimentos ultra procesados o azucarados:</p>
                 <div className="space-y-2">
-                  {[{ anio: '2023', tasa: '10%', active: false }, { anio: '2024', tasa: '15%', active: false }, { anio: '2025 y siguientes', tasa: '20%', active: true }].map((item) => (
-                    <div key={item.anio} className={`rounded-lg p-3 flex items-center justify-between ${item.active ? 'bg-red-50 border-2 border-red-300' : 'bg-gray-100'}`}>
+                  {[
+                    { anio: '2023', tasa: '10%', active: false },
+                    { anio: '2024', tasa: '15%', active: false },
+                    { anio: '2025 y siguientes', tasa: '20%', active: true },
+                  ].map((item) => (
+                    <div key={item.anio} className={`rounded-lg p-3 flex items-center justify-between ${item.active ? 'bg-red-100 border-2 border-red-400' : 'bg-gray-100 border border-gray-200'}`}>
                       <span className="font-semibold text-gray-900">{item.anio}</span>
-                      <span className={`text-xl font-bold ${item.active ? 'text-red-600' : 'text-gray-600'}`}>{item.tasa}</span>
+                      <span className={`text-2xl font-black ${item.active ? 'text-red-600' : 'text-gray-500'}`}>{item.tasa}</span>
                     </div>
                   ))}
                 </div>
               </div>
             )}>
             <AlertCircle className="w-8 h-8 text-red-600 mb-3" />
-            <div className="text-red-600 font-semibold mb-2">Impuestos Saludables</div>
-            <div className="text-gray-900 text-2xl font-bold">20%</div>
-            <div className="text-xs text-gray-600 mt-2">Tasa 2025 y siguientes</div>
+            <div className="text-red-700 font-bold mb-1">Impuestos Saludables</div>
+            <div className="text-gray-900 text-2xl font-black">20%</div>
+            <div className="text-xs text-gray-600 mt-2">Tasa vigente 2025 y siguientes</div>
           </div>
 
-          <div className="bg-white/95 rounded-xl p-4 border-2 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
-            onClick={() => openModal('Cumplimiento Tributario 2025',
+          {/* Tasa mínima */}
+          <div className="bg-orange-50 rounded-xl p-4 border-2 border-orange-300 cursor-pointer hover:border-orange-500 transition-all"
+            onClick={() => openModal('Tasa Mínima de Tributación — Art. 240 Par. 6',
               <div className="text-gray-700 space-y-4">
-                <p>En materia tributaria por el año gravable 2025, Pollo Fiesta S.A. elaboró y presentó oportunamente todas las declaraciones de impuestos.</p>
-                <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
-                  <p className="text-sm font-semibold text-gray-900 mb-2">Recuperación de cartera fiscal:</p>
-                  <ul className="text-sm space-y-2 list-disc list-inside">
-                    <li>Saldos a favor en IVA recuperados ante la DIAN, sin ningún tipo de glosa.</li>
-                    <li>Impuesto al Consumo y retenciones en la fuente al día.</li>
-                    <li>Impuestos de orden territorial cumplidos.</li>
-                  </ul>
+                <p className="text-sm leading-relaxed">
+                  Continúa vigente el artículo 240, en su parágrafo 6, que establece una <strong className="text-orange-700">tasa mínima de tributación (TTD) no inferior al 15%</strong> para los contribuyentes del impuesto sobre la renta, calculada a partir de la utilidad financiera depurada.
+                </p>
+                {/* Fórmula TTD */}
+                <div className="bg-orange-50 rounded-xl p-5 border-2 border-orange-300 text-center">
+                  <p className="text-sm font-semibold text-gray-700 mb-3">Tasa de Tributación Depurada (TTD):</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <span className="text-3xl font-black italic text-gray-900">TTD =</span>
+                    <div className="flex flex-col items-center">
+                      <span className="text-2xl font-black italic text-gray-900 border-b-4 border-gray-900 px-6 pb-1">ID</span>
+                      <span className="text-2xl font-black italic text-gray-900 pt-1 px-6">UD</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">ID = Impuesto Depurado &nbsp;|&nbsp; UD = Utilidad Depurada</p>
+                </div>
+                {/* Fórmula IA */}
+                <div className="bg-white rounded-xl p-4 border-2 border-orange-200 text-center">
+                  <p className="text-sm text-gray-600 mb-2">Para contribuyentes sin consolidación, la diferencia positiva es un mayor impuesto a adicionar:</p>
+                  <p className="text-xl font-black text-orange-700">IA = (UD × 15%) − ID</p>
+                </div>
+                {/* Resultado Pollo Fiesta */}
+                <div className="bg-green-50 rounded-xl p-4 border-2 border-green-300">
+                  <p className="text-sm font-bold text-gray-900 mb-1">Resultado Pollo Fiesta — Año gravable 2025:</p>
+                  <p className="text-sm text-gray-700">Pollo Fiesta incrementó su tasa de tributación en <strong className="text-green-700">41,15%</strong> con relación al impuesto neto de renta del año 2.024.</p>
                 </div>
               </div>
             )}>
-            <CheckCircle className="w-8 h-8 text-green-600 mb-3" />
-            <div className="text-green-600 font-semibold mb-2">Cumplimiento</div>
-            <div className="text-gray-900 text-lg font-bold">100%</div>
-            <div className="text-xs text-gray-600 mt-2">Declaraciones presentadas oportunamente</div>
+            <Scale className="w-8 h-8 text-orange-600 mb-3" />
+            <div className="text-orange-700 font-bold mb-1">Tasa Mínima (TTD)</div>
+            <div className="text-gray-900 text-2xl font-black">≥ 15%</div>
+            <div className="text-xs text-gray-600 mt-2">Pollo Fiesta 2025: +41,15% vs 2024</div>
           </div>
 
+        </div>
+
+        {/* Detalle narrativo */}
+        <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 space-y-4 text-sm text-gray-700 leading-relaxed">
+          <p>
+            <strong className="text-gray-900">Cumplimiento general:</strong> En materia tributaria por el año gravable 2.025, Pollo Fiesta S.A. elaboró y presentó oportunamente todas las declaraciones de impuestos nacionales y territoriales. Por saldos a favor en IVA se recuperaron ante la DIAN <strong className="text-green-700">$13.966.302.000</strong>, sin ningún tipo de glosa.
+          </p>
+          <p>
+            <strong className="text-gray-900">Impuestos saludables:</strong> Continúa vigente el impuesto que se paga por importar o producir bebidas ultra procesadas azucaradas y alimentos ultra procesados o azucarados — dos grupos distintos con tarifas distintas. Para alimentos ultra procesados: 2023: 10% · 2024: 15% · <strong className="text-red-600">2025 y siguientes: 20%</strong>.
+          </p>
+          <p>
+            <strong className="text-gray-900">Tasa mínima de tributación (Art. 240 Par. 6):</strong> La Tasa de Tributación Depurada (TTD) no podrá ser inferior al 15% y resulta de dividir el Impuesto Depurado (ID) sobre la Utilidad Depurada (UD). Para contribuyentes sin consolidación, la diferencia positiva entre <em>(UD × 15%) − ID</em> se adiciona como mayor impuesto (IA). Pollo Fiesta incrementó su tasa de tributación en <strong className="text-orange-700">41,15%</strong> con relación al impuesto neto de renta del año 2.024.
+          </p>
         </div>
       </motion.div>
 
