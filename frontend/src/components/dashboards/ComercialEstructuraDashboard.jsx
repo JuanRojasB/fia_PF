@@ -45,12 +45,11 @@ export default function ComercialEstructuraDashboard({ data }) {
     return { asignacion: d2025.centro_operacion, unidades2025, participacion2025, unidades2024, participacion2024, variacion, variacionPct };
   }).sort((a, b) => b.participacion2025 - a.participacion2025);
 
-  const u01_2025 = analisisAsignacion.find(a => a.asignacion === 'Sede U01');
-  const u03_2025 = analisisAsignacion.find(a => a.asignacion === 'Sede U03');
-  const u01_2024 = datos2024.find(d => d.centro_operacion === 'Sede U01');
-  const u03_2024 = datos2024.find(d => d.centro_operacion === 'Sede U03');
+  // U01 y U03 — buscar por nombre flexible (puede venir como "Sede U01", "U01", etc.)
+  const u01_2025 = analisisAsignacion.find(a => a.asignacion.toUpperCase().includes('U01'));
+  const u03_2025 = analisisAsignacion.find(a => a.asignacion.toUpperCase().includes('U03'));
   const totalU01U03_2025 = (u01_2025?.unidades2025 || 0) + (u03_2025?.unidades2025 || 0);
-  const totalU01U03_2024 = (parseInt(u01_2024?.unidades) || 0) + (parseInt(u03_2024?.unidades) || 0);
+  const totalU01U03_2024 = (u01_2025?.unidades2024 || 0) + (u03_2025?.unidades2024 || 0);
   const participacionU01U03_2025 = total2025 > 0 ? ((totalU01U03_2025 / total2025) * 100) : 0;
   const participacionU01U03_2024 = total2024 > 0 ? ((totalU01U03_2024 / total2024) * 100) : 0;
   const variacionU01U03 = totalU01U03_2025 - totalU01U03_2024;
@@ -92,10 +91,10 @@ export default function ComercialEstructuraDashboard({ data }) {
             <TrendingUp className="w-10 h-10 opacity-80" />
             <Info className="w-5 h-5 opacity-60 hover:opacity-100" />
           </div>
-          <div className="text-4xl font-bold mb-2">{u03_2025?.participacion2025.toFixed(1) || 0}%</div>
+          <div className="text-4xl font-bold mb-2">{participacionU01U03_2025.toFixed(1)}%</div>
           <div className="text-sm opacity-90">Participación Sedes UO1 y UO3</div>
           <div className="text-xs opacity-75 mt-2">
-            {u03_2025?.asignacion.replace('Sede ', '') || 'U03'} • {formatNumber(u03_2025?.unidades2025 || 0)} unidades
+            UO1: {formatNumber(u01_2025?.unidades2025 || 0)} • UO3: {formatNumber(u03_2025?.unidades2025 || 0)}
           </div>
         </div>
 
@@ -138,7 +137,7 @@ export default function ComercialEstructuraDashboard({ data }) {
       )}
 
       <CollapsibleTable 
-        title="ASIGNACIÓN DE POLLO MAYORISTA - Distribución de unidades procesadas 2024 vs 2025"
+        title="ASIGNACIÓN DE POLLO - Distribución de unidades procesadas 2024 vs 2025"
         defaultOpen={false}
         totalRow={[
           { label: 'TOTAL MAYORISTA 2025' },

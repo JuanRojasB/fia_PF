@@ -190,7 +190,7 @@ export default function ContextoMundialDashboard() {
                       Las barreras a la entrada en el negocio avícola son <span className="font-bold">normativas</span> y requieren cumplimiento estricto para operar en el sector:
                     </p>
                     <div className="overflow-x-auto">
-                      <CollapsibleTable title="Barreras a la Entrada en el Negocio Avícola" defaultOpen={false}>
+                      <CollapsibleTable title="Barreras a la Entrada en el Negocio Avícola" defaultOpen={true}>
                         <table className="w-full border-collapse">
                           <thead>
                             <tr className="bg-indigo-600 text-white">

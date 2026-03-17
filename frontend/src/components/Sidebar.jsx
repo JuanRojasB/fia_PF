@@ -110,7 +110,8 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       icon: TrendingUp,
       type: 'expandable',
       subitems: [
-        { id: 'comercial-resumen', label: 'Asignación Pollo Mayorista' },
+        { id: 'comercial-estructura-equipo', label: 'Estructura Comercial' },
+        { id: 'comercial-resumen', label: 'Asignación de Pollo' },
         { id: 'comercial-ventas-compania', label: 'Ventas Total Compañía' },
         { id: 'comercial-pollo-entero', label: 'Pollo Entero' },
         { id: 'comercial-productos', label: 'Ventas en Pollo en Canal' },

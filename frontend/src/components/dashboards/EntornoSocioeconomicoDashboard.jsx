@@ -173,9 +173,9 @@ const granosData = [
                   ✕
                 </button>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  <span className="font-semibold text-blue-700">Descripción:</span> La línea naranja muestra el gasto trimestral en alimentos en millones de pesos constantes desde 2019 hasta 2025. 
-                  La línea roja punteada representa la tendencia general de crecimiento. Se observa un incremento significativo durante 2020-2021, 
-                  seguido de una estabilización en 2022-2023, y una ligera contracción en 2024-2025.
+                  <span className="font-semibold text-blue-700">Análisis:</span> El gasto real en alimentos de los hogares colombianos creció un <span className="font-semibold text-gray-900">+28,8%</span> entre 2019 y 2025 (de $25.000M a $32.200M en pesos constantes).
+                  Se identifican tres fases: un <span className="font-semibold text-orange-700">salto abrupto en 2020</span> (+13% en un solo trimestre) asociado al cambio de hábitos de consumo durante la pandemia; una <span className="font-semibold text-gray-700">meseta de consolidación entre 2021 y 2023</span> con valores estables en el rango $28.500M–$31.000M; y una <span className="font-semibold text-green-700">fase de expansión sostenida desde 2024</span> que lleva el gasto a máximos históricos (~$32.200M en 2025pr).
+                  La tendencia estructural (línea roja) confirma un crecimiento real continuo, lo que representa una <span className="font-semibold text-cyan-700">señal positiva para el sector avícola</span>: mayor gasto en alimentos implica mayor demanda potencial de proteína animal como el pollo.
                 </p>
               </div>
             )}

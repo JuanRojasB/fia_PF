@@ -23,6 +23,7 @@ import LogisticaMermaDashboard from './LogisticaMermaDashboard';
 import SagrilaftDashboard from './SagrilaftDashboard';
 import GranjasDashboard from './GranjasDashboard';
 import ComercialEstructuraDashboard from './ComercialEstructuraDashboard';
+import ComercialEstructuraEquipoDashboard from './ComercialEstructuraEquipoDashboard';
 import ComercialVentasCompaniaDashboard from './ComercialVentasCompaniaDashboard';
 import ComercialPolloEnteroDashboard from './ComercialPolloEnteroDashboard';
 import ComercialPDVDashboard from './ComercialPDVDashboard';
@@ -46,7 +47,7 @@ import EnDesarrollo from './EnDesarrollo';
 
 export default function DashboardRenderer({ type, data, onNavigate }) {
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos'];
+  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos', 'comercial-estructura-equipo'];
   
   if (!data || (Array.isArray(data) && data.length === 0)) {
     // Si el dashboard no requiere datos, continuar normalmente
@@ -90,6 +91,8 @@ export default function DashboardRenderer({ type, data, onNavigate }) {
       return <CarteraDashboard data={data} />;
     case 'comercial-resumen':
       return <ComercialEstructuraDashboard data={data} />;
+    case 'comercial-estructura-equipo':
+      return <ComercialEstructuraEquipoDashboard />;
     case 'comercial-ventas-compania':
       return <ComercialVentasCompaniaDashboard data={data} />;
     case 'comercial-pollo-entero':

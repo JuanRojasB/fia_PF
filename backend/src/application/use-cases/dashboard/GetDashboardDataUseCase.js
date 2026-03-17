@@ -24,9 +24,10 @@ class GetDashboardDataUseCase {
         case 'cartera':
           data = await this.dashboardRepository.getGestionCartera();
           break;
-        case 'comercial':
-          data = await this.dashboardRepository.getGestionComercial();
+        case 'comercial-estructura-equipo':
+          data = {};
           break;
+        case 'comercial':
         case 'ventas':
           data = await this.dashboardRepository.getGestionComercial();
           break;

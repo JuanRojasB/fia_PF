@@ -75,6 +75,7 @@ export default function NegocioMarchaDashboard() {
 
   return (
     <div className="space-y-8">
+      
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -94,7 +95,120 @@ export default function NegocioMarchaDashboard() {
             </div>
           </div>
         </div>
+{/* Resumen de Indicadores Clave */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9 }}
+        className="bg-gradient-to-r from-emerald-50 to-teal-50 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-2 border-emerald-300"
+      >
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Indicadores Clave 2025</h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="p-4 rounded-lg bg-white border-2 border-green-300 text-center">
+            <p className="text-sm text-gray-600 mb-2">Rentabilidad Neta</p>
+            <p className="text-4xl font-bold text-green-600">3.88%</p>
+            <p className="text-xs text-green-500 mt-1">↑ vs 2.84% (2024)</p>
+          </div>
+          <div className="p-4 rounded-lg bg-white border-2 border-blue-300 text-center">
+            <p className="text-sm text-gray-600 mb-2">Crecimiento Encasetamiento</p>
+            <p className="text-4xl font-bold text-blue-600">+6.6%</p>
+            <p className="text-xs text-blue-500 mt-1">vs -4% (2024)</p>
+          </div>
+          <div className="p-4 rounded-lg bg-white border-2 border-cyan-300 text-center">
+            <p className="text-sm text-gray-600 mb-2">Incremento Ventas Netas</p>
+            <p className="text-4xl font-bold text-cyan-600">+1.04%</p>
+            <p className="text-xs text-cyan-500 mt-1">vs -1.4% (2024)</p>
+          </div>
+          <div className="p-4 rounded-lg bg-white border-2 border-yellow-300 text-center">
+            <p className="text-sm text-gray-600 mb-2">Calificación INVIMA</p>
+            <p className="text-4xl font-bold text-yellow-600">96.69%</p>
+            <p className="text-xs text-orange-500 mt-1">↓ vs 97.55% (2024)</p>
+          </div>
+        </div>
 
+        {/* Destacado Especial con Animación de Celebración */}
+        <motion.div 
+          className="mt-6 p-6 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white text-center relative overflow-hidden"
+          initial={{ scale: 1 }}
+          animate={{ 
+            scale: [1, 1.02, 1],
+            boxShadow: [
+              '0 10px 15px -3px rgba(16, 185, 129, 0.3)',
+              '0 20px 25px -5px rgba(16, 185, 129, 0.5)',
+              '0 10px 15px -3px rgba(16, 185, 129, 0.3)'
+            ]
+          }}
+          transition={{ 
+            duration: 2,
+            repeat: Infinity,
+            repeatDelay: 1
+          }}
+        >
+          {/* Partículas de celebración */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 3, repeat: Infinity, repeatDelay: 0.5 }}
+          >
+            {[...Array(12)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-white rounded-full"
+                style={{
+                  left: `${10 + (i * 7)}%`,
+                  top: '50%',
+                }}
+                animate={{
+                  y: [-20, -60, -20],
+                  x: [0, (i % 2 === 0 ? 20 : -20), 0],
+                  opacity: [0, 1, 0],
+                  scale: [0, 1, 0]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.15,
+                  repeatDelay: 1
+                }}
+              />
+            ))}
+          </motion.div>
+
+          <motion.p 
+            className="text-sm font-semibold mb-2 relative z-10"
+            animate={{ 
+              scale: [1, 1.05, 1]
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: Infinity,
+              repeatDelay: 0.5
+            }}
+          >
+            🎯 LOGRO DESTACADO 2025
+          </motion.p>
+          <motion.p 
+            className="text-2xl font-bold relative z-10"
+            animate={{ 
+              textShadow: [
+                '0 0 10px rgba(255,255,255,0.3)',
+                '0 0 20px rgba(255,255,255,0.6)',
+                '0 0 10px rgba(255,255,255,0.3)'
+              ]
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity
+            }}
+          >
+            CERO PARADAS en Planta de Beneficio
+          </motion.p>
+          <p className="text-sm mt-2 opacity-90 relative z-10">Durante la temporada más importante: Diciembre, Enero y Febrero</p>
+        </motion.div>
+      </motion.div>
+      
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl"></div>
@@ -315,119 +429,6 @@ export default function NegocioMarchaDashboard() {
         )}
       </motion.div>
 
-      {/* Resumen de Indicadores Clave */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9 }}
-        className="bg-gradient-to-r from-emerald-50 to-teal-50 backdrop-blur-xl rounded-xl p-6 lg:p-8 border-2 border-emerald-300"
-      >
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Indicadores Clave 2025</h2>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-lg bg-white border-2 border-green-300 text-center">
-            <p className="text-sm text-gray-600 mb-2">Rentabilidad Neta</p>
-            <p className="text-4xl font-bold text-green-600">3.88%</p>
-            <p className="text-xs text-green-500 mt-1">↑ vs 2.84% (2024)</p>
-          </div>
-          <div className="p-4 rounded-lg bg-white border-2 border-blue-300 text-center">
-            <p className="text-sm text-gray-600 mb-2">Crecimiento Encasetamiento</p>
-            <p className="text-4xl font-bold text-blue-600">+6.6%</p>
-            <p className="text-xs text-blue-500 mt-1">vs -4% (2024)</p>
-          </div>
-          <div className="p-4 rounded-lg bg-white border-2 border-cyan-300 text-center">
-            <p className="text-sm text-gray-600 mb-2">Incremento Ventas Netas</p>
-            <p className="text-4xl font-bold text-cyan-600">+1.04%</p>
-            <p className="text-xs text-cyan-500 mt-1">vs -1.4% (2024)</p>
-          </div>
-          <div className="p-4 rounded-lg bg-white border-2 border-yellow-300 text-center">
-            <p className="text-sm text-gray-600 mb-2">Calificación INVIMA</p>
-            <p className="text-4xl font-bold text-yellow-600">96.69%</p>
-            <p className="text-xs text-orange-500 mt-1">↓ vs 97.55% (2024)</p>
-          </div>
-        </div>
-
-        {/* Destacado Especial con Animación de Celebración */}
-        <motion.div 
-          className="mt-6 p-6 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white text-center relative overflow-hidden"
-          initial={{ scale: 1 }}
-          animate={{ 
-            scale: [1, 1.02, 1],
-            boxShadow: [
-              '0 10px 15px -3px rgba(16, 185, 129, 0.3)',
-              '0 20px 25px -5px rgba(16, 185, 129, 0.5)',
-              '0 10px 15px -3px rgba(16, 185, 129, 0.3)'
-            ]
-          }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            repeatDelay: 1
-          }}
-        >
-          {/* Partículas de celebración */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ duration: 3, repeat: Infinity, repeatDelay: 0.5 }}
-          >
-            {[...Array(12)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-white rounded-full"
-                style={{
-                  left: `${10 + (i * 7)}%`,
-                  top: '50%',
-                }}
-                animate={{
-                  y: [-20, -60, -20],
-                  x: [0, (i % 2 === 0 ? 20 : -20), 0],
-                  opacity: [0, 1, 0],
-                  scale: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.15,
-                  repeatDelay: 1
-                }}
-              />
-            ))}
-          </motion.div>
-
-          <motion.p 
-            className="text-sm font-semibold mb-2 relative z-10"
-            animate={{ 
-              scale: [1, 1.05, 1]
-            }}
-            transition={{ 
-              duration: 1.5,
-              repeat: Infinity,
-              repeatDelay: 0.5
-            }}
-          >
-            🎯 LOGRO DESTACADO 2025
-          </motion.p>
-          <motion.p 
-            className="text-2xl font-bold relative z-10"
-            animate={{ 
-              textShadow: [
-                '0 0 10px rgba(255,255,255,0.3)',
-                '0 0 20px rgba(255,255,255,0.6)',
-                '0 0 10px rgba(255,255,255,0.3)'
-              ]
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: Infinity
-            }}
-          >
-            CERO PARADAS en Planta de Beneficio
-          </motion.p>
-          <p className="text-sm mt-2 opacity-90 relative z-10">Durante la temporada más importante: Diciembre, Enero y Febrero</p>
-        </motion.div>
-      </motion.div>
     </div>
   );
 }

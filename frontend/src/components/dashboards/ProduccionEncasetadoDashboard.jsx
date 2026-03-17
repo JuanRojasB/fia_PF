@@ -199,6 +199,72 @@ export default function ProduccionEncasetadoDashboard({ data }) {
         })()}
       </div>
 
+      {/* Análisis de Encasetamiento */}
+      {(() => {
+        const mesesActivos = encasetadoMeses.filter(m => m.real2025 > 0);
+        const mesPico2025 = mesesActivos.reduce((max, m) => m.real2025 > max.real2025 ? m : max, mesesActivos[0] || {});
+        const mesMenorCumpl = mesesActivos.filter(m => m.cumplPct != null).reduce((min, m) => m.cumplPct < min.cumplPct ? m : min, mesesActivos.find(m => m.cumplPct != null) || {});
+        const mesMayorCumpl = mesesActivos.filter(m => m.cumplPct != null).reduce((max, m) => m.cumplPct > max.cumplPct ? m : max, mesesActivos.find(m => m.cumplPct != null) || {});
+        const mesesSobreProg = mesesActivos.filter(m => m.real2025 >= m.prog2025).length;
+        const mesesBajoProg = mesesActivos.filter(m => m.real2025 < m.prog2025).length;
+        const tendenciaPositiva = parseFloat(variacionEncasetado) > 0;
+
+        const insights = [
+          {
+            icon: <TrendingUp className={`w-5 h-5 ${tendenciaPositiva ? 'text-green-500' : 'text-red-500'}`} />,
+            color: tendenciaPositiva ? 'border-green-400 bg-green-50' : 'border-red-400 bg-red-50',
+            title: 'Tendencia 2025 vs 2024',
+            text: `El encasetamiento real 2025 muestra una variación de ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}% frente a 2024 (12 meses completos). Diferencia absoluta: ${tendenciaPositiva ? '+' : ''}${formatNumber(totalEncasetado2025 - totalEncasetado2024)} pollitos.`
+          },
+          {
+            icon: <Factory className="w-5 h-5 text-blue-500" />,
+            color: 'border-blue-400 bg-blue-50',
+            title: 'Mes pico de encasetamiento 2025',
+            text: mesPico2025?.mes
+              ? `${mesPico2025.mes} fue el mes con mayor encasetamiento real en 2025 con ${formatNumber(mesPico2025.real2025)} pollitos, representando ${totalEncasetado2025 > 0 ? ((mesPico2025.real2025 / totalEncasetado2025) * 100).toFixed(1) : 0}% del total anual.`
+              : 'Sin datos suficientes.'
+          },
+          {
+            icon: <Calendar className="w-5 h-5 text-orange-500" />,
+            color: parseFloat(cumplimiento2025) >= 100 ? 'border-green-400 bg-green-50' : 'border-orange-400 bg-orange-50',
+            title: 'Cumplimiento del programado 2025',
+            text: `Cumplimiento global: ${cumplimiento2025}%. ${mesesSobreProg} mes${mesesSobreProg !== 1 ? 'es' : ''} superaron el programado y ${mesesBajoProg} quedaron por debajo. ${mesMayorCumpl?.mes ? `Mayor cumplimiento: ${mesMayorCumpl.mes} (${mesMayorCumpl.cumplPct}%).` : ''} ${mesMenorCumpl?.mes ? `Menor cumplimiento: ${mesMenorCumpl.mes} (${mesMenorCumpl.cumplPct}%).` : ''}`
+          },
+          {
+            icon: <TrendingUp className="w-5 h-5 text-purple-500" />,
+            color: 'border-purple-400 bg-purple-50',
+            title: 'Comparativo totales anuales',
+            text: `Real 2025 acumulado: ${formatNumber(totalEncasetado2025)} pollitos vs Real 2024: ${formatNumber(totalEncasetado2024)} pollitos. Promedio mensual 2025: ${formatNumber(Math.round(promedioMensual2025))} vs 2024: ${formatNumber(Math.round(promedioMensual2024))} pollitos/mes.`
+          },
+        ];
+
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55 }}
+            className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 border-2 border-blue-200"
+          >
+            <div className="flex items-center gap-3 mb-5">
+              <Info className="w-6 h-6 text-blue-500" />
+              <h3 className="text-xl font-bold text-gray-900">Análisis de Encasetamiento</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {insights.map((item, i) => (
+                <div key={i} className={`rounded-xl p-4 border-2 ${item.color}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    {item.icon}
+                    <span className="font-bold text-gray-800 text-sm">{item.title}</span>
+                  </div>
+                  <p className="text-gray-700 text-sm leading-relaxed">{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        );
+      })()}
+
+      
       {/* TABLA COMPARATIVA ENCASETAMIENTO 2025 vs 2024 */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }} 
@@ -481,71 +547,6 @@ export default function ProduccionEncasetadoDashboard({ data }) {
           );
         })()}
       </CollapsibleChart>
-
-      {/* Análisis de Encasetamiento */}
-      {(() => {
-        const mesesActivos = encasetadoMeses.filter(m => m.real2025 > 0);
-        const mesPico2025 = mesesActivos.reduce((max, m) => m.real2025 > max.real2025 ? m : max, mesesActivos[0] || {});
-        const mesMenorCumpl = mesesActivos.filter(m => m.cumplPct != null).reduce((min, m) => m.cumplPct < min.cumplPct ? m : min, mesesActivos.find(m => m.cumplPct != null) || {});
-        const mesMayorCumpl = mesesActivos.filter(m => m.cumplPct != null).reduce((max, m) => m.cumplPct > max.cumplPct ? m : max, mesesActivos.find(m => m.cumplPct != null) || {});
-        const mesesSobreProg = mesesActivos.filter(m => m.real2025 >= m.prog2025).length;
-        const mesesBajoProg = mesesActivos.filter(m => m.real2025 < m.prog2025).length;
-        const tendenciaPositiva = parseFloat(variacionEncasetado) > 0;
-
-        const insights = [
-          {
-            icon: <TrendingUp className={`w-5 h-5 ${tendenciaPositiva ? 'text-green-500' : 'text-red-500'}`} />,
-            color: tendenciaPositiva ? 'border-green-400 bg-green-50' : 'border-red-400 bg-red-50',
-            title: 'Tendencia 2025 vs 2024',
-            text: `El encasetamiento real 2025 muestra una variación de ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}% frente a 2024 (12 meses completos). Diferencia absoluta: ${tendenciaPositiva ? '+' : ''}${formatNumber(totalEncasetado2025 - totalEncasetado2024)} pollitos.`
-          },
-          {
-            icon: <Factory className="w-5 h-5 text-blue-500" />,
-            color: 'border-blue-400 bg-blue-50',
-            title: 'Mes pico de encasetamiento 2025',
-            text: mesPico2025?.mes
-              ? `${mesPico2025.mes} fue el mes con mayor encasetamiento real en 2025 con ${formatNumber(mesPico2025.real2025)} pollitos, representando ${totalEncasetado2025 > 0 ? ((mesPico2025.real2025 / totalEncasetado2025) * 100).toFixed(1) : 0}% del total anual.`
-              : 'Sin datos suficientes.'
-          },
-          {
-            icon: <Calendar className="w-5 h-5 text-orange-500" />,
-            color: parseFloat(cumplimiento2025) >= 100 ? 'border-green-400 bg-green-50' : 'border-orange-400 bg-orange-50',
-            title: 'Cumplimiento del programado 2025',
-            text: `Cumplimiento global: ${cumplimiento2025}%. ${mesesSobreProg} mes${mesesSobreProg !== 1 ? 'es' : ''} superaron el programado y ${mesesBajoProg} quedaron por debajo. ${mesMayorCumpl?.mes ? `Mayor cumplimiento: ${mesMayorCumpl.mes} (${mesMayorCumpl.cumplPct}%).` : ''} ${mesMenorCumpl?.mes ? `Menor cumplimiento: ${mesMenorCumpl.mes} (${mesMenorCumpl.cumplPct}%).` : ''}`
-          },
-          {
-            icon: <TrendingUp className="w-5 h-5 text-purple-500" />,
-            color: 'border-purple-400 bg-purple-50',
-            title: 'Comparativo totales anuales',
-            text: `Real 2025 acumulado: ${formatNumber(totalEncasetado2025)} pollitos vs Real 2024: ${formatNumber(totalEncasetado2024)} pollitos. Promedio mensual 2025: ${formatNumber(Math.round(promedioMensual2025))} vs 2024: ${formatNumber(Math.round(promedioMensual2024))} pollitos/mes.`
-          },
-        ];
-
-        return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55 }}
-            className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 border-2 border-blue-200"
-          >
-            <div className="flex items-center gap-3 mb-5">
-              <Info className="w-6 h-6 text-blue-500" />
-              <h3 className="text-xl font-bold text-gray-900">Análisis de Encasetamiento</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {insights.map((item, i) => (
-                <div key={i} className={`rounded-xl p-4 border-2 ${item.color}`}>
-                  <div className="flex items-center gap-2 mb-2">
-                    {item.icon}
-                    <span className="font-bold text-gray-800 text-sm">{item.title}</span>
-                  </div>
-                  <p className="text-gray-700 text-sm leading-relaxed">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        );
-      })()}
 
       {/* Modal de Explicación */}
       {createPortal(

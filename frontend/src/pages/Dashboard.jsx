@@ -41,7 +41,7 @@ export default function Dashboard() {
   const mainSections = useMemo(() => ({
     'bienvenida': ['bienvenida-principal', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha'],
     'produccion': ['produccion-granjas', 'produccion-encasetado', 'produccion-pollo-entregado', 'produccion-indicadores', 'produccion-huevos'],
-    'comercial': ['comercial-resumen', 'comercial-ventas-compania', 'comercial-pollo-entero', 'comercial-productos', 'comercial-asadero', 'comercial-institucional', 'comercial-huevo', 'logistica-merma'],
+    'comercial': ['comercial-estructura-equipo', 'comercial-resumen', 'comercial-ventas-compania', 'comercial-pollo-entero', 'comercial-productos', 'comercial-asadero', 'comercial-institucional', 'comercial-huevo', 'logistica-merma'],
     'logistica': ['logistica-sede1', 'logistica-sede2', 'logistica-sede3', 'logistica-consolidado'],
     'marketing': ['marketing-indicadores', 'marketing-detalle'],
     'humana': ['humana-general', 'humana-causas']
@@ -90,6 +90,7 @@ export default function Dashboard() {
     'cartera': 'cartera',
     'comercial': 'comercial',
     'comercial-resumen': 'comercial',
+    'comercial-estructura-equipo': 'comercial-estructura-equipo',
     'comercial-ventas-compania': 'comercial',
     'comercial-pollo-entero': 'comercial',
     'comercial-pdv': 'comercial-pdv',
@@ -122,7 +123,7 @@ export default function Dashboard() {
   };
 
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos'];
+  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo'];
 
   // Función para cambiar de sección que actualiza tanto el estado como la URL
   const handleSectionChange = useCallback((newSection) => {
@@ -168,6 +169,7 @@ export default function Dashboard() {
     'produccion-pollo-entregado',
     'produccion-indicadores',
     'produccion-huevos',
+    'comercial-estructura-equipo',
     'comercial-resumen',
     'comercial-ventas-compania',
     'comercial-pollo-entero',
@@ -233,7 +235,7 @@ export default function Dashboard() {
     
     // Redirigir 'comercial' al primer sub-dashboard
     if (section === 'comercial') {
-      section = 'comercial-resumen';
+      section = 'comercial-estructura-equipo';
       setSearchParams({ section });
     }
     
@@ -291,7 +293,8 @@ export default function Dashboard() {
       'tecnologias-informacion': 'Tecnologías de la Información',
       'cartera': 'Gestión de Cartera',
       'comercial': 'Gestión Comercial',
-      'comercial-resumen': 'Comercial Asignación de Pollo Mayorista',
+      'comercial-resumen': 'Comercial Asignación de Pollo',
+      'comercial-estructura-equipo': 'Estructura Comercial',
       'comercial-pdv': 'Puntos de Venta',
       'comercial-productos': 'Comercial Ventas en Pollo en Canal',
       'ventas': 'Equipo de Ventas',
