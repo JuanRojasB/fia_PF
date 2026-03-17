@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { MapPin, Store, Users, X, Info, Building2, UserCircle, TrendingUp, Package } from 'lucide-react';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function ComercialPDVDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,14 +28,7 @@ export default function ComercialPDVDashboard({ data }) {
   };
 
   // Abreviado para KPIs: $1.234M / $1.23B
-  const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
-    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
-    return `$${new Intl.NumberFormat('es-CO').format(v)}`;
-  };
+  const formatCurrency = formatCOPShort;
 
   return (
     <div className="space-y-6">

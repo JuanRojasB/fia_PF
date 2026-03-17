@@ -6,6 +6,8 @@ import { Truck, TrendingUp, Users, X, Info, DollarSign } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import { formatCurrencyFull } from './CustomTooltip';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function LogisticaSede2Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,15 +28,7 @@ export default function LogisticaSede2Dashboard({ data }) {
     );
   }
 
-  // Abreviado para KPIs: $1.234M / $1.23B
-  const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)} mil M`;
-    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
-    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
-  };
+  const formatCurrency = formatCOPShort;
 
   // Filtrar solo datos de SEDE2
   const sede2Data = logisticaData.filter(d => {

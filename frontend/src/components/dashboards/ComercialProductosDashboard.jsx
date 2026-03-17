@@ -5,7 +5,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Package, TrendingUp, DollarSign, X, Info, Percent, ArrowUpRight, ArrowDownRight, ShoppingBag } from 'lucide-react';
 import CollapsibleTable, { fmt as formatNumber } from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
 import { formatCurrencyFull } from './CustomTooltip';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function ComercialProductosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,15 +29,7 @@ export default function ComercialProductosDashboard({ data }) {
     );
   }
 
-  // Abreviado para KPIs: $1.234M / $1.23B
-  const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
-    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
-    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
-  };
+  const formatCurrency = formatCOPShort;
 
   // Procesar datos - la tabla ya tiene los datos calculados por año
   const ORDEN_LINEAS = {

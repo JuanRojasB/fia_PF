@@ -24,6 +24,7 @@ if (mysqlUrl) {
     password: process.env.MYSQLPASSWORD || process.env.DB_PASSWORD,
     database: process.env.MYSQLDATABASE || process.env.DB_NAME,
     port: parseInt(process.env.MYSQLPORT || process.env.DB_PORT || '3306', 10),
+    socketPath: process.env.MYSQLSOCKET || undefined,
     connectionLimit: 10,
     waitForConnections: true,
     queueLimit: 0,

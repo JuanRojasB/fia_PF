@@ -70,7 +70,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/95 rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal('Utilidad Neta 2025', 'La utilidad neta después de impuestos para el año 2025 se determinó en $16,714 MM y de $12,129 MM para el año 2024, arrojando un incremento de $4,585 MM, que corresponde a un 37.8%.')}
+          onClick={() => openModal('Utilidad Neta 2025', 'La utilidad neta después de impuestos para el año 2025 se determinó en $16.714.000 y de $12.129.000 para el año 2024, arrojando un incremento de $4.585.000, que corresponde a un 37.8%.')}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Utilidad Neta 2025 vs 2024</span>
@@ -89,7 +89,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="bg-white/95 rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-          onClick={() => openModal('Ingresos Operacionales 2025', 'Los ingresos netos por actividades ordinarias devengados durante el año 2025 fueron por $431 MM, frente a $426 MM del año 2024, presentaron un crecimiento de $4.451 MM, es decir, +1.04%.')}
+          onClick={() => openModal('Ingresos Operacionales 2025', 'Los ingresos netos por actividades ordinarias devengados durante el año 2025 fueron por $431.000.000, frente a $426.000.000 del año 2024, presentaron un crecimiento de $4.451.000.000, es decir, +1.04%.')}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Ingresos Operacionales 2025 vs 2024</span>
@@ -108,7 +108,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="bg-white/95 rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-          onClick={() => openModal('Patrimonio 2025', 'El Patrimonio Contable al 31 de diciembre del año 2025 quedó valorado en $245,333 MM y, para el año 2024 en $83,530 MM; diferencia de $161,802 MM un fortalecimiento al incrementar el 194%.')}
+          onClick={() => openModal('Patrimonio 2025', 'El Patrimonio Contable al 31 de diciembre del año 2025 quedó valorado en $245.333.000 y, para el año 2024 en $83.530.000; diferencia de $161.802.000 un fortalecimiento al incrementar el 194%.')}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Patrimonio Total 2025 vs 2024</span>
@@ -127,7 +127,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           className="bg-white/95 rounded-xl p-6 border-4 border-cyan-500/30 hover:border-cyan-500 transition-all cursor-pointer"
-          onClick={() => openModal('Activos Totales 2025', 'Los activos totales a 31 de diciembre del ejercicio económico del año 2025 cerraron en $311,430 MM para el año 2024 quedaron en $137,287 MM, variación de $174,143 MM, determinando un aumento del 127%.')}
+          onClick={() => openModal('Activos Totales 2025', 'Los activos totales a 31 de diciembre del ejercicio económico del año 2025 cerraron en $311.430.000 para el año 2024 quedaron en $137.287.000, variación de $174.143.000, determinando un aumento del 127%.')}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Activos Totales 2025 vs 2024</span>
@@ -152,7 +152,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <h3 className="text-xl font-bold text-gray-900">Estado de Resultados Pollo Fiesta 2025</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 cursor-pointer hover:border-blue-500 transition-all"
-            onClick={() => openModal('Utilidad Bruta', 'La utilidad bruta por los años de 2025 y 2024 se determinaron en: $64,781 y $58,309 MM respectivamente, generando un incremento $6,472 MM correspondiente al 11.1%.')}>
+            onClick={() => openModal('Utilidad Bruta', 'La utilidad bruta por los años de 2025 y 2024 se determinaron en: $64,781 y $58.309.000 respectivamente, generando un incremento $6.472.000 correspondiente al 11.1%.')}>
             <p className="text-sm text-gray-600 mb-2">Utilidad Bruta 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(64781000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -161,7 +161,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             </div>
           </div>
           <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
-            onClick={() => openModal('Utilidad Operacional', 'El valor de la utilidad operacional se determinó en $27,229 MM para el año 2025 y en $22,534 para el año 2024 reflejando crecimiento del +20.8% por valor de $4,695 MM.')}>
+            onClick={() => openModal('Utilidad Operacional', 'El valor de la utilidad operacional se determinó en $27.229.000 para el año 2025 y en $22,534 para el año 2024 reflejando crecimiento del +20.8% por valor de $4.695.000.')}>
             <p className="text-sm text-gray-600 mb-2">Utilidad Operacional 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(27229000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -170,7 +170,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             </div>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 cursor-pointer hover:border-purple-500 transition-all"
-            onClick={() => openModal('Costos de Ventas', 'Pollo Fiesta S.A., cierra el ejercicio con costes de ventas por el año 2025, en cuantía de $368,749 MM y en el año 2024 en cuantía de $370,332 MM, es decir una disminución del -0.43%, hecho explicado principalmente por la disminución en el costo directo del ABA.')}>
+            onClick={() => openModal('Costos de Ventas', 'Pollo Fiesta S.A., cierra el ejercicio con costes de ventas por el año 2025, en cuantía de $368.749.000 y en el año 2024 en cuantía de $370.332.000, es decir una disminución del -0.43%, hecho explicado principalmente por la disminución en el costo directo del ABA.')}>
             <p className="text-sm text-gray-600 mb-2">Costos de Ventas 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(368749000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -179,7 +179,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             </div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
-            onClick={() => openModal('Costo Neto Financiero', 'El coste financiero fue de $6,061 MM para el año 2025 y de $6,880 MM para el año 2024, lo que arrojó un decrecimiento de $819 MM que corresponde a un -11.91%. En relación directa con los intereses pagados por obligaciones financieras, gravamen al movimiento financiero GMF por la bancarización de los pagos.')}>
+            onClick={() => openModal('Costo Neto Financiero', 'El coste financiero fue de $6.061.000 para el año 2025 y de $6.880.000 para el año 2024, lo que arrojó un decrecimiento de $819.000.000 que corresponde a un -11.91%. En relación directa con los intereses pagados por obligaciones financieras, gravamen al movimiento financiero GMF por la bancarización de los pagos.')}>
             <p className="text-sm text-gray-600 mb-2">Costo Financiero 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(6061000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -188,7 +188,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             </div>
           </div>
           <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"
-            onClick={() => openModal('Otros Ingresos Financieros', 'Los otros ingresos financieros fueron determinados por los intereses recibidos en la colocación de recursos en portafolios de rentabilidad, aumentando en un 61.53% es decir en $1,572 MM, al pasar de $2,555 MM en el año 2024 a $4,127 MM del año 2025, resultado producto de la mayor colocación de recursos en las fiducias.')}>
+            onClick={() => openModal('Otros Ingresos Financieros', 'Los otros ingresos financieros fueron determinados por los intereses recibidos en la colocación de recursos en portafolios de rentabilidad, aumentando en un 61.53% es decir en $1.572.000, al pasar de $2.555.000 en el año 2024 a $4.127.000 del año 2025, resultado producto de la mayor colocación de recursos en las fiducias.')}>
             <p className="text-sm text-gray-600 mb-2">Ingresos Financieros 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(4127000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -334,7 +334,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         <div className="space-y-4">
           <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
             <p className="text-sm font-semibold text-gray-900 mb-2">Deuda con Asociados:</p>
-            <p className="text-sm text-gray-700">El comportamiento de la deuda para con los asociados aumentó en cuantía de <strong className="text-orange-600">$2,647 MM</strong> (nota 17).</p>
+            <p className="text-sm text-gray-700">El comportamiento de la deuda para con los asociados aumentó en cuantía de <strong className="text-orange-600">$2.647.000</strong> (nota 17).</p>
           </div>
           <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
             <p className="text-sm font-semibold text-gray-900 mb-2">Vinculado Económico ALBATEQ S.A.:</p>

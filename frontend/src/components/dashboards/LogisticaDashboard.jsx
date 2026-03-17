@@ -5,7 +5,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Truck, TrendingUp, Building, X, Info } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
 import { formatCurrencyFull } from './CustomTooltip';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function LogisticaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -34,15 +36,7 @@ export default function LogisticaDashboard({ data }) {
     return <div className="text-gray-600">No hay datos disponibles</div>;
   }
 
-  // Abreviado para KPIs: $1.234M / $1.23B
-  const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
-    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
-    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
-  };
+  const formatCurrency = formatCOPShort;
 
   const conceptosMap = {};
   // Valor completo para tooltips (sin abreviar)
@@ -117,46 +111,39 @@ export default function LogisticaDashboard({ data }) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-          onClick={() => openModal('Total Gastos Logísticos 2025', `El área logística opera con una capacidad de aproximadamente 3 millones de kg/mes distribuidos en 3 sedes activas (Sede 1, Sede 2 y Sede 3), con 12 muelles de cargue/descargue y 197 colaboradores. Este indicador consolida todos los conceptos de gasto operacional logístico: transporte, personal, mantenimiento de flota, combustible y otros costos asociados a la distribución. La variación frente a 2024 refleja el comportamiento del costo logístico total de la compañía.`)}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos 2025</span>
-            <Truck className="w-6 h-6 text-blue-400" />
-          </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrencyFull(total2025)}</div>
-          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2024)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2025)}</span></div>
-            <div className={`text-sm font-bold ${variacionTotal >= 0 ? 'text-red-600' : 'text-green-600'}`}>
-              Var: {variacionTotal > 0 ? '+' : ''}{variacionTotal}%
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal('Variación de Gastos Logísticos 2025 vs 2024', `Este indicador muestra la diferencia absoluta en pesos entre el gasto logístico total de 2025 y el de 2024. Un incremento puede estar asociado a mayor volumen de operación, aumento en costos de combustible, ajustes salariales o expansión de rutas. Una reducción indica eficiencias operativas o menor actividad. Se debe analizar en conjunto con el volumen de kg distribuidos para determinar si el costo por kg mejoró o empeoró frente al año anterior.`)}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Variación Gastos Logísticos 2025 vs 2024</span>
-            <TrendingUp className="w-6 h-6 text-green-400" />
-          </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{formatCurrencyFull(Math.abs(total2025 - total2024))}</div>
-          <div className={`text-xs ${variacionTotal >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-            {variacionTotal >= 0 ? 'Incremento' : 'Reducción'}
-          </div>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-          onClick={() => openModal('Sedes Logísticas Activas 2025', `La operación logística de Pollo Fiesta se distribuye en 3 centros de distribución: Sede 1, Sede 2 y Sede 3. Cada sede tiene su propia estructura de costos operacionales que incluye personal, transporte, mantenimiento y otros gastos. La distribución por sede permite identificar cuál concentra mayor costo y dónde existen oportunidades de optimización. El gráfico de distribución porcentual muestra el peso relativo de cada sede sobre el gasto logístico total.`)}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Sedes Logísticas Activas 2025</span>
-            <Building className="w-6 h-6 text-purple-400" />
-          </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">{sedesData.length}</div>
-          <div className="text-xs text-purple-400">Activas</div>
-        </motion.div>
+        <KpiCard
+          title="Total Gastos Logísticos 2025"
+          value={formatCurrencyFull(total2025)}
+          value2024={formatCurrencyFull(total2024)}
+          varPct={parseFloat(variacionTotal)}
+          varAbs={`${parseFloat(variacionTotal) >= 0 ? '+' : ''}${formatCurrencyFull(total2025 - total2024)}`}
+          icon={<Truck className="w-6 h-6 text-blue-400" />}
+          borderColor="border-blue-400"
+          invertColors={true}
+          delay={0}
+          onClick={() => openModal('Total Gastos Logísticos 2025', `El área logística opera con una capacidad de aproximadamente 3 millones de kg/mes distribuidos en 3 sedes activas.`)}
+        />
+        <KpiCard
+          title="Variación Gastos Logísticos 2025 vs 2024"
+          value={formatCurrencyFull(Math.abs(total2025 - total2024))}
+          value2024={formatCurrencyFull(total2024)}
+          varPct={parseFloat(variacionTotal)}
+          varLabel={parseFloat(variacionTotal) >= 0 ? 'incremento' : 'reducción'}
+          icon={<TrendingUp className="w-6 h-6 text-green-400" />}
+          borderColor="border-green-400"
+          invertColors={true}
+          delay={0.1}
+          onClick={() => openModal('Variación de Gastos Logísticos 2025 vs 2024', `Este indicador muestra la diferencia absoluta en pesos entre el gasto logístico total de 2025 y el de 2024.`)}
+        />
+        <KpiCard
+          title="Sedes Logísticas Activas 2025"
+          value={sedesData.length}
+          unit="Activas"
+          icon={<Building className="w-6 h-6 text-purple-400" />}
+          borderColor="border-purple-400"
+          delay={0.2}
+          onClick={() => openModal('Sedes Logísticas Activas 2025', `La operación logística se distribuye en 3 centros de distribución: Sede 1, Sede 2 y Sede 3.`)}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

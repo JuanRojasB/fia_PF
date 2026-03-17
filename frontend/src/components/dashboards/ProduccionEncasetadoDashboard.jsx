@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { Factory, TrendingUp, Calendar, X, Info, Target, AlertCircle, CheckCircle2 } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
 
 export default function ProduccionEncasetadoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -134,108 +135,68 @@ export default function ProduccionEncasetadoDashboard({ data }) {
     <div className="space-y-8">
 
 
-      {/* KPIs Principales - Expandidos */}
+      {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-          onClick={() => openModal(
-            'Total Pollitos Encasetados 2025',
-            `Se encasetaron ${formatNumber(totalEncasetado2025)} pollitos durante el año 2025. Este valor es la suma de todos los pollitos encasetados mes a mes durante el año. El encasetamiento es el proceso de colocar pollitos de un día de edad en los galpones de crianza, marcando el inicio del ciclo productivo de engorde que dura aproximadamente 42-45 días hasta el procesamiento. El valor programado fue de ${formatNumber(totalProgramado2025)} pollitos.`
-          )}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Encasetamiento Real 2025 vs Programado 2025</span>
-            <Factory className="w-5 h-5 text-blue-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(totalEncasetado2025)}</div>
-          <div className="text-sm text-gray-600 mt-1">Suma anual real</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Programado 2025 (suma anual)</div>
-            <div className="text-lg font-semibold text-blue-400">{formatNumber(totalProgramado2025)} pollitos</div>
-            <div className={`text-sm font-bold mt-1 ${totalEncasetado2025 >= totalProgramado2025 ? 'text-green-500' : 'text-red-500'}`}>
-              {totalEncasetado2025 >= totalProgramado2025 ? '▲' : '▼'} {totalProgramado2025 > 0 ? (((totalEncasetado2025 - totalProgramado2025) / totalProgramado2025) * 100).toFixed(2) : '0.00'}% vs programado
-            </div>
-            <div className="text-xs text-gray-400 mt-1">
-              Dif: {totalEncasetado2025 >= totalProgramado2025 ? '+' : ''}{formatNumber(totalEncasetado2025 - totalProgramado2025)} pollitos
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ delay: 0.1 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal(
-            'Total Pollitos Encasetados 2024',
-            `Se encasetaron ${formatNumber(totalEncasetado2024)} pollitos durante el año 2024. Este valor es la suma de todos los pollitos encasetados mes a mes durante el año 2024. El encasetamiento es el proceso de colocar pollitos de un día de edad en los galpones de crianza, marcando el inicio del ciclo productivo de engorde. El valor programado fue de ${formatNumber(totalProgramado2024)} pollitos, logrando un cumplimiento del ${cumplimiento2024}%.`
-          )}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Encasetamiento Real 2024 vs Programado 2024</span>
-            <Factory className="w-5 h-5 text-green-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(totalEncasetado2024)}</div>
-          <div className="text-sm text-gray-600 mt-1">Suma anual real</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Programado 2024 (suma anual)</div>
-            <div className="text-lg font-semibold text-green-400">{formatNumber(totalProgramado2024)} pollitos</div>
-            <div className={`text-sm font-bold mt-1 ${totalEncasetado2024 >= totalProgramado2024 ? 'text-green-500' : 'text-red-500'}`}>
-              {totalEncasetado2024 >= totalProgramado2024 ? '▲' : '▼'} {totalProgramado2024 > 0 ? (((totalEncasetado2024 - totalProgramado2024) / totalProgramado2024) * 100).toFixed(2) : '0.00'}% vs programado
-            </div>
-            <div className="text-xs text-gray-400 mt-1">
-              Dif: {totalEncasetado2024 >= totalProgramado2024 ? '+' : ''}{formatNumber(totalEncasetado2024 - totalProgramado2024)} pollitos
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ delay: 0.2 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-          onClick={() => openModal(
-            'Comparación 2025 vs 2024',
-            `La variación de ${variacionEncasetado > 0 ? '+' : ''}${variacionEncasetado}% representa la comparación entre 2025 y 2024. Se encasetaron ${formatNumber(totalEncasetado2025)} pollitos en 2025 vs ${formatNumber(totalEncasetado2024)} pollitos en 2024. Fórmula: ((2025 - 2024) / 2024) × 100 = ((${formatNumber(totalEncasetado2025)} - ${formatNumber(totalEncasetado2024)}) / ${formatNumber(totalEncasetado2024)}) × 100 = ${variacionEncasetado}%. La diferencia absoluta es de ${formatNumber(Math.abs(totalEncasetado2025 - totalEncasetado2024))} pollitos ${variacionEncasetado > 0 ? 'más' : 'menos'}. Esta variación refleja ${variacionEncasetado > 0 ? 'un crecimiento' : 'una reducción'} en la capacidad productiva.`
-          )}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Comparación Encasetamiento Real 2025 vs 2024</span>
-            <TrendingUp className="w-5 h-5 text-purple-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">{variacionEncasetado > 0 ? '+' : ''}{variacionEncasetado}%</div>
-          <div className="text-sm text-gray-600 mt-1">Fórmula: (2025-2024)/2024×100</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Diferencia 2025 - 2024</div>
-            <div className={`text-lg font-semibold ${variacionEncasetado > 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {variacionEncasetado > 0 ? '+' : ''}{formatNumber(Math.abs(totalEncasetado2025 - totalEncasetado2024))} pollitos
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ delay: 0.3 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
-          onClick={() => openModal(
-            'Promedio Mensual de Encasetamiento 2025',
-            `El promedio mensual es de ${formatNumber(promedioMensual2025)} pollitos. Se calcula dividiendo el total anual (${formatNumber(totalEncasetado2025)} pollitos) entre los ${totalesPorAnio[2025]?.meses || 12} meses con datos. Fórmula: ${formatNumber(totalEncasetado2025)} ÷ ${totalesPorAnio[2025]?.meses || 12} = ${formatNumber(promedioMensual2025)} pollitos/mes. Este indicador permite evaluar la consistencia de la operación y planificar recursos (alimento, personal, logística). En 2024 el promedio fue de ${formatNumber(promedioMensual2024)} pollitos/mes.`
-          )}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Promedio Mensual Encasetamiento 2025 vs 2024</span>
-            <Calendar className="w-5 h-5 text-orange-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(promedioMensual2025)}</div>
-          <div className="text-sm text-gray-600 mt-1">Total anual ÷ meses</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Promedio 2024</div>
-            <div className="text-lg font-semibold text-orange-400">{formatNumber(promedioMensual2024)} pollitos/mes</div>
-          </div>
-        </motion.div>
+        {(() => {
+          const pctVsProg2025 = totalProgramado2025 > 0 ? (((totalEncasetado2025 - totalProgramado2025) / totalProgramado2025) * 100) : 0;
+          const pctVsProg2024 = totalProgramado2024 > 0 ? (((totalEncasetado2024 - totalProgramado2024) / totalProgramado2024) * 100) : 0;
+          const difAbs = totalEncasetado2025 - totalEncasetado2024;
+          return (<>
+            <KpiCard
+              title="Encasetamiento Real 2025 vs Programado 2025"
+              value={formatNumber(totalEncasetado2025)}
+              unit="Suma anual real"
+              value2024={`${formatNumber(totalProgramado2025)} pollitos`}
+              label2024="Programado 2025"
+              varPct={pctVsProg2025}
+              varAbs={`${pctVsProg2025 >= 0 ? '+' : ''}${formatNumber(totalEncasetado2025 - totalProgramado2025)} pollitos`}
+              varLabel="vs programado"
+              icon={<Factory className="w-5 h-5 text-blue-500" />}
+              borderColor="border-blue-400"
+              delay={0}
+              onClick={() => openModal('Total Pollitos Encasetados 2025', `Se encasetaron ${formatNumber(totalEncasetado2025)} pollitos durante el año 2025. El valor programado fue de ${formatNumber(totalProgramado2025)} pollitos.`)}
+            />
+            <KpiCard
+              title="Encasetamiento Real 2024 vs Programado 2024"
+              value={formatNumber(totalEncasetado2024)}
+              unit="Suma anual real"
+              value2024={`${formatNumber(totalProgramado2024)} pollitos`}
+              label2024="Programado 2024"
+              varPct={pctVsProg2024}
+              varAbs={`${pctVsProg2024 >= 0 ? '+' : ''}${formatNumber(totalEncasetado2024 - totalProgramado2024)} pollitos`}
+              varLabel="vs programado"
+              icon={<Factory className="w-5 h-5 text-green-500" />}
+              borderColor="border-green-400"
+              delay={0.1}
+              onClick={() => openModal('Total Pollitos Encasetados 2024', `Se encasetaron ${formatNumber(totalEncasetado2024)} pollitos durante el año 2024. El valor programado fue de ${formatNumber(totalProgramado2024)} pollitos, logrando un cumplimiento del ${cumplimiento2024}%.`)}
+            />
+            <KpiCard
+              title="Comparación Encasetamiento Real 2025 vs 2024"
+              value={`${parseFloat(variacionEncasetado) >= 0 ? '+' : ''}${variacionEncasetado}%`}
+              unit="Fórmula: (2025-2024)/2024×100"
+              value2024={formatNumber(totalEncasetado2024)}
+              varPct={parseFloat(variacionEncasetado)}
+              varAbs={`${difAbs >= 0 ? '+' : ''}${formatNumber(difAbs)} pollitos`}
+              icon={<TrendingUp className="w-5 h-5 text-purple-500" />}
+              borderColor="border-purple-400"
+              delay={0.2}
+              onClick={() => openModal('Comparación 2025 vs 2024', `La variación de ${variacionEncasetado}% representa la comparación entre 2025 y 2024.`)}
+            />
+            <KpiCard
+              title="Promedio Mensual Encasetamiento 2025 vs 2024"
+              value={formatNumber(promedioMensual2025)}
+              unit="Total anual ÷ meses"
+              value2024={`${formatNumber(promedioMensual2024)} pollitos/mes`}
+              label2024="Promedio 2024"
+              varPct={promedioMensual2024 > 0 ? (((promedioMensual2025 - promedioMensual2024) / promedioMensual2024) * 100) : 0}
+              varAbs={`${formatNumber(Math.round(promedioMensual2025 - promedioMensual2024))} pollitos/mes`}
+              icon={<Calendar className="w-5 h-5 text-orange-500" />}
+              borderColor="border-orange-400"
+              delay={0.3}
+              onClick={() => openModal('Promedio Mensual 2025', `El promedio mensual es de ${formatNumber(promedioMensual2025)} pollitos. En 2024 el promedio fue de ${formatNumber(promedioMensual2024)} pollitos/mes.`)}
+            />
+          </>);
+        })()}
       </div>
 
       {/* TABLA COMPARATIVA ENCASETAMIENTO 2025 vs 2024 */}

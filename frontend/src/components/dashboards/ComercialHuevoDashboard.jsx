@@ -5,6 +5,8 @@ import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Respons
 import { Egg, TrendingDown, DollarSign, X, Info, AlertTriangle, Package } from 'lucide-react';
 import { formatCurrencyFull } from './CustomTooltip';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function ComercialHuevoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,15 +28,7 @@ export default function ComercialHuevoDashboard({ data }) {
     );
   }
 
-  // Abreviado para KPIs: $1.234M / $1.23B
-  const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
-    if (v >= 1_000_000)     return `$${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `$${(v / 1_000).toFixed(0)}mil`;
-    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
-  };
+  const formatCurrency = formatCOPShort;
 
   const formatNumber = (value) => {
     if (!value || isNaN(value)) return '0';

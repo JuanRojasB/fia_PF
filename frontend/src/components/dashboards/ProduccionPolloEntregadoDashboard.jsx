@@ -6,6 +6,7 @@ import { Truck, TrendingDown, Package, AlertCircle, X, Info } from 'lucide-react
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
 import { getValueColor } from '../../utils/colorUtils';
+import KpiCard from '../KpiCard';
 
 export default function ProduccionPolloEntregadoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -111,108 +112,58 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
 
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          onClick={() => openModal(
-            'Programado Aves 2025',
-            `El volumen programado para 2025 fue de ${formatNumber(datos2025.programado)} aves, frente a ${formatNumber(datos2024.programado)} programadas en 2024, lo que representa un incremento del ${(((datos2025.programado - datos2024.programado) / datos2024.programado) * 100).toFixed(1)}% en la meta de producción. Este valor refleja la proyección de capacidad instalada en granjas propias para el ciclo productivo del año. El cumplimiento real vs programado 2025 fue del ${(datos2025.real_granjas / datos2025.programado * 100).toFixed(1)}%, con una diferencia de ${formatNumber(datos2025.real_granjas - datos2025.programado)} aves respecto a la meta.`
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Programado Aves 2025</span>
-            <Package className="w-6 h-6 text-purple-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.programado)}</div>
-          {(() => {
-            const vPct = datos2024.programado > 0 ? (((datos2025.programado - datos2024.programado) / datos2024.programado) * 100).toFixed(1) : 0;
-            return (
-              <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-                <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.programado)}</span></div>
-                <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.programado)}</span></div>
-                <div className={`text-sm font-bold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {parseFloat(vPct) >= 0 ? '+' : ''}{vPct}%</div>
-              </div>
-            );
-          })()}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          onClick={() => openModal(
-            'Real Aves Entregadas en 2025',
-            `Las granjas propias entregaron ${formatNumber(datos2025.real_granjas)} aves en 2025, frente a ${formatNumber(datos2024.real_granjas)} en 2024. Esto representa un crecimiento del ${(((datos2025.real_granjas - datos2024.real_granjas) / datos2024.real_granjas) * 100).toFixed(1)}%, equivalente a ${formatNumber(datos2025.real_granjas - datos2024.real_granjas)} aves adicionales. El cumplimiento frente al programado 2025 (${formatNumber(datos2025.programado)}) fue del ${(datos2025.real_granjas / datos2025.programado * 100).toFixed(1)}%. Este indicador mide exclusivamente la producción de granjas propias, sin incluir el pollo comprado a terceros.`
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Real Aves Entregadas en 2025</span>
-            <Truck className="w-6 h-6 text-green-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.real_granjas)}</div>
-          {(() => {
-            const vPct = datos2024.real_granjas > 0 ? (((datos2025.real_granjas - datos2024.real_granjas) / datos2024.real_granjas) * 100).toFixed(1) : 0;
-            return (
-              <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-                <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.real_granjas)}</span></div>
-                <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.real_granjas)}</span></div>
-                <div className={`text-sm font-bold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {parseFloat(vPct) >= 0 ? '+' : ''}{vPct}%</div>
-              </div>
-            );
-          })()}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          onClick={() => openModal(
-            'Comprado de Aves en 2025',
-            `En 2025 se compraron ${formatNumber(datos2025.comprado)} aves a terceros, frente a ${formatNumber(datos2024.comprado)} en 2024, una reducción del ${Math.abs((((datos2025.comprado - datos2024.comprado) / datos2024.comprado) * 100)).toFixed(1)}% (${formatNumber(Math.abs(datos2025.comprado - datos2024.comprado))} aves menos). El pollo comprado representa el ${(datos2025.comprado / datos2025.total * 100).toFixed(2)}% del total entregado en 2025, vs ${(datos2024.comprado / datos2024.total * 100).toFixed(2)}% en 2024. La disminución en compras externas refleja mayor autosuficiencia productiva de las granjas propias.`
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Comprado de Aves(Avi/cambulos) en 2025</span>
-            <Package className="w-6 h-6 text-orange-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.comprado)}</div>
-          {(() => {
-            const vPct = datos2024.comprado > 0 ? (((datos2025.comprado - datos2024.comprado) / datos2024.comprado) * 100).toFixed(1) : 0;
-            return (
-              <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-                <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.comprado)}</span></div>
-                <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.comprado)}</span></div>
-                <div className={`text-sm font-bold ${parseFloat(vPct) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {parseFloat(vPct) >= 0 ? '+' : ''}{vPct}%</div>
-              </div>
-            );
-          })()}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          onClick={() => openModal(
-            'Total de Aves en 2025',
-            `El total de aves entregadas en 2025 fue de ${formatNumber(datos2025.total)} (granjas propias + comprado), frente a ${formatNumber(datos2024.total)} en 2024, con un crecimiento del +${datos2025.var_pct}% equivalente a ${formatNumber(datos2025.total - datos2024.total)} aves adicionales. Composición 2025: ${formatNumber(datos2025.real_granjas)} de granjas propias (${(datos2025.real_granjas / datos2025.total * 100).toFixed(1)}%) + ${formatNumber(datos2025.comprado)} compradas (${(datos2025.comprado / datos2025.total * 100).toFixed(1)}%). Este es el mejor resultado desde 2022 (${formatNumber(historico.find(h=>h.anio===2022)?.total || 0)} aves).`
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Total de Aves en 2025</span>
-            <TrendingDown className="w-6 h-6 text-blue-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900 leading-tight">{formatNumber(datos2025.total)}</div>
-          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatNumber(datos2024.total)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatNumber(datos2025.total)}</span></div>
-            <div className={`text-sm font-bold ${datos2025.var_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {datos2025.var_pct >= 0 ? '+' : ''}{datos2025.var_pct}%</div>
-          </div>
-        </motion.div>
+        {(() => {
+          const vProg = datos2024.programado > 0 ? (((datos2025.programado - datos2024.programado) / datos2024.programado) * 100) : 0;
+          const vReal = datos2024.real_granjas > 0 ? (((datos2025.real_granjas - datos2024.real_granjas) / datos2024.real_granjas) * 100) : 0;
+          const vComp = datos2024.comprado > 0 ? (((datos2025.comprado - datos2024.comprado) / datos2024.comprado) * 100) : 0;
+          const vTot  = datos2024.total > 0 ? (((datos2025.total - datos2024.total) / datos2024.total) * 100) : 0;
+          return (<>
+            <KpiCard
+              title="Programado Aves 2025"
+              value={formatNumber(datos2025.programado)}
+              value2024={formatNumber(datos2024.programado)}
+              varPct={vProg}
+              varAbs={`${vProg >= 0 ? '+' : ''}${formatNumber(datos2025.programado - datos2024.programado)} aves`}
+              icon={<Package className="w-6 h-6 text-purple-500" />}
+              borderColor="border-purple-400"
+              delay={0.2}
+              onClick={() => openModal('Programado Aves 2025', `El volumen programado para 2025 fue de ${formatNumber(datos2025.programado)} aves, frente a ${formatNumber(datos2024.programado)} programadas en 2024.`)}
+            />
+            <KpiCard
+              title="Real Aves Entregadas 2025"
+              value={formatNumber(datos2025.real_granjas)}
+              value2024={formatNumber(datos2024.real_granjas)}
+              varPct={vReal}
+              varAbs={`${vReal >= 0 ? '+' : ''}${formatNumber(datos2025.real_granjas - datos2024.real_granjas)} aves`}
+              icon={<Truck className="w-6 h-6 text-green-500" />}
+              borderColor="border-green-400"
+              delay={0.3}
+              onClick={() => openModal('Real Aves Entregadas 2025', `Las granjas propias entregaron ${formatNumber(datos2025.real_granjas)} aves en 2025, frente a ${formatNumber(datos2024.real_granjas)} en 2024.`)}
+            />
+            <KpiCard
+              title="Comprado de Aves (Avi/cambulos) 2025"
+              value={formatNumber(datos2025.comprado)}
+              value2024={formatNumber(datos2024.comprado)}
+              varPct={vComp}
+              varAbs={`${formatNumber(datos2025.comprado - datos2024.comprado)} aves`}
+              icon={<Package className="w-6 h-6 text-orange-500" />}
+              borderColor="border-orange-400"
+              delay={0.4}
+              onClick={() => openModal('Comprado de Aves 2025', `En 2025 se compraron ${formatNumber(datos2025.comprado)} aves a terceros, frente a ${formatNumber(datos2024.comprado)} en 2024.`)}
+            />
+            <KpiCard
+              title="Total de Aves 2025"
+              value={formatNumber(datos2025.total)}
+              value2024={formatNumber(datos2024.total)}
+              varPct={vTot}
+              varAbs={`${vTot >= 0 ? '+' : ''}${formatNumber(datos2025.total - datos2024.total)} aves`}
+              icon={<TrendingDown className="w-6 h-6 text-blue-500" />}
+              borderColor="border-blue-400"
+              delay={0.5}
+              onClick={() => openModal('Total de Aves 2025', `El total de aves entregadas en 2025 fue de ${formatNumber(datos2025.total)}, frente a ${formatNumber(datos2024.total)} en 2024.`)}
+            />
+          </>);
+        })()}
       </div>
 
       {/* Tabla Histórica Pollo Entregado */}

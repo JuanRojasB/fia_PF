@@ -5,6 +5,7 @@ import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 import { Egg, TrendingUp, X, Info, Target, Award, Activity } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
 
 export default function ProduccionHuevosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);

@@ -5,6 +5,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { ShoppingCart, TrendingUp, DollarSign, X, Info, Package, Percent, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
+import { formatCOPShort } from '../../utils/formatCurrency';
 import { formatCurrencyFull } from './CustomTooltip';
 
 export default function ComercialVentasCompaniaDashboard({ data }) {
@@ -26,14 +28,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
     );
   }
 
-  const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const v = parseFloat(value);
-    if (v >= 1_000_000_000) return '$' + (v / 1_000_000_000).toFixed(2) + 'MM';
-    if (v >= 1_000_000) return '$' + (v / 1_000_000).toFixed(1) + 'M';
-    if (v >= 1_000) return '$' + (v / 1_000).toFixed(0) + 'mil';
-    return '$' + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
-  };
+  const formatCurrency = formatCOPShort;
 
   const formatNumber = (value) => {
     if (!value || isNaN(value)) return '0';

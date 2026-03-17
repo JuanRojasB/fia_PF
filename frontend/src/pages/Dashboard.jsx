@@ -129,11 +129,12 @@ export default function Dashboard() {
     const newMainSection = getMainSection(newSection);
     const oldMainSection = previousMainSection;
     
-    // Mostrar toast si cambió la sección principal
+    // Mostrar toast siempre que cambie de sección
+    const sectionName = mainSectionNames[newMainSection] || newMainSection;
+    setToastMessage(`${sectionName}`);
+    setShowToast(true);
+    
     if (newMainSection !== oldMainSection) {
-      const sectionName = mainSectionNames[newMainSection] || newMainSection;
-      setToastMessage(`📊 ${sectionName}`);
-      setShowToast(true);
       setPreviousMainSection(newMainSection);
     }
     
@@ -333,7 +334,7 @@ export default function Dashboard() {
         message={toastMessage}
         isVisible={showToast}
         onClose={() => setShowToast(false)}
-        duration={3000}
+        duration={4000}
       />
       
       <OrdenDelDiaModal 

@@ -5,7 +5,9 @@ import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Respons
 import { DollarSign, TrendingUp, TrendingDown, AlertTriangle, X, Info, CreditCard, Percent } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
 import { formatCurrencyFull } from './CustomTooltip';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -43,14 +45,7 @@ export default function CarteraDashboard({ data }) {
     return new Intl.NumberFormat('es-CO').format(value);
   };
 
-  const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return '$0';
-    const v = parseFloat(value);
-    if (v >= 1_000_000_000) return `${(v / 1_000_000_000).toFixed(2)}MM`;
-    if (v >= 1_000_000)     return `${(v / 1_000_000).toFixed(1)}M`;
-    if (v >= 1_000)         return `${(v / 1_000).toFixed(0)}mil`;
-    return `${new Intl.NumberFormat('es-CO').format(v)}`;
-  };
+  const formatCurrency = formatCOPShort;
 
   const calcTendencia = (datos, key) => {
     const n = datos.length;

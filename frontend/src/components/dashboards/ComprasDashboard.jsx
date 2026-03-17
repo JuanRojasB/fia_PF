@@ -5,7 +5,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { TrendingUp, TrendingDown, ShoppingCart, DollarSign, X, Info, ArrowUp, ArrowDown } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
 import { CustomCurrencyTooltip, CustomPctTooltip, formatCurrencyFull } from './CustomTooltip';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function ComprasDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -22,13 +24,7 @@ export default function ComprasDashboard({ data }) {
 
   const { comprasMensuales, totales, mesesMayorCrecimiento, mesesCaidas2024, mesesCaidas2025 } = data;
 
-  const formatCurrency = (value) => {
-    if (!value || isNaN(value)) return "$0";
-    const v = parseFloat(value);
-    if (v >= 1000000000) return "$" + (v / 1000000000).toFixed(2) + "MM";
-    const millones = v / 1000000;
-    return "$" + millones.toFixed(1) + "M";
-  };
+  const formatCurrency = formatCOPShort;
 
 
 
@@ -76,52 +72,42 @@ export default function ComprasDashboard({ data }) {
 
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal('Total Compras 2025', `El total de compras incluye materias primas, bienes y servicios necesarios para la operación. Excluye: alimento, gas, pollo en pie y pollito. Este crecimiento del ${totales.variacion2025vs2024}% revierte la contracción del año anterior y refleja un restablecimiento de la demanda.`)}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Total Compras 2025</span>
-            <ShoppingCart className="w-5 h-5 text-blue-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(totales.total2025)}</div>
-          <div className="text-xs text-gray-600">Compras totales</div>
-          <div className="text-xs text-blue-400 mt-1">vs ${formatCurrency(totales.total2024)} (2024)</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          onClick={() => openModal('Crecimiento 2025', `Después de un año de contracción en 2024 (-2.97%), las compras se recuperaron con fuerza. Los meses de mayor impulso fueron Julio (+36.12%), Septiembre (+32.49%) y Enero (+12.62%), sugiriendo un mejor flujo de abastecimiento y restablecimiento de la demanda.`)}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Crecimiento 2025</span>
-            <TrendingUp className="w-5 h-5 text-green-400" />
-          </div>
-          <div className="text-4xl font-bold text-gray-900 mb-1">+{totales.variacion2025vs2024}%</div>
-          <div className="text-xs text-gray-600">vs 2024</div>
-          <div className="text-xs text-green-400 mt-1">Crecimiento sólido</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          onClick={() => openModal('Promedio Mensual', `La distribución mensual muestra estacionalidad con picos en el último trimestre. Octubre fue el mes más alto, seguido de Septiembre y Agosto. Los meses de menor actividad fueron Junio, Febrero y Abril, coincidiendo con periodos de menor demanda.`)}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-xs font-medium">Promedio Mensual</span>
-            <DollarSign className="w-5 h-5 text-purple-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{formatCurrencyFull(totales.total2025 / 12)}</div>
-          <div className="text-xs text-gray-600">Por mes 2025</div>
-          <div className="text-xs text-purple-400 mt-1">12 meses</div>
-        </motion.div>
+        <KpiCard
+          title="Total Compras 2025"
+          value={formatCurrencyFull(totales.total2025)}
+          unit="Compras totales"
+          value2024={formatCurrencyFull(totales.total2024)}
+          varPct={parseFloat(totales.variacion2025vs2024)}
+          varAbs={formatCurrencyFull(totales.total2025 - totales.total2024)}
+          icon={<ShoppingCart className="w-5 h-5 text-blue-400" />}
+          borderColor="border-blue-400"
+          delay={0}
+          onClick={() => openModal('Total Compras 2025', `El total de compras incluye materias primas, bienes y servicios necesarios para la operación. Este crecimiento del ${totales.variacion2025vs2024}% revierte la contracción del año anterior.`)}
+        />
+        <KpiCard
+          title="Crecimiento 2025 vs 2024"
+          value={`+${totales.variacion2025vs2024}%`}
+          unit="Variación anual"
+          value2024={formatCurrencyFull(totales.total2024)}
+          varPct={parseFloat(totales.variacion2025vs2024)}
+          varAbs={formatCurrencyFull(totales.total2025 - totales.total2024)}
+          icon={<TrendingUp className="w-5 h-5 text-green-400" />}
+          borderColor="border-green-400"
+          delay={0.1}
+          onClick={() => openModal('Crecimiento 2025', `Después de un año de contracción en 2024 (-2.97%), las compras se recuperaron con fuerza.`)}
+        />
+        <KpiCard
+          title="Promedio Mensual 2025"
+          value={formatCurrencyFull(totales.total2025 / 12)}
+          unit="Por mes"
+          value2024={formatCurrencyFull(totales.total2024 / 12)}
+          varPct={parseFloat(totales.variacion2025vs2024)}
+          varAbs={formatCurrencyFull((totales.total2025 - totales.total2024) / 12)}
+          icon={<DollarSign className="w-5 h-5 text-purple-400" />}
+          borderColor="border-purple-400"
+          delay={0.2}
+          onClick={() => openModal('Promedio Mensual', `La distribución mensual muestra estacionalidad con picos en el último trimestre.`)}
+        />
       </div>
 
       {/* Meses Destacados */}

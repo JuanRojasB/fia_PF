@@ -4,7 +4,7 @@ import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shiel
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
-import { useState, useEffect, memo, useCallback } from 'react';
+import { useState, useEffect, memo, useCallback, useRef } from 'react';
 import orbImage from '../assets/pollo_fiesta_FIA.png';
 
 export default memo(function Sidebar({ activeSection, setActiveSection, onLogout, onCollapsedChange }) {
@@ -14,6 +14,7 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+  const navRef = useRef(null);
 
   const playSound = useCallback(() => {
     try {
@@ -58,6 +59,23 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       [sectionId]: !prev[sectionId]
     }));
   }, []);
+
+  // Colapsar sidebar al navegar con botones Siguiente/Anterior (desktop)
+  useEffect(() => {
+    if (isDesktop && !isCollapsed) {
+      setIsCollapsed(true);
+      if (onCollapsedChange) onCollapsedChange(true);
+    }
+  }, [activeSection]);
+
+  // Auto-scroll nav to keep active item visible (only in collapsed mode)
+  useEffect(() => {
+    if (!navRef.current || !isCollapsed) return;
+    const active = navRef.current.querySelector('[data-active="true"]');
+    if (active) {
+      active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeSection, isCollapsed]);
 
   const menuItems = [
     { 
@@ -254,9 +272,9 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
           background: 'rgba(255, 255, 255, 0.98)',
           borderRight: '1px solid rgba(203, 213, 225, 0.5)',
           boxShadow: isCollapsed ? '2px 0 10px rgba(0, 0, 0, 0.05)' : 'none',
-          overflowY: 'auto',
-          overflowX: 'visible',
-          transform: 'translateZ(0)' // Force GPU acceleration
+          overflow: 'hidden',
+          transform: 'translateZ(0)', // Force GPU acceleration
+          height: '100vh'
         }}
       >
         <div className="flex flex-col h-full" style={{ position: 'relative' }}>
@@ -336,7 +354,7 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
         </div>
 
         {/* Navigation */}
-        <nav className={`flex-1 ${isCollapsed ? 'p-2' : 'p-4'} space-y-1`} style={{ overflowY: 'auto', overflowX: 'visible' }}>
+        <nav ref={navRef} className={`flex-1 min-h-0 ${isCollapsed ? 'p-2' : 'p-4'} space-y-1`} style={{ overflowY: 'auto', overflowX: 'visible' }}>
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeSection === item.id || (item.subitems && item.subitems.some(sub => sub.id === activeSection));
@@ -363,11 +381,15 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
                     }
                   }}
                   className={`w-full flex items-center ${isCollapsed ? 'justify-center p-2.5' : 'justify-between px-3 py-2.5'} rounded-lg transition-all duration-200 group hover:shadow-md`}
+                  data-active={isActive ? 'true' : undefined}
                   style={{
-                    background: isActive ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
-                    border: isActive ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid transparent',
+                    background: isActive ? 'rgba(59, 130, 246, 0.18)' : 'transparent',
+                    border: isActive ? '1px solid rgba(59, 130, 246, 0.5)' : '1px solid transparent',
                     color: isActive ? '#1d4ed8' : '#64748b',
-                    position: 'relative'
+                    position: 'relative',
+                    fontWeight: isActive ? 700 : 500,
+                    boxShadow: isActive ? '0 2px 8px rgba(59,130,246,0.15)' : 'none',
+                    borderLeft: isActive && isCollapsed ? '3px solid #3b82f6' : undefined
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
@@ -383,8 +405,14 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
                   }}
                   title={isCollapsed ? item.label : ''}
                 >
-                  <div className={`flex items-center ${isCollapsed ? '' : 'space-x-3'}`}>
+                  <div className={`flex items-center ${isCollapsed ? 'relative' : 'space-x-3'}`}>
                     <Icon className={`${isCollapsed ? 'w-5 h-5' : 'w-4 h-4'} flex-shrink-0`} />
+                    {isCollapsed && isActive && (
+                      <span
+                        className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-white"
+                        style={{ boxShadow: '0 0 6px rgba(59,130,246,0.8)' }}
+                      />
+                    )}
                     {!isCollapsed && (
                       <span className="font-medium text-sm text-left">{item.label}</span>
                     )}
@@ -425,10 +453,12 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
                                 }
                               }}
                               className="w-full text-left px-4 py-2 rounded-lg transition-all duration-150 text-sm hover:shadow-sm"
+                              data-active={isSubActive ? 'true' : undefined}
                               style={{
                                 background: isSubActive ? 'rgba(59, 130, 246, 0.12)' : 'transparent',
                                 color: isSubActive ? '#1d4ed8' : '#64748b',
-                                borderLeft: isSubActive ? '2px solid #3b82f6' : '2px solid transparent'
+                                borderLeft: isSubActive ? '3px solid #3b82f6' : '3px solid transparent',
+                                fontWeight: isSubActive ? 700 : 400
                               }}
                               onMouseEnter={(e) => {
                                 if (!isSubActive) {

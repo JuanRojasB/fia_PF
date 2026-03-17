@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart, LabelList } from 'recharts';
 import { Factory, TrendingDown, Info, X, Activity, Award, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { CustomBarTooltip, CustomPctTooltip } from './CustomTooltip';
+import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
 
 const fmtN = (v) => new Intl.NumberFormat('es-CO').format(Math.round(v));
 
@@ -189,277 +191,62 @@ export default function PlantaBeneficioDashboard({ data }) {
 
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal(
-            'Total Aves Procesadas 2025',
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <div className="text-sm text-blue-600 font-semibold mb-1">Total 2025</div>
-                  <div className="text-2xl font-bold text-blue-700">{formatNumber(totalAves2025)}</div>
-                  <div className="text-xs text-blue-500 mt-1">aves procesadas</div>
-                </div>
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <div className="text-sm text-green-600 font-semibold mb-1">Total 2024</div>
-                  <div className="text-2xl font-bold text-green-700">{formatNumber(totalAves2024)}</div>
-                  <div className="text-xs text-green-500 mt-1">aves procesadas</div>
-                </div>
-              </div>
-              <div className="bg-orange-50 rounded-xl p-4 border border-orange-200 flex items-center gap-3">
-                <TrendingDown className="w-6 h-6 text-orange-500 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold text-orange-700">Variación anual: -0,77%</div>
-                  <div className="text-sm text-orange-600">Diferencia de {formatNumber(totalAves2024 - totalAves2025)} aves menos en 2025</div>
-                </div>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <div className="font-semibold text-gray-700 mb-2">Meses destacados 2025</div>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="flex justify-between"><span className="text-gray-500">Mayor volumen:</span><span className="font-semibold text-blue-600">Oct — {formatNumber(1844070)}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-500">Menor volumen:</span><span className="font-semibold text-red-500">Feb — {formatNumber(987813)}</span></div>
-                </div>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead><tr className="border-b border-gray-200">
-                    <th className="text-left py-2 px-3 text-blue-600">Mes</th>
-                    <th className="text-right py-2 px-3 text-blue-600">2025</th>
-                    <th className="text-right py-2 px-3 text-green-600">2024</th>
-                    <th className="text-right py-2 px-3 text-gray-500">Diferencia</th>
-                  </tr></thead>
-                  <tbody>
-                    {avesProcessadasMensual.map((m, idx) => {
-                      const diff = m.aves_2025 - m.aves_2024;
-                      return (
-                        <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-2 px-3 text-gray-700">{mesesCompletos[idx]}</td>
-                          <td className="py-2 px-3 text-right font-semibold text-blue-600">{formatNumber(m.aves_2025)}</td>
-                          <td className="py-2 px-3 text-right text-green-600">{formatNumber(m.aves_2024)}</td>
-                          <td className={`py-2 px-3 text-right font-semibold ${diff >= 0 ? 'text-green-600' : 'text-red-500'}`}>{diff >= 0 ? '+' : ''}{formatNumber(diff)}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Total Aves Beneficiadas 2025</span>
-            <Factory className="w-5 h-5 text-blue-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">{formatNumber(totales.totalAves2025)}</div>
-          <div className="text-sm text-gray-600 mt-1">Aves procesadas</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">vs 2024</div>
-            <div className="text-lg font-semibold text-orange-400">-0,77%</div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          onClick={() => openModal(
-            'Promedio de Peso',
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <div className="text-sm text-green-600 font-semibold mb-1">Promedio 2025</div>
-                  <div className="text-2xl font-bold text-green-700">{totales.promedioPeso2025}g</div>
-                  <div className="text-xs text-green-500 mt-1">por ave</div>
-                </div>
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <div className="text-sm text-blue-600 font-semibold mb-1">Promedio 2024</div>
-                  <div className="text-2xl font-bold text-blue-700">{totales.promedioPeso2024}g</div>
-                  <div className="text-xs text-blue-500 mt-1">por ave</div>
-                </div>
-              </div>
-              <div className="bg-green-50 rounded-xl p-4 border border-green-200 flex items-center gap-3">
-                <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold text-green-700">Mayor estabilidad en 2025</div>
-                  <div className="text-sm text-green-600">El peso promedio en 2025 muestra menor variabilidad mensual, indicando mejor control en granjas.</div>
-                </div>
-              </div>
-            </div>
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Peso Promedio Canal 2025 vs Meta</span>
-            <Activity className="w-5 h-5 text-green-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">{totales.promedioPeso2025}g</div>
-          <div className="text-sm text-gray-600 mt-1">Por ave</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">vs 2024</div>
-            <div className="text-lg font-semibold text-green-400">{totales.promedioPeso2024}g</div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          onClick={() => openModal(
-            'Merma de Planta',
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <div className="text-sm text-green-600 font-semibold mb-1">Merma 2025</div>
-                  <div className="text-2xl font-bold text-green-700">5,38%</div>
-                  <div className="text-xs text-green-500 mt-1">reducción lograda</div>
-                </div>
-                <div className="bg-orange-50 rounded-xl p-4 border border-orange-200">
-                  <div className="text-sm text-orange-600 font-semibold mb-1">Merma 2024</div>
-                  <div className="text-2xl font-bold text-orange-700">6,55%</div>
-                  <div className="text-xs text-orange-500 mt-1">año anterior</div>
-                </div>
-              </div>
-              <div className="bg-green-50 rounded-xl p-4 border border-green-200 flex items-center gap-3">
-                <TrendingDown className="w-6 h-6 text-green-500 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold text-green-700">Mejora de 1,17 puntos porcentuales</div>
-                  <div className="text-sm text-green-600">La reducción de merma representa una mejora significativa en la eficiencia operativa de la planta.</div>
-                </div>
-              </div>
-            </div>
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Merma Planta Beneficio 2025 vs Meta</span>
-            <TrendingDown className="w-5 h-5 text-green-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">5,38%</div>
-          <div className="text-sm text-gray-600 mt-1">Reducción de merma</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">vs 2024</div>
-            <div className="text-lg font-semibold text-green-400">6,55%</div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          onClick={() => openModal(
-            'Participación Canal + Víscera',
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                  <div className="text-sm text-purple-600 font-semibold mb-1">Canal + Víscera 2025</div>
-                  <div className="text-2xl font-bold text-purple-700">94,68%</div>
-                  <div className="text-xs text-purple-500 mt-1">rendimiento total</div>
-                </div>
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <div className="text-sm text-blue-600 font-semibold mb-1">Canal + Víscera 2024</div>
-                  <div className="text-2xl font-bold text-blue-700">93,45%</div>
-                  <div className="text-xs text-blue-500 mt-1">año anterior</div>
-                </div>
-              </div>
-              <div className="bg-purple-50 rounded-xl p-4 border border-purple-200 flex items-center gap-3">
-                <TrendingUp className="w-6 h-6 text-purple-500 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold text-purple-700">Incremento de +1,23 puntos porcentuales</div>
-                  <div className="text-sm text-purple-600">La participación de canal y víscera muestra incrementos favorables respecto a años anteriores, reflejando mejor aprovechamiento del ave.</div>
-                </div>
-              </div>
-            </div>
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Rendimiento Canal + Víscera 2025</span>
-            <Award className="w-5 h-5 text-purple-400" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">94,68%</div>
-          <div className="text-sm text-gray-600 mt-1">Participación 2025</div>
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">vs 2024</div>
-            <div className="text-lg font-semibold text-purple-400">93,45%</div>
-          </div>
-        </motion.div>
+        <KpiCard
+          title="Total Aves Beneficiadas 2025"
+          value={formatNumber(totales.totalAves2025)}
+          unit="Aves procesadas"
+          value2024={formatNumber(totales.totalAves2024 || totalAves2024)}
+          varPct={-0.77}
+          varAbs={`-${formatNumber(totalAves2024 - totalAves2025)} aves`}
+          icon={<Factory className="w-5 h-5 text-blue-400" />}
+          borderColor="border-blue-400"
+          delay={0}
+          onClick={() => openModal('Total Aves Procesadas 2025', <div className="space-y-4"><div className="grid grid-cols-2 gap-4"><div className="bg-blue-50 rounded-xl p-4 border border-blue-200"><div className="text-sm text-blue-600 font-semibold mb-1">Total 2025</div><div className="text-2xl font-bold text-blue-700">{formatNumber(totalAves2025)}</div></div><div className="bg-green-50 rounded-xl p-4 border border-green-200"><div className="text-sm text-green-600 font-semibold mb-1">Total 2024</div><div className="text-2xl font-bold text-green-700">{formatNumber(totalAves2024)}</div></div></div></div>)}
+        />
+        <KpiCard
+          title="Peso Promedio Canal 2025 vs 2024"
+          value={`${totales.promedioPeso2025}g`}
+          unit="Por ave"
+          value2024={`${totales.promedioPeso2024}g`}
+          varPct={totales.promedioPeso2024 > 0 ? (((totales.promedioPeso2025 - totales.promedioPeso2024) / totales.promedioPeso2024) * 100) : 0}
+          varAbs={`${totales.promedioPeso2025 - totales.promedioPeso2024}g`}
+          icon={<Activity className="w-5 h-5 text-green-400" />}
+          borderColor="border-green-400"
+          delay={0.1}
+          onClick={() => openModal('Promedio de Peso', <div className="space-y-4"><div className="grid grid-cols-2 gap-4"><div className="bg-green-50 rounded-xl p-4 border border-green-200"><div className="text-sm text-green-600 font-semibold mb-1">Promedio 2025</div><div className="text-2xl font-bold text-green-700">{totales.promedioPeso2025}g</div></div><div className="bg-blue-50 rounded-xl p-4 border border-blue-200"><div className="text-sm text-blue-600 font-semibold mb-1">Promedio 2024</div><div className="text-2xl font-bold text-blue-700">{totales.promedioPeso2024}g</div></div></div></div>)}
+        />
+        <KpiCard
+          title="Merma Planta Beneficio 2025 vs 2024"
+          value="5,38%"
+          unit="Reducción de merma"
+          value2024="6,55%"
+          varPct={-17.86}
+          varAbs="-1,17 puntos porcentuales"
+          icon={<TrendingDown className="w-5 h-5 text-green-400" />}
+          borderColor="border-green-400"
+          invertColors={true}
+          delay={0.2}
+          onClick={() => openModal('Merma de Planta', <div className="space-y-4"><div className="grid grid-cols-2 gap-4"><div className="bg-green-50 rounded-xl p-4 border border-green-200"><div className="text-sm text-green-600 font-semibold mb-1">Merma 2025</div><div className="text-2xl font-bold text-green-700">5,38%</div></div><div className="bg-orange-50 rounded-xl p-4 border border-orange-200"><div className="text-sm text-orange-600 font-semibold mb-1">Merma 2024</div><div className="text-2xl font-bold text-orange-700">6,55%</div></div></div></div>)}
+        />
+        <KpiCard
+          title="Rendimiento Canal + Víscera 2025"
+          value="94,68%"
+          unit="Participación 2025"
+          value2024="93,45%"
+          varPct={1.32}
+          varAbs="+1,23 puntos porcentuales"
+          icon={<Award className="w-5 h-5 text-purple-400" />}
+          borderColor="border-purple-400"
+          delay={0.3}
+          onClick={() => openModal('Participación Canal + Víscera', <div className="space-y-4"><div className="grid grid-cols-2 gap-4"><div className="bg-purple-50 rounded-xl p-4 border border-purple-200"><div className="text-sm text-purple-600 font-semibold mb-1">Canal + Víscera 2025</div><div className="text-2xl font-bold text-purple-700">94,68%</div></div><div className="bg-blue-50 rounded-xl p-4 border border-blue-200"><div className="text-sm text-blue-600 font-semibold mb-1">Canal + Víscera 2024</div><div className="text-2xl font-bold text-blue-700">93,45%</div></div></div></div>)}
+        />
       </div>
-
       {/* Gráfico 1: Aves Procesadas Mensual */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-        onClick={() => {
-          openModal(
-            'Aves Procesadas Detalle',
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <div className="text-sm text-blue-600 font-semibold mb-1">Total 2025</div>
-                  <div className="text-2xl font-bold text-blue-700">{formatNumber(totalAves2025)}</div>
-                  <div className="text-xs text-blue-500">aves procesadas</div>
-                </div>
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <div className="text-sm text-green-600 font-semibold mb-1">Total 2024</div>
-                  <div className="text-2xl font-bold text-green-700">{formatNumber(totalAves2024)}</div>
-                  <div className="text-xs text-green-500">aves procesadas</div>
-                </div>
-              </div>
-              <div className="bg-orange-50 rounded-xl p-4 border border-orange-200 flex items-center gap-3">
-                <TrendingDown className="w-6 h-6 text-orange-500 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold text-orange-700">Variación: -0,77% respecto a 2024</div>
-                  <div className="text-sm text-orange-600">Diferencia de {formatNumber(totalAves2024 - totalAves2025)} aves menos en 2025</div>
-                </div>
-              </div>
-              <div className="bg-red-50 rounded-xl p-3 border border-red-200 text-sm text-red-700">
-                <span className="font-semibold">Línea roja punteada:</span> tendencia calculada por regresión lineal sobre el volumen mensual de aves procesadas en 2025, mostrando la dirección general de la producción en el período.
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead><tr className="border-b border-gray-200">
-                    <th className="text-left py-2 px-3 text-blue-600">Mes</th>
-                    <th className="text-right py-2 px-3 text-blue-600">2025</th>
-                    <th className="text-right py-2 px-3 text-green-600">2024</th>
-                    <th className="text-right py-2 px-3 text-gray-500">Diferencia</th>
-                  </tr></thead>
-                  <tbody>
-                    {avesProcessadasMensual.map((m, idx) => {
-                      const diff = m.aves_2025 - m.aves_2024;
-                      return (
-                        <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-2 px-3 text-gray-700">{mesesCompletos[idx]}</td>
-                          <td className="py-2 px-3 text-right font-semibold text-blue-600">{formatNumber(m.aves_2025)}</td>
-                          <td className="py-2 px-3 text-right text-green-600">{formatNumber(m.aves_2024)}</td>
-                          <td className={`py-2 px-3 text-right font-semibold ${diff >= 0 ? 'text-green-600' : 'text-red-500'}`}>{diff >= 0 ? '+' : ''}{formatNumber(diff)}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          );
-        }}
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Aves Procesadas Mensual 2024 vs 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Azul: 2025 • Verde: 2024</p>
+      <CollapsibleChart title="Aves Procesadas Mensual 2024 vs 2025" subtitle="Azul: 2025 • Verde: 2024" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={450}>
           <ComposedChart data={avesConTend} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis 
-              dataKey="mes" 
-              stroke="#9ca3af" 
-              style={{ fontSize: '12px' }} 
-              angle={0}
-              textAnchor="middle"
-              height={60}
-              interval={0}
-            />
+            <XAxis dataKey="mes" stroke="#9ca3af" style={{ fontSize: '12px' }} angle={0} textAnchor="middle" height={60} interval={0} />
             <YAxis stroke="#9ca3af" tickFormatter={(v) => `${(v/1000).toFixed(0)}mil`} style={{ fontSize: '13px' }} width={70} />
             <Tooltip content={<TooltipAves />} />
             <Line type="monotone" dataKey="2025" stroke="#3b82f6" strokeWidth={3} name="2025" />
@@ -467,78 +254,14 @@ export default function PlantaBeneficioDashboard({ data }) {
             <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Gráfico 2: Promedio de Pesos */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-        onClick={() => {
-          openModal(
-            'Promedio de Pesos Detalle',
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <div className="text-sm text-green-600 font-semibold mb-1">Promedio 2025</div>
-                  <div className="text-2xl font-bold text-green-700">{totales.promedioPeso2025}g</div>
-                  <div className="text-xs text-green-500">por ave — más estable</div>
-                </div>
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <div className="text-sm text-blue-600 font-semibold mb-1">Promedio 2024</div>
-                  <div className="text-2xl font-bold text-blue-700">{totales.promedioPeso2024}g</div>
-                  <div className="text-xs text-blue-500">por ave</div>
-                </div>
-              </div>
-              <div className="bg-green-50 rounded-xl p-4 border border-green-200 flex items-center gap-3">
-                <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold text-green-700">Mayor estabilidad en 2025</div>
-                  <div className="text-sm text-green-600">El peso promedio en 2025 muestra menor variabilidad mensual respecto a 2024, indicando mejor control en granjas.</div>
-                </div>
-              </div>
-              <div className="bg-red-50 rounded-xl p-3 border border-red-200 text-sm text-red-700">
-                <span className="font-semibold">Línea roja punteada:</span> tendencia calculada por regresión lineal sobre el peso promedio mensual de 2025, indicando si el peso de las aves está aumentando o disminuyendo a lo largo del año.
-              </div>
-              {promedioPesos.length > 0 && (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead><tr className="border-b border-gray-200">
-                      <th className="text-left py-2 px-3 text-blue-600">Mes</th>
-                      <th className="text-right py-2 px-3 text-blue-600">2025 (g)</th>
-                      <th className="text-right py-2 px-3 text-green-600">2024 (g)</th>
-                    </tr></thead>
-                    <tbody>
-                      {promedioPesos.map((m, idx) => (
-                        <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-2 px-3 text-gray-700">{mesesCompletos[idx]}</td>
-                          <td className="py-2 px-3 text-right font-semibold text-blue-600">{m.promedio_2025}g</td>
-                          <td className="py-2 px-3 text-right text-green-600">{m.promedio_2024}g</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          );
-        }}
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Promedio de Peso por Ave Mensual 2024 vs 2025 (g)</h3>
-        <p className="text-sm text-gray-600 mb-6">Peso en gramos • Más estable en 2025</p>
+      <CollapsibleChart title="Promedio de Peso por Ave Mensual 2024 vs 2025 (g)" subtitle="Peso en gramos • Más estable en 2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={450}>
           <ComposedChart data={pesosConTend} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis 
-              dataKey="mes" 
-              stroke="#9ca3af" 
-              style={{ fontSize: '12px' }} 
-              angle={0}
-              textAnchor="middle"
-              height={60}
-              interval={0}
-            />
+            <XAxis dataKey="mes" stroke="#9ca3af" style={{ fontSize: '12px' }} angle={0} textAnchor="middle" height={60} interval={0} />
             <YAxis stroke="#9ca3af" tickFormatter={(v) => `${v}g`} style={{ fontSize: '13px' }} domain={[1850, 2050]} width={65} />
             <Tooltip content={<TooltipPesos />} />
             <Line type="monotone" dataKey="2025" stroke="#3b82f6" strokeWidth={3} name="2025" />
@@ -546,74 +269,14 @@ export default function PlantaBeneficioDashboard({ data }) {
             <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Gráfico 3: Participación por Rangos */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
-        onClick={() => {
-          openModal(
-            'Participación por Rangos',
-            <div className="space-y-4">
-              <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
-                <div className="font-semibold text-yellow-700 mb-2">Rango dominante: Asadero (1378–1816g)</div>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="bg-white rounded-lg p-3 border border-yellow-100">
-                    <div className="text-yellow-600 font-semibold">2024</div>
-                    <div className="text-xl font-bold text-yellow-700">50,96%</div>
-                  </div>
-                  <div className="bg-white rounded-lg p-3 border border-yellow-100">
-                    <div className="text-yellow-600 font-semibold">2025</div>
-                    <div className="text-xl font-bold text-yellow-700">49,42%</div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 text-sm text-gray-700">
-                En la participación por rangos se observa que se mantiene en porcentajes prácticamente iguales entre años. El rango de pollo asadero (1378–1816g) es el de mayor participación, seguido del rango 570–1377g y el rango 1817–1928g.
-              </div>
-              {participacionRangos.length > 0 && (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead><tr className="border-b border-gray-200">
-                      <th className="text-left py-2 px-3 text-blue-600">Año</th>
-                      <th className="text-right py-2 px-3 text-blue-600">570–1377g</th>
-                      <th className="text-right py-2 px-3 text-yellow-600">1378–1816g</th>
-                      <th className="text-right py-2 px-3 text-purple-600">1817–1928g</th>
-                    </tr></thead>
-                    <tbody>
-                      {participacionRangos.map((p, idx) => (
-                        <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-2 px-3 font-semibold text-gray-700">{p.anio}</td>
-                          <td className="py-2 px-3 text-right text-blue-600">{p.rango_570_1377}%</td>
-                          <td className="py-2 px-3 text-right text-yellow-600">{p.rango_1378_1816}%</td>
-                          <td className="py-2 px-3 text-right text-purple-600">{p.rango_1817_1928}%</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          );
-        }}
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Participación por Rangos de Peso 2024 vs 2025 (%)</h3>
-        <p className="text-sm text-gray-600 mb-6">Distribución de aves por categoría de peso</p>
+      <CollapsibleChart title="Participación por Rangos de Peso 2024 vs 2025 (%)" subtitle="Distribución de aves por categoría de peso" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={450}>
           <LineChart data={datosRangos} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis 
-              dataKey="rango" 
-              stroke="#9ca3af" 
-              style={{ fontSize: '12px' }} 
-              angle={0}
-              textAnchor="middle"
-              height={60}
-              interval={0}
-            />
+            <XAxis dataKey="rango" stroke="#9ca3af" style={{ fontSize: '12px' }} angle={0} textAnchor="middle" height={60} interval={0} />
             <YAxis stroke="#9ca3af" tickFormatter={(v) => `${v}%`} style={{ fontSize: '13px' }} />
             <Tooltip content={<CustomPctTooltip borderColor="#eab308" />} />
             <Legend />
@@ -621,75 +284,14 @@ export default function PlantaBeneficioDashboard({ data }) {
             <Line type="monotone" dataKey="2025" stroke="#3b82f6" strokeWidth={3} name="2025" />
           </LineChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Gráfico 4: Descartes en Kilos */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
-        onClick={() => {
-          openModal(
-            'Descartes Detallado',
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <div className="text-sm text-green-600 font-semibold mb-1">Pollos ahogados 2025</div>
-                  <div className="text-xl font-bold text-green-700">78.088 kg</div>
-                  <div className="text-xs text-green-500 mt-1">vs 120.230 kg en 2024</div>
-                  <div className="text-sm font-semibold text-green-600 mt-1">↓ -35,1%</div>
-                </div>
-                <div className="bg-red-50 rounded-xl p-4 border border-red-200">
-                  <div className="text-sm text-red-600 font-semibold mb-1">Aves descartadas granjas 2025</div>
-                  <div className="text-xl font-bold text-red-700">176.136 kg</div>
-                  <div className="text-xs text-red-500 mt-1">vs 116.105 kg en 2024</div>
-                  <div className="text-sm font-semibold text-red-600 mt-1">↑ +51,7%</div>
-                </div>
-              </div>
-              <div className="bg-blue-50 rounded-xl p-4 border border-blue-200 text-sm text-blue-700">
-                Los descartes en 2025 presentan mejoras en pollos ahogados (-35,1%) pero incrementos en aves descartadas por granjas (+51,7%). El balance neto refleja oportunidades de mejora en el proceso de recepción desde granjas.
-              </div>
-              {descartesKilos.length > 0 && (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead><tr className="border-b border-gray-200">
-                      <th className="text-left py-2 px-3 text-blue-600">Categoría</th>
-                      <th className="text-right py-2 px-3 text-blue-600">2024 (kg)</th>
-                      <th className="text-right py-2 px-3 text-orange-600">2025 (kg)</th>
-                      <th className="text-right py-2 px-3 text-gray-500">Variación</th>
-                    </tr></thead>
-                    <tbody>
-                      {descartesKilos.map((d, idx) => (
-                        <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-2 px-3 text-gray-700">{d.categoria}</td>
-                          <td className="py-2 px-3 text-right text-blue-600">{formatNumber(d.kilos_2024)}</td>
-                          <td className="py-2 px-3 text-right text-orange-600">{formatNumber(d.kilos_2025)}</td>
-                          <td className={`py-2 px-3 text-right font-semibold ${d.variacion_pct > 0 ? 'text-red-500' : 'text-green-600'}`}>{d.variacion_pct > 0 ? '+' : ''}{d.variacion_pct}%</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          );
-        }}
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Descartes en Kilos - Análisis 2024 vs 2025</h3>
-        <p className="text-sm text-gray-600 mb-6">Azul: 2024 • Naranja: 2025</p>
+      <CollapsibleChart title="Descartes en Kilos - Análisis 2024 vs 2025" subtitle="Azul: 2024 • Naranja: 2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={450}>
           <BarChart data={datosDescartes} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis 
-              dataKey="categoria" 
-              stroke="#9ca3af" 
-              style={{ fontSize: '11px' }} 
-              angle={0}
-              textAnchor="middle"
-              height={60}
-              interval={0}
-            />
+            <XAxis dataKey="categoria" stroke="#9ca3af" style={{ fontSize: '11px' }} angle={0} textAnchor="middle" height={60} interval={0} />
             <YAxis stroke="#9ca3af" tickFormatter={(v) => formatNumber(v)} style={{ fontSize: '13px' }} width={90} />
             <Tooltip content={<TooltipKg />} />
             <Legend />
@@ -701,79 +303,10 @@ export default function PlantaBeneficioDashboard({ data }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Gráfico 5: Participación Canal y Vísceras - Histórico */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-        onClick={() => {
-          openModal(
-            'Rendimiento Operativo',
-            <div className="space-y-4">
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200 text-center">
-                  <div className="text-xs text-green-600 font-semibold mb-1">Canal 2025</div>
-                  <div className="text-xl font-bold text-green-700">~82%</div>
-                </div>
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200 text-center">
-                  <div className="text-xs text-blue-600 font-semibold mb-1">Víscera 2025</div>
-                  <div className="text-xl font-bold text-blue-700">~12%</div>
-                </div>
-                <div className="bg-red-50 rounded-xl p-4 border border-red-200 text-center">
-                  <div className="text-xs text-red-600 font-semibold mb-1">Merma 2025</div>
-                  <div className="text-xl font-bold text-red-700">5,38%</div>
-                </div>
-              </div>
-              <div className="bg-purple-50 rounded-xl p-4 border border-purple-200 flex items-center gap-3">
-                <TrendingUp className="w-6 h-6 text-purple-500 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold text-purple-700">Canal + Víscera: 94,68% en 2025</div>
-                  <div className="text-sm text-purple-600">Mejora respecto al 93,45% de 2024. Los resultados operativos se mantienen en valores muy similares a años anteriores con incrementos favorables.</div>
-                </div>
-              </div>
-              <div className="bg-green-50 rounded-xl p-4 border border-green-200 flex items-center gap-3">
-                <TrendingDown className="w-6 h-6 text-green-500 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold text-green-700">Merma: 6,55% → 5,38%</div>
-                  <div className="text-sm text-green-600">Reducción de 1,17 puntos porcentuales en la merma de planta, reflejando mejoras en el proceso operativo.</div>
-                </div>
-              </div>
-              <div className="bg-red-50 rounded-xl p-3 border border-red-200 text-sm text-red-700">
-                <span className="font-semibold">Línea roja punteada:</span> tendencia calculada por regresión lineal sobre el % de Canal anual, mostrando la dirección histórica del rendimiento operativo.
-              </div>
-              {participacionCanal.length > 0 && (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead><tr className="border-b border-gray-200">
-                      <th className="text-left py-2 px-3 text-blue-600">Año</th>
-                      <th className="text-right py-2 px-3 text-green-600">% Canal</th>
-                      <th className="text-right py-2 px-3 text-blue-600">% Víscera</th>
-                      <th className="text-right py-2 px-3 text-red-500">Merma</th>
-                      <th className="text-right py-2 px-3 text-purple-600">Canal+Víscera</th>
-                    </tr></thead>
-                    <tbody>
-                      {participacionCanal.map((p, idx) => (
-                        <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-2 px-3 font-semibold text-gray-700">{p.anio}</td>
-                          <td className="py-2 px-3 text-right text-green-600">{p.pct_canal}%</td>
-                          <td className="py-2 px-3 text-right text-blue-600">{p.pct_viscera}%</td>
-                          <td className="py-2 px-3 text-right text-red-500">{p.merma_planta}%</td>
-                          <td className="py-2 px-3 text-right font-semibold text-purple-600">{p.canal_viscera}%</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          );
-        }}
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Participación Canal y Vísceras - Histórico Rendimientos 2021-2025 (%)</h3>
-        <p className="text-sm text-gray-600 mb-6">Evolución de rendimientos operativos</p>
+      <CollapsibleChart title="Participación Canal y Vísceras - Histórico Rendimientos 2021-2025 (%)" subtitle="Evolución de rendimientos operativos" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={450}>
           <ComposedChart data={canalConTend} margin={{ top: 5, right: 30, left: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -787,7 +320,7 @@ export default function PlantaBeneficioDashboard({ data }) {
             <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Canal" />
           </ComposedChart>
         </ResponsiveContainer>
-      </motion.div>
+      </CollapsibleChart>
 
       {/* Modal */}
       {createPortal(

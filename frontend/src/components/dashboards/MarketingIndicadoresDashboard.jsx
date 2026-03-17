@@ -99,7 +99,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
             'Cumplimiento Presupuesto',
             <div className="text-gray-700">
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 mb-3">
-                <p className="text-lg font-bold text-blue-700 mb-2">$401.6 MM / $480 MM (83.7%)</p>
+                <p className="text-lg font-bold text-blue-700 mb-2">$4.016.000.000 / $480.000.000 (83.7%)</p>
                 <p className="text-sm">Ahorro: $78.338.000</p>
               </div>
               <p className="mb-3">Distribución mensual: $40.000.000. Promedio mensual real: $33.471.000 (eficiencia 83.7%).</p>
@@ -248,8 +248,8 @@ export default function MarketingIndicadoresDashboard({ data }) {
               </tr>
               <tr className="border-b border-gray-200 hover:bg-gray-50">
                 <td className="py-3 px-4 text-gray-900 font-medium">Cumplimiento Presupuesto</td>
-                <td className="py-3 px-4 text-center text-blue-700 font-bold">$401.6 MM / $480 MM (83.7%)</td>
-                <td className="py-3 px-4 text-center text-gray-700">100% ($480 MM)</td>
+                <td className="py-3 px-4 text-center text-blue-700 font-bold">$4.016.000.000 / $480.000.000 (83.7%)</td>
+                <td className="py-3 px-4 text-center text-gray-700">100% ($480.000.000)</td>
                 <td className="py-3 px-4 text-center">
                   <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
                     <CheckCircle className="w-3 h-3" />

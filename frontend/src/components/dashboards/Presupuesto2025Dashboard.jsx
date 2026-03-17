@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ComposedChart, LabelList } from 'recharts';
 import { TrendingUp, DollarSign, AlertCircle, X, Info, PieChart as PieChartIcon, FileText, Scale } from 'lucide-react';
+import CollapsibleChart from '../CollapsibleChart';
 
 const CustomTooltip = ({ active, payload, label, formatNumber }) => {
   if (active && payload && payload.length) {
@@ -45,6 +46,12 @@ export default function Presupuesto2025Dashboard({ data }) {
   const formatNumber = (value) => {
     if (!value || isNaN(value)) return '0';
     return new Intl.NumberFormat('es-CO').format(value);
+  };
+
+  // Convierte millones a pesos completos formateados
+  const formatMillones = (millones) => {
+    if (!millones || isNaN(millones)) return '$0';
+    return '$' + new Intl.NumberFormat('es-CO').format(millones * 1_000_000);
   };
 
   const formatMiles = (value) => (value / 1000).toFixed(0);
@@ -99,8 +106,8 @@ export default function Presupuesto2025Dashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
           onClick={() => openModal('Presupuesto de Caja',
             <div className="text-gray-700">
-              <p className="mb-3">El presupuesto de caja determinó un aumento en el Efectivo y sus equivalentes en cuantía de <strong className="text-blue-600">${formatNumber(presupuestoCaja.incremento_absoluto)} MM</strong> que corresponde a un mayor valor del <strong className="text-blue-600">{presupuestoCaja.incremento_porcentual}%</strong> en este flujo.</p>
-              <p>Pasó de <strong>${formatNumber(presupuestoCaja.efectivo_2024)} MM</strong> en el año 2024 a establecerse en <strong className="text-green-600">${formatNumber(presupuestoCaja.efectivo_2025)} MM</strong> para el ejercicio económico de 2025.</p>
+              <p className="mb-3">El presupuesto de caja determinó un aumento en el Efectivo y sus equivalentes en cuantía de <strong className="text-blue-600">{formatMillones(presupuestoCaja.incremento_absoluto)}</strong> que corresponde a un mayor valor del <strong className="text-blue-600">{presupuestoCaja.incremento_porcentual}%</strong> en este flujo.</p>
+              <p>Pasó de <strong>{formatMillones(presupuestoCaja.efectivo_2024)}</strong> en el año 2024 a establecerse en <strong className="text-green-600">{formatMillones(presupuestoCaja.efectivo_2025)}</strong> para el ejercicio económico de 2025.</p>
               <p className="mt-3 text-sm text-gray-500">Situación que refleja los resultados positivos durante el año.</p>
             </div>
           )}
@@ -158,45 +165,7 @@ export default function Presupuesto2025Dashboard({ data }) {
 
       {/* Gráficos de Ejecución Trimestral */}
       <div className="grid grid-cols-1 gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          onClick={() => openModal('Total PF - Detalle Completo',
-            <div className="text-gray-700">
-              <p className="mb-4 font-semibold">Ejecución presupuestal trimestral de Total Pollo Fiesta (valores en miles de pesos)</p>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b-2 border-slate-600">
-                      <th className="text-left py-2 px-3 text-gray-900 font-bold">Trimestre</th>
-                      <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Real</th>
-                      <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Ppto</th>
-                      <th className="text-right py-2 px-3 text-gray-900 font-bold">2024 Real</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ejecucionTrimestral.totalPF.data.map((row, idx) => (
-                      <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
-                        <td className="py-2 px-3 text-gray-900 font-semibold">{row.trimestre}</td>
-                        <td className="py-2 px-3 text-right text-green-600 font-bold">${formatNumber(row.real_2025)}</td>
-                        <td className="py-2 px-3 text-right text-blue-600">${formatNumber(row.ppto_2025)}</td>
-                        <td className="py-2 px-3 text-right text-gray-600">${formatNumber(row.real_2024)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="mt-4 bg-red-50 rounded-lg p-4 border-2 border-red-200">
-                <p className="text-sm font-semibold text-gray-900 mb-1">Línea roja punteada — Tendencia:</p>
-                <p className="text-sm">Calculada por regresión lineal sobre el real trimestral de 2025. Muestra si la ejecución presupuestal está acelerando o desacelerando a lo largo del año.</p>
-              </div>
-            </div>
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Total Pollo Fiesta - Ejecución Trimestral</h3>
-            <Info className="w-5 h-5 text-blue-600 animate-pulse" />
-          </div>
+        <CollapsibleChart title="Total Pollo Fiesta - Ejecución Trimestral" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={450}>
             <ComposedChart data={totalPFConTend} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
@@ -210,25 +179,9 @@ export default function Presupuesto2025Dashboard({ data }) {
               <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
             </ComposedChart>
           </ResponsiveContainer>
-        </motion.div>
+        </CollapsibleChart>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-          onClick={() => openModal('Integrado Mayorista - Detalle',
-            <div className="text-gray-700">
-              <p className="mb-4 font-semibold">Ejecución presupuestal trimestral de Integrado Mayorista (valores en miles de pesos)</p>
-              <div className="mt-4 bg-red-50 rounded-lg p-4 border-2 border-red-200">
-                <p className="text-sm font-semibold text-gray-900 mb-1">Línea roja punteada — Tendencia:</p>
-                <p className="text-sm">Calculada por regresión lineal sobre el real trimestral de Integrado Mayorista 2025. Muestra si la ejecución está acelerando o desacelerando a lo largo del año.</p>
-              </div>
-            </div>
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Integrado Mayorista - Ejecución Trimestral</h3>
-            <Info className="w-5 h-5 text-blue-600 animate-pulse" />
-          </div>
+        <CollapsibleChart title="Integrado Mayorista - Ejecución Trimestral" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={450}>
             <ComposedChart data={integradoMayoristaConTend} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
@@ -248,49 +201,9 @@ export default function Presupuesto2025Dashboard({ data }) {
               <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
             </ComposedChart>
           </ResponsiveContainer>
-        </motion.div>
+        </CollapsibleChart>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-          onClick={() => openModal('Pollo Canal - Detalle Completo',
-            <div className="text-gray-700">
-              <p className="mb-4 font-semibold">Ejecución presupuestal trimestral de Pollo Canal (valores en miles de pesos)</p>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b-2 border-slate-600">
-                      <th className="text-left py-2 px-3 text-gray-900 font-bold">Trimestre</th>
-                      <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Real</th>
-                      <th className="text-right py-2 px-3 text-gray-900 font-bold">2025 Ppto</th>
-                      <th className="text-right py-2 px-3 text-gray-900 font-bold">2024 Real</th>
-                      <th className="text-right py-2 px-3 text-gray-900 font-bold">2023 Real</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ejecucionTrimestral.polloCanal.data.map((row, idx) => (
-                      <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
-                        <td className="py-2 px-3 text-gray-900 font-semibold">{row.trimestre}</td>
-                        <td className="py-2 px-3 text-right text-green-600 font-bold">${formatNumber(row.real_2025)}</td>
-                        <td className="py-2 px-3 text-right text-blue-600">${formatNumber(row.ppto_2025)}</td>
-                        <td className="py-2 px-3 text-right text-gray-600">${formatNumber(row.real_2024)}</td>
-                        <td className="py-2 px-3 text-right text-gray-500">${formatNumber(row.real_2023)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="mt-4 bg-red-50 rounded-lg p-4 border-2 border-red-200">
-                <p className="text-sm font-semibold text-gray-900 mb-1">Línea roja punteada — Tendencia:</p>
-                <p className="text-sm">Calculada por regresión lineal sobre el real trimestral de Pollo Canal 2025. Muestra si la ejecución está acelerando o desacelerando a lo largo del año.</p>
-              </div>
-            </div>
-          )}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Pollo Canal - Ejecución Trimestral</h3>
-            <Info className="w-5 h-5 text-blue-600 animate-pulse" />
-          </div>
+        <CollapsibleChart title="Pollo Canal - Ejecución Trimestral" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={450}>
             <ComposedChart data={polloCanalConTend} margin={{ left: 30, right: 30, bottom: 10, top: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
@@ -305,7 +218,7 @@ export default function Presupuesto2025Dashboard({ data }) {
               <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia 2025" />
             </ComposedChart>
           </ResponsiveContainer>
-        </motion.div>
+        </CollapsibleChart>
       </div>
 
       {/* Modal */}

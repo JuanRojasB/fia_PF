@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function CollapsibleChart({ title, subtitle, children, defaultOpen = true, className = '' }) {
+export default function CollapsibleChart({ title, subtitle, children, defaultOpen = false, className = '' }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (

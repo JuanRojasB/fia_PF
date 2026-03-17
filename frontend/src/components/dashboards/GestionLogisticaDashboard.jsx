@@ -5,7 +5,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Truck, TrendingUp, Building, X, Info, Users, Package, DollarSign, TrendingDown } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
+import KpiCard from '../KpiCard';
 import { formatCurrencyFull } from './CustomTooltip';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function GestionLogisticaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -25,7 +27,8 @@ export default function GestionLogisticaDashboard({ data }) {
   }
 
   // Abreviado para KPIs: $1.234M / $1.23B
-  const formatCurrency = (value) => {
+  const formatCurrency = formatCOPShort;
+  const _fmtOld = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
     if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(2)}MM`;
