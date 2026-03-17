@@ -149,6 +149,121 @@ function Bullet({ items, color = '#3b82f6' }) {
 }
 
 const fmt = (v) => `${(v / 1e6).toFixed(0)}M`;
+const cop = (v) => `$${Number(v).toLocaleString('es-CO')}`;
+
+// ── Tooltips personalizados ────────────────────────────────────────────────
+
+function TooltipCompras({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const [a2025, a2024, a2023] = [payload.find(p => p.dataKey === 'c2025'), payload.find(p => p.dataKey === 'c2024'), payload.find(p => p.dataKey === 'c2023')];
+  const diff = a2025 && a2024 ? a2025.value - a2024.value : null;
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
+      <p className="font-bold text-gray-800 mb-2">{label}</p>
+      {a2025 && <p className="text-amber-600 font-semibold">2025: {cop(a2025.value)}</p>}
+      {a2024 && <p className="text-gray-500">2024: {cop(a2024.value)}</p>}
+      {a2023 && <p className="text-gray-400">2023: {cop(a2023.value)}</p>}
+      {diff !== null && (
+        <p className={`mt-1.5 font-bold ${diff >= 0 ? 'text-red-500' : 'text-green-600'}`}>
+          vs 2024: {diff >= 0 ? '+' : ''}{cop(diff)}
+        </p>
+      )}
+      <p className="text-gray-400 mt-1.5 leading-tight">Compras de insumos y materiales. El alza en 2025 responde al +51% en volumen de producción.</p>
+    </div>
+  );
+}
+
+function TooltipPolloSangrado({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const p2025 = payload.find(p => p.dataKey === 'p2025');
+  const p2024 = payload.find(p => p.dataKey === 'p2024');
+  const p2023 = payload.find(p => p.dataKey === 'p2023');
+  const mejora = p2025 && p2024 ? Math.round(((p2024.value - p2025.value) / p2024.value) * 100) : null;
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
+      <p className="font-bold text-gray-800 mb-2">{label} — Pollos mal sangrados</p>
+      {p2025 && <p className="text-blue-600 font-semibold">2025: {p2025.value} unidades</p>}
+      {p2024 && <p className="text-yellow-600">2024: {p2024.value} unidades</p>}
+      {p2023 && <p className="text-red-400">2023: {p2023.value} unidades</p>}
+      {mejora !== null && mejora > 0 && (
+        <p className="mt-1.5 font-bold text-green-600">Mejora vs 2024: –{mejora}%</p>
+      )}
+      <p className="text-gray-400 mt-1.5 leading-tight">Reducción lograda por mejoras en insensibilizado, capacitación del personal y ajustes técnicos en planta.</p>
+    </div>
+  );
+}
+
+function TooltipAccidentes({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const val = payload[0]?.value;
+  const pct = val ? Math.round((val / 112) * 100) : 0;
+  const contexto = {
+    Planta: 'Área de mayor riesgo osteomuscular por manipulación de canales y posturas forzadas.',
+    Posproceso: 'Riesgo por cortes y movimientos repetitivos en empaque y clasificación.',
+    Calidad: 'Exposición a superficies húmedas y riesgo de caídas durante inspecciones.',
+    Granjas: 'Riesgo por manejo de animales, equipos y condiciones de terreno.',
+    Otros: 'Incluye logística, administración, mantenimiento y otras áreas.',
+  };
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
+      <p className="font-bold text-gray-800 mb-1">{label}</p>
+      <p className="text-red-600 font-semibold">{val} accidentes ({pct}% del total)</p>
+      <p className="text-gray-400 mt-1.5 leading-tight">{contexto[label] || 'Área con accidentes registrados en 2025.'}</p>
+    </div>
+  );
+}
+
+function TooltipRehabilitacion({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const val = payload[0]?.value;
+  const total = 49;
+  const pct = Math.round((val / total) * 100);
+  const contexto = {
+    Gestantes: 'Colaboradoras en período de gestación con reubicación temporal en puestos de menor riesgo.',
+    'Accidente Laboral': 'Trabajadores en proceso de reintegro tras accidente de trabajo con incapacidad.',
+    'Enfermedad Laboral': 'Casos de enfermedad de origen laboral (principalmente osteomuscular) en rehabilitación.',
+    'Enfermedad Común': 'Mayor grupo: enfermedades no laborales que requieren reintegro gradual o adaptación del puesto.',
+  };
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
+      <p className="font-bold text-gray-800 mb-1">{label}</p>
+      <p className="text-indigo-600 font-semibold">{val} personas ({pct}% de {total} total)</p>
+      <p className="text-gray-400 mt-1.5 leading-tight">{contexto[label] || ''}</p>
+    </div>
+  );
+}
+
+function TooltipAgua({ active, payload, label, unidad, meta }) {
+  if (!active || !payload?.length) return null;
+  const val = payload[0]?.value;
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+      <p className="font-bold text-gray-800 mb-1">Año {label}</p>
+      <p className="text-blue-600 font-semibold">{val} {unidad}</p>
+      {meta && <p className={`font-bold mt-1 ${val <= meta ? 'text-green-600' : 'text-red-500'}`}>{val <= meta ? `✓ Por debajo de meta (${meta})` : `⚠ Por encima de meta (${meta})`}</p>}
+      <p className="text-gray-400 mt-1.5 leading-tight">Consumo de agua por unidad producida. La reducción sostenida refleja mejoras en eficiencia hídrica y cumplimiento ambiental.</p>
+    </div>
+  );
+}
+
+function TooltipSatisfaccion({ active, payload }) {
+  if (!active || !payload?.length) return null;
+  const { name, value, pct } = payload[0]?.payload || {};
+  const contexto = {
+    Excelente: 'Clientes que califican el servicio como sobresaliente en todos los atributos evaluados.',
+    Bueno: 'Clientes satisfechos con el servicio, con oportunidades menores de mejora.',
+    Regular: 'Clientes con experiencia mixta. Requieren seguimiento y plan de acción.',
+    Malo: 'Clientes insatisfechos. Cada caso genera un plan de acción correctivo obligatorio.',
+  };
+  const color = { Excelente: '#1e3a8a', Bueno: '#38bdf8', Regular: '#7c3aed', Malo: '#f97316' };
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+      <p className="font-bold mb-1" style={{ color: color[name] }}>{name}</p>
+      <p className="text-gray-700 font-semibold">{value} encuestas — {pct}%</p>
+      <p className="text-gray-400 mt-1.5 leading-tight">{contexto[name] || ''}</p>
+    </div>
+  );
+}
 
 // ── Secciones individuales ─────────────────────────────────────────────────
 
@@ -208,7 +323,7 @@ function SeccionCompras() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
               <XAxis dataKey="mes" tick={{ fontSize: 11 }} />
               <YAxis tickFormatter={fmt} tick={{ fontSize: 10 }} width={55} />
-              <Tooltip formatter={(v) => [`${v.toLocaleString('es-CO')}`, '']} />
+              <Tooltip content={<TooltipCompras />} />
               <Legend />
               <Line type="monotone" dataKey="c2025" name="2025" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 3 }} />
               <Line type="monotone" dataKey="c2024" name="2024" stroke="#6b7280" strokeWidth={1.5} dot={{ r: 2 }} strokeDasharray="4 2" />
@@ -248,7 +363,7 @@ function SeccionBienestar() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
               <XAxis dataKey="mes" tick={{ fontSize: 11 }} />
               <YAxis tick={{ fontSize: 10 }} />
-              <Tooltip />
+              <Tooltip content={<TooltipPolloSangrado />} />
               <Legend />
               <Line type="monotone" dataKey="p2023" name="2023" stroke="#ef4444" strokeWidth={2} dot={{ r: 3 }} />
               <Line type="monotone" dataKey="p2024" name="2024" stroke="#eab308" strokeWidth={2} dot={{ r: 3 }} />
@@ -294,7 +409,7 @@ function SeccionHSEQ() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="area" tick={{ fontSize: 10 }} />
                 <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip />
+                <Tooltip content={<TooltipAccidentes />} />
                 <Bar dataKey="n" name="Accidentes" radius={[4, 4, 0, 0]}>
                   {[
                     { fill: '#ef4444' }, { fill: '#f97316' }, { fill: '#fbbf24' },
@@ -311,7 +426,7 @@ function SeccionHSEQ() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="categoria" tick={{ fontSize: 9 }} />
                 <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip />
+                <Tooltip content={<TooltipRehabilitacion />} />
                 <Bar dataKey="valor" name="Personas" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 11, fontWeight: 700 }}>
                   {rehabilitacionData.map((e, i) => <Cell key={i} fill={e.color} />)}
                 </Bar>
@@ -327,7 +442,7 @@ function SeccionHSEQ() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="año" tick={{ fontSize: 12 }} />
                 <YAxis domain={[0, 16]} tick={{ fontSize: 10 }} />
-                <Tooltip />
+                <Tooltip content={<TooltipAgua unidad="L/ave" meta={11} />} />
                 <Bar dataKey="valor" name="L/ave" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
                   {aguaPlantaData.map((e, i) => <Cell key={i} fill={e.fill} />)}
                 </Bar>
@@ -341,7 +456,7 @@ function SeccionHSEQ() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="año" tick={{ fontSize: 12 }} />
                 <YAxis domain={[0, 6]} tick={{ fontSize: 10 }} />
-                <Tooltip />
+                <Tooltip content={<TooltipAgua unidad="L/kg" meta={4} />} />
                 <Bar dataKey="valor" name="L/kg" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
                   {aguaSede2Data.map((e, i) => <Cell key={i} fill={e.fill} />)}
                 </Bar>
@@ -407,7 +522,7 @@ function SeccionSatisfaccion() {
                   label={({ pct }) => `${pct}%`} labelLine={false}>
                   {satisfaccion2025.map((e, i) => <Cell key={i} fill={e.color} />)}
                 </Pie>
-                <Tooltip formatter={(v, n) => [v, n]} />
+                <Tooltip content={<TooltipSatisfaccion />} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
@@ -420,7 +535,7 @@ function SeccionSatisfaccion() {
                   label={({ pct }) => `${pct}%`} labelLine={false}>
                   {satisfaccion2024.map((e, i) => <Cell key={i} fill={e.color} />)}
                 </Pie>
-                <Tooltip formatter={(v, n) => [v, n]} />
+                <Tooltip content={<TooltipSatisfaccion />} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
