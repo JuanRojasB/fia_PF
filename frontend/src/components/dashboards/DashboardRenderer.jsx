@@ -9,7 +9,6 @@ import SituacionEconomicaDashboard from './SituacionEconomicaDashboard';
 import CarteraDashboard from './CarteraDashboard';
 import FuentesUsosDashboard from './FuentesUsosDashboard';
 import HumanaDashboard from './HumanaDashboard';
-import HumanaCausasDashboard from './HumanaCausasDashboard';
 import MarketingDashboard from './MarketingDashboard';
 import MarketingIndicadoresDashboard from './MarketingIndicadoresDashboard';
 import MarketingDetalleDashboard from './MarketingDetalleDashboard';
@@ -79,6 +78,20 @@ export default function DashboardRenderer({ type, data, onNavigate }) {
       return <AuditoriaDashboard data={data} />;
     case 'calidad':
       return <CalidadDashboard data={data} />;
+    case 'calidad-calidad':
+      return <CalidadDashboard data={data} section="calidad" />;
+    case 'calidad-compras':
+      return <CalidadDashboard data={data} section="compras" />;
+    case 'calidad-bienestar':
+      return <CalidadDashboard data={data} section="bienestar" />;
+    case 'calidad-hseq':
+      return <CalidadDashboard data={data} section="hseq" />;
+    case 'calidad-sgc':
+      return <CalidadDashboard data={data} section="sgc" />;
+    case 'calidad-satisfaccion':
+      return <CalidadDashboard data={data} section="satisfaccion" />;
+    case 'calidad-vigia':
+      return <CalidadDashboard data={data} section="vigia" />;
     case 'compras':
       return <ComprasDashboard data={data} />;
     case 'operaciones':
@@ -107,10 +120,14 @@ export default function DashboardRenderer({ type, data, onNavigate }) {
       return <ComercialInstitucionalDashboard data={data} />;
     case 'comercial-huevo':
       return <ComercialHuevoDashboard data={data} />;
-    case 'humana-general':
-      return <HumanaDashboard data={data} />;
+    case 'humana-nomina':
+      return <HumanaDashboard data={data} section="nomina" />;
+    case 'humana-rotacion':
+      return <HumanaDashboard data={data} section="rotacion" />;
     case 'humana-causas':
-      return <HumanaCausasDashboard data={data} />;
+      return <HumanaDashboard data={data} section="causas" />;
+    case 'humana-smlv':
+      return <HumanaDashboard data={data} section="smlv" />;
     case 'marketing':
     case 'marketing-general':
       return <MarketingDashboard data={data} />;

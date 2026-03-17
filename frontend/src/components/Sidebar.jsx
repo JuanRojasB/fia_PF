@@ -165,7 +165,16 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       id: 'calidad', 
       label: 'Gerencia Estratégica y Mejoramiento Continuo', 
       icon: Shield,
-      type: 'single'
+      type: 'expandable',
+      subitems: [
+        { id: 'calidad-calidad',      label: '1. Aseguramiento de Calidad' },
+        { id: 'calidad-compras',      label: '2. Compras' },
+        { id: 'calidad-bienestar',    label: '3. Bienestar Animal' },
+        { id: 'calidad-hseq',         label: '4. HSEQ' },
+        { id: 'calidad-sgc',          label: '5. Sistema de Gestión de Calidad' },
+        { id: 'calidad-satisfaccion', label: '6. Satisfacción del Cliente' },
+        { id: 'calidad-vigia',        label: '7. Vigía de Riesgos' },
+      ]
     },
     { 
       id: 'humana', 
@@ -173,15 +182,11 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       icon: UserCheck,
       type: 'expandable',
       subitems: [
-        { id: 'humana-general', label: 'Nómina y Rotación' },
-        { id: 'humana-causas', label: 'Causas de Desvinculación' }
+        { id: 'humana-nomina', label: '1. Costo de la Nómina' },
+        { id: 'humana-rotacion', label: '2. Rotación de Personal' },
+        { id: 'humana-causas', label: '3. Causas de Desvinculación' },
+        { id: 'humana-smlv', label: '4. Impacto Salario Mínimo' },
       ]
-    },
-    { 
-      id: 'compras', 
-      label: 'Gestión en Compras', 
-      icon: ShoppingCart,
-      type: 'single'
     },
     { 
       id: 'operaciones', 

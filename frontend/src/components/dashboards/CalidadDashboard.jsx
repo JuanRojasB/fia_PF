@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Shield, ShoppingCart, Heart, Leaf, FileCheck, Star, Eye,
-  ChevronDown, ChevronUp, TrendingDown, TrendingUp, AlertTriangle, CheckCircle
+  Shield, ShoppingCart, Heart, AlertTriangle, FileCheck, Star, Eye,
+  ChevronDown, ChevronUp
 } from 'lucide-react';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
@@ -27,25 +27,25 @@ const comprasData = [
 ];
 
 const polloMalSangradoData = [
-  { mes: 'Ene',  p2023: 134, p2024: 229, p2025: 92  },
-  { mes: 'Feb',  p2023: 217, p2024: 419, p2025: 106 },
-  { mes: 'Mar',  p2023: 282, p2024: 529, p2025: 170 },
-  { mes: 'Abr',  p2023: 247, p2024: 614, p2025: 169 },
-  { mes: 'May',  p2023: 243, p2024: 488, p2025: 183 },
-  { mes: 'Jun',  p2023: 297, p2024: 556, p2025: 143 },
-  { mes: 'Jul',  p2023: 249, p2024: 310, p2025: 209 },
-  { mes: 'Ago',  p2023: 179, p2024: 370, p2025: 129 },
-  { mes: 'Sep',  p2023: 304, p2024: 356, p2025: 115 },
-  { mes: 'Oct',  p2023: 549, p2024: 394, p2025: 140 },
-  { mes: 'Nov',  p2023: 105, p2024: 315, p2025: 176 },
-  { mes: 'Dic',  p2023: 545, p2024: 289, p2025: 176 },
+  { mes: 'Ene', p2023: 134, p2024: 229, p2025: 92 },
+  { mes: 'Feb', p2023: 217, p2024: 419, p2025: 106 },
+  { mes: 'Mar', p2023: 282, p2024: 529, p2025: 170 },
+  { mes: 'Abr', p2023: 247, p2024: 614, p2025: 169 },
+  { mes: 'May', p2023: 243, p2024: 488, p2025: 183 },
+  { mes: 'Jun', p2023: 297, p2024: 556, p2025: 143 },
+  { mes: 'Jul', p2023: 249, p2024: 310, p2025: 209 },
+  { mes: 'Ago', p2023: 179, p2024: 370, p2025: 129 },
+  { mes: 'Sep', p2023: 304, p2024: 356, p2025: 115 },
+  { mes: 'Oct', p2023: 549, p2024: 394, p2025: 140 },
+  { mes: 'Nov', p2023: 105, p2024: 315, p2025: 176 },
+  { mes: 'Dic', p2023: 545, p2024: 289, p2025: 176 },
 ];
 
 const rehabilitacionData = [
-  { categoria: 'Gestantes',          valor: 8,  color: '#f9a8d4' },
-  { categoria: 'Accidente Laboral',  valor: 14, color: '#fbbf24' },
-  { categoria: 'Enfermedad Laboral', valor: 8,  color: '#4ade80' },
-  { categoria: 'Enfermedad Común',   valor: 19, color: '#60a5fa' },
+  { categoria: 'Gestantes', valor: 8, color: '#f9a8d4' },
+  { categoria: 'Accidente Laboral', valor: 14, color: '#fbbf24' },
+  { categoria: 'Enfermedad Laboral', valor: 8, color: '#4ade80' },
+  { categoria: 'Enfermedad Común', valor: 19, color: '#60a5fa' },
 ];
 
 const aguaPlantaData = [
@@ -62,16 +62,16 @@ const aguaSede2Data = [
 
 const satisfaccion2025 = [
   { name: 'Excelente', value: 550, pct: 47.17, color: '#1e3a8a' },
-  { name: 'Bueno',     value: 561, pct: 48.11, color: '#38bdf8' },
-  { name: 'Regular',   value: 4,   pct: 0.35,  color: '#7c3aed' },
-  { name: 'Malo',      value: 51,  pct: 4.37,  color: '#f97316' },
+  { name: 'Bueno', value: 561, pct: 48.11, color: '#38bdf8' },
+  { name: 'Regular', value: 4, pct: 0.35, color: '#7c3aed' },
+  { name: 'Malo', value: 51, pct: 4.37, color: '#f97316' },
 ];
 
 const satisfaccion2024 = [
   { name: 'Excelente', value: 1100, pct: 58.21, color: '#1e3a8a' },
-  { name: 'Bueno',     value: 730,  pct: 38.54, color: '#38bdf8' },
-  { name: 'Regular',   value: 14,   pct: 0.70,  color: '#7c3aed' },
-  { name: 'Malo',      value: 50,   pct: 2.55,  color: '#f97316' },
+  { name: 'Bueno', value: 730, pct: 38.54, color: '#38bdf8' },
+  { name: 'Regular', value: 14, pct: 0.70, color: '#7c3aed' },
+  { name: 'Malo', value: 50, pct: 2.55, color: '#f97316' },
 ];
 
 // ── Subcomponentes ─────────────────────────────────────────────────────────
@@ -105,16 +105,42 @@ function Section({ icon: Icon, title, color, children, defaultOpen = false }) {
   );
 }
 
+// trend: 'up' | 'down' | 'neutral'  — up=verde, down=rojo, neutral=gris
+// upIsGood: true → up verde; false → up rojo (ej. accidentes)
+function KpiCard({ label, value, sub, color, trend, upIsGood = true, tooltip }) {
+  const [show, setShow] = useState(false);
+  const isPositive = (trend === 'up' && upIsGood) || (trend === 'down' && !upIsGood);
+  const isNegative = (trend === 'up' && !upIsGood) || (trend === 'down' && upIsGood);
+  const arrow = trend === 'up' ? '▲' : trend === 'down' ? '▼' : null;
+  const arrowColor = isPositive ? '#10b981' : isNegative ? '#ef4444' : '#94a3b8';
+  return (
+    <div
+      className="rounded-xl p-4 flex flex-col gap-1 relative cursor-default"
+      style={{ background: `${color}10`, border: `1.5px solid ${color}35` }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      <p className="text-xs text-gray-500 leading-tight">{label}</p>
+      <div className="flex items-end gap-1.5">
+        <p className="text-2xl font-black leading-none" style={{ color }}>{value}</p>
+        {arrow && <span className="text-sm font-bold mb-0.5" style={{ color: arrowColor }}>{arrow}</span>}
+      </div>
+      {sub && <p className="text-xs font-medium" style={{ color: isPositive ? '#10b981' : isNegative ? '#ef4444' : '#6b7280' }}>{sub}</p>}
+      {tooltip && show && (
+        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl leading-relaxed pointer-events-none"
+          style={{ whiteSpace: 'normal' }}>
+          {tooltip}
+          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 function KpiRow({ items }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-4">
-      {items.map((k, i) => (
-        <div key={i} className="rounded-lg p-3 text-center" style={{ background: `${k.color}15`, border: `1px solid ${k.color}40` }}>
-          <p className="text-xs text-gray-500 mb-1">{k.label}</p>
-          <p className="text-xl font-black" style={{ color: k.color }}>{k.value}</p>
-          {k.sub && <p className="text-xs text-gray-400 mt-0.5">{k.sub}</p>}
-        </div>
-      ))}
+      {items.map((k, i) => <KpiCard key={i} {...k} />)}
     </div>
   );
 }
@@ -132,29 +158,22 @@ function Bullet({ items, color = '#3b82f6' }) {
   );
 }
 
-const fmt = (v) => `$${(v / 1e6).toFixed(0)}M`;
+const fmt = (v) => `${(v / 1e6).toFixed(0)}M`;
 
-// ── Dashboard principal ────────────────────────────────────────────────────
+// ── Secciones individuales ─────────────────────────────────────────────────
 
-export default function CalidadDashboard() {
+function SeccionCalidad() {
   return (
     <div className="space-y-4">
-
-      {/* Intro */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
-        <h2 className="text-lg font-bold text-blue-900 mb-2">Gerencia Estratégica y Mejoramiento Continuo — 2025</h2>
-        <p className="text-sm text-gray-700 leading-relaxed">
-          Durante 2025, la Gerencia Estratégica y de Mejoramiento Continuo consolidó la madurez operativa de la organización mediante la articulación de los procesos de Calidad, Compras, HSEQ, Bienestar Animal y Vigías de Riesgos. El año estuvo marcado por una transición hacia un enfoque más preventivo, digital y orientado al cumplimiento normativo (ISO 9001:2026, HACCP), fortaleciendo el control interno, reduciendo desviaciones operativas y mejorando la capacidad de respuesta ante variables regulatorias y productivas.
-        </p>
+        <h2 className="text-lg font-bold text-blue-900 mb-1">1. Aseguramiento de Calidad — 2025</h2>
       </div>
-
-      {/* 1. Aseguramiento de Calidad */}
-      <Section icon={Shield} title="1. Aseguramiento de Calidad" color="#6366f1" defaultOpen={true}>
+      <Section icon={Shield} title="Aseguramiento de Calidad" color="#6366f1" defaultOpen={true}>
         <KpiRow items={[
-          { label: 'Norma base', value: 'HACCP', color: '#6366f1' },
-          { label: 'Ente regulador', value: 'INVIMA', color: '#8b5cf6' },
-          { label: 'Nuevos indicadores', value: 'Jun 2025', color: '#a855f7', sub: 'desde junio' },
-          { label: 'Decisión Q4', value: 'Cambio proveedor dosificación', color: '#ef4444', sub: 'picos críticos' },
+          { label: 'Desviaciones S2 vs S1', value: '+47%', sub: 'Pérdida de control 2do semestre', color: '#ef4444', trend: 'up', upIsGood: false, tooltip: 'El segundo semestre registró un 47% más de desviaciones que el primero, evidenciando pérdida de control en dosificación, desplumado y evisceración.' },
+          { label: 'Incidentes Q4', value: 'Crítico', sub: 'Cambio proveedor dosificación', color: '#dc2626', trend: 'up', upIsGood: false, tooltip: 'Los picos críticos del Q4 obligaron a tomar la decisión de cambiar el sistema y proveedor de dosificación para 2026.' },
+          { label: 'Auditorías aprobadas', value: '100%', sub: 'Cumplimiento INVIMA/HACCP', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'Todas las auditorías externas de INVIMA y las verificaciones HACCP fueron aprobadas sin observaciones mayores.' },
+          { label: 'Indicadores nuevos', value: '+12', sub: 'Desde junio 2025', color: '#10b981', trend: 'up', upIsGood: true, tooltip: 'A partir de junio 2025 se implementaron 12 nuevos indicadores de seguimiento para mejorar la trazabilidad del proceso productivo.' },
         ]} />
         <div className="grid md:grid-cols-2 gap-4 pt-2">
           <div>
@@ -168,21 +187,29 @@ export default function CalidadDashboard() {
           <div>
             <p className="text-sm font-semibold text-gray-700 mb-2">Hallazgos críticos</p>
             <Bullet color="#ef4444" items={[
-              'Variabilidad y pérdida de control en el segundo semestre (dosificación, desplumado, evisceración)',
+              'Variabilidad y pérdida de control en el segundo semestre',
               'Picos críticos en Q4 → cambio de sistema/proveedor de dosificación',
-              'Incumplimientos reiterados por limitaciones de infraestructura y calibración de máquinas',
+              'Incumplimientos por limitaciones de infraestructura y calibración',
             ]} />
           </div>
         </div>
       </Section>
+    </div>
+  );
+}
 
-      {/* 2. Compras */}
-      <Section icon={ShoppingCart} title="2. Compras" color="#f59e0b">
+function SeccionCompras() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl p-5 border border-yellow-200">
+        <h2 className="text-lg font-bold text-yellow-900 mb-1">2. Compras — 2025</h2>
+      </div>
+      <Section icon={ShoppingCart} title="Compras" color="#f59e0b" defaultOpen={true}>
         <KpiRow items={[
-          { label: 'Total compras 2025', value: '$8.927M', color: '#f59e0b' },
-          { label: 'Total compras 2024', value: '$8.141M', color: '#6b7280' },
-          { label: 'Var 2024→2025', value: '+9,66%', color: '#10b981' },
-          { label: 'Consumo / compra', value: '73,42%', color: '#3b82f6', sub: 'promedio anual' },
+          { label: 'Total compras 2025', value: '$8.927M', sub: '+$786M vs 2024', color: '#f59e0b', trend: 'up', upIsGood: false, tooltip: 'El total de compras pasó de $8.141M en 2024 a $8.927M en 2025. El incremento responde al aumento del 51% en producción.' },
+          { label: 'Crecimiento anual', value: '+9,66%', sub: 'Impulsado por +51% producción', color: '#10b981', trend: 'up', upIsGood: true, tooltip: 'El crecimiento del 9,66% en compras es proporcionalmente menor al +51% de producción, lo que indica eficiencia en el abastecimiento.' },
+          { label: 'Ratio consumo/compra', value: '73,42%', sub: '26,58% en inventario', color: '#3b82f6', trend: 'neutral', tooltip: 'Por cada $100 comprados, $73,42 se consumieron en el año. El 26,58% restante quedó en inventario, parte en repuestos importados.' },
+          { label: 'Proveedores evaluados', value: '36', sub: 'Visitas conjuntas con Calidad', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'Se evaluaron 36 proveedores con la matriz Kraljic. Los proveedores HACCP recibieron visitas conjuntas entre Compras y Calidad.' },
         ]} />
         <div className="pt-2">
           <p className="text-sm font-semibold text-gray-600 mb-3">Compras mensuales 2023 – 2025 (millones $)</p>
@@ -191,7 +218,7 @@ export default function CalidadDashboard() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
               <XAxis dataKey="mes" tick={{ fontSize: 11 }} />
               <YAxis tickFormatter={fmt} tick={{ fontSize: 10 }} width={55} />
-              <Tooltip formatter={(v) => [`$${v.toLocaleString('es-CO')}`, '']} />
+              <Tooltip formatter={(v) => [`${v.toLocaleString('es-CO')}`, '']} />
               <Legend />
               <Line type="monotone" dataKey="c2025" name="2025" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 3 }} />
               <Line type="monotone" dataKey="c2024" name="2024" stroke="#6b7280" strokeWidth={1.5} dot={{ r: 2 }} strokeDasharray="4 2" />
@@ -207,14 +234,22 @@ export default function CalidadDashboard() {
           'Aumento en volumen y costo del inventario por repuestos importados',
         ]} />
       </Section>
+    </div>
+  );
+}
 
-      {/* 3. Bienestar Animal */}
-      <Section icon={Heart} title="3. Bienestar Animal" color="#ec4899">
+function SeccionBienestar() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl p-5 border border-pink-200">
+        <h2 className="text-lg font-bold text-pink-900 mb-1">3. Bienestar Animal — 2025</h2>
+      </div>
+      <Section icon={Heart} title="Bienestar Animal" color="#ec4899" defaultOpen={true}>
         <KpiRow items={[
-          { label: 'Pollo mal sangrado', value: '–63,3%', color: '#10b981', sub: 'vs 2024' },
-          { label: 'Aves mal aturdidas', value: '–8,21%', color: '#10b981', sub: 'vs 2024' },
-          { label: 'Cargue en tubo', value: '100%', color: '#3b82f6', sub: 'migración completa' },
-          { label: 'Estándar', value: 'ISO', color: '#6366f1', sub: 'Programa consolidado' },
+          { label: 'Pollo mal sangrado', value: '–63,3%', sub: '2025 vs 2024 (229→92 prom.)', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'El promedio mensual de pollos mal sangrados bajó de 229 unidades en 2024 a 92 en 2025, gracias a mejoras en insensibilizado y capacitación.' },
+          { label: 'Aves mal aturdidas', value: '–8,21%', sub: 'Mejora sostenida en planta', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'La reducción del 8,21% en aves mal aturdidas refleja el impacto de los ajustes técnicos en el proceso de insensibilización.' },
+          { label: 'Cargue en tubo', value: '100%', sub: 'Migración completa lograda', color: '#3b82f6', trend: 'up', upIsGood: true, tooltip: 'Se completó la migración total al sistema de cargue en tubo, eliminando el método anterior que generaba mayor estrés animal.' },
+          { label: 'Transportadores cert.', value: '100%', sub: 'ICA / Mintransporte', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'El 100% de los transportadores de aves cuentan con certificación vigente de ICA y Mintransporte, cumpliendo la normativa de bienestar animal.' },
         ]} />
         <div className="pt-2">
           <p className="text-sm font-semibold text-gray-600 mb-3">Pollo mal sangrado 2023 – 2025 (unidades)</p>
@@ -238,27 +273,33 @@ export default function CalidadDashboard() {
           'Implementación del monitoreo de lesiones en granja y planta',
         ]} />
       </Section>
+    </div>
+  );
+}
 
-      {/* 4. HSEQ */}
-      <Section icon={AlertTriangle} title="4. HSEQ" color="#f97316">
+function SeccionHSEQ() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-5 border border-orange-200">
+        <h2 className="text-lg font-bold text-orange-900 mb-1">4. HSEQ — 2025</h2>
+      </div>
+      <Section icon={AlertTriangle} title="HSEQ" color="#f97316" defaultOpen={true}>
         <KpiRow items={[
-          { label: 'Accidentes 2025', value: '112', color: '#ef4444' },
-          { label: 'Capacitaciones', value: '22', color: '#f97316', sub: '347 asistentes' },
-          { label: 'Agua/ave –', value: '–5,9%', color: '#10b981', sub: 'vs 2024' },
-          { label: 'Residuos aprovechables', value: '+24,65%', color: '#10b981', sub: 'vs 2024' },
+          { label: 'Accidentes 2025', value: '112', sub: 'Planta 24% · Posproceso 19%', color: '#ef4444', trend: 'up', upIsGood: false, tooltip: '112 accidentes en el año. Las áreas de mayor concentración son Planta (27), Posproceso (21) y Calidad (17). El riesgo osteomuscular es el principal factor.' },
+          { label: 'Capacitaciones', value: '22', sub: '347 asistentes en el año', color: '#f97316', trend: 'up', upIsGood: true, tooltip: 'Se realizaron 22 jornadas de capacitación con 347 asistentes, incluyendo gimnasia laboral para mitigar el riesgo osteomuscular.' },
+          { label: 'Agua/ave planta', value: '–5,9%', sub: '11,44 → 10,76 L/ave', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'El consumo de agua por ave en planta de beneficio bajó de 11,44 L en 2024 a 10,76 L en 2025, una reducción del 5,9% que representa ahorro ambiental y económico.' },
+          { label: 'Residuos aprovechables', value: '+24,65%', sub: 'Mejora en gestión ambiental', color: '#10b981', trend: 'up', upIsGood: true, tooltip: 'El volumen de residuos aprovechables creció un 24,65%, indicando mejor separación en la fuente y mayor eficiencia en el programa de gestión ambiental.' },
         ]} />
-
-        {/* Accidentes por área */}
         <div className="grid md:grid-cols-2 gap-6 pt-2">
           <div>
             <p className="text-sm font-semibold text-gray-600 mb-3">Accidentes por área</p>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={[
-                { area: 'Planta',      n: 27, fill: '#ef4444' },
+                { area: 'Planta', n: 27, fill: '#ef4444' },
                 { area: 'Posproceso', n: 21, fill: '#f97316' },
-                { area: 'Calidad',    n: 17, fill: '#fbbf24' },
-                { area: 'Granjas',    n: 16, fill: '#84cc16' },
-                { area: 'Otros',      n: 31, fill: '#94a3b8' },
+                { area: 'Calidad', n: 17, fill: '#fbbf24' },
+                { area: 'Granjas', n: 16, fill: '#84cc16' },
+                { area: 'Otros', n: 31, fill: '#94a3b8' },
               ]} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="area" tick={{ fontSize: 10 }} />
@@ -266,18 +307,13 @@ export default function CalidadDashboard() {
                 <Tooltip />
                 <Bar dataKey="n" name="Accidentes" radius={[4, 4, 0, 0]}>
                   {[
-                    { area: 'Planta', n: 27, fill: '#ef4444' },
-                    { area: 'Posproceso', n: 21, fill: '#f97316' },
-                    { area: 'Calidad', n: 17, fill: '#fbbf24' },
-                    { area: 'Granjas', n: 16, fill: '#84cc16' },
-                    { area: 'Otros', n: 31, fill: '#94a3b8' },
+                    { fill: '#ef4444' }, { fill: '#f97316' }, { fill: '#fbbf24' },
+                    { fill: '#84cc16' }, { fill: '#94a3b8' },
                   ].map((e, i) => <Cell key={i} fill={e.fill} />)}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
-
-          {/* Rehabilitación */}
           <div>
             <p className="text-sm font-semibold text-gray-600 mb-3">Rehabilitación y Reintegro</p>
             <ResponsiveContainer width="100%" height={200}>
@@ -293,8 +329,6 @@ export default function CalidadDashboard() {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* Agua */}
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua planta beneficio (L/ave)</p>
@@ -325,7 +359,6 @@ export default function CalidadDashboard() {
             </ResponsiveContainer>
           </div>
         </div>
-
         <Bullet color="#f97316" items={[
           'Implementación del programa de gimnasia laboral para mitigar riesgo osteomuscular',
           'Reducción del 20,02% en canastillas rotas',
@@ -334,14 +367,22 @@ export default function CalidadDashboard() {
           'Avances en concesiones de agua y gestión ante CAR en múltiples granjas',
         ]} />
       </Section>
+    </div>
+  );
+}
 
-      {/* 5. Sistema de Gestión de Calidad */}
-      <Section icon={FileCheck} title="5. Sistema de Gestión de Calidad" color="#0ea5e9">
+function SeccionSGC() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-5 border border-sky-200">
+        <h2 className="text-lg font-bold text-sky-900 mb-1">5. Sistema de Gestión de Calidad — 2025</h2>
+      </div>
+      <Section icon={FileCheck} title="Sistema de Gestión de Calidad" color="#0ea5e9" defaultOpen={true}>
         <KpiRow items={[
-          { label: 'Auditorías internas', value: '15', color: '#0ea5e9', sub: 'procesos auditados' },
-          { label: 'Sistema migrado', value: 'ISOLUCION', color: '#6366f1' },
-          { label: 'Módulos al 100%', value: '3', color: '#10b981', sub: 'Actas, Tareas, Mejora' },
-          { label: 'CRM integrado', value: 'SIESA', color: '#f59e0b' },
+          { label: 'Auditorías internas', value: '15', sub: 'Procesos auditados en 2025', color: '#0ea5e9', trend: 'up', upIsGood: true, tooltip: 'Se auditaron 15 procesos internamente durante 2025, cubriendo las áreas críticas del sistema de gestión de calidad.' },
+          { label: 'Módulos ISOLUCION', value: '3/3', sub: 'Actas, Tareas y Mejora al 100%', color: '#10b981', trend: 'up', upIsGood: true, tooltip: 'Los tres módulos prioritarios de ISOLUCION (Actas, Tareas y Mejora Continua) alcanzaron el 100% de implementación durante 2025.' },
+          { label: 'Migración sistema', value: '100%', sub: 'De sistema anterior a ISOLUCION', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'La migración completa al sistema ISOLUCION permite centralizar la gestión documental, trazabilidad de acciones y seguimiento de indicadores.' },
+          { label: 'CRM unificado', value: 'SIESA', sub: 'Requisitos de clientes integrados', color: '#f59e0b', trend: 'up', upIsGood: true, tooltip: 'La integración del CRM SIESA permite unificar los requisitos de clientes con el sistema de gestión, reduciendo reprocesos y mejorando la respuesta.' },
         ]} />
         <Bullet color="#0ea5e9" items={[
           'Actualización de matrices estratégicas y políticas',
@@ -350,14 +391,22 @@ export default function CalidadDashboard() {
           'Integración del CRM SIESA para unificar requisitos de clientes',
         ]} />
       </Section>
+    </div>
+  );
+}
 
-      {/* 6. Satisfacción del Cliente, PQRS y Planes de Acción */}
-      <Section icon={Star} title="6. Satisfacción del Cliente, PQRS y Planes de Acción" color="#8b5cf6">
+function SeccionSatisfaccion() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-5 border border-violet-200">
+        <h2 className="text-lg font-bold text-violet-900 mb-1">6. Satisfacción del Cliente — 2025</h2>
+      </div>
+      <Section icon={Star} title="Satisfacción del Cliente, PQRS y Planes de Acción" color="#8b5cf6" defaultOpen={true}>
         <KpiRow items={[
-          { label: 'Encuestas 2025', value: '1.166', color: '#8b5cf6', sub: '–38% vs 2024' },
-          { label: 'Planes de acción', value: '154', color: '#f59e0b', sub: '+27,92%' },
-          { label: 'PQRs 2025', value: '259', color: '#10b981', sub: '–28,45%' },
-          { label: 'No Conformidades', value: '+34,78%', color: '#ef4444' },
+          { label: 'Satisfacción positiva 2025', value: '95,28%', sub: 'Excelente+Bueno (vs 96,75% en 2024)', color: '#8b5cf6', trend: 'down', upIsGood: false, tooltip: 'La satisfacción positiva (Excelente+Bueno) bajó de 96,75% en 2024 a 95,28% en 2025. Aunque sigue siendo alta, la tendencia requiere atención.' },
+          { label: 'PQRs recibidas', value: '259', sub: '–28,45% vs 2024 (362 PQRs)', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'Las PQRs bajaron de 362 en 2024 a 259 en 2025 (–28,45%), lo que indica mejora en la experiencia del cliente y reducción de fallas en servicio.' },
+          { label: 'Planes de acción', value: '154', sub: '+27,92% — mayor gestión correctiva', color: '#f59e0b', trend: 'up', upIsGood: true, tooltip: 'El aumento de planes de acción (+27,92%) refleja mayor madurez del sistema: se detectan y gestionan más oportunidades de mejora de forma proactiva.' },
+          { label: 'No Conformidades', value: '+34,78%', sub: 'Alerta: mayor detección interna', color: '#ef4444', trend: 'up', upIsGood: false, tooltip: 'El incremento del 34,78% en no conformidades es una señal de alerta. Puede indicar mayor rigurosidad en la detección, pero también deterioro en la ejecución de procesos.' },
         ]} />
         <div className="grid md:grid-cols-2 gap-6 pt-2">
           <div>
@@ -365,7 +414,7 @@ export default function CalidadDashboard() {
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie data={satisfaccion2025} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
-                  label={({ name, pct }) => `${pct}%`} labelLine={false}>
+                  label={({ pct }) => `${pct}%`} labelLine={false}>
                   {satisfaccion2025.map((e, i) => <Cell key={i} fill={e.color} />)}
                 </Pie>
                 <Tooltip formatter={(v, n) => [v, n]} />
@@ -378,7 +427,7 @@ export default function CalidadDashboard() {
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie data={satisfaccion2024} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
-                  label={({ name, pct }) => `${pct}%`} labelLine={false}>
+                  label={({ pct }) => `${pct}%`} labelLine={false}>
                   {satisfaccion2024.map((e, i) => <Cell key={i} fill={e.color} />)}
                 </Pie>
                 <Tooltip formatter={(v, n) => [v, n]} />
@@ -388,14 +437,22 @@ export default function CalidadDashboard() {
           </div>
         </div>
       </Section>
+    </div>
+  );
+}
 
-      {/* 7. Vigía de Riesgos */}
-      <Section icon={Eye} title="7. Vigía de Riesgos" color="#14b8a6">
+function SeccionVigia() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-200">
+        <h2 className="text-lg font-bold text-teal-900 mb-1">7. Vigía de Riesgos — 2025</h2>
+      </div>
+      <Section icon={Eye} title="Vigía de Riesgos" color="#14b8a6" defaultOpen={true}>
         <KpiRow items={[
-          { label: 'Quejas administrativas', value: '0', color: '#10b981', sub: 'eliminadas' },
-          { label: 'Control acceso', value: '✓', color: '#14b8a6', sub: 'Carnetización activa' },
-          { label: 'Trazabilidad activos', value: '✓', color: '#6366f1', sub: 'Tinas, motores, precintos' },
-          { label: 'Plataformas digitales', value: '✓', color: '#f59e0b', sub: 'Parqueaderos y correspondencia' },
+          { label: 'Quejas administrativas', value: '0', sub: 'Eliminadas vs años anteriores', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'El proceso de Vigía logró eliminar completamente las quejas administrativas que existían en años anteriores, garantizando seguridad patrimonial.' },
+          { label: 'Control de acceso', value: '100%', sub: 'Carnetización activa todo el año', color: '#14b8a6', trend: 'up', upIsGood: true, tooltip: 'El sistema de carnetización y registro de visitantes operó al 100% durante todo el año, sin brechas en el control de acceso a instalaciones.' },
+          { label: 'Activos trazados', value: '3 tipos', sub: 'Tinas, motores, precintos', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'Se implementó trazabilidad sobre tres tipos de activos críticos: tinas de proceso, motores y precintos de seguridad, reduciendo pérdidas.' },
+          { label: 'Plataformas digitales', value: '2', sub: 'Parqueaderos y correspondencia', color: '#f59e0b', trend: 'up', upIsGood: true, tooltip: 'Se digitalizaron dos procesos operativos: gestión de parqueaderos y control de correspondencia, mejorando trazabilidad y reduciendo tiempos.' },
         ]} />
         <Bullet color="#14b8a6" items={[
           'Protocolos de control de acceso, carnetización y registro de visitantes',
@@ -405,7 +462,43 @@ export default function CalidadDashboard() {
           'Proceso eliminó quejas administrativas y garantizó seguridad patrimonial y trazabilidad operacional',
         ]} />
       </Section>
+    </div>
+  );
+}
 
+// ── Dashboard principal ────────────────────────────────────────────────────
+
+export default function CalidadDashboard({ data, section }) {
+  const sectionMap = {
+    calidad: <SeccionCalidad />,
+    compras: <SeccionCompras />,
+    bienestar: <SeccionBienestar />,
+    hseq: <SeccionHSEQ />,
+    sgc: <SeccionSGC />,
+    satisfaccion: <SeccionSatisfaccion />,
+    vigia: <SeccionVigia />,
+  };
+
+  if (section && sectionMap[section]) {
+    return sectionMap[section];
+  }
+
+  // Vista completa (sin section prop)
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
+        <h2 className="text-lg font-bold text-blue-900 mb-2">Gerencia Estratégica y Mejoramiento Continuo — 2025</h2>
+        <p className="text-sm text-gray-700 leading-relaxed">
+          Durante 2025, la Gerencia Estratégica y de Mejoramiento Continuo consolidó la madurez operativa de la organización mediante la articulación de los procesos de Calidad, Compras, HSEQ, Bienestar Animal y Vigías de Riesgos.
+        </p>
+      </div>
+      <SeccionCalidad />
+      <SeccionCompras />
+      <SeccionBienestar />
+      <SeccionHSEQ />
+      <SeccionSGC />
+      <SeccionSatisfaccion />
+      <SeccionVigia />
     </div>
   );
 }
