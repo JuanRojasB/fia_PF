@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Package, Users, Info, TrendingUp, X } from 'lucide-react';
+import { Package, Info, TrendingUp, X, ArrowUpDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -7,9 +7,7 @@ import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
 
 export default function ComercialEstructuraDashboard({ data }) {
-  const [showEquipoModal, setShowEquipoModal] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalOpen, setModalOpen] = useState(false);  const [modalContent, setModalContent] = useState({ title: '', description: '' });
 
   const openModal = (title, description) => {
     setModalContent({ title, description });
@@ -101,40 +99,21 @@ export default function ComercialEstructuraDashboard({ data }) {
         <div 
           className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
           onClick={() => openModal(
-            'Estructura del Equipo Comercial',
-            'El equipo comercial está organizado en 3 categorías de negocio (Pollo en Pie, Pollo en Canal, Huevos) con 7 agrupaciones especializadas por canal de venta, lideradas por 10 asesores comerciales. Esta estructura permite atención especializada y enfoque estratégico en cada segmento de mercado: Mayorista (José Rodríguez), Institucional (Hernán Benito), Asadero (German Rodríguez), Sede 5 (Yenny Alvarado), PDV (Elmira González & Michael Arias), Yopal (Julián Mora), y Huevos (Margarita Roa Barrera).'
+            'Sede UO1 y UO3 en Procesamiento 2025',
+            `${analisisAsignacion[0]?.asignacion || 'Sede UO1 y UO3'} es la sede con mayor participación en 2025 con ${formatNumber(analisisAsignacion[0]?.unidades2025 || 0)} unidades (${analisisAsignacion[0]?.participacion2025.toFixed(1) || 0}% del total). Variación vs 2024: ${analisisAsignacion[0]?.variacionPct >= 0 ? '+' : ''}${analisisAsignacion[0]?.variacionPct.toFixed(1) || 0}%.`
           )}
         >
           <div className="flex items-center justify-between mb-4">
-            <Users className="w-10 h-10 opacity-80" />
+            <ArrowUpDown className="w-10 h-10 opacity-80" />
             <Info className="w-5 h-5 opacity-60 hover:opacity-100" />
           </div>
-          <div className="text-4xl font-bold mb-2">3 • 7 • 10</div>
-          <div className="text-sm opacity-90">Estructura Comercial</div>
+          <div className="text-2xl font-bold mb-1 break-all">{analisisAsignacion[0]?.asignacion || '—'}</div>
+          <div className="text-sm opacity-90">Sede UO3 2025</div>
           <div className="text-xs opacity-75 mt-2">
-            Categorías • Agrupaciones • Líderes
+            {formatNumber(analisisAsignacion[0]?.unidades2025 || 0)} und • {analisisAsignacion[0]?.participacion2025.toFixed(1) || 0}% del total
           </div>
         </div>
       </motion.div>
-
-      {showEquipoModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowEquipoModal(false)}>
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto border-4 border-blue-500 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Estructura del Equipo Comercial</h2>
-              <button onClick={() => setShowEquipoModal(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
-            </div>
-            <div className="space-y-4">
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200"><h3 className="font-bold text-blue-900 mb-2">Pollo en Pie (1 Agrupación)</h3><p className="text-sm text-gray-700">Mayorista - José Rodríguez</p></div>
-              <div className="bg-green-50 p-4 rounded-lg border border-green-200"><h3 className="font-bold text-green-900 mb-2">Pollo en Canal (5 Agrupaciones)</h3><p className="text-sm text-gray-700">Institucional (Hernán Benito) • Asadero (German Rodríguez) • Sede 5 (Yenny Alvarado) • PDV (Elmira González & Michael Arias) • Yopal (Julián Mora)</p></div>
-              <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200"><h3 className="font-bold text-yellow-900 mb-2">Huevos (1 Agrupación)</h3><p className="text-sm text-gray-700">Comercial - Margarita Roa Barrera</p></div>
-              <div className="bg-gray-50 p-3 rounded-lg border border-gray-200"><p className="text-xs text-gray-600">3 categorías con 7 agrupaciones lideradas por 10 profesionales</p></div>
-            </div>
-          </motion.div>
-        </div>
-      )}
 
       <CollapsibleTable 
         title="ASIGNACIÓN DE POLLO - Distribución de unidades procesadas 2024 vs 2025"
