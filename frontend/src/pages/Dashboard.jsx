@@ -6,7 +6,7 @@ import Sidebar from '../components/Sidebar';
 import DashboardRenderer from '../components/dashboards/DashboardRenderer';
 import DashboardWrapper from '../components/DashboardWrapper';
 import ErrorBoundary from '../components/ErrorBoundary';
-import Toast from '../components/Toast';
+import SectionSplash from '../components/SectionSplash';
 import { OrdenDelDiaModal } from '../components/ui/OrdenDelDiaModal';
 import { authService } from '../services/authService';
 import { dashboardService } from '../services/dashboardService';
@@ -23,8 +23,8 @@ export default function Dashboard() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [splashTrigger, setSplashTrigger] = useState(0);
+  const [splashSection, setSplashSection] = useState('');
   const [showOrdenDelDia, setShowOrdenDelDia] = useState(false);
 
   // Detectar cambios de tamaño de ventana
@@ -129,10 +129,9 @@ export default function Dashboard() {
     const newMainSection = getMainSection(newSection);
     const oldMainSection = previousMainSection;
     
-    // Mostrar toast siempre que cambie de sección
-    const sectionName = mainSectionNames[newMainSection] || newMainSection;
-    setToastMessage(`${sectionName}`);
-    setShowToast(true);
+    // Mostrar splash al cambiar de sección
+    setSplashSection(newSection);
+    setSplashTrigger(t => t + 1);
     
     if (newMainSection !== oldMainSection) {
       setPreviousMainSection(newMainSection);
@@ -330,12 +329,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)' }}>
-      <Toast 
-        message={toastMessage}
-        isVisible={showToast}
-        onClose={() => setShowToast(false)}
-        duration={4000}
-      />
+      <SectionSplash section={splashSection} trigger={splashTrigger} />
       
       <OrdenDelDiaModal 
         isOpen={showOrdenDelDia}
