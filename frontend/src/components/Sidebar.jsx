@@ -1,6 +1,6 @@
 // Sidebar Component - Optimized Collapsible Version
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shield, TrendingUp, UserCheck, Truck, Menu, X, Store, Wrench, Monitor, Scale } from 'lucide-react';
+import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shield, TrendingUp, UserCheck, Truck, Menu, X, Store, Wrench, Monitor, Scale, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
@@ -395,12 +395,12 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
                   className={`w-full flex items-center ${isCollapsed ? 'justify-center p-2.5' : 'justify-between px-3 py-2.5'} rounded-lg transition-all duration-200 group hover:shadow-md`}
                   data-active={isActive ? 'true' : undefined}
                   style={{
-                    background: isActive ? 'rgba(59, 130, 246, 0.18)' : 'transparent',
-                    border: isActive ? '1px solid rgba(59, 130, 246, 0.5)' : '1px solid transparent',
-                    color: isActive ? '#1d4ed8' : '#64748b',
+                    background: isActive ? 'rgba(59, 130, 246, 0.18)' : item.special ? 'rgba(245, 158, 11, 0.08)' : 'transparent',
+                    border: isActive ? '1px solid rgba(59, 130, 246, 0.5)' : item.special ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid transparent',
+                    color: isActive ? '#1d4ed8' : item.special ? '#b45309' : '#64748b',
                     position: 'relative',
-                    fontWeight: isActive ? 700 : 500,
-                    boxShadow: isActive ? '0 2px 8px rgba(59,130,246,0.15)' : 'none',
+                    fontWeight: isActive ? 700 : item.special ? 600 : 500,
+                    boxShadow: isActive ? '0 2px 8px rgba(59,130,246,0.15)' : item.special ? '0 2px 8px rgba(245,158,11,0.1)' : 'none',
                     borderLeft: isActive && isCollapsed ? '3px solid #3b82f6' : undefined
                   }}
                   onMouseEnter={(e) => {
@@ -497,6 +497,42 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
             );
           })}
         </nav>
+
+        {/* Agradecimientos — sticky al fondo del nav */}
+        <div className={`${isCollapsed ? 'px-2 pb-1' : 'px-4 pb-2'}`}>
+          {!isCollapsed ? (
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => { setActiveSection('agradecimientos'); setIsMobileMenuOpen(false); if (isDesktop && !isCollapsed) setTimeout(() => toggleCollapse(), 200); }}
+              className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200"
+              style={{
+                background: activeSection === 'agradecimientos' ? 'rgba(245,158,11,0.18)' : 'rgba(245,158,11,0.07)',
+                border: activeSection === 'agradecimientos' ? '1px solid rgba(245,158,11,0.6)' : '1px solid rgba(245,158,11,0.3)',
+                color: '#b45309',
+                fontWeight: activeSection === 'agradecimientos' ? 700 : 500,
+              }}
+            >
+              <Trophy className="w-4 h-4 text-amber-500 flex-shrink-0" />
+              <span className="text-sm">Agradecimientos</span>
+            </motion.button>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => { setActiveSection('agradecimientos'); setIsMobileMenuOpen(false); }}
+              className="w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200"
+              style={{
+                background: activeSection === 'agradecimientos' ? 'rgba(245,158,11,0.25)' : 'rgba(245,158,11,0.08)',
+                border: '1px solid rgba(245,158,11,0.35)',
+                color: '#b45309',
+              }}
+              title="Agradecimientos"
+            >
+              <Trophy className="w-5 h-5 text-amber-500" />
+            </motion.button>
+          )}
+        </div>
 
         {/* Footer Actions */}
         <div 

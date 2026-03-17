@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ClipboardList } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import orbImage from '../assets/pollo_fiesta_FIA.png';
 import Sidebar from '../components/Sidebar';
 import DashboardRenderer from '../components/dashboards/DashboardRenderer';
 import DashboardWrapper from '../components/DashboardWrapper';
@@ -67,7 +68,8 @@ export default function Dashboard() {
     'sagrilaft': 'Sistema SAGRILAFT',
     'presupuesto-2025': 'Presupuesto 2025',
     'situacion-juridica': 'Situación Jurídica y Tecnológica',
-    'situacion-economica': 'Situación Económica'
+    'situacion-economica': 'Situación Económica',
+    'agradecimientos': 'Agradecimientos'
   }), []);
 
   // Detectar cambio de sección principal
@@ -221,7 +223,8 @@ export default function Dashboard() {
     'sagrilaft',
     'presupuesto-2025',
     'situacion-juridica',
-    'situacion-economica'
+    'situacion-economica',
+    'agradecimientos'
   ], []);
 
   // Funciones de navegación
@@ -395,7 +398,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)' }}>
-      <SectionSplash section={splashSection} trigger={splashTrigger} />
+      <SectionSplash section={splashSection} trigger={splashSection === 'agradecimientos' ? 0 : splashTrigger} />
       
       <OrdenDelDiaModal 
         isOpen={showOrdenDelDia}
@@ -416,10 +419,10 @@ export default function Dashboard() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setShowOrdenDelDia(true)}
-        className="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-2xl"
+        className="fixed bottom-6 right-6 z-40 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-2xl overflow-hidden w-14 h-14"
         title="Orden del Día"
       >
-        <ClipboardList className="w-6 h-6" />
+        <img src={orbImage} alt="FIA" className="w-full h-full object-cover" />
       </motion.button>
       
       <div 

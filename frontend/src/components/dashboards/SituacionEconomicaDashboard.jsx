@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TrendingUp, DollarSign, FileText, X, Scale, Briefcase } from 'lucide-react';
+import { TrendingUp, DollarSign, FileText, X, Scale, Briefcase, ZoomIn } from 'lucide-react';
 import CollapsibleTable, { fmt as formatNumber } from '../CollapsibleTable';
+import imgPatrimonio from '../../assets/estadoscambiopatrimonios.jfif';
+import imgFlujo from '../../assets/estadosflujoefectivo.jfif';
+import imgFuentes from '../../assets/fuentes y usos.jfif';
 
 export default function SituacionEconomicaDashboard({ onNavigate }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', content: '' });
+  const [zoomImg, setZoomImg] = useState(null);
 
   const openModal = (title, content) => {
     setModalContent({ title, content });
@@ -591,6 +595,70 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         </div>
       </CollapsibleTable>
 
+      {/* Estados Financieros — imágenes con zoom */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { img: imgPatrimonio, title: 'Estado de Cambios en el Patrimonio' },
+          { img: imgFlujo,      title: 'Estado de Flujo de Efectivo' },
+          { img: imgFuentes,    title: 'Fuentes y Usos' },
+        ].map(({ img, title }) => (
+          <motion.div
+            key={title}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden"
+          >
+            <div className="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700">
+              <p className="text-base font-bold text-white">{title}</p>
+            </div>
+            <div className="overflow-hidden">
+              <img
+                src={img}
+                alt={title}
+                className="w-full object-cover"
+                style={{ maxHeight: 220 }}
+              />
+            </div>
+            <div className="px-4 py-3 border-t border-gray-100 flex justify-center">
+              <button
+                onClick={() => setZoomImg({ img, title })}
+                className="flex items-center gap-2 px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-all"
+              >
+                <ZoomIn className="w-4 h-4" />
+                Ver
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Lightbox zoom */}
+      {zoomImg && createPortal(
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/85 z-[60] flex flex-col items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.88, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.88, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+            className="relative max-w-5xl w-full flex flex-col items-center gap-4"
+          >
+            <p className="text-white font-bold text-lg">{zoomImg.title}</p>
+            <img src={zoomImg.img} alt={zoomImg.title} className="w-full rounded-xl shadow-2xl max-h-[75vh] object-contain" />
+            <button
+              onClick={() => setZoomImg(null)}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-white hover:bg-gray-100 text-gray-800 font-semibold text-sm transition-all shadow-lg"
+            >
+              ← Volver
+            </button>
+          </motion.div>
+        </motion.div>,
+        document.body
+      )}
       {/* Modal */}
       {modalOpen && createPortal(
         <AnimatePresence>
