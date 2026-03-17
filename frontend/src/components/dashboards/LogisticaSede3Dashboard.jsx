@@ -263,11 +263,11 @@ export default function LogisticaSede3Dashboard({ data }) {
         
         <div className="mt-6 bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
           <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-semibold text-gray-900">Análisis Sede 3:</span> La reducción del -1.96% en gastos totales se logró mediante una gestión eficiente. 
-            El ahorro más significativo fue en arriendos y congelación (-71.95%) gracias a la optimización del túnel de congelación y al traslado de la línea de 
-            producto del cliente D1 en febrero de 2025. El incremento en personal de postproceso (23.44%) se debe al traslado de 16 personas desde la Sede 1 y al 
-            aumento del salario mínimo del 9.5%. El incremento en fletes (28.16%) se explica por el pago de standby derivado del mantenimiento de los cuartos 
-            en la sede principal y por el incremento tarifario del 9.5% aplicado en 2025.
+            <span className="font-semibold text-gray-900">Análisis Sede 3:</span> Personal de distribución (-4,49%), representando un ahorro del 14,94% manteniendo ventas estables (+0,93%). 
+            Personal de postproceso (+23,44%) por traslado de 16 personas desde Sede 1 y aumento salarial del 9,5%. 
+            Arriendo de congelación (-71,95%) por optimización del túnel de congelación y traslado del cliente D1 en febrero de 2025. 
+            Fletes (+28,16%) por pago de standby derivado del mantenimiento de cuartos en sede principal e incremento tarifario del 9,5%. 
+            Combustible (-6,93%) por venta de dos vehículos asignados a Sede 3. Peajes y multas (-5,71%).
           </p>
         </div>
         </div>

@@ -51,21 +51,21 @@ export default function CollapsibleTable({ title, children, defaultOpen = false,
             transition={{ duration: 0.2, ease: 'easeInOut' }}
             className="overflow-hidden border-t border-gray-200"
           >
-            <div className="flex items-center gap-4 px-6 py-3 bg-gray-50 flex-wrap">
+            <div className="flex items-center gap-3 px-6 py-3 bg-gray-50 flex-wrap">
               {totalRow.map((cell, idx) => (
-                <span
-                  key={idx}
-                  className={`text-sm font-bold tabular-nums ${cell.color || 'text-gray-900'} ${idx === 0 ? 'flex-1 min-w-0' : 'shrink-0'}`}
-                >
-                  {cell.badge ? (
-                    <span className={`inline-flex items-center gap-1 ${cell.color || 'text-gray-900'}`}>
-                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs text-white ${cell.badgeColor || 'bg-gray-500'}`}>
-                        {cell.badgeIcon || '•'}
-                      </span>
-                      {cell.type === 'number' ? fmt(cell.label) : cell.label}
-                    </span>
-                  ) : cell.type === 'number' ? fmt(cell.label) : cell.label}
-                </span>
+                cell.sublabel ? (
+                  <div key={idx} className="flex flex-col items-center bg-white rounded-lg px-3 py-1.5 border border-gray-200 shadow-sm shrink-0">
+                    <span className={`text-base font-bold tabular-nums ${cell.color || 'text-gray-900'}`}>{cell.label}</span>
+                    <span className="text-xs text-gray-500 mt-0.5">{cell.sublabel}</span>
+                  </div>
+                ) : (
+                  <span
+                    key={idx}
+                    className={`text-sm font-bold tabular-nums ${cell.color || 'text-gray-900'} ${idx === 0 ? 'flex-1 min-w-0' : 'shrink-0'}`}
+                  >
+                    {cell.type === 'number' ? fmt(cell.label) : cell.label}
+                  </span>
+                )
               ))}
             </div>
           </motion.div>
@@ -85,6 +85,26 @@ export default function CollapsibleTable({ title, children, defaultOpen = false,
             <div className="p-4 overflow-x-auto">
               {children}
             </div>
+            {/* Fila de total visible también cuando está abierto */}
+            {totalRow && (
+              <div className="flex items-center gap-4 px-6 py-3 bg-gray-100 border-t-2 border-gray-300 flex-wrap">
+                {totalRow.map((cell, idx) => (
+                  <span
+                    key={idx}
+                    className={`text-sm font-bold tabular-nums ${cell.color || 'text-gray-900'} ${idx === 0 ? 'flex-1 min-w-0' : 'shrink-0'}`}
+                  >
+                    {cell.badge ? (
+                      <span className={`inline-flex items-center gap-1 ${cell.color || 'text-gray-900'}`}>
+                        <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs text-white ${cell.badgeColor || 'bg-gray-500'}`}>
+                          {cell.badgeIcon || '•'}
+                        </span>
+                        {cell.type === 'number' ? fmt(cell.label) : cell.label}
+                      </span>
+                    ) : cell.type === 'number' ? fmt(cell.label) : cell.label}
+                  </span>
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

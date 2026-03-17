@@ -92,6 +92,10 @@ class GetDashboardDataUseCase {
           data = await this.dashboardRepository.getComercialPDV();
           break;
         case 'operaciones':
+        case 'operaciones-tpm':
+        case 'operaciones-ot':
+        case 'operaciones-vehiculos':
+        case 'operaciones-arquitectura':
           data = await this.dashboardRepository.getGestionOperaciones();
           break;
         case 'planta-beneficio':

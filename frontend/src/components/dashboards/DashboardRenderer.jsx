@@ -38,7 +38,10 @@ import ProduccionIndicadoresDashboard from './ProduccionIndicadoresDashboard';
 import AuditoriaDashboard from './AuditoriaDashboard';
 import CalidadDashboard from './CalidadDashboard';
 import ComprasDashboard from './ComprasDashboard';
-import OperacionesDashboard from './OperacionesDashboard';
+import OperacionesTPMDashboard from './OperacionesTPMDashboard';
+import OperacionesOTDashboard from './OperacionesOTDashboard';
+import OperacionesVehiculosDashboard from './OperacionesVehiculosDashboard';
+import OperacionesArquitecturaDashboard from './OperacionesArquitecturaDashboard';
 import PlantaBeneficioDashboard from './PlantaBeneficioDashboard';
 import TecnologiasInformacionDashboard from './TecnologiasInformacionDashboard';
 import SituacionJuridicaDashboard from './SituacionJuridicaDashboard';
@@ -47,7 +50,7 @@ import EnDesarrollo from './EnDesarrollo';
 
 export default function DashboardRenderer({ type, data, onNavigate }) {
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos', 'comercial-estructura-equipo'];
+  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos', 'comercial-estructura-equipo', 'operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura'];
   
   if (!data || (Array.isArray(data) && data.length === 0)) {
     // Si el dashboard no requiere datos, continuar normalmente
@@ -81,8 +84,14 @@ export default function DashboardRenderer({ type, data, onNavigate }) {
       return <CalidadDashboard data={data} />;
     case 'compras':
       return <ComprasDashboard data={data} />;
-    case 'operaciones':
-      return <OperacionesDashboard data={data} />;
+    case 'operaciones-tpm':
+      return <OperacionesTPMDashboard data={data} />;
+    case 'operaciones-ot':
+      return <OperacionesOTDashboard data={data} />;
+    case 'operaciones-vehiculos':
+      return <OperacionesVehiculosDashboard data={data} />;
+    case 'operaciones-arquitectura':
+      return <OperacionesArquitecturaDashboard data={data} />;
     case 'planta-beneficio':
       return <PlantaBeneficioDashboard data={data} />;
     case 'tecnologias-informacion':

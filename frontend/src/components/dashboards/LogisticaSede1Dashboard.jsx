@@ -92,7 +92,9 @@ export default function LogisticaSede1Dashboard({ data }) {
           <h2 className="text-3xl font-bold text-gray-900">GESTIÓN LOGÍSTICA - SEDE 1</h2>
         </div>
         <p className="text-gray-700 leading-relaxed mb-4">
-          La Sede 1 se dedica a la comercialización de pollo entero tipo asadero.
+          La Sede 1 se dedica a la comercialización de pollo entero tipo asadero. Las ventas presentaron una disminución del 9,4% vs. 2024. 
+          A partir de febrero de 2025 se realizó el traslado de la Sede 1 a la Sede Principal, lo que redujo los traslados de pollo entre sedes 
+          y generó ahorros en combustible. Los procesos de filete, bandejas y selección (18 personas) fueron unificados en la Sede 3.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <div className="bg-white/95 rounded-lg p-4 border border-gray-300">
@@ -275,8 +277,10 @@ export default function LogisticaSede1Dashboard({ data }) {
         
         <div className="mt-6 bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
           <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-semibold text-gray-900">Análisis Sede 1:</span> La reducción del -2.59% en gastos totales se debe principalmente a la optimización 
-            de fletes (-0.86%) y la reducción de personal de postproceso (-16.09%) por la unificación de procesos en la Sede 3, logrando mantener una gestión eficiente de costos.
+            <span className="font-semibold text-gray-900">Análisis Sede 1:</span> Los rubros analizados son: costo de personal de distribución (+11,62%), 
+            costo de personal de postproceso (-16,09% por unificación de 18 personas en Sede 3 desde febrero), fletes (-0,86% por optimización de flota propia 
+            y negociaciones a menor costo, resultado -10,36% por debajo de lo negociado), combustible (-15,32% por mayor utilización de vehículos y reducción 
+            de traslados entre sedes) y peajes y multas (+175%).
           </p>
         </div>
         </div>

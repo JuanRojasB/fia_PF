@@ -43,6 +43,7 @@ export default function Dashboard() {
     'produccion': ['produccion-granjas', 'produccion-encasetado', 'produccion-pollo-entregado', 'produccion-indicadores', 'produccion-huevos'],
     'comercial': ['comercial-estructura-equipo', 'comercial-resumen', 'comercial-ventas-compania', 'comercial-pollo-entero', 'comercial-productos', 'comercial-asadero', 'comercial-institucional', 'comercial-huevo', 'logistica-merma'],
     'logistica': ['logistica-consolidado', 'logistica-sede1', 'logistica-sede2', 'logistica-sede3'],
+    'operaciones': ['operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura'],
     'marketing': ['marketing-indicadores', 'marketing-detalle'],
     'humana': ['humana-general', 'humana-causas']
   }), []);
@@ -85,6 +86,10 @@ export default function Dashboard() {
     'calidad': 'calidad',
     'compras': 'compras',
     'operaciones': 'operaciones',
+    'operaciones-tpm': 'operaciones',
+    'operaciones-ot': 'operaciones',
+    'operaciones-vehiculos': 'operaciones',
+    'operaciones-arquitectura': 'operaciones',
     'planta-beneficio': 'planta-beneficio',
     'tecnologias-informacion': 'tecnologias-informacion',
     'cartera': 'cartera',
@@ -123,7 +128,7 @@ export default function Dashboard() {
   };
 
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo'];
+  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo', 'operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura'];
 
   // Función para cambiar de sección que actualiza tanto el estado como la URL
   const handleSectionChange = useCallback((newSection) => {
@@ -190,7 +195,10 @@ export default function Dashboard() {
     'humana-general',
     'humana-causas',
     'compras',
-    'operaciones',
+    'operaciones-tpm',
+    'operaciones-ot',
+    'operaciones-vehiculos',
+    'operaciones-arquitectura',
     'planta-beneficio',
     'tecnologias-informacion',
     'sagrilaft',
@@ -305,6 +313,10 @@ export default function Dashboard() {
       'calidad': 'Aseguramiento de Calidad',
       'compras': 'Gestión en Compras',
       'operaciones': 'Operaciones y Mantenimiento',
+      'operaciones-tpm': 'Mantenimiento',
+      'operaciones-ot': 'Órdenes de Trabajo SIESA',
+      'operaciones-vehiculos': 'Mantenimiento de Vehículos',
+      'operaciones-arquitectura': 'Arquitectura',
       'planta-beneficio': 'Planta de Beneficio',
       'tecnologias-informacion': 'Tecnologías de la Información',
       'cartera': 'Gestión de Cartera',

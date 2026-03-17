@@ -288,7 +288,7 @@ export default function HumanaDashboard({ data }) {
       </div>
 
       {/* Gráficos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
         {/* Evolución de Nómina */}
         <CollapsibleChart title="Evolución de Costos de Nómina" defaultOpen={false}>

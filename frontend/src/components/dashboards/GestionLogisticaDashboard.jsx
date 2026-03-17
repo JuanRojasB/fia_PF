@@ -130,9 +130,17 @@ export default function GestionLogisticaDashboard({ data }) {
           <Truck className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">GESTIÓN LOGÍSTICA - ANÁLISIS CONSOLIDADO</h2>
         </div>
-        <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-          Análisis consolidado de la gestión logística de las sedes operativas de Pollo Fiesta, comparando el desempeño y la eficiencia del gasto 2024 vs. 2025.
+        <p className="text-gray-700 leading-relaxed text-sm sm:text-base mb-4">
+          La Gerencia Logística administra tres centros de operación especializados: Sede 1 (pollo asadero), Sede 2 (productos congelados) y Sede 3 (clientes institucionales). 
+          Para 2025 se cuenta con <span className="font-semibold">12 muelles de operación</span> y un equipo de <span className="font-semibold">197 colaboradores</span> distribuidos en las tres plantas de proceso (vs. 231 en 2024).
         </p>
+        <div className="bg-green-50 border border-green-300 rounded-lg p-4">
+          <p className="text-sm text-gray-700 leading-relaxed">
+            <span className="font-semibold text-green-800">Resultado consolidado:</span> El gasto logístico total presentó un incremento controlado del <span className="font-bold text-green-700">2,37%</span>, 
+            cifra significativamente inferior al aumento salarial del 9,54%, el ajuste en tarifas de fletes del 9,5% y el IPC promedio del 5,1%. 
+            La organización logró contener el crecimiento del gasto por debajo de los incrementos estructurales del mercado, generando un <span className="font-semibold">ahorro efectivo superior al 5%</span> frente al escenario proyectado.
+          </p>
+        </div>
       </motion.div>
 
       {/* KPIs Generales */}
@@ -309,6 +317,91 @@ export default function GestionLogisticaDashboard({ data }) {
         </motion.div>
       </div>
 
+      {/* Tabla Consolidada */}
+      <CollapsibleTable
+        title="GASTOS OPERACIONALES LOGÍSTICOS SEDES 2024 VS 2025"
+        defaultOpen={false}
+        totalRow={[
+          { label: 'TOTAL GASTOS LOGÍSTICOS 2024 VS 2025' },
+          { label: '$ 14.984.636', color: 'text-blue-600' },
+          { label: '$ 15.339.066', color: 'text-blue-600' },
+          { label: '2,37%', color: 'text-red-500', badge: true, badgeColor: 'bg-red-500', badgeIcon: '↑' },
+          { label: '$ 354.430', color: 'text-red-500' },
+          { label: '8,6%', color: 'text-gray-600' },
+          { label: '$ 1.423.540', color: 'text-gray-600' },
+        ]}
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">
+            Para el análisis consolidado 2025 vs. 2024 de las sedes, se controlaron los principales rubros de la operación logística: personal de distribución,
+            personal de postproceso, arriendos y congelación, fletes, combustibles y peajes. Como resultado, el gasto logístico total presentó un
+            <span className="font-semibold text-green-700"> incremento controlado del 2,37%</span>, cifra significativamente inferior a los incrementos base del período
+            (aumento salarial 9,54%, ajuste tarifas de fletes 9,5%, IPC promedio 5,1%). Este comportamiento evidencia una gestión eficiente del gasto,
+            destacándose el ahorro en personal de distribución y las eficiencias operativas implementadas. En términos reales, la organización logró contener
+            el crecimiento del gasto por debajo de los incrementos estructurales del mercado, generando un
+            <span className="font-semibold text-green-700"> ahorro efectivo superior al 5%</span> frente al escenario proyectado para 2025.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-500 to-blue-600">
+                  <th className="text-left py-3 px-4 text-white font-bold">CONCEPTO</th>
+                  <th className="text-right py-3 px-4 text-white font-bold">TOTAL 2024</th>
+                  <th className="text-right py-3 px-4 text-white font-bold">TOTAL 2025</th>
+                  <th className="text-right py-3 px-4 text-white font-bold">% Var 25/24</th>
+                  <th className="text-right py-3 px-4 text-white font-bold">Disminución / Incremento</th>
+                  <th className="text-right py-3 px-4 text-white font-bold">Incremento 2025 en %</th>
+                  <th className="text-right py-3 px-4 text-white font-bold">Incremento 2025 en $</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { concepto: 'Costo Personal Distribución',     t2024: 2808305, t2025: 2638910, var: -6.03,  dif: -169395, pct: 9.5,  inc: 266788.98 },
+                  { concepto: 'Costo Personal Post Proceso',     t2024: 4639449, t2025: 5124946, var: 10.46,  dif:  485497, pct: 9.5,  inc: 440747.66 },
+                  { concepto: 'Arriendos y Congelación',         t2024: 2388825, t2025: 1799077, var: -24.69, dif: -589748, pct: 8.0,  inc: 226938.38 },
+                  { concepto: 'Fletes, Cargues, Acarreos, Ttes', t2024: 4885450, t2025: 5542117, var: 13.44,  dif:  656667, pct: 9.5,  inc: 464117.78 },
+                  { concepto: 'Combustibles (ACPM)',              t2024:  204251, t2025:  177990, var: -12.86, dif:  -26261, pct: 10.0, inc:  19403.85 },
+                  { concepto: 'Peajes y Multas',                  t2024:   58356, t2025:   56026, var: -3.99,  dif:   -2330, pct: 5.1,  inc:   5543.82 },
+                ].map((row, i) => (
+                  <tr key={i} className="border-b border-gray-200 hover:bg-blue-50 transition-colors">
+                    <td className="py-2.5 px-4 text-gray-900">{row.concepto}</td>
+                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-700">$ {row.t2024.toLocaleString('es-CO')}</td>
+                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-700">$ {row.t2025.toLocaleString('es-CO')}</td>
+                    <td className="py-2.5 px-4 text-right">
+                      <span className={`inline-flex items-center gap-1 font-bold ${row.var < 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`w-4 h-4 rounded-full text-white text-xs flex items-center justify-center ${row.var < 0 ? 'bg-green-500' : 'bg-red-500'}`}>
+                          {row.var < 0 ? '↓' : '↑'}
+                        </span>
+                        {row.var}%
+                      </span>
+                    </td>
+                    <td className={`py-2.5 px-4 text-right tabular-nums font-semibold ${row.dif < 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      $ {Math.abs(row.dif).toLocaleString('es-CO')}
+                    </td>
+                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-600">{row.pct}%</td>
+                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-600">$ {row.inc.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                  </tr>
+                ))}
+                <tr className="bg-blue-50 border-t-2 border-blue-400 font-bold">
+                  <td className="py-3 px-4 text-blue-900">Total Gastos Logísticos 2024 vs 2025</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 14.984.636</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 15.339.066</td>
+                  <td className="py-3 px-4 text-right">
+                    <span className="inline-flex items-center gap-1 font-bold text-red-600">
+                      <span className="w-4 h-4 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">↑</span>
+                      2,37%
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 text-right tabular-nums text-red-600">$ 354.430</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">8,6%</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 1.423.540</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </CollapsibleTable>
+
       {/* Gráfico Comparativo por Sede */}
       <CollapsibleChart title="Gastos Operacionales Logísticos por Sede 2024 vs 2025" defaultOpen={false}>
         <ResponsiveContainer width="100%" height={450}>
@@ -350,47 +443,50 @@ export default function GestionLogisticaDashboard({ data }) {
 
       {/* Gráfico Consolidado por Concepto */}
       <CollapsibleChart title="Gastos Operacionales por Tipo de Gasto (Consolidado 3 Sedes)" defaultOpen={false}>
-        <ResponsiveContainer width="100%" height={500}>
-          <BarChart data={consolidadoArray} layout="vertical" margin={{ left: 250, right: 40, top: 20, bottom: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis 
-              type="number" 
-              stroke="#9ca3af" 
-              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}mil`}
-            />
-            <YAxis 
-              type="category" 
-              dataKey="concepto" 
-              stroke="#9ca3af" 
-              width={240} 
-              style={{ fontSize: '11px' }}
-            />
-            <Tooltip content={({ active, payload }) => {
+        <ResponsiveContainer width="100%" height={420}>
+          <BarChart
+            layout="vertical"
+            data={[
+              { concepto: 'Costo Personal Distribución',     valor2024: 2808305, valor2025: 2638910 },
+              { concepto: 'Costo Personal Post Proceso',     valor2024: 4639449, valor2025: 5124946 },
+              { concepto: 'Arriendos y Congelación',         valor2024: 2388825, valor2025: 1799077 },
+              { concepto: 'Fletes, Cargues, Acarreos, Ttes', valor2024: 4885450, valor2025: 5542117 },
+              { concepto: 'Combustibles (ACPM)',              valor2024:  204251, valor2025:  177990 },
+              { concepto: 'Peajes y Multas',                  valor2024:   58356, valor2025:   56026 },
+            ]}
+            margin={{ left: 10, right: 80, top: 10, bottom: 10 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis type="number" stroke="#9ca3af" tickFormatter={(v) => `${(v/1000000).toFixed(1)}M`} />
+            <YAxis type="category" dataKey="concepto" stroke="#9ca3af" width={200} style={{ fontSize: '11px' }} />
+            <Tooltip content={({ active, payload, label }) => {
               if (active && payload && payload.length) {
-                const data = payload[0].payload;
+                const v24 = payload.find(p => p.dataKey === 'valor2024')?.value || 0;
+                const v25 = payload.find(p => p.dataKey === 'valor2025')?.value || 0;
+                const dif = v25 - v24;
+                const pct = v24 > 0 ? ((dif / v24) * 100).toFixed(1) : 0;
                 return (
-                  <div className="bg-white border border-gray-300 rounded-lg p-3 shadow-xl">
-                    <p className="text-gray-900 font-semibold mb-2">{data.concepto}</p>
-                    <p className="text-sm text-cyan-400">2024: {formatCurrency(data.valor2024)}</p>
-                    <p className="text-sm text-green-400">2025: {formatCurrency(data.valor2025)}</p>
-                    <p className={`text-sm font-bold mt-1 ${parseFloat(data.variacion) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-                      Variación: {data.variacion}%
-                    </p>
+                  <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-xl">
+                    <p className="font-bold text-gray-900 mb-2">{label}</p>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between gap-4"><span className="text-gray-500">2024:</span><span className="font-bold">$ {v24.toLocaleString('es-CO')}</span></div>
+                      <div className="flex justify-between gap-4"><span className="text-blue-600">2025:</span><span className="font-bold">$ {v25.toLocaleString('es-CO')}</span></div>
+                      <div className="flex justify-between gap-4 border-t pt-1"><span className="text-gray-500">Var:</span><span className={`font-bold ${dif >= 0 ? 'text-red-600' : 'text-green-600'}`}>{dif >= 0 ? '+' : ''}{pct}%</span></div>
+                    </div>
                   </div>
                 );
               }
               return null;
             }} />
-            <Bar dataKey="valor2024" fill="#6366f1" name="2024" radius={[0, 8, 8, 0]}>
-              <LabelList dataKey="valor2024" position="insideRight" style={{ fontSize: '10px', fill: '#fff', fontWeight: 'bold' }} formatter={() => '2024'} />
+            <Bar dataKey="valor2024" fill="#6366f1" name="2024" radius={[0, 6, 6, 0]}>
+              <LabelList dataKey="valor2024" position="right" style={{ fontSize: '10px', fill: '#6366f1', fontWeight: 'bold' }} formatter={() => '2024'} />
             </Bar>
-            <Bar dataKey="valor2025" fill="#10b981" name="2025" radius={[0, 8, 8, 0]}>
-              <LabelList dataKey="valor2025" position="insideRight" style={{ fontSize: '10px', fill: '#fff', fontWeight: 'bold' }} formatter={() => '2025'} />
+            <Bar dataKey="valor2025" fill="#10b981" name="2025" radius={[0, 6, 6, 0]}>
+              <LabelList dataKey="valor2025" position="right" style={{ fontSize: '10px', fill: '#10b981', fontWeight: 'bold' }} formatter={() => '2025'} />
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </CollapsibleChart>
-
       {/* Modal con Tabla Consolidada */}
       {createPortal(
       <AnimatePresence>

@@ -187,7 +187,13 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       id: 'operaciones', 
       label: 'Operaciones y Mantenimiento', 
       icon: Wrench,
-      type: 'single'
+      type: 'expandable',
+      subitems: [
+        { id: 'operaciones-tpm', label: 'Mantenimiento' },
+        { id: 'operaciones-ot', label: 'Órdenes de Trabajo SIESA' },
+        { id: 'operaciones-vehiculos', label: 'Mantenimiento de Vehículos' },
+        { id: 'operaciones-arquitectura', label: 'Arquitectura' },
+      ]
     },
     { 
       id: 'planta-beneficio', 

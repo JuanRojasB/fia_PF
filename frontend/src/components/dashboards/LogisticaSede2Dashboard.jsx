@@ -74,8 +74,9 @@ export default function LogisticaSede2Dashboard({ data }) {
           <h2 className="text-3xl font-bold text-gray-900">GESTIÓN LOGÍSTICA - SEDE 2</h2>
         </div>
         <p className="text-gray-700 leading-relaxed mb-4">
-          La Sede 2 está encargada del aprovechamiento de los sobrantes de pollo para su transformación en productos congelados en diversas referencias, 
-          presentando un crecimiento en ventas del 31.3% influenciado por el traslado del cliente D1 y la vinculación del cliente ARA.
+          La Sede 2 está encargada del aprovechamiento de los sobrantes de pollo para su transformación en productos congelados en diversas referencias. 
+          Presentó un crecimiento en ventas del 30,42% frente a 2024, influenciado por el traslado del cliente D1 (que durante 2024 era atendido desde la Sede 3) 
+          y la vinculación del cliente ARA a partir de febrero de 2025.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <div className="bg-white/95 rounded-lg p-4 border border-gray-300">
@@ -264,6 +265,14 @@ export default function LogisticaSede2Dashboard({ data }) {
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div className="mt-6 bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+            <p className="text-sm text-gray-700 leading-relaxed">
+              <span className="font-semibold text-gray-900">Análisis Sede 2:</span> Personal de distribución (-25,74%) a pesar del incremento salarial del 9,54%, 
+              con ventas creciendo +30,42%. Personal de postproceso (+13,65%) por aumento salarial y 9 personas nuevas para atender la línea ARA. 
+              Arriendo de congelación (+43%) por aumento de tarifas y traslado del cliente D1 desde febrero. Fletes (+24,29%) por rutas nacionales ARA y D1 
+              e incremento tarifario del 9,5%. Combustible (-26,11%) por traslado de flota propia a Sede 1. Peajes y multas (+44,32%).
+            </p>
           </div>
         </CollapsibleTable>
       </motion.div>
