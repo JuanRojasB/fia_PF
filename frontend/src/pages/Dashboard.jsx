@@ -42,7 +42,7 @@ export default function Dashboard() {
     'bienvenida': ['bienvenida-principal', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha'],
     'produccion': ['produccion-granjas', 'produccion-encasetado', 'produccion-pollo-entregado', 'produccion-indicadores', 'produccion-huevos'],
     'comercial': ['comercial-estructura-equipo', 'comercial-resumen', 'comercial-ventas-compania', 'comercial-pollo-entero', 'comercial-productos', 'comercial-asadero', 'comercial-institucional', 'comercial-huevo', 'logistica-merma'],
-    'logistica': ['logistica-sede1', 'logistica-sede2', 'logistica-sede3', 'logistica-consolidado'],
+    'logistica': ['logistica-consolidado', 'logistica-sede1', 'logistica-sede2', 'logistica-sede3'],
     'marketing': ['marketing-indicadores', 'marketing-detalle'],
     'humana': ['humana-general', 'humana-causas']
   }), []);
@@ -180,10 +180,10 @@ export default function Dashboard() {
     'auditoria',
     'comercial-pdv',
     'cartera',
+    'logistica-consolidado',
     'logistica-sede1',
     'logistica-sede2',
     'logistica-sede3',
-    'logistica-consolidado',
     'marketing-indicadores',
     'marketing-detalle',
     'calidad',
@@ -201,15 +201,32 @@ export default function Dashboard() {
 
   // Funciones de navegación
   const goToPreviousSection = useCallback(() => {
+    // Desde cualquier sede logística, Anterior vuelve al consolidado
+    if (['logistica-sede1', 'logistica-sede2', 'logistica-sede3'].includes(activeSection)) {
+      handleSectionChange('logistica-consolidado');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    // Desde marketing, Anterior vuelve al consolidado (saltando sedes)
+    if (activeSection === 'marketing-indicadores') {
+      handleSectionChange('logistica-consolidado');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const currentIndex = allSections.indexOf(activeSection);
     if (currentIndex > 0) {
       handleSectionChange(allSections[currentIndex - 1]);
-      // Scroll suave al inicio
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [activeSection, allSections, handleSectionChange]);
 
   const goToNextSection = useCallback(() => {
+    // Desde consolidado, Siguiente salta directo a marketing (omite sedes)
+    if (activeSection === 'logistica-consolidado') {
+      handleSectionChange('marketing-indicadores');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const currentIndex = allSections.indexOf(activeSection);
     if (currentIndex < allSections.length - 1) {
       handleSectionChange(allSections[currentIndex + 1]);
@@ -382,7 +399,27 @@ export default function Dashboard() {
               </div>
               
               {/* Botones de navegación */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap justify-end">
+                {/* Accesos rápidos a sedes (en Análisis Consolidado y en cada sede) */}
+                {['logistica-consolidado', 'logistica-sede1', 'logistica-sede2', 'logistica-sede3'].includes(activeSection) && (
+                  <div className="flex items-center gap-1 mr-1">
+                    {[
+                      { id: 'logistica-sede1', label: 'Sede 1' },
+                      { id: 'logistica-sede2', label: 'Sede 2' },
+                      { id: 'logistica-sede3', label: 'Sede 3' },
+                    ].map(({ id, label }) => (
+                      <motion.button
+                        key={id}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => { handleSectionChange(id); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium bg-indigo-500/90 hover:bg-indigo-600 text-white shadow transition-all"
+                      >
+                        {label}
+                      </motion.button>
+                    ))}
+                  </div>
+                )}
                 <motion.button
                   whileHover={{ scale: canGoPrevious ? 1.05 : 1 }}
                   whileTap={{ scale: canGoPrevious ? 0.95 : 1 }}

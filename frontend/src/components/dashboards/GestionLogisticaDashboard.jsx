@@ -174,8 +174,11 @@ export default function GestionLogisticaDashboard({ data }) {
             <DollarSign className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(total2025)}</div>
-          <div className={`text-xs ${parseFloat(variacionTotal) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-            {variacionTotal > 0 ? '+' : ''}{variacionTotal}% vs 2024
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2025)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {variacionTotal > 0 ? '+' : ''}{variacionTotal}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull(total2025 - total2024)}</div>
           </div>
         </motion.div>
 
@@ -213,8 +216,11 @@ export default function GestionLogisticaDashboard({ data }) {
             <Building className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</div>
-          <div className={`text-xs ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-            {sedesData[0]?.variacion || 0}% vs 2024
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[0]?.total2024 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(sedesData[0]?.variacion || 0) >= 0 ? '+' : ''}{sedesData[0]?.variacion || 0}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull((sedesData[0]?.total2025 || 0) - (sedesData[0]?.total2024 || 0))}</div>
           </div>
         </motion.div>
 
@@ -252,8 +258,11 @@ export default function GestionLogisticaDashboard({ data }) {
             <Building className="w-6 h-6 text-green-400" />
           </div>
           <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</div>
-          <div className={`text-xs ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-            {sedesData[1]?.variacion || 0}% vs 2024
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[1]?.total2024 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(sedesData[1]?.variacion || 0) >= 0 ? '+' : ''}{sedesData[1]?.variacion || 0}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull((sedesData[1]?.total2025 || 0) - (sedesData[1]?.total2024 || 0))}</div>
           </div>
         </motion.div>
 
@@ -291,8 +300,11 @@ export default function GestionLogisticaDashboard({ data }) {
             <Building className="w-6 h-6 text-orange-400" />
           </div>
           <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</div>
-          <div className={`text-xs ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-            {sedesData[2]?.variacion || 0}% vs 2024
+          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[2]?.total2024 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</span></div>
+            <div className={`text-sm font-bold ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(sedesData[2]?.variacion || 0) >= 0 ? '+' : ''}{sedesData[2]?.variacion || 0}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull((sedesData[2]?.total2025 || 0) - (sedesData[2]?.total2024 || 0))}</div>
           </div>
         </motion.div>
       </div>

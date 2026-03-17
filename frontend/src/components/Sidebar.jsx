@@ -145,10 +145,10 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       icon: Truck,
       type: 'expandable',
       subitems: [
+        { id: 'logistica-consolidado', label: 'Análisis Consolidado' },
         { id: 'logistica-sede1', label: 'Sede 1 - Pollo Asadero' },
         { id: 'logistica-sede2', label: 'Sede 2 - Productos Congelados' },
-        { id: 'logistica-sede3', label: 'Sede 3 - Clientes Institucionales' },
-        { id: 'logistica-consolidado', label: 'Análisis Consolidado' }
+        { id: 'logistica-sede3', label: 'Sede 3 - Clientes Institucionales' }
       ]
     },
     { 

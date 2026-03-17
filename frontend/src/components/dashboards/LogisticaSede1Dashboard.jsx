@@ -94,7 +94,7 @@ export default function LogisticaSede1Dashboard({ data }) {
         <p className="text-gray-700 leading-relaxed mb-4">
           La Sede 1 se dedica a la comercialización de pollo entero tipo asadero.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <div className="bg-white/95 rounded-lg p-4 border border-gray-300">
             <div className="text-sm text-gray-600 mb-1">Responsable</div>
             <div className="text-xl font-bold text-blue-400">Clara Fontalvo</div>
@@ -108,7 +108,7 @@ export default function LogisticaSede1Dashboard({ data }) {
       </motion.div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

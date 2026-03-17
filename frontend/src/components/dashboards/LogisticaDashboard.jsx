@@ -204,8 +204,105 @@ export default function LogisticaDashboard({ data }) {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <CollapsibleChart title="Gastos Logísticos por Sede (2024 vs 2025)" defaultOpen={false}>
+      {/* Layout principal: sidebar consolidado + contenido principal */}
+      <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6 items-start">
+
+        {/* Sidebar: Tabla Consolidada */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl overflow-hidden"
+        >
+          <CollapsibleTable
+            title="CONSOLIDADO TODAS LAS SEDES 2024 VS 2025"
+            defaultOpen={true}
+            totalRow={[
+              { label: 'TOTAL CONSOLIDADO' },
+              { label: `$ ${total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-cyan-600' },
+              { label: `$ ${total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
+              { label: `${variacionTotal}%`, color: parseFloat(variacionTotal) > 0 ? 'text-red-500' : 'text-green-500', badge: true, badgeColor: parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500', badgeIcon: parseFloat(variacionTotal) > 0 ? '↑' : '↓' },
+              { label: `$ ${Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
+            ]}
+          >
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-gray-300">
+                  <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">2024</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">2025</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">% Var</th>
+                  <th className="text-right py-3 px-4 text-gray-900 font-bold">Dif. $</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(() => {
+                  const consolidado = {};
+                  conceptosData.forEach(d => {
+                    if (!consolidado[d.concepto]) {
+                      consolidado[d.concepto] = { concepto: d.concepto, valor2024: 0, valor2025: 0 };
+                    }
+                    consolidado[d.concepto].valor2024 += d.valor2024;
+                    consolidado[d.concepto].valor2025 += d.valor2025;
+                  });
+                  const consolidadoArray = Object.values(consolidado);
+                  let totalConsolidado2024 = 0;
+                  let totalConsolidado2025 = 0;
+                  return (
+                    <>
+                      {consolidadoArray.map((row, idx) => {
+                        totalConsolidado2024 += row.valor2024;
+                        totalConsolidado2025 += row.valor2025;
+                        const variacion = row.valor2024 > 0 ? (((row.valor2025 - row.valor2024) / row.valor2024) * 100) : 0;
+                        const diferencia = row.valor2025 - row.valor2024;
+                        const esIncremento = diferencia > 0;
+                        return (
+                          <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
+                            <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
+                            <td className="py-2 px-4 text-right text-cyan-300 tabular-nums">$ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                            <td className="py-2 px-4 text-right text-orange-300 tabular-nums">$ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                            <td className="py-2 px-4 text-right tabular-nums">
+                              <span className={esIncremento ? 'text-red-400' : 'text-green-400'}>{variacion.toFixed(2)}%</span>
+                            </td>
+                            <td className="py-2 px-4 text-right tabular-nums">
+                              <span className={`inline-flex items-center gap-1 ${esIncremento ? 'text-red-400' : 'text-green-400'}`}>
+                                <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>{esIncremento ? '↑' : '↓'}</span>
+                                $ {Math.abs(diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      <tr className="bg-gray-100/50 border-t-2 border-gray-400 font-bold">
+                        <td className="py-3 px-4 text-gray-900">TOTAL</td>
+                        <td className="py-3 px-4 text-right text-cyan-300 tabular-nums">$ {totalConsolidado2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                        <td className="py-3 px-4 text-right text-orange-300 tabular-nums">$ {totalConsolidado2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                        <td className="py-3 px-4 text-right tabular-nums">
+                          <span className={totalConsolidado2025 > totalConsolidado2024 ? 'text-red-400' : 'text-green-400'}>
+                            {(((totalConsolidado2025 - totalConsolidado2024) / totalConsolidado2024) * 100).toFixed(2)}%
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-right tabular-nums">
+                          <span className={`inline-flex items-center gap-1 ${totalConsolidado2025 > totalConsolidado2024 ? 'text-red-400' : 'text-green-400'}`}>
+                            <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${totalConsolidado2025 > totalConsolidado2024 ? 'bg-red-500' : 'bg-green-500'}`}>
+                              {totalConsolidado2025 > totalConsolidado2024 ? '↑' : '↓'}
+                            </span>
+                            $ {Math.abs(totalConsolidado2025 - totalConsolidado2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          </span>
+                        </td>
+                      </tr>
+                    </>
+                  );
+                })()}
+              </tbody>
+            </table>
+          </CollapsibleTable>
+        </motion.div>
+
+        {/* Contenido principal: gráficas + tablas por sede */}
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <CollapsibleChart title="Gastos Logísticos por Sede (2024 vs 2025)" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={sedesData} margin={{ left: 20, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -241,9 +338,8 @@ export default function LogisticaDashboard({ data }) {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </CollapsibleChart>
-</div>
-        <CollapsibleChart title="Distribución de Gastos por Sede 2025 (%)" defaultOpen={false}>
+            </CollapsibleChart>
+            <CollapsibleChart title="Distribución de Gastos por Sede 2025 (%)" defaultOpen={false}>
           <ResponsiveContainer width="100%" height={350}>
             <PieChart>
               <Pie 
@@ -276,9 +372,11 @@ export default function LogisticaDashboard({ data }) {
               }} />
             </PieChart>
           </ResponsiveContainer>
-        </CollapsibleChart>
-      {/* Tablas detalladas por sede */}
-      {['SEDE1', 'SEDE2', 'SEDE3'].map((sede, idx) => {
+            </CollapsibleChart>
+          </div>
+
+          {/* Tablas detalladas por sede */}
+          {['SEDE1', 'SEDE2', 'SEDE3'].map((sede, idx) => {
         const conceptosSede = conceptosData.filter(d => d.sede === sede);
         if (conceptosSede.length === 0) return null;
 
@@ -372,132 +470,8 @@ export default function LogisticaDashboard({ data }) {
           </motion.div>
         );
       })}
-
-      {/* Tabla consolidada de todas las sedes */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9 }}
-        className="rounded-xl overflow-hidden"
-      >
-        <CollapsibleTable
-          title="GASTOS OPERACIONALES LOGÍSTICOS SEDES 2024 VS 2025 - CONSOLIDADO"
-          defaultOpen={true}
-          totalRow={[
-            { label: 'TOTAL CONSOLIDADO TODAS LAS SEDES' },
-            { label: `$ ${total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-cyan-600' },
-            { label: `$ ${total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
-            { label: `${variacionTotal}%`, color: parseFloat(variacionTotal) > 0 ? 'text-red-500' : 'text-green-500', badge: true, badgeColor: parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500', badgeIcon: parseFloat(variacionTotal) > 0 ? '↑' : '↓' },
-            { label: `$ ${Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
-          ]}
-        >
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="bg-gradient-to-r from-blue-500 to-blue-600 border-b-2 border-gray-300">
-              <th className="text-left py-3 px-4 text-gray-900 font-bold">CONCEPTO</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2024</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">TOTAL 2025</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">
-                <span className="inline-flex items-center gap-1 justify-end">
-                  % Var 25/24
-                  <span className="relative group cursor-help">
-                    <span className="w-4 h-4 rounded-full bg-white/30 text-gray-900 text-xs flex items-center justify-center font-bold">?</span>
-                    <span className="absolute right-0 top-6 z-50 hidden group-hover:block w-56 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl leading-relaxed">
-                      🟢 Verde = reducción de gasto (positivo para la empresa)<br/>
-                      🔴 Rojo = incremento de gasto (requiere atención)
-                    </span>
-                  </span>
-                </span>
-              </th>
-              <th className="text-center py-3 px-4 text-gray-900 font-bold">DISMINUCIÓN O INCREMENTO</th>
-              <th className="text-right py-3 px-4 text-gray-900 font-bold">INCREMENTO 2025 EN $</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(() => {
-              // Agrupar por concepto sumando todas las sedes
-              const consolidado = {};
-              conceptosData.forEach(d => {
-                if (!consolidado[d.concepto]) {
-                  consolidado[d.concepto] = { concepto: d.concepto, valor2024: 0, valor2025: 0 };
-                }
-                consolidado[d.concepto].valor2024 += d.valor2024;
-                consolidado[d.concepto].valor2025 += d.valor2025;
-              });
-
-              const consolidadoArray = Object.values(consolidado);
-              let totalConsolidado2024 = 0;
-              let totalConsolidado2025 = 0;
-
-              return (
-                <>
-                  {consolidadoArray.map((row, idx) => {
-                    totalConsolidado2024 += row.valor2024;
-                    totalConsolidado2025 += row.valor2025;
-                    const variacion = row.valor2024 > 0 ? (((row.valor2025 - row.valor2024) / row.valor2024) * 100) : 0;
-                    const diferencia = row.valor2025 - row.valor2024;
-                    const esIncremento = diferencia > 0;
-
-                    return (
-                      <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
-                        <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
-                        <td className="py-2 px-4 text-right text-cyan-300 tabular-nums">
-                          $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                        </td>
-                        <td className="py-2 px-4 text-right text-orange-300 tabular-nums">
-                          $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                        </td>
-                        <td className="py-2 px-4 text-right tabular-nums">
-                          <span className={esIncremento ? 'text-red-400' : 'text-green-400'}>
-                            {variacion.toFixed(2)}%
-                          </span>
-                        </td>
-                        <td className="py-2 px-4 text-center">
-                          <span className={`inline-flex items-center gap-1 ${esIncremento ? 'text-red-400' : 'text-green-400'}`}>
-                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${esIncremento ? 'bg-red-500' : 'bg-green-500'}`}>
-                              {esIncremento ? '↑' : '↓'}
-                            </span>
-                            $ {Math.abs(diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                          </span>
-                        </td>
-                        <td className="py-2 px-4 text-right text-orange-300 tabular-nums">
-                          $ {diferencia.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                  <tr className="bg-gray-100/50 border-t-2 border-gray-400 font-bold">
-                    <td className="py-3 px-4 text-gray-900">TOTAL GASTOS LOGÍSTICOS 2023 VS 2024</td>
-                    <td className="py-3 px-4 text-right text-cyan-300 tabular-nums">
-                      $ {totalConsolidado2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                    </td>
-                    <td className="py-3 px-4 text-right text-orange-300 tabular-nums">
-                      $ {totalConsolidado2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                    </td>
-                    <td className="py-3 px-4 text-right tabular-nums">
-                      <span className={totalConsolidado2025 > totalConsolidado2024 ? 'text-red-400' : 'text-green-400'}>
-                        {(((totalConsolidado2025 - totalConsolidado2024) / totalConsolidado2024) * 100).toFixed(2)}%
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <span className={`inline-flex items-center gap-1 ${totalConsolidado2025 > totalConsolidado2024 ? 'text-red-400' : 'text-green-400'}`}>
-                        <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${totalConsolidado2025 > totalConsolidado2024 ? 'bg-red-500' : 'bg-green-500'}`}>
-                          {totalConsolidado2025 > totalConsolidado2024 ? '↑' : '↓'}
-                        </span>
-                        $ {Math.abs(totalConsolidado2025 - totalConsolidado2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right text-orange-300 tabular-nums">
-                      $ {(totalConsolidado2025 - totalConsolidado2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                    </td>
-                  </tr>
-                </>
-              );
-            })()}
-          </tbody>
-        </table>
-        </CollapsibleTable>
-      </motion.div>
+        </div>{/* end main content */}
+      </div>{/* end sidebar+main grid */}
 
       {/* Modal */}
       {createPortal(
