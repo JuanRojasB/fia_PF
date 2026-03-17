@@ -224,20 +224,6 @@ export default function ComercialEstructuraEquipoDashboard() {
             <p className="text-blue-100 mt-1">Equipo de ventas por canal y sede — 2025</p>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white/15 rounded-xl p-4 text-center">
-            <div className="text-3xl font-bold">3</div>
-            <div className="text-sm text-blue-100 mt-1">Categorías</div>
-          </div>
-          <div className="bg-white/15 rounded-xl p-4 text-center">
-            <div className="text-3xl font-bold">{canales.length}</div>
-            <div className="text-sm text-blue-100 mt-1">Canales</div>
-          </div>
-          <div className="bg-white/15 rounded-xl p-4 text-center">
-            <div className="text-3xl font-bold">{totalAsesores}</div>
-            <div className="text-sm text-blue-100 mt-1">Asesores</div>
-          </div>
-        </div>
       </div>
 
       {/* Por categoría */}
