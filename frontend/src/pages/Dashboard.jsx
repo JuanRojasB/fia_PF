@@ -45,7 +45,7 @@ export default function Dashboard() {
     'logistica': ['logistica-consolidado', 'logistica-sede1', 'logistica-sede2', 'logistica-sede3'],
     'marketing': ['marketing-indicadores', 'marketing-detalle'],
     'humana': ['humana-nomina', 'humana-rotacion', 'humana-causas', 'humana-smlv'],
-    'calidad': ['calidad-calidad', 'calidad-compras', 'calidad-bienestar', 'calidad-hseq', 'calidad-sgc', 'calidad-satisfaccion', 'calidad-vigia'],
+    'gerencia-estrategica': ['gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'gerencia-estrategica-vigia'],
   }), []);
 
   // Nombres amigables de secciones principales
@@ -58,7 +58,7 @@ export default function Dashboard() {
     'cartera': 'Gestión de Cartera',
     'logistica': 'Gestión Logística',
     'marketing': 'Gestión de Publicidad y Mercadeo',
-    'calidad': 'Aseguramiento de Calidad',
+    'gerencia-estrategica': 'Gerencia Estratégica y Mejoramiento Continuo',
     'humana': 'Gestión Humana',
     'compras': 'Gestión en Compras',
     'operaciones': 'Operaciones y Mantenimiento',
@@ -83,14 +83,15 @@ export default function Dashboard() {
     'bienvenida': 'bienvenida',
     'fuentes-usos': 'fuentes-usos',
     'auditoria': 'auditoria',
-    'calidad': 'calidad',
-    'calidad-calidad':      'calidad',
-    'calidad-compras':      'calidad',
-    'calidad-bienestar':    'calidad',
-    'calidad-hseq':         'calidad',
-    'calidad-sgc':          'calidad',
-    'calidad-satisfaccion': 'calidad',
-    'calidad-vigia':        'calidad',
+    'gerencia-estrategica': 'gerencia-estrategica',
+    'gerencia-estrategica-calidad':      'gerencia-estrategica',
+    'gerencia-estrategica-compras':      'gerencia-estrategica',
+    'gerencia-estrategica-bienestar':    'gerencia-estrategica',
+    'gerencia-estrategica-hseq':         'gerencia-estrategica',
+    'gerencia-estrategica-ambiental':    'gerencia-estrategica',
+    'gerencia-estrategica-sgc':          'gerencia-estrategica',
+    'gerencia-estrategica-satisfaccion': 'gerencia-estrategica',
+    'gerencia-estrategica-vigia':        'gerencia-estrategica',
     'compras': 'compras',
     'operaciones': 'operaciones',
     'planta-beneficio': 'planta-beneficio',
@@ -133,7 +134,7 @@ export default function Dashboard() {
   };
 
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo'];
+  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo', 'gerencia-estrategica', 'gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'gerencia-estrategica-vigia'];
 
   // Función para cambiar de sección que actualiza tanto el estado como la URL
   const handleSectionChange = useCallback((newSection) => {
@@ -196,13 +197,14 @@ export default function Dashboard() {
     'logistica-sede3',
     'marketing-indicadores',
     'marketing-detalle',
-    'calidad-calidad',
-    'calidad-compras',
-    'calidad-bienestar',
-    'calidad-hseq',
-    'calidad-sgc',
-    'calidad-satisfaccion',
-    'calidad-vigia',
+    'gerencia-estrategica-calidad',
+    'gerencia-estrategica-compras',
+    'gerencia-estrategica-bienestar',
+    'gerencia-estrategica-hseq',
+    'gerencia-estrategica-ambiental',
+    'gerencia-estrategica-sgc',
+    'gerencia-estrategica-satisfaccion',
+    'gerencia-estrategica-vigia',
     'humana-nomina',
     'humana-rotacion',
     'humana-causas',

@@ -1,30 +1,38 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Shield, ShoppingCart, Heart, AlertTriangle, FileCheck, Star, Eye,
-  ChevronDown, ChevronUp
+  Shield, ShoppingCart, Heart, AlertTriangle, FileCheck, Star, Eye, X, Info,
+  TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight
 } from 'lucide-react';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import CollapsibleTable from '../CollapsibleTable';
 
 // ── Datos ──────────────────────────────────────────────────────────────────
 
 const comprasData = [
-  { mes: 'Ene', c2025: 534282848, c2024: 474432855, c2023: 600564431 },
-  { mes: 'Feb', c2025: 509837369, c2024: 621555555, c2023: 759316575 },
-  { mes: 'Mar', c2025: 619736630, c2024: 550965800, c2023: 767903778 },
-  { mes: 'Abr', c2025: 848845152, c2024: 784542904, c2023: 713190490 },
-  { mes: 'May', c2025: 885707842, c2024: 753451113, c2023: 785715840 },
-  { mes: 'Jun', c2025: 715067678, c2024: 712476001, c2023: 539106899 },
-  { mes: 'Jul', c2025: 685759378, c2024: 731561700, c2023: 554146147 },
-  { mes: 'Ago', c2025: 750725818, c2024: 553604110, c2023: 800416404 },
-  { mes: 'Sep', c2025: 1019920685, c2024: 773445898, c2023: 716179812 },
-  { mes: 'Oct', c2025: 983699938, c2024: 643101922, c2023: 777703724 },
-  { mes: 'Nov', c2025: 718262645, c2024: 685082844, c2023: 682133592 },
-  { mes: 'Dic', c2025: 896023288, c2024: 808824477, c2023: 714183870 },
+  { mes: 'Enero',      mesCorto: 'Ene', c2025: 534282848,  c2024: 474432855,  c2023: 600564431,  var2425:  12.62, var2324: -21.00 },
+  { mes: 'Febrero',    mesCorto: 'Feb', c2025: 509837369,  c2024: 621555555,  c2023: 759316575,  var2425: -17.97, var2324: -18.14 },
+  { mes: 'Marzo',      mesCorto: 'Mar', c2025: 619736830,  c2024: 550965800,  c2023: 767903778,  var2425:  12.48, var2324: -28.25 },
+  { mes: 'Abril',      mesCorto: 'Abr', c2025: 648645152,  c2024: 784542984,  c2023: 713190490,  var2425: -17.32, var2324:  10.00 },
+  { mes: 'Mayo',       mesCorto: 'May', c2025: 865707842,  c2024: 753451113,  c2023: 765715840,  var2425:  14.90, var2324:  -1.60 },
+  { mes: 'Junio',      mesCorto: 'Jun', c2025: 715067678,  c2024: 732476001,  c2023: 539106699,  var2425:  -2.38, var2324:  35.87 },
+  { mes: 'Julio',      mesCorto: 'Jul', c2025: 685759378,  c2024: 731561700,  c2023: 554146147,  var2425:  -6.26, var2324:  32.02 },
+  { mes: 'Agosto',     mesCorto: 'Ago', c2025: 750725818,  c2024: 553684110,  c2023: 800416404,  var2425:  35.59, var2324: -30.83 },
+  { mes: 'Septiembre', mesCorto: 'Sep', c2025: 1019920685, c2024: 773445898,  c2023: 716179612,  var2425:  31.87, var2324:   8.00 },
+  { mes: 'Octubre',    mesCorto: 'Oct', c2025: 963699938,  c2024: 643181922,  c2023: 777703724,  var2425:  49.83, var2324: -17.30 },
+  { mes: 'Noviembre',  mesCorto: 'Nov', c2025: 718262645,  c2024: 685082844,  c2023: 682133592,  var2425:   4.84, var2324:   0.43 },
+  { mes: 'Diciembre',  mesCorto: 'Dic', c2025: 896023288,  c2024: 836824477,  c2023: 714183870,  var2425:   7.07, var2324:  17.17 },
 ];
+
+const total2025Compras = 8927669471;
+const total2024Compras = 8141205259;
+const total2023Compras = 8390561162;
+const varCompras2425 = 9.66;
+const varCompras2324 = -2.97;
 
 const polloMalSangradoData = [
   { mes: 'Ene', p2023: 134, p2024: 229, p2025: 94 },
@@ -41,6 +49,9 @@ const polloMalSangradoData = [
   { mes: 'Dic', p2023: 545, p2024: 289, p2025: 176 },
 ];
 
+const prom2025Sangrado = Math.round(polloMalSangradoData.reduce((s, d) => s + d.p2025, 0) / 12);
+const prom2024Sangrado = Math.round(polloMalSangradoData.reduce((s, d) => s + d.p2024, 0) / 12);
+
 const rehabilitacionData = [
   { categoria: 'Gestantes', valor: 8, color: '#f9a8d4' },
   { categoria: 'Accidente Laboral', valor: 14, color: '#fbbf24' },
@@ -49,15 +60,15 @@ const rehabilitacionData = [
 ];
 
 const aguaPlantaData = [
-  { año: '2023', valor: 12.82, fill: '#60a5fa' },
+  { año: '2023', valor: 12.82, fill: '#93c5fd' },
   { año: '2024', valor: 11.44, fill: '#60a5fa' },
   { año: '2025', valor: 10.76, fill: '#fbbf24' },
 ];
 
 const aguaSede2Data = [
-  { año: '2023', valor: 3.53, fill: '#60a5fa' },
+  { año: '2023', valor: 3.53, fill: '#93c5fd' },
   { año: '2024', valor: 4.42, fill: '#60a5fa' },
-  { año: '2025', valor: 3.43, fill: '#60a5fa' },
+  { año: '2025', valor: 3.43, fill: '#34d399' },
 ];
 
 const satisfaccion2025 = [
@@ -74,66 +85,159 @@ const satisfaccion2024 = [
   { name: 'Malo', value: 50, pct: 2.55, color: '#f97316' },
 ];
 
-// ── Subcomponentes ─────────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────
 
-function Section({ icon: Icon, title, color, children, defaultOpen = false }) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: `${color}20` }}>
-            <Icon className="w-5 h-5" style={{ color }} />
+const n = (v) => Number(v).toLocaleString('es-CO');
+const fmt = (v) => `${(v / 1e6).toFixed(0)}M`;
+const pct = (a, b) => b > 0 ? (((a - b) / b) * 100).toFixed(2) : '0.00';
+
+// ── Modal ──────────────────────────────────────────────────────────────────
+
+function Modal({ open, title, children, onClose }) {
+  if (!open) return null;
+  return createPortal(
+    <AnimatePresence>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}>
+        <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
+          className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto"
+          onClick={e => e.stopPropagation()}>
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white z-10">
+            <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
           </div>
-          <span className="font-bold text-gray-800 text-base">{title}</span>
-        </div>
-        {open ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-      </button>
-      {open && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="px-5 pb-6 space-y-5 border-t border-gray-100"
-        >
-          {children}
+          <div className="p-6 space-y-4 text-gray-700">{children}</div>
         </motion.div>
-      )}
-    </div>
+      </motion.div>
+    </AnimatePresence>,
+    document.body
   );
 }
 
-// trend: 'up' | 'down' | 'neutral'  — up=verde, down=rojo, neutral=gris
-// upIsGood: true → up verde; false → up rojo (ej. accidentes)
-function KpiCard({ label, value, sub, color, trend, upIsGood = true }) {
-  const isPositive = (trend === 'up' && upIsGood) || (trend === 'down' && !upIsGood);
-  const isNegative = (trend === 'up' && !upIsGood) || (trend === 'down' && upIsGood);
-  const arrow = trend === 'up' ? '▲' : trend === 'down' ? '▼' : null;
-  const arrowColor = isPositive ? '#10b981' : isNegative ? '#ef4444' : '#94a3b8';
+// ── KPI Card clickeable ────────────────────────────────────────────────────
+
+function KpiClickCard({ label, value2025, value2024, unit = '', varPct, varAbs, color, icon: Icon, good = true, onClick, children }) {
+  const isUp = parseFloat(varPct) >= 0;
+  const isGood = good ? isUp : !isUp;
+  const varColor = isGood ? 'text-green-600' : 'text-red-600';
+  const borderColor = isGood ? 'border-green-500/30 hover:border-green-500' : 'border-red-500/30 hover:border-red-500';
   return (
-    <div
-      className="rounded-xl p-4 flex flex-col gap-1"
-      style={{ background: `${color}10`, border: `1.5px solid ${color}35` }}
-    >
-      <p className="text-xs text-gray-500 leading-tight">{label}</p>
-      <div className="flex items-end gap-1.5">
-        <p className="text-2xl font-black leading-none" style={{ color }}>{value}</p>
-        {arrow && <span className="text-sm font-bold mb-0.5" style={{ color: arrowColor }}>{arrow}</span>}
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+      onClick={onClick}
+      className={`bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 ${borderColor} cursor-pointer transition-all`}>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-gray-600 text-xs font-medium leading-tight">{label}</span>
+        {Icon && <Icon className="w-5 h-5 flex-shrink-0" style={{ color }} />}
       </div>
-      {sub && <p className="text-xs font-medium" style={{ color: isPositive ? '#10b981' : isNegative ? '#ef4444' : '#6b7280' }}>{sub}</p>}
+      <div className="text-2xl font-bold text-gray-900 leading-tight">{value2025}{unit}</div>
+      <div className="border-t border-gray-100 pt-2 mt-2 space-y-0.5">
+        <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{value2024}{unit}</span></div>
+        <div className={`text-sm font-bold ${varColor}`}>
+          {isUp ? <ArrowUpRight className="inline w-3.5 h-3.5" /> : <ArrowDownRight className="inline w-3.5 h-3.5" />}
+          {' '}Var: {isUp ? '+' : ''}{varPct}%
+        </div>
+        {varAbs && <div className={`text-xs font-semibold ${varColor}`}>Dif: {isUp ? '+' : ''}{varAbs}</div>}
+      </div>
+      {children}
+    </motion.div>
+  );
+}
+
+// ── Tooltips gráficas ──────────────────────────────────────────────────────
+
+function TooltipCompras({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const a25 = payload.find(p => p.dataKey === 'c2025');
+  const a24 = payload.find(p => p.dataKey === 'c2024');
+  const diff = a25 && a24 ? a25.value - a24.value : null;
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[230px]">
+      <p className="font-bold text-gray-800 mb-2">{label}</p>
+      {a25 && <p className="text-amber-600 font-semibold">2025: ${n(a25.value)}</p>}
+      {a24 && <p className="text-gray-500">2024: ${n(a24.value)}</p>}
+      {diff !== null && <p className={`mt-1 font-bold ${diff >= 0 ? 'text-red-500' : 'text-green-600'}`}>vs 2024: {diff >= 0 ? '+' : ''}${n(diff)}</p>}
+      <p className="text-gray-400 mt-1.5 leading-tight">Compras de insumos. El alza en 2025 responde al +51% en volumen de producción.</p>
     </div>
   );
 }
 
-function KpiRow({ items }) {
+function TooltipPolloSangrado({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const p25 = payload.find(p => p.dataKey === 'p2025');
+  const p24 = payload.find(p => p.dataKey === 'p2024');
+  const mejora = p25 && p24 && p24.value > 0 ? Math.round(((p24.value - p25.value) / p24.value) * 100) : null;
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-4">
-      {items.map((k, i) => <KpiCard key={i} {...k} />)}
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
+      <p className="font-bold text-gray-800 mb-2">{label} — Pollos mal sangrados</p>
+      {p25 && <p className="text-blue-600 font-semibold">2025: {n(p25.value)} unidades</p>}
+      {p24 && <p className="text-yellow-600">2024: {n(p24.value)} unidades</p>}
+      {mejora !== null && mejora > 0 && <p className="mt-1 font-bold text-green-600">Mejora vs 2024: –{mejora}%</p>}
+      <p className="text-gray-400 mt-1.5 leading-tight">Reducción por mejoras en insensibilizado y capacitación del personal.</p>
     </div>
   );
 }
+
+function TooltipAccidentes({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const val = payload[0]?.value;
+  const pctVal = val ? Math.round((val / 112) * 100) : 0;
+  const ctx = { Planta: 'Mayor riesgo osteomuscular por manipulación de canales.', Posproceso: 'Cortes y movimientos repetitivos en empaque.', Calidad: 'Superficies húmedas y riesgo de caídas.', Granjas: 'Manejo de animales y condiciones de terreno.', Otros: 'Logística, administración y mantenimiento.' };
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+      <p className="font-bold text-gray-800 mb-1">{label}</p>
+      <p className="text-red-600 font-semibold">{val} accidentes ({pctVal}% del total)</p>
+      <p className="text-gray-400 mt-1.5 leading-tight">{ctx[label] || ''}</p>
+    </div>
+  );
+}
+
+function TooltipRehabilitacion({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const val = payload[0]?.value;
+  const pctVal = Math.round((val / 49) * 100);
+  const ctx = { Gestantes: 'Reubicación temporal en puestos de menor riesgo.', 'Accidente Laboral': 'Reintegro tras accidente con incapacidad.', 'Enfermedad Laboral': 'Principalmente osteomuscular en rehabilitación.', 'Enfermedad Común': 'Reintegro gradual o adaptación del puesto.' };
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+      <p className="font-bold text-gray-800 mb-1">{label}</p>
+      <p className="text-indigo-600 font-semibold">{val} personas ({pctVal}% de 49 total)</p>
+      <p className="text-gray-400 mt-1.5 leading-tight">{ctx[label] || ''}</p>
+    </div>
+  );
+}
+
+function TooltipAgua({ unidad, meta }) {
+  return function TT({ active, payload, label }) {
+    if (!active || !payload?.length) return null;
+    const val = payload[0]?.value;
+    return (
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+        <p className="font-bold text-gray-800 mb-1">Año {label}</p>
+        <p className="text-blue-600 font-semibold">{val} {unidad}</p>
+        {meta && <p className={`font-bold mt-1 ${val <= meta ? 'text-green-600' : 'text-red-500'}`}>{val <= meta ? `✓ Bajo meta (${meta})` : `⚠ Sobre meta (${meta})`}</p>}
+        <p className="text-gray-400 mt-1.5 leading-tight">Reducción sostenida = eficiencia hídrica y cumplimiento ambiental.</p>
+      </div>
+    );
+  };
+}
+
+function TooltipSatisfaccion({ active, payload }) {
+  if (!active || !payload?.length) return null;
+  const { name, value, pct: p } = payload[0]?.payload || {};
+  const ctx = { Excelente: 'Servicio sobresaliente en todos los atributos.', Bueno: 'Satisfecho con oportunidades menores de mejora.', Regular: 'Experiencia mixta. Requiere seguimiento.', Malo: 'Insatisfecho. Genera plan de acción obligatorio.' };
+  const clr = { Excelente: '#1e3a8a', Bueno: '#38bdf8', Regular: '#7c3aed', Malo: '#f97316' };
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
+      <p className="font-bold mb-1" style={{ color: clr[name] }}>{name}</p>
+      <p className="text-gray-700 font-semibold">{n(value)} encuestas — {p}%</p>
+      <p className="text-gray-400 mt-1.5 leading-tight">{ctx[name] || ''}</p>
+    </div>
+  );
+}
+
+// ── Bullet list ────────────────────────────────────────────────────────────
 
 function Bullet({ items, color = '#3b82f6' }) {
   return (
@@ -148,459 +252,755 @@ function Bullet({ items, color = '#3b82f6' }) {
   );
 }
 
-const fmt = (v) => `${(v / 1e6).toFixed(0)}M`;
-const cop = (v) => `$${Number(v).toLocaleString('es-CO')}`;
-
-// ── Tooltips personalizados ────────────────────────────────────────────────
-
-function TooltipCompras({ active, payload, label }) {
-  if (!active || !payload?.length) return null;
-  const [a2025, a2024, a2023] = [payload.find(p => p.dataKey === 'c2025'), payload.find(p => p.dataKey === 'c2024'), payload.find(p => p.dataKey === 'c2023')];
-  const diff = a2025 && a2024 ? a2025.value - a2024.value : null;
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
-      <p className="font-bold text-gray-800 mb-2">{label}</p>
-      {a2025 && <p className="text-amber-600 font-semibold">2025: {cop(a2025.value)}</p>}
-      {a2024 && <p className="text-gray-500">2024: {cop(a2024.value)}</p>}
-      {a2023 && <p className="text-gray-400">2023: {cop(a2023.value)}</p>}
-      {diff !== null && (
-        <p className={`mt-1.5 font-bold ${diff >= 0 ? 'text-red-500' : 'text-green-600'}`}>
-          vs 2024: {diff >= 0 ? '+' : ''}{cop(diff)}
-        </p>
-      )}
-      <p className="text-gray-400 mt-1.5 leading-tight">Compras de insumos y materiales. El alza en 2025 responde al +51% en volumen de producción.</p>
-    </div>
-  );
-}
-
-function TooltipPolloSangrado({ active, payload, label }) {
-  if (!active || !payload?.length) return null;
-  const p2025 = payload.find(p => p.dataKey === 'p2025');
-  const p2024 = payload.find(p => p.dataKey === 'p2024');
-  const p2023 = payload.find(p => p.dataKey === 'p2023');
-  const mejora = p2025 && p2024 ? Math.round(((p2024.value - p2025.value) / p2024.value) * 100) : null;
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
-      <p className="font-bold text-gray-800 mb-2">{label} — Pollos mal sangrados</p>
-      {p2025 && <p className="text-blue-600 font-semibold">2025: {p2025.value} unidades</p>}
-      {p2024 && <p className="text-yellow-600">2024: {p2024.value} unidades</p>}
-      {p2023 && <p className="text-red-400">2023: {p2023.value} unidades</p>}
-      {mejora !== null && mejora > 0 && (
-        <p className="mt-1.5 font-bold text-green-600">Mejora vs 2024: –{mejora}%</p>
-      )}
-      <p className="text-gray-400 mt-1.5 leading-tight">Reducción lograda por mejoras en insensibilizado, capacitación del personal y ajustes técnicos en planta.</p>
-    </div>
-  );
-}
-
-function TooltipAccidentes({ active, payload, label }) {
-  if (!active || !payload?.length) return null;
-  const val = payload[0]?.value;
-  const pct = val ? Math.round((val / 112) * 100) : 0;
-  const contexto = {
-    Planta: 'Área de mayor riesgo osteomuscular por manipulación de canales y posturas forzadas.',
-    Posproceso: 'Riesgo por cortes y movimientos repetitivos en empaque y clasificación.',
-    Calidad: 'Exposición a superficies húmedas y riesgo de caídas durante inspecciones.',
-    Granjas: 'Riesgo por manejo de animales, equipos y condiciones de terreno.',
-    Otros: 'Incluye logística, administración, mantenimiento y otras áreas.',
-  };
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
-      <p className="font-bold text-gray-800 mb-1">{label}</p>
-      <p className="text-red-600 font-semibold">{val} accidentes ({pct}% del total)</p>
-      <p className="text-gray-400 mt-1.5 leading-tight">{contexto[label] || 'Área con accidentes registrados en 2025.'}</p>
-    </div>
-  );
-}
-
-function TooltipRehabilitacion({ active, payload, label }) {
-  if (!active || !payload?.length) return null;
-  const val = payload[0]?.value;
-  const total = 49;
-  const pct = Math.round((val / total) * 100);
-  const contexto = {
-    Gestantes: 'Colaboradoras en período de gestación con reubicación temporal en puestos de menor riesgo.',
-    'Accidente Laboral': 'Trabajadores en proceso de reintegro tras accidente de trabajo con incapacidad.',
-    'Enfermedad Laboral': 'Casos de enfermedad de origen laboral (principalmente osteomuscular) en rehabilitación.',
-    'Enfermedad Común': 'Mayor grupo: enfermedades no laborales que requieren reintegro gradual o adaptación del puesto.',
-  };
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[220px]">
-      <p className="font-bold text-gray-800 mb-1">{label}</p>
-      <p className="text-indigo-600 font-semibold">{val} personas ({pct}% de {total} total)</p>
-      <p className="text-gray-400 mt-1.5 leading-tight">{contexto[label] || ''}</p>
-    </div>
-  );
-}
-
-function TooltipAgua({ active, payload, label, unidad, meta }) {
-  if (!active || !payload?.length) return null;
-  const val = payload[0]?.value;
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
-      <p className="font-bold text-gray-800 mb-1">Año {label}</p>
-      <p className="text-blue-600 font-semibold">{val} {unidad}</p>
-      {meta && <p className={`font-bold mt-1 ${val <= meta ? 'text-green-600' : 'text-red-500'}`}>{val <= meta ? `✓ Por debajo de meta (${meta})` : `⚠ Por encima de meta (${meta})`}</p>}
-      <p className="text-gray-400 mt-1.5 leading-tight">Consumo de agua por unidad producida. La reducción sostenida refleja mejoras en eficiencia hídrica y cumplimiento ambiental.</p>
-    </div>
-  );
-}
-
-function TooltipSatisfaccion({ active, payload }) {
-  if (!active || !payload?.length) return null;
-  const { name, value, pct } = payload[0]?.payload || {};
-  const contexto = {
-    Excelente: 'Clientes que califican el servicio como sobresaliente en todos los atributos evaluados.',
-    Bueno: 'Clientes satisfechos con el servicio, con oportunidades menores de mejora.',
-    Regular: 'Clientes con experiencia mixta. Requieren seguimiento y plan de acción.',
-    Malo: 'Clientes insatisfechos. Cada caso genera un plan de acción correctivo obligatorio.',
-  };
-  const color = { Excelente: '#1e3a8a', Bueno: '#38bdf8', Regular: '#7c3aed', Malo: '#f97316' };
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs max-w-[210px]">
-      <p className="font-bold mb-1" style={{ color: color[name] }}>{name}</p>
-      <p className="text-gray-700 font-semibold">{value} encuestas — {pct}%</p>
-      <p className="text-gray-400 mt-1.5 leading-tight">{contexto[name] || ''}</p>
-    </div>
-  );
-}
-
-// ── Secciones individuales ─────────────────────────────────────────────────
+// ── Secciones ──────────────────────────────────────────────────────────────
 
 function SeccionCalidad() {
+  const [modal, setModal] = useState({ open: false, title: '', content: null });
+  const open = (title, content) => setModal({ open: true, title, content });
+  const close = () => setModal(m => ({ ...m, open: false }));
+
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
-        <h2 className="text-lg font-bold text-blue-900 mb-1">1. Aseguramiento de Calidad — 2025</h2>
-      </div>
-      <Section icon={Shield} title="Aseguramiento de Calidad" color="#6366f1" defaultOpen={true}>
-        <KpiRow items={[
-          { label: 'Desviaciones S2 vs S1', value: '+47%', sub: 'Pérdida de control 2do semestre', color: '#ef4444', trend: 'up', upIsGood: false, tooltip: 'El segundo semestre registró un 47% más de desviaciones que el primero, evidenciando pérdida de control en dosificación, desplumado y evisceración.' },
-          { label: 'Incidentes Q4', value: 'Crítico', sub: 'Cambio proveedor dosificación', color: '#dc2626', trend: 'up', upIsGood: false, tooltip: 'Los picos críticos del Q4 obligaron a tomar la decisión de cambiar el sistema y proveedor de dosificación para 2026.' },
-          { label: 'Auditorías aprobadas', value: '100%', sub: 'Cumplimiento INVIMA/HACCP', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'Todas las auditorías externas de INVIMA y las verificaciones HACCP fueron aprobadas sin observaciones mayores.' },
-          { label: 'Indicadores nuevos', value: '+12', sub: 'Desde junio 2025', color: '#10b981', trend: 'up', upIsGood: true, tooltip: 'A partir de junio 2025 se implementaron 12 nuevos indicadores de seguimiento para mejorar la trazabilidad del proceso productivo.' },
-        ]} />
-        <div className="grid md:grid-cols-2 gap-4 pt-2">
-          <div>
-            <p className="text-sm font-semibold text-gray-700 mb-2">Fortalezas</p>
-            <Bullet color="#6366f1" items={[
-              'Fortalecimiento de prerrequisitos y control microbiológico',
-              'Capacitación al personal y gestión técnica de auditorías',
-              'Control de proveedores y variables operativas clave',
-            ]} />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-700 mb-2">Hallazgos críticos</p>
-            <Bullet color="#ef4444" items={[
-              'Variabilidad y pérdida de control en el segundo semestre',
-              'Picos críticos en Q4 → cambio de sistema/proveedor de dosificación',
-              'Incumplimientos por limitaciones de infraestructura y calibración',
-            ]} />
-          </div>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-indigo-500/20 to-blue-600/10 rounded-xl p-6 border-2 border-indigo-500/30">
+        <div className="flex items-center gap-3 mb-2">
+          <Shield className="w-7 h-7 text-indigo-600" />
+          <h2 className="text-2xl font-bold text-gray-900">1. Aseguramiento de Calidad — 2025</h2>
         </div>
-      </Section>
+        <p className="text-gray-700 text-sm">Se garantizó la inocuidad y conformidad normativa bajo HACCP e INVIMA.</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Card cualitativa — sin variación inventada */}
+        {[
+          {
+            icon: Shield,
+            color: 'border-indigo-400 bg-indigo-50',
+            iconColor: 'text-indigo-600',
+            tag: 'Inocuidad HACCP / INVIMA',
+            status: 'Garantizada',
+            statusColor: 'text-indigo-700',
+            detail: 'Cumplimiento normativo total durante 2025. Sin observaciones mayores en auditorías externas.',
+            modalTitle: 'Inocuidad HACCP / INVIMA',
+            modalContent: <div className="space-y-3">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+                <p className="font-semibold text-green-700 mb-1">Cumplimiento normativo</p>
+                <p className="text-sm">Se garantizó la inocuidad y conformidad normativa bajo HACCP e INVIMA durante todo el año.</p>
+              </div>
+              <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-200">
+                <p className="font-semibold text-indigo-700 mb-2">Énfasis del año</p>
+                <Bullet color="#6366f1" items={[
+                  'Fortalecimiento de prerrequisitos y control microbiológico',
+                  'Capacitación al personal y gestión técnica de auditorías',
+                  'Control de proveedores y variables operativas clave',
+                ]} />
+              </div>
+            </div>,
+          },
+          {
+            icon: AlertTriangle,
+            color: 'border-red-400 bg-red-50',
+            iconColor: 'text-red-600',
+            tag: 'Indicadores — 2do semestre',
+            status: 'Pérdida de control',
+            statusColor: 'text-red-700',
+            detail: 'Variabilidad en dosificación, desplumado y evisceración. Picos críticos en Q4.',
+            modalTitle: 'Variabilidad en el 2do semestre',
+            modalContent: <div className="space-y-3">
+              <div className="bg-red-50 rounded-lg p-4 border border-red-200">
+                <p className="font-semibold text-red-700 mb-1">Pérdida de control en S2</p>
+                <p className="text-sm">Los indicadores presentaron variabilidad y pérdida de control en el segundo semestre, principalmente en dosificación, desplumado y evisceración.</p>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                <p className="font-semibold text-orange-700 mb-1">Picos críticos en Q4</p>
+                <p className="text-sm">Los picos del Q4 llevaron a decisiones estructurales: cambio de sistema o proveedor de dosificación.</p>
+              </div>
+            </div>,
+          },
+          {
+            icon: TrendingUp,
+            color: 'border-amber-400 bg-amber-50',
+            iconColor: 'text-amber-600',
+            tag: 'Nuevos indicadores desde junio',
+            status: 'Incumplimientos reiterados',
+            statusColor: 'text-amber-700',
+            detail: 'Causas: infraestructura, calibración de máquinas y variabilidad del tamaño del ave.',
+            modalTitle: 'Nuevos indicadores — incumplimientos',
+            modalContent: <div className="space-y-3">
+              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+                <p className="font-semibold text-amber-700 mb-1">Implementados desde junio 2025</p>
+                <p className="text-sm">Los nuevos indicadores mostraron incumplimientos reiterados desde su implementación.</p>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border border-red-200">
+                <p className="font-semibold text-red-700 mb-1">Causas identificadas</p>
+                <Bullet color="#ef4444" items={[
+                  'Limitaciones de infraestructura',
+                  'Calibración de máquinas',
+                  'Variabilidad del tamaño del ave',
+                ]} />
+              </div>
+            </div>,
+          },
+        ].map(({ icon: Icon, color, iconColor, tag, status, statusColor, detail, modalTitle, modalContent }, i) => (
+          <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            onClick={() => open(modalTitle, modalContent)}
+            className={`rounded-xl p-5 border-2 ${color} cursor-pointer hover:shadow-md transition-all`}>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-gray-600">{tag}</span>
+              <Icon className={`w-5 h-5 flex-shrink-0 ${iconColor}`} />
+            </div>
+            <p className={`text-xl font-bold ${statusColor} mb-2`}>{status}</p>
+            <p className="text-xs text-gray-500 leading-snug">{detail}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-700 mb-3">Énfasis del año</p>
+          <Bullet color="#6366f1" items={[
+            'Fortalecimiento de prerrequisitos y control microbiológico',
+            'Capacitación al personal y gestión técnica de auditorías',
+            'Control de proveedores y variables operativas clave',
+          ]} />
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-700 mb-3">Hallazgos críticos</p>
+          <Bullet color="#ef4444" items={[
+            'Variabilidad y pérdida de control en el segundo semestre (dosificación, desplumado, evisceración)',
+            'Picos críticos en Q4 → cambio de sistema o proveedor de dosificación',
+            'Nuevos indicadores desde junio: incumplimientos por infraestructura, calibración y tamaño del ave',
+          ]} />
+        </div>
+      </div>
+
+      <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
   );
 }
 
 function SeccionCompras() {
+  const [modal, setModal] = useState({ open: false, title: '', content: null });
+  const open = (title, content) => setModal({ open: true, title, content });
+  const close = () => setModal(m => ({ ...m, open: false }));
+
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl p-5 border border-yellow-200">
-        <h2 className="text-lg font-bold text-yellow-900 mb-1">2. Compras — 2025</h2>
-      </div>
-      <Section icon={ShoppingCart} title="Compras" color="#f59e0b" defaultOpen={true}>
-        <KpiRow items={[
-          { label: 'Total compras 2025', value: '$8.927M', sub: '+$786M vs 2024', color: '#f59e0b', trend: 'up', upIsGood: false, tooltip: 'El total de compras pasó de $8.141M en 2024 a $8.927M en 2025. El incremento responde al aumento del 51% en producción.' },
-          { label: 'Crecimiento anual', value: '+9,66%', sub: 'Impulsado por +51% producción', color: '#10b981', trend: 'up', upIsGood: true, tooltip: 'El crecimiento del 9,66% en compras es proporcionalmente menor al +51% de producción, lo que indica eficiencia en el abastecimiento.' },
-          { label: 'Ratio consumo/compra', value: '73,42%', sub: '26,58% en inventario', color: '#3b82f6', trend: 'neutral', tooltip: 'Por cada $100 comprados, $73,42 se consumieron en el año. El 26,58% restante quedó en inventario, parte en repuestos importados.' },
-          { label: 'Proveedores evaluados', value: '36', sub: 'Visitas conjuntas con Calidad', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'Se evaluaron 36 proveedores con la matriz Kraljic. Los proveedores HACCP recibieron visitas conjuntas entre Compras y Calidad.' },
-        ]} />
-        <div className="pt-2">
-          <p className="text-sm font-semibold text-gray-600 mb-3">Compras mensuales 2023 – 2025 (millones $)</p>
-          <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={comprasData} margin={{ top: 10, right: 20, left: 10, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="mes" tick={{ fontSize: 11 }} />
-              <YAxis tickFormatter={fmt} tick={{ fontSize: 10 }} width={55} />
-              <Tooltip content={<TooltipCompras />} />
-              <Legend />
-              <Line type="monotone" dataKey="c2025" name="2025" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 3 }} />
-              <Line type="monotone" dataKey="c2024" name="2024" stroke="#6b7280" strokeWidth={1.5} dot={{ r: 2 }} strokeDasharray="4 2" />
-              <Line type="monotone" dataKey="c2023" name="2023" stroke="#d1d5db" strokeWidth={1.5} dot={{ r: 2 }} strokeDasharray="2 2" />
-            </LineChart>
-          </ResponsiveContainer>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-amber-500/20 to-yellow-600/10 rounded-xl p-6 border-2 border-amber-500/30">
+        <div className="flex items-center gap-3 mb-2">
+          <ShoppingCart className="w-7 h-7 text-amber-600" />
+          <h2 className="text-2xl font-bold text-gray-900">2. Compras — 2025</h2>
         </div>
-        <Bullet color="#f59e0b" items={[
-          'Aumento del 51% en producción impulsó el crecimiento de compras',
-          'Crecimiento de demanda de clientes estratégicos: D1, ARA, Frisby',
-          'Evaluación de 36 proveedores; visitas conjuntas con Calidad para proveedores HACCP',
-          'Avance en la aplicación de la matriz Kraljic',
-          'Aumento en volumen y costo del inventario por repuestos importados',
-        ]} />
-      </Section>
+        <p className="text-gray-700 text-sm">Compras de insumos y materiales. Fuente: SIESA / doccompra por ítem/grupo bodega L01.</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <KpiClickCard
+          label="Total compras 2025"
+          value2025={`$${n(total2025Compras)}`}
+          value2024={`$${n(total2024Compras)}`}
+          varPct={varCompras2425.toFixed(2)}
+          varAbs={`$${n(total2025Compras - total2024Compras)}`}
+          color="#f59e0b" icon={ShoppingCart} good={false}
+          onClick={() => open('Total Compras 2025 vs 2024', <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">${n(total2024Compras)}</p></div>
+              <div className="bg-amber-50 rounded-lg p-3 border border-amber-200"><p className="text-xs text-amber-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-amber-700">${n(total2025Compras)}</p></div>
+            </div>
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
+              <p className="font-semibold text-orange-700 mb-1">Variación 2024→2025: +{varCompras2425}%</p>
+              <p className="text-sm">Diferencia absoluta: ${n(total2025Compras - total2024Compras)}.</p>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <p className="font-semibold text-blue-700 mb-1">vs 2023: ${n(total2023Compras)}</p>
+              <p className="text-sm">Variación 2023→2024: {varCompras2324}%. En 2025 se retomó el crecimiento.</p>
+            </div>
+          </div>)}
+        />
+
+        <KpiClickCard
+          label="Mes de mayor compra"
+          value2025="Sep — $1.019.920.685"
+          value2024="Dic — $836.824.477"
+          varPct="21.90"
+          varAbs="Septiembre lideró en 2025"
+          color="#ef4444" icon={TrendingUp} good={false}
+          onClick={() => open('Mes de mayor compra', <div className="space-y-3">
+            <div className="bg-red-50 rounded-lg p-4 border border-red-200">
+              <p className="font-semibold text-red-700 mb-1">Septiembre 2025: $1.019.920.685</p>
+              <p className="text-sm">+31,87% vs septiembre 2024 ($773.445.898). Octubre también fue alto: $963.699.938 (+49,83% vs 2024).</p>
+            </div>
+            <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+              <p className="font-semibold text-amber-700 mb-1">Meses con mayor crecimiento vs 2024</p>
+              <Bullet color="#f59e0b" items={['Octubre: +49,83%', 'Agosto: +35,59%', 'Septiembre: +31,87%']} />
+            </div>
+          </div>)}
+        />
+
+        <KpiClickCard
+          label="Variación total 2024→2025"
+          value2025="+9,66%"
+          value2024="-2,97% (2023→2024)"
+          varPct="9.66"
+          varAbs={`$${n(total2025Compras - total2024Compras)} más que 2024`}
+          color="#10b981" icon={TrendingUp} good={false}
+          onClick={() => open('Variación anual de compras', <div className="space-y-3">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+              <p className="font-semibold text-green-700 mb-1">2024→2025: +9,66%</p>
+              <p className="text-sm">Las compras crecieron ${n(total2025Compras - total2024Compras)} en términos absolutos respecto a 2024.</p>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <p className="font-semibold text-blue-700 mb-1">2023→2024: -2,97%</p>
+              <p className="text-sm">En 2024 las compras habían bajado respecto a 2023 (${n(total2023Compras)}). En 2025 se retomó el crecimiento.</p>
+            </div>
+          </div>)}
+        />
+      </div>
+
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <p className="text-sm font-semibold text-gray-600 mb-3">Compras mensuales 2023 – 2025 (valores en pesos)</p>
+        <ResponsiveContainer width="100%" height={260}>
+          <LineChart data={comprasData} margin={{ top: 10, right: 20, left: 10, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+            <XAxis dataKey="mesCorto" tick={{ fontSize: 11 }} />
+            <YAxis tickFormatter={fmt} tick={{ fontSize: 10 }} width={55} />
+            <Tooltip content={<TooltipCompras />} />
+            <Legend />
+            <Line type="monotone" dataKey="c2025" name="2025" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 3 }} />
+            <Line type="monotone" dataKey="c2024" name="2024" stroke="#6b7280" strokeWidth={1.5} dot={{ r: 2 }} strokeDasharray="4 2" />
+            <Line type="monotone" dataKey="c2023" name="2023" stroke="#d1d5db" strokeWidth={1.5} dot={{ r: 2 }} strokeDasharray="2 2" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      <CollapsibleTable title="Compras mensuales 2023 – 2025 con variaciones" defaultOpen={false}>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="text-left py-3 px-4 font-semibold text-gray-700">MES</th>
+                <th className="text-right py-3 px-4 font-semibold text-amber-700">COMPRAS 2025</th>
+                <th className="text-right py-3 px-4 font-semibold text-gray-600">COMPRAS 2024</th>
+                <th className="text-right py-3 px-4 font-semibold text-gray-400">COMPRAS 2023</th>
+                <th className="text-right py-3 px-4 font-semibold text-red-600">% VAR 2024-2025</th>
+                <th className="text-right py-3 px-4 font-semibold text-green-700">% VAR 2023-2024</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comprasData.map((row, i) => (
+                <tr key={i} className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
+                  <td className="py-2.5 px-4 font-medium text-gray-800">{row.mes}</td>
+                  <td className="py-2.5 px-4 text-right font-semibold text-amber-700">${n(row.c2025)}</td>
+                  <td className="py-2.5 px-4 text-right text-gray-600">${n(row.c2024)}</td>
+                  <td className="py-2.5 px-4 text-right text-gray-400">${n(row.c2023)}</td>
+                  <td className={`py-2.5 px-4 text-right font-semibold ${row.var2425 >= 0 ? 'text-red-600' : 'text-green-600'}`}>
+                    {row.var2425 >= 0 ? '+' : ''}{row.var2425.toFixed(2)}%
+                  </td>
+                  <td className={`py-2.5 px-4 text-right font-semibold ${row.var2324 >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                    {row.var2324 >= 0 ? '+' : ''}{row.var2324.toFixed(2)}%
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="bg-amber-50 border-t-2 border-amber-300 font-bold">
+                <td className="py-3 px-4 text-gray-900">TOTALES</td>
+                <td className="py-3 px-4 text-right text-amber-700">${n(total2025Compras)}</td>
+                <td className="py-3 px-4 text-right text-gray-700">${n(total2024Compras)}</td>
+                <td className="py-3 px-4 text-right text-gray-500">${n(total2023Compras)}</td>
+                <td className="py-3 px-4 text-right text-red-600">+{varCompras2425}%</td>
+                <td className="py-3 px-4 text-right text-green-700">{varCompras2324}%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </CollapsibleTable>
+
+      <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
   );
 }
 
 function SeccionBienestar() {
+  const [modal, setModal] = useState({ open: false, title: '', content: null });
+  const open = (title, content) => setModal({ open: true, title, content });
+  const close = () => setModal(m => ({ ...m, open: false }));
+
+  const varSangrado = pct(prom2025Sangrado, prom2024Sangrado);
+
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl p-5 border border-pink-200">
-        <h2 className="text-lg font-bold text-pink-900 mb-1">3. Bienestar Animal — 2025</h2>
-      </div>
-      <Section icon={Heart} title="Bienestar Animal" color="#ec4899" defaultOpen={true}>
-        <KpiRow items={[
-          { label: 'Pollo mal sangrado', value: '–63,3%', sub: '2025 vs 2024 (229→92 prom.)', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'El promedio mensual de pollos mal sangrados bajó de 229 unidades en 2024 a 92 en 2025, gracias a mejoras en insensibilizado y capacitación.' },
-          { label: 'Aves mal aturdidas', value: '–8,21%', sub: 'Mejora sostenida en planta', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'La reducción del 8,21% en aves mal aturdidas refleja el impacto de los ajustes técnicos en el proceso de insensibilización.' },
-          { label: 'Cargue en tubo', value: '100%', sub: 'Migración completa lograda', color: '#3b82f6', trend: 'up', upIsGood: true, tooltip: 'Se completó la migración total al sistema de cargue en tubo, eliminando el método anterior que generaba mayor estrés animal.' },
-          { label: 'Transportadores cert.', value: '100%', sub: 'ICA / Mintransporte', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'El 100% de los transportadores de aves cuentan con certificación vigente de ICA y Mintransporte, cumpliendo la normativa de bienestar animal.' },
-        ]} />
-        <div className="pt-2">
-          <p className="text-sm font-semibold text-gray-600 mb-3">Pollo mal sangrado 2023 – 2025 (unidades)</p>
-          <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={polloMalSangradoData} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="mes" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 10 }} />
-              <Tooltip content={<TooltipPolloSangrado />} />
-              <Legend />
-              <Line type="monotone" dataKey="p2023" name="2023" stroke="#ef4444" strokeWidth={2} dot={{ r: 3 }} />
-              <Line type="monotone" dataKey="p2024" name="2024" stroke="#eab308" strokeWidth={2} dot={{ r: 3 }} />
-              <Line type="monotone" dataKey="p2025" name="2025" stroke="#3b82f6" strokeWidth={2.5} dot={{ r: 3 }} />
-            </LineChart>
-          </ResponsiveContainer>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-pink-500/20 to-rose-600/10 rounded-xl p-6 border-2 border-pink-500/30">
+        <div className="flex items-center gap-3 mb-2">
+          <Heart className="w-7 h-7 text-pink-600" />
+          <h2 className="text-2xl font-bold text-gray-900">3. Bienestar Animal — 2025</h2>
         </div>
-        <Bullet color="#ec4899" items={[
-          'Capacitación del personal operativo, supervisores y calidad',
-          'Certificación de transportadores (ICA/Mintransporte)',
-          'Diseño de mejoras en insensibilizado y sangrado',
-          'Implementación del monitoreo de lesiones en granja y planta',
-        ]} />
-      </Section>
+        <p className="text-gray-700 text-sm">Indicadores de bienestar en transporte, insensibilizado y proceso de beneficio.</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <KpiClickCard label="Promedio mensual pollos mal sangrados" value2025={n(prom2025Sangrado)} value2024={n(prom2024Sangrado)}
+          varPct={varSangrado} varAbs={`${n(Math.abs(prom2025Sangrado - prom2024Sangrado))} unidades/mes`}
+          color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Pollo mal sangrado 2025 vs 2024', <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">Promedio 2024</p><p className="text-xl font-bold text-gray-900">{n(prom2024Sangrado)} u/mes</p></div>
+              <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">Promedio 2025</p><p className="text-xl font-bold text-green-700">{n(prom2025Sangrado)} u/mes</p></div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción: {varSangrado}%</p><p className="text-sm">Diferencia: {n(Math.abs(prom2025Sangrado - prom2024Sangrado))} unidades/mes menos. Logrado mediante mejoras en insensibilizado, capacitación del personal y ajustes técnicos en planta.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Aves mal aturdidas" value2025="–8,21%" value2024="Base 2024" varPct="-8.21" varAbs="Mejora sostenida en planta" color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Aves mal aturdidas 2025 vs 2024', <div className="space-y-3">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción del 8,21%</p><p className="text-sm">La reducción refleja el impacto de los ajustes técnicos en el proceso de insensibilización y la capacitación continua del personal operativo.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Cargue en tubo (migración)" value2025="100%" value2024="Parcial" varPct="100" varAbs="Migración completa lograda" color="#3b82f6" icon={TrendingUp} good={true}
+          onClick={() => open('Migración a cargue en tubo', <div className="space-y-3">
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200"><p className="font-semibold text-blue-700 mb-1">100% migrado</p><p className="text-sm">Se completó la migración total al sistema de cargue en tubo, eliminando el método anterior que generaba mayor estrés animal durante el proceso de carga.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Transportadores certificados ICA/Mintransporte" value2025="100%" value2024="100%" varPct="0" varAbs="Cumplimiento normativo total" color="#6366f1" icon={Shield} good={true}
+          onClick={() => open('Certificación de transportadores', <div className="space-y-3">
+            <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-200"><p className="font-semibold text-indigo-700 mb-1">100% certificados</p><p className="text-sm">El 100% de los transportadores de aves cuentan con certificación vigente de ICA y Mintransporte, cumpliendo la normativa de bienestar animal en transporte.</p></div>
+          </div>)} />
+      </div>
+
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <p className="text-sm font-semibold text-gray-600 mb-3">Pollo mal sangrado mensual 2023 – 2025 (unidades)</p>
+        <ResponsiveContainer width="100%" height={280}>
+          <LineChart data={polloMalSangradoData} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+            <XAxis dataKey="mes" tick={{ fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 10 }} />
+            <Tooltip content={<TooltipPolloSangrado />} />
+            <Legend />
+            <Line type="monotone" dataKey="p2023" name="2023" stroke="#ef4444" strokeWidth={2} dot={{ r: 3 }} />
+            <Line type="monotone" dataKey="p2024" name="2024" stroke="#eab308" strokeWidth={2} dot={{ r: 3 }} />
+            <Line type="monotone" dataKey="p2025" name="2025" stroke="#3b82f6" strokeWidth={2.5} dot={{ r: 3 }} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
   );
 }
 
 function SeccionHSEQ() {
+  const [modal, setModal] = useState({ open: false, title: '', content: null });
+  const open = (title, content) => setModal({ open: true, title, content });
+  const close = () => setModal(m => ({ ...m, open: false }));
+
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-5 border border-orange-200">
-        <h2 className="text-lg font-bold text-orange-900 mb-1">4. HSEQ — 2025</h2>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-orange-500/20 to-red-600/10 rounded-xl p-6 border-2 border-orange-500/30">
+        <div className="flex items-center gap-3 mb-2">
+          <AlertTriangle className="w-7 h-7 text-orange-600" />
+          <h2 className="text-2xl font-bold text-gray-900">4. HSEQ — 2025</h2>
+        </div>
+        <p className="text-gray-700 text-sm">Seguridad, salud, medio ambiente y calidad. Accidentalidad, agua y residuos.</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <KpiClickCard label="Accidentes laborales 2025" value2025="112" value2024="~95 (ref.)" varPct="17.89" varAbs="Planta 27 · Posproceso 21 · Calidad 17" color="#ef4444" icon={AlertTriangle} good={false}
+          onClick={() => open('Accidentes laborales 2025', <div className="space-y-3">
+            <div className="bg-red-50 rounded-lg p-4 border border-red-200"><p className="font-semibold text-red-700 mb-1">112 accidentes en 2025</p><p className="text-sm">Distribución por área: Planta 27 (24%), Posproceso 21 (19%), Calidad 17 (15%), Granjas 16 (14%), Otros 31 (28%). El riesgo osteomuscular es el principal factor.</p></div>
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">Acción: gimnasia laboral</p><p className="text-sm">Se implementó el programa de gimnasia laboral con 22 jornadas de capacitación y 347 asistentes para mitigar el riesgo osteomuscular.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Agua/ave planta beneficio" value2025="10,76 L/ave" value2024="11,44 L/ave" varPct="-5.94" varAbs="–0,68 L/ave ahorrados" color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Consumo de agua planta beneficio', <div className="space-y-3">
+            <div className="grid grid-cols-3 gap-2">
+              {aguaPlantaData.map((d, i) => <div key={i} className="bg-blue-50 rounded-lg p-3 border border-blue-200 text-center"><p className="text-xs text-gray-500">{d.año}</p><p className="text-lg font-bold text-blue-700">{d.valor} L/ave</p></div>)}
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción sostenida 2023→2025</p><p className="text-sm">De 12,82 L/ave en 2023 a 10,76 L/ave en 2025: reducción total de 2,06 L/ave (–16%). Refleja mejoras en eficiencia hídrica y cumplimiento ambiental.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Agua Sede 2" value2025="3,43 L/kg" value2024="4,42 L/kg" varPct="-22.40" varAbs="–0,99 L/kg ahorrados" color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Consumo de agua Sede 2', <div className="space-y-3">
+            <div className="grid grid-cols-3 gap-2">
+              {aguaSede2Data.map((d, i) => <div key={i} className="bg-blue-50 rounded-lg p-3 border border-blue-200 text-center"><p className="text-xs text-gray-500">{d.año}</p><p className="text-lg font-bold text-blue-700">{d.valor} L/kg</p></div>)}
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción 2024→2025: –22,4%</p><p className="text-sm">Sede 2 pasó de 4,42 L/kg en 2024 a 3,43 L/kg en 2025, recuperando el nivel de 2023 (3,53 L/kg) y superándolo.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Residuos aprovechables" value2025="+24,65%" value2024="Base 2024" varPct="24.65" varAbs="Mayor separación en la fuente" color="#10b981" icon={TrendingUp} good={true}
+          onClick={() => open('Gestión de residuos aprovechables', <div className="space-y-3">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">+24,65% en residuos aprovechables</p><p className="text-sm">El crecimiento indica mejor separación en la fuente y mayor eficiencia en el programa de gestión ambiental. 100% cumplimiento en reportes al DANE, IDEAM y SDA.</p></div>
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">Alerta: residuos peligrosos</p><p className="text-sm">Aumento del 29,84% en residuos peligrosos por jornadas extraordinarias de disposición de RAEE (equipos electrónicos en desuso).</p></div>
+          </div>)} />
       </div>
-      <Section icon={AlertTriangle} title="HSEQ" color="#f97316" defaultOpen={true}>
-        <KpiRow items={[
-          { label: 'Accidentes 2025', value: '112', sub: 'Planta 24% · Posproceso 19%', color: '#ef4444', trend: 'up', upIsGood: false, tooltip: '112 accidentes en el año. Las áreas de mayor concentración son Planta (27), Posproceso (21) y Calidad (17). El riesgo osteomuscular es el principal factor.' },
-          { label: 'Capacitaciones', value: '22', sub: '347 asistentes en el año', color: '#f97316', trend: 'up', upIsGood: true, tooltip: 'Se realizaron 22 jornadas de capacitación con 347 asistentes, incluyendo gimnasia laboral para mitigar el riesgo osteomuscular.' },
-          { label: 'Agua/ave planta', value: '–5,9%', sub: '11,44 → 10,76 L/ave', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'El consumo de agua por ave en planta de beneficio bajó de 11,44 L en 2024 a 10,76 L en 2025, una reducción del 5,9% que representa ahorro ambiental y económico.' },
-          { label: 'Residuos aprovechables', value: '+24,65%', sub: 'Mejora en gestión ambiental', color: '#10b981', trend: 'up', upIsGood: true, tooltip: 'El volumen de residuos aprovechables creció un 24,65%, indicando mejor separación en la fuente y mayor eficiencia en el programa de gestión ambiental.' },
-        ]} />
-        <div className="grid md:grid-cols-2 gap-6 pt-2">
-          <div>
-            <p className="text-sm font-semibold text-gray-600 mb-3">Accidentes por área</p>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={[
-                { area: 'Planta', n: 27, fill: '#ef4444' },
-                { area: 'Posproceso', n: 21, fill: '#f97316' },
-                { area: 'Calidad', n: 17, fill: '#fbbf24' },
-                { area: 'Granjas', n: 16, fill: '#84cc16' },
-                { area: 'Otros', n: 31, fill: '#94a3b8' },
-              ]} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis dataKey="area" tick={{ fontSize: 10 }} />
-                <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip content={<TooltipAccidentes />} />
-                <Bar dataKey="n" name="Accidentes" radius={[4, 4, 0, 0]}>
-                  {[
-                    { fill: '#ef4444' }, { fill: '#f97316' }, { fill: '#fbbf24' },
-                    { fill: '#84cc16' }, { fill: '#94a3b8' },
-                  ].map((e, i) => <Cell key={i} fill={e.fill} />)}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-600 mb-3">Rehabilitación y Reintegro</p>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={rehabilitacionData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis dataKey="categoria" tick={{ fontSize: 9 }} />
-                <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip content={<TooltipRehabilitacion />} />
-                <Bar dataKey="valor" name="Personas" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 11, fontWeight: 700 }}>
-                  {rehabilitacionData.map((e, i) => <Cell key={i} fill={e.color} />)}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-600 mb-3">Accidentes por área — 112 total 2025</p>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={[
+              { area: 'Planta', n: 27 }, { area: 'Posproceso', n: 21 }, { area: 'Calidad', n: 17 },
+              { area: 'Granjas', n: 16 }, { area: 'Otros', n: 31 },
+            ]} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+              <XAxis dataKey="area" tick={{ fontSize: 10 }} />
+              <YAxis tick={{ fontSize: 10 }} />
+              <Tooltip content={<TooltipAccidentes />} />
+              <Bar dataKey="n" name="Accidentes" radius={[4, 4, 0, 0]}>
+                {['#ef4444','#f97316','#fbbf24','#84cc16','#94a3b8'].map((fill, i) => <Cell key={i} fill={fill} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua planta beneficio (L/ave)</p>
-            <ResponsiveContainer width="100%" height={180}>
-              <BarChart data={aguaPlantaData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis dataKey="año" tick={{ fontSize: 12 }} />
-                <YAxis domain={[0, 16]} tick={{ fontSize: 10 }} />
-                <Tooltip content={<TooltipAgua unidad="L/ave" meta={11} />} />
-                <Bar dataKey="valor" name="L/ave" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
-                  {aguaPlantaData.map((e, i) => <Cell key={i} fill={e.fill} />)}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua Sede 2 (L/kg)</p>
-            <ResponsiveContainer width="100%" height={180}>
-              <BarChart data={aguaSede2Data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis dataKey="año" tick={{ fontSize: 12 }} />
-                <YAxis domain={[0, 6]} tick={{ fontSize: 10 }} />
-                <Tooltip content={<TooltipAgua unidad="L/kg" meta={4} />} />
-                <Bar dataKey="valor" name="L/kg" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
-                  {aguaSede2Data.map((e, i) => <Cell key={i} fill={e.fill} />)}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-600 mb-3">Rehabilitación y Reintegro — 49 personas</p>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={rehabilitacionData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+              <XAxis dataKey="categoria" tick={{ fontSize: 9 }} />
+              <YAxis tick={{ fontSize: 10 }} />
+              <Tooltip content={<TooltipRehabilitacion />} />
+              <Bar dataKey="valor" name="Personas" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 11, fontWeight: 700 }}>
+                {rehabilitacionData.map((e, i) => <Cell key={i} fill={e.color} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
-        <Bullet color="#f97316" items={[
-          'Implementación del programa de gimnasia laboral para mitigar riesgo osteomuscular',
-          'Reducción del 20,02% en canastillas rotas',
-          'Aumento del 29,84% en residuos peligrosos por jornadas extraordinarias (RAEE)',
-          '100% cumplimiento en reportes ambientales al DANE, IDEAM y SDA',
-          'Avances en concesiones de agua y gestión ante CAR en múltiples granjas',
-        ]} />
-      </Section>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua planta beneficio (L/ave)</p>
+          <ResponsiveContainer width="100%" height={180}>
+            <BarChart data={aguaPlantaData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+              <XAxis dataKey="año" tick={{ fontSize: 12 }} />
+              <YAxis domain={[0, 16]} tick={{ fontSize: 10 }} />
+              <Tooltip content={TooltipAgua({ unidad: 'L/ave', meta: 11 })} />
+              <Bar dataKey="valor" name="L/ave" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
+                {aguaPlantaData.map((e, i) => <Cell key={i} fill={e.fill} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua Sede 2 (L/kg)</p>
+          <ResponsiveContainer width="100%" height={180}>
+            <BarChart data={aguaSede2Data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+              <XAxis dataKey="año" tick={{ fontSize: 12 }} />
+              <YAxis domain={[0, 6]} tick={{ fontSize: 10 }} />
+              <Tooltip content={TooltipAgua({ unidad: 'L/kg', meta: 4 })} />
+              <Bar dataKey="valor" name="L/kg" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
+                {aguaSede2Data.map((e, i) => <Cell key={i} fill={e.fill} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
+    </div>
+  );
+}
+
+function SeccionAmbiental() {
+  const [modal, setModal] = useState({ open: false, title: '', content: null });
+  const open = (title, content) => setModal({ open: true, title, content });
+  const close = () => setModal(m => ({ ...m, open: false }));
+
+  return (
+    <div className="space-y-4">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-green-500/20 to-emerald-600/10 rounded-xl p-6 border-2 border-green-500/30">
+        <div className="flex items-center gap-3 mb-2">
+          <TrendingDown className="w-7 h-7 text-green-600" />
+          <h2 className="text-2xl font-bold text-gray-900">5. Gestión Ambiental — 2025</h2>
+        </div>
+        <p className="text-gray-700 text-sm">Consumo hídrico, gestión de residuos y cumplimiento de reportes ambientales.</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <KpiClickCard label="Agua/ave planta beneficio" value2025="10,76 L/ave" value2024="11,44 L/ave"
+          varPct="-5.94" varAbs="–0,68 L/ave ahorrados" color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Consumo de agua planta beneficio', <div className="space-y-3">
+            <div className="grid grid-cols-3 gap-2">
+              {aguaPlantaData.map((d, i) => <div key={i} className="bg-blue-50 rounded-lg p-3 border border-blue-200 text-center"><p className="text-xs text-gray-500">{d.año}</p><p className="text-lg font-bold text-blue-700">{d.valor} L/ave</p></div>)}
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción sostenida 2023→2025</p><p className="text-sm">De 12,82 L/ave en 2023 a 10,76 L/ave en 2025: reducción total de 2,06 L/ave (–16%). Refleja mejoras en eficiencia hídrica y cumplimiento ambiental.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Agua Sede 2" value2025="3,43 L/kg" value2024="4,42 L/kg"
+          varPct="-22.40" varAbs="–0,99 L/kg ahorrados" color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Consumo de agua Sede 2', <div className="space-y-3">
+            <div className="grid grid-cols-3 gap-2">
+              {aguaSede2Data.map((d, i) => <div key={i} className="bg-blue-50 rounded-lg p-3 border border-blue-200 text-center"><p className="text-xs text-gray-500">{d.año}</p><p className="text-lg font-bold text-blue-700">{d.valor} L/kg</p></div>)}
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción 2024→2025: –22,4%</p><p className="text-sm">Sede 2 pasó de 4,42 L/kg en 2024 a 3,43 L/kg en 2025, recuperando y superando el nivel de 2023 (3,53 L/kg).</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Residuos aprovechables" value2025="+24,65%" value2024="Base 2024"
+          varPct="24.65" varAbs="Mayor separación en la fuente" color="#10b981" icon={TrendingUp} good={true}
+          onClick={() => open('Residuos aprovechables 2025 vs 2024', <div className="space-y-3">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">+24,65% en residuos aprovechables</p><p className="text-sm">Indica mejor separación en la fuente y mayor eficiencia en el programa de gestión ambiental. 100% cumplimiento en reportes al DANE, IDEAM y SDA.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Residuos peligrosos (RAEE)" value2025="+29,84%" value2024="Base 2024"
+          varPct="29.84" varAbs="Jornadas extraordinarias RAEE" color="#f97316" icon={AlertTriangle} good={false}
+          onClick={() => open('Residuos peligrosos RAEE', <div className="space-y-3">
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">+29,84% — jornadas extraordinarias</p><p className="text-sm">El aumento se explica por jornadas extraordinarias de disposición de RAEE (equipos electrónicos en desuso). No refleja deterioro operativo sino una gestión activa de pasivos ambientales.</p></div>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200"><p className="font-semibold text-blue-700 mb-1">Cumplimiento normativo</p><p className="text-sm">100% de reportes ambientales entregados a DANE, IDEAM y SDA. Avances en concesiones de agua y gestión ante CAR en múltiples granjas.</p></div>
+          </div>)} />
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua planta beneficio (L/ave)</p>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={aguaPlantaData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+              <XAxis dataKey="año" tick={{ fontSize: 12 }} />
+              <YAxis domain={[0, 16]} tick={{ fontSize: 10 }} />
+              <Tooltip content={TooltipAgua({ unidad: 'L/ave', meta: 11 })} />
+              <Bar dataKey="valor" name="L/ave" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
+                {aguaPlantaData.map((e, i) => <Cell key={i} fill={e.fill} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-600 mb-3">Consumo agua Sede 2 (L/kg)</p>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={aguaSede2Data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+              <XAxis dataKey="año" tick={{ fontSize: 12 }} />
+              <YAxis domain={[0, 6]} tick={{ fontSize: 10 }} />
+              <Tooltip content={TooltipAgua({ unidad: 'L/kg', meta: 4 })} />
+              <Bar dataKey="valor" name="L/kg" radius={[4, 4, 0, 0]} label={{ position: 'top', fontSize: 12, fontWeight: 700 }}>
+                {aguaSede2Data.map((e, i) => <Cell key={i} fill={e.fill} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
   );
 }
 
 function SeccionSGC() {
+  const [modal, setModal] = useState({ open: false, title: '', content: null });
+  const open = (title, content) => setModal({ open: true, title, content });
+  const close = () => setModal(m => ({ ...m, open: false }));
+
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-5 border border-sky-200">
-        <h2 className="text-lg font-bold text-sky-900 mb-1">5. Sistema de Gestión de Calidad — 2025</h2>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-sky-500/20 to-blue-600/10 rounded-xl p-6 border-2 border-sky-500/30">
+        <div className="flex items-center gap-3 mb-2">
+          <FileCheck className="w-7 h-7 text-sky-600" />
+          <h2 className="text-2xl font-bold text-gray-900">5. Sistema de Gestión de Calidad — 2025</h2>
+        </div>
+        <p className="text-gray-700 text-sm">Auditorías internas, migración a ISOLUCION e integración CRM SIESA.</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <KpiClickCard label="Auditorías internas realizadas" value2025="15" value2024="N/A" varPct="100" varAbs="Procesos auditados en 2025" color="#0ea5e9" icon={FileCheck} good={true}
+          onClick={() => open('Auditorías internas 2025', <div className="space-y-3">
+            <div className="bg-sky-50 rounded-lg p-4 border border-sky-200"><p className="font-semibold text-sky-700 mb-1">15 procesos auditados</p><p className="text-sm">Se auditaron 15 procesos internamente durante 2025, cubriendo las áreas críticas del sistema de gestión de calidad con metodologías de análisis causal.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Módulos ISOLUCION implementados" value2025="3 / 3" value2024="0 / 3" varPct="100" varAbs="Actas, Tareas y Mejora Continua" color="#10b981" icon={TrendingUp} good={true}
+          onClick={() => open('Migración a ISOLUCION', <div className="space-y-3">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">100% implementado</p><p className="text-sm">Los tres módulos prioritarios (Actas, Tareas y Mejora Continua) alcanzaron el 100% de implementación. La migración completa centraliza gestión documental, trazabilidad de acciones y seguimiento de indicadores.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Migración sistema documental" value2025="100%" value2024="0%" varPct="100" varAbs="De sistema anterior a ISOLUCION" color="#6366f1" icon={TrendingUp} good={true}
+          onClick={() => open('Migración sistema documental', <div className="space-y-3">
+            <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-200"><p className="font-semibold text-indigo-700 mb-1">Migración completa</p><p className="text-sm">La migración al sistema ISOLUCION permite centralizar la gestión documental, trazabilidad de acciones correctivas y seguimiento de indicadores de calidad en una sola plataforma.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="CRM integrado" value2025="SIESA" value2024="Separado" varPct="100" varAbs="Requisitos de clientes unificados" color="#f59e0b" icon={Info} good={true}
+          onClick={() => open('Integración CRM SIESA', <div className="space-y-3">
+            <div className="bg-amber-50 rounded-lg p-4 border border-amber-200"><p className="font-semibold text-amber-700 mb-1">CRM SIESA integrado</p><p className="text-sm">La integración del CRM SIESA permite unificar los requisitos de clientes con el sistema de gestión, reduciendo reprocesos y mejorando la velocidad de respuesta ante solicitudes.</p></div>
+          </div>)} />
       </div>
-      <Section icon={FileCheck} title="Sistema de Gestión de Calidad" color="#0ea5e9" defaultOpen={true}>
-        <KpiRow items={[
-          { label: 'Auditorías internas', value: '15', sub: 'Procesos auditados en 2025', color: '#0ea5e9', trend: 'up', upIsGood: true, tooltip: 'Se auditaron 15 procesos internamente durante 2025, cubriendo las áreas críticas del sistema de gestión de calidad.' },
-          { label: 'Módulos ISOLUCION', value: '3/3', sub: 'Actas, Tareas y Mejora al 100%', color: '#10b981', trend: 'up', upIsGood: true, tooltip: 'Los tres módulos prioritarios de ISOLUCION (Actas, Tareas y Mejora Continua) alcanzaron el 100% de implementación durante 2025.' },
-          { label: 'Migración sistema', value: '100%', sub: 'De sistema anterior a ISOLUCION', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'La migración completa al sistema ISOLUCION permite centralizar la gestión documental, trazabilidad de acciones y seguimiento de indicadores.' },
-          { label: 'CRM unificado', value: 'SIESA', sub: 'Requisitos de clientes integrados', color: '#f59e0b', trend: 'up', upIsGood: true, tooltip: 'La integración del CRM SIESA permite unificar los requisitos de clientes con el sistema de gestión, reduciendo reprocesos y mejorando la respuesta.' },
-        ]} />
-        <Bullet color="#0ea5e9" items={[
-          'Actualización de matrices estratégicas y políticas',
-          'Implementación de metodologías de análisis causal',
-          'Migración del sistema a ISOLUCION con módulos de Actas, Tareas y Mejora al 100%',
-          'Integración del CRM SIESA para unificar requisitos de clientes',
-        ]} />
-      </Section>
+
+      <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
   );
 }
 
 function SeccionSatisfaccion() {
+  const [modal, setModal] = useState({ open: false, title: '', content: null });
+  const open = (title, content) => setModal({ open: true, title, content });
+  const close = () => setModal(m => ({ ...m, open: false }));
+
+  const pos2025 = 47.17 + 48.11;
+  const pos2024 = 58.21 + 38.54;
+  const varPos = pct(pos2025, pos2024);
+  const varPQRS = pct(259, 362);
+  const varPlanes = pct(154, 120);
+
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-5 border border-violet-200">
-        <h2 className="text-lg font-bold text-violet-900 mb-1">6. Satisfacción del Cliente — 2025</h2>
-      </div>
-      <Section icon={Star} title="Satisfacción del Cliente, PQRS y Planes de Acción" color="#8b5cf6" defaultOpen={true}>
-        <KpiRow items={[
-          { label: 'Satisfacción positiva 2025', value: '95,28%', sub: 'Excelente+Bueno (vs 96,75% en 2024)', color: '#8b5cf6', trend: 'down', upIsGood: false, tooltip: 'La satisfacción positiva (Excelente+Bueno) bajó de 96,75% en 2024 a 95,28% en 2025. Aunque sigue siendo alta, la tendencia requiere atención.' },
-          { label: 'PQRs recibidas', value: '259', sub: '–28,45% vs 2024 (362 PQRs)', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'Las PQRs bajaron de 362 en 2024 a 259 en 2025 (–28,45%), lo que indica mejora en la experiencia del cliente y reducción de fallas en servicio.' },
-          { label: 'Planes de acción', value: '154', sub: '+27,92% — mayor gestión correctiva', color: '#f59e0b', trend: 'up', upIsGood: true, tooltip: 'El aumento de planes de acción (+27,92%) refleja mayor madurez del sistema: se detectan y gestionan más oportunidades de mejora de forma proactiva.' },
-          { label: 'No Conformidades', value: '+34,78%', sub: 'Alerta: mayor detección interna', color: '#ef4444', trend: 'up', upIsGood: false, tooltip: 'El incremento del 34,78% en no conformidades es una señal de alerta. Puede indicar mayor rigurosidad en la detección, pero también deterioro en la ejecución de procesos.' },
-        ]} />
-        <div className="grid md:grid-cols-2 gap-6 pt-2">
-          <div>
-            <p className="text-sm font-semibold text-gray-600 mb-3 text-center">Satisfacción 2025 — 1.166 encuestas</p>
-            <ResponsiveContainer width="100%" height={220}>
-              <PieChart>
-                <Pie data={satisfaccion2025} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
-                  label={({ pct }) => `${pct}%`} labelLine={false}>
-                  {satisfaccion2025.map((e, i) => <Cell key={i} fill={e.color} />)}
-                </Pie>
-                <Tooltip content={<TooltipSatisfaccion />} />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-600 mb-3 text-center">Satisfacción 2024 — 1.894 encuestas</p>
-            <ResponsiveContainer width="100%" height={220}>
-              <PieChart>
-                <Pie data={satisfaccion2024} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
-                  label={({ pct }) => `${pct}%`} labelLine={false}>
-                  {satisfaccion2024.map((e, i) => <Cell key={i} fill={e.color} />)}
-                </Pie>
-                <Tooltip content={<TooltipSatisfaccion />} />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-violet-500/20 to-purple-600/10 rounded-xl p-6 border-2 border-violet-500/30">
+        <div className="flex items-center gap-3 mb-2">
+          <Star className="w-7 h-7 text-violet-600" />
+          <h2 className="text-2xl font-bold text-gray-900">6. Satisfacción del Cliente — 2025</h2>
         </div>
-      </Section>
+        <p className="text-gray-700 text-sm">Encuestas de satisfacción, PQRS y planes de acción correctiva.</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <KpiClickCard label="Satisfacción positiva (Excelente+Bueno)" value2025={`${pos2025.toFixed(2)}%`} value2024={`${pos2024.toFixed(2)}%`}
+          varPct={varPos} varAbs={`${Math.abs(pos2025 - pos2024).toFixed(2)}pp de diferencia`}
+          color="#8b5cf6" icon={Star} good={false}
+          onClick={() => open('Satisfacción positiva 2025 vs 2024', <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024 — 1.894 encuestas</p><p className="text-xl font-bold text-gray-900">{pos2024.toFixed(2)}%</p></div>
+              <div className="bg-violet-50 rounded-lg p-3 border border-violet-200"><p className="text-xs text-violet-600 font-semibold mb-1">2025 — 1.166 encuestas</p><p className="text-xl font-bold text-violet-700">{pos2025.toFixed(2)}%</p></div>
+            </div>
+            <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200"><p className="font-semibold text-yellow-700 mb-1">Variación: {varPos}%</p><p className="text-sm">La satisfacción positiva bajó {Math.abs(pos2025 - pos2024).toFixed(2)}pp. Aunque sigue siendo alta, la tendencia requiere atención. El volumen de encuestas también bajó de 1.894 a 1.166.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="PQRs recibidas" value2025="259" value2024="362" varPct={varPQRS} varAbs={`${Math.abs(259 - 362)} PQRs menos`} color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('PQRs 2025 vs 2024', <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">362 PQRs</p></div>
+              <div className="bg-green-50 rounded-lg p-3 border border-green-200"><p className="text-xs text-green-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-green-700">259 PQRs</p></div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción: {varPQRS}%</p><p className="text-sm">Las PQRs bajaron {Math.abs(259 - 362)} unidades ({varPQRS}%), indicando mejora en la experiencia del cliente y reducción de fallas en el servicio.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Planes de acción generados" value2025="154" value2024="120" varPct={varPlanes} varAbs={`${154 - 120} planes adicionales`} color="#f59e0b" icon={TrendingUp} good={true}
+          onClick={() => open('Planes de acción 2025 vs 2024', <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">120 planes</p></div>
+              <div className="bg-amber-50 rounded-lg p-3 border border-amber-200"><p className="text-xs text-amber-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-amber-700">154 planes</p></div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">+{varPlanes}% — mayor madurez del sistema</p><p className="text-sm">El aumento refleja mayor rigurosidad en la detección y gestión proactiva de oportunidades de mejora, no necesariamente más problemas.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="No Conformidades detectadas" value2025="+34,78%" value2024="Base 2024" varPct="34.78" varAbs="Mayor detección interna" color="#ef4444" icon={AlertTriangle} good={false}
+          onClick={() => open('No Conformidades 2025 vs 2024', <div className="space-y-3">
+            <div className="bg-red-50 rounded-lg p-4 border border-red-200"><p className="font-semibold text-red-700 mb-1">+34,78% — señal de alerta</p><p className="text-sm">El incremento puede indicar mayor rigurosidad en la detección interna, pero también deterioro en la ejecución de procesos. Requiere análisis causal para determinar la causa raíz.</p></div>
+          </div>)} />
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-600 mb-1 text-center">Satisfacción 2025 — 1.166 encuestas</p>
+          <ResponsiveContainer width="100%" height={220}>
+            <PieChart>
+              <Pie data={satisfaccion2025} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
+                label={({ pct: p }) => `${p}%`} labelLine={false}>
+                {satisfaccion2025.map((e, i) => <Cell key={i} fill={e.color} />)}
+              </Pie>
+              <Tooltip content={<TooltipSatisfaccion />} />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-sm font-semibold text-gray-600 mb-1 text-center">Satisfacción 2024 — 1.894 encuestas</p>
+          <ResponsiveContainer width="100%" height={220}>
+            <PieChart>
+              <Pie data={satisfaccion2024} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
+                label={({ pct: p }) => `${p}%`} labelLine={false}>
+                {satisfaccion2024.map((e, i) => <Cell key={i} fill={e.color} />)}
+              </Pie>
+              <Tooltip content={<TooltipSatisfaccion />} />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
   );
 }
 
 function SeccionVigia() {
+  const [modal, setModal] = useState({ open: false, title: '', content: null });
+  const open = (title, content) => setModal({ open: true, title, content });
+  const close = () => setModal(m => ({ ...m, open: false }));
+
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-200">
-        <h2 className="text-lg font-bold text-teal-900 mb-1">7. Vigía de Riesgos — 2025</h2>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-teal-500/20 to-cyan-600/10 rounded-xl p-6 border-2 border-teal-500/30">
+        <div className="flex items-center gap-3 mb-2">
+          <Eye className="w-7 h-7 text-teal-600" />
+          <h2 className="text-2xl font-bold text-gray-900">7. Vigía de Riesgos — 2025</h2>
+        </div>
+        <p className="text-gray-700 text-sm">Control de acceso, trazabilidad de activos y seguridad patrimonial.</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <KpiClickCard label="Quejas administrativas" value2025="0" value2024=">0" varPct="-100" varAbs="Eliminadas completamente" color="#10b981" icon={TrendingDown} good={false}
+          onClick={() => open('Quejas administrativas 2025 vs 2024', <div className="space-y-3">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">0 quejas en 2025</p><p className="text-sm">El proceso de Vigía logró eliminar completamente las quejas administrativas que existían en años anteriores, garantizando seguridad patrimonial y trazabilidad operacional.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Control de acceso (carnetización)" value2025="100%" value2024="100%" varPct="0" varAbs="Sin brechas en el año" color="#14b8a6" icon={Shield} good={true}
+          onClick={() => open('Control de acceso 2025', <div className="space-y-3">
+            <div className="bg-teal-50 rounded-lg p-4 border border-teal-200"><p className="font-semibold text-teal-700 mb-1">100% operativo todo el año</p><p className="text-sm">El sistema de carnetización y registro de visitantes operó al 100% durante todo el año, sin brechas en el control de acceso a instalaciones.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Tipos de activos trazados" value2025="3 tipos" value2024="0" varPct="100" varAbs="Tinas, motores, precintos" color="#6366f1" icon={TrendingUp} good={true}
+          onClick={() => open('Trazabilidad de activos', <div className="space-y-3">
+            <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-200"><p className="font-semibold text-indigo-700 mb-1">3 tipos de activos críticos</p><p className="text-sm">Se implementó trazabilidad sobre: tinas de proceso, motores y precintos de seguridad. Esto reduce pérdidas y mejora el control patrimonial.</p></div>
+          </div>)} />
+
+        <KpiClickCard label="Plataformas digitales implementadas" value2025="2" value2024="0" varPct="100" varAbs="Parqueaderos y correspondencia" color="#f59e0b" icon={TrendingUp} good={true}
+          onClick={() => open('Digitalización de procesos', <div className="space-y-3">
+            <div className="bg-amber-50 rounded-lg p-4 border border-amber-200"><p className="font-semibold text-amber-700 mb-1">2 procesos digitalizados</p><p className="text-sm">Gestión de parqueaderos y control de correspondencia ahora operan mediante plataformas digitales, mejorando trazabilidad y reduciendo tiempos de gestión.</p></div>
+          </div>)} />
       </div>
-      <Section icon={Eye} title="Vigía de Riesgos" color="#14b8a6" defaultOpen={true}>
-        <KpiRow items={[
-          { label: 'Quejas administrativas', value: '0', sub: 'Eliminadas vs años anteriores', color: '#10b981', trend: 'down', upIsGood: false, tooltip: 'El proceso de Vigía logró eliminar completamente las quejas administrativas que existían en años anteriores, garantizando seguridad patrimonial.' },
-          { label: 'Control de acceso', value: '100%', sub: 'Carnetización activa todo el año', color: '#14b8a6', trend: 'up', upIsGood: true, tooltip: 'El sistema de carnetización y registro de visitantes operó al 100% durante todo el año, sin brechas en el control de acceso a instalaciones.' },
-          { label: 'Activos trazados', value: '3 tipos', sub: 'Tinas, motores, precintos', color: '#6366f1', trend: 'up', upIsGood: true, tooltip: 'Se implementó trazabilidad sobre tres tipos de activos críticos: tinas de proceso, motores y precintos de seguridad, reduciendo pérdidas.' },
-          { label: 'Plataformas digitales', value: '2', sub: 'Parqueaderos y correspondencia', color: '#f59e0b', trend: 'up', upIsGood: true, tooltip: 'Se digitalizaron dos procesos operativos: gestión de parqueaderos y control de correspondencia, mejorando trazabilidad y reduciendo tiempos.' },
-        ]} />
-        <Bullet color="#14b8a6" items={[
-          'Protocolos de control de acceso, carnetización y registro de visitantes',
-          'Trazabilidad de activos: tinas, motores, precintos de seguridad',
-          'Gestión de parqueaderos y correspondencia mediante plataformas digitales',
-          'Instalación de alarmas, redes de apoyo empresarial y control de carrotanques para ahorro de agua',
-          'Proceso eliminó quejas administrativas y garantizó seguridad patrimonial y trazabilidad operacional',
-        ]} />
-      </Section>
+
+      <Modal open={modal.open} title={modal.title} onClose={close}>{modal.content}</Modal>
     </div>
   );
 }
 
 // ── Dashboard principal ────────────────────────────────────────────────────
 
-export default function CalidadDashboard({ data, section }) {
+export default function CalidadDashboard({ data: _data, section }) {
   const sectionMap = {
     calidad: <SeccionCalidad />,
     compras: <SeccionCompras />,
     bienestar: <SeccionBienestar />,
     hseq: <SeccionHSEQ />,
+    ambiental: <SeccionAmbiental />,
     sgc: <SeccionSGC />,
     satisfaccion: <SeccionSatisfaccion />,
     vigia: <SeccionVigia />,
   };
 
-  if (section && sectionMap[section]) {
-    return sectionMap[section];
-  }
+  if (section && sectionMap[section]) return sectionMap[section];
 
-  // Vista completa (sin section prop)
   return (
-    <div className="space-y-4">
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
-        <h2 className="text-lg font-bold text-blue-900 mb-2">Gerencia Estratégica y Mejoramiento Continuo — 2025</h2>
-        <p className="text-sm text-gray-700 leading-relaxed">
-          Durante 2025, la Gerencia Estratégica y de Mejoramiento Continuo consolidó la madurez operativa de la organización mediante la articulación de los procesos de Calidad, Compras, HSEQ, Bienestar Animal y Vigías de Riesgos.
+    <div className="space-y-6">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-indigo-500/20 to-teal-600/10 rounded-xl p-6 border-2 border-indigo-500/30">
+        <div className="flex items-center gap-3 mb-3">
+          <Shield className="w-8 h-8 text-indigo-600" />
+          <h2 className="text-3xl font-bold text-gray-900">Gerencia Estratégica y Mejoramiento Continuo — 2025</h2>
+        </div>
+        <p className="text-gray-700 leading-relaxed">
+          Durante 2025, la Gerencia Estratégica consolidó la madurez operativa mediante la articulación de Calidad, Compras, HSEQ, Bienestar Animal, SGC, Satisfacción del Cliente y Vigías de Riesgos.
         </p>
-      </div>
+      </motion.div>
       <SeccionCalidad />
       <SeccionCompras />
       <SeccionBienestar />
       <SeccionHSEQ />
+      <SeccionAmbiental />
       <SeccionSGC />
       <SeccionSatisfaccion />
       <SeccionVigia />

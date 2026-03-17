@@ -46,7 +46,7 @@ import EnDesarrollo from './EnDesarrollo';
 
 export default function DashboardRenderer({ type, data, onNavigate }) {
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos', 'comercial-estructura-equipo'];
+  const noDataRequired = ['bienvenida', 'bienvenida-inicio', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'situacion-economica', 'situacion-juridica', 'agradecimientos', 'comercial-estructura-equipo', 'gerencia-estrategica', 'gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'gerencia-estrategica-vigia'];
   
   if (!data || (Array.isArray(data) && data.length === 0)) {
     // Si el dashboard no requiere datos, continuar normalmente
@@ -76,21 +76,23 @@ export default function DashboardRenderer({ type, data, onNavigate }) {
       return <FuentesUsosDashboard data={data} />;
     case 'auditoria':
       return <AuditoriaDashboard data={data} />;
-    case 'calidad':
+    case 'gerencia-estrategica':
       return <CalidadDashboard data={data} />;
-    case 'calidad-calidad':
+    case 'gerencia-estrategica-calidad':
       return <CalidadDashboard data={data} section="calidad" />;
-    case 'calidad-compras':
+    case 'gerencia-estrategica-compras':
       return <CalidadDashboard data={data} section="compras" />;
-    case 'calidad-bienestar':
+    case 'gerencia-estrategica-bienestar':
       return <CalidadDashboard data={data} section="bienestar" />;
-    case 'calidad-hseq':
+    case 'gerencia-estrategica-hseq':
       return <CalidadDashboard data={data} section="hseq" />;
-    case 'calidad-sgc':
+    case 'gerencia-estrategica-ambiental':
+      return <CalidadDashboard data={data} section="ambiental" />;
+    case 'gerencia-estrategica-sgc':
       return <CalidadDashboard data={data} section="sgc" />;
-    case 'calidad-satisfaccion':
+    case 'gerencia-estrategica-satisfaccion':
       return <CalidadDashboard data={data} section="satisfaccion" />;
-    case 'calidad-vigia':
+    case 'gerencia-estrategica-vigia':
       return <CalidadDashboard data={data} section="vigia" />;
     case 'compras':
       return <ComprasDashboard data={data} />;

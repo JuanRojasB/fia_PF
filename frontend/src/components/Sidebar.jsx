@@ -1,6 +1,6 @@
 // Sidebar Component - Optimized Collapsible Version
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shield, TrendingUp, UserCheck, Truck, Menu, X, Store, ShoppingCart, Wrench, Monitor, Scale } from 'lucide-react';
+import { LogOut, User, Home, ChevronDown, ChevronLeft, Briefcase, Factory, Shield, TrendingUp, UserCheck, Truck, Menu, X, Store, Wrench, Monitor, Scale } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { ROUTES } from '../routes/paths';
@@ -162,18 +162,19 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       ]
     },
     { 
-      id: 'calidad', 
+      id: 'gerencia-estrategica', 
       label: 'Gerencia Estratégica y Mejoramiento Continuo', 
       icon: Shield,
       type: 'expandable',
       subitems: [
-        { id: 'calidad-calidad',      label: '1. Aseguramiento de Calidad' },
-        { id: 'calidad-compras',      label: '2. Compras' },
-        { id: 'calidad-bienestar',    label: '3. Bienestar Animal' },
-        { id: 'calidad-hseq',         label: '4. HSEQ' },
-        { id: 'calidad-sgc',          label: '5. Sistema de Gestión de Calidad' },
-        { id: 'calidad-satisfaccion', label: '6. Satisfacción del Cliente' },
-        { id: 'calidad-vigia',        label: '7. Vigía de Riesgos' },
+        { id: 'gerencia-estrategica-calidad',      label: 'Aseguramiento de Calidad' },
+        { id: 'gerencia-estrategica-compras',      label: 'Compras' },
+        { id: 'gerencia-estrategica-bienestar',    label: 'Bienestar Animal' },
+        { id: 'gerencia-estrategica-hseq',         label: 'HSEQ — Seguridad y Salud' },
+        { id: 'gerencia-estrategica-ambiental',    label: 'Gestión Ambiental' },
+        { id: 'gerencia-estrategica-sgc',          label: 'Sistema de Gestión de Calidad' },
+        { id: 'gerencia-estrategica-satisfaccion', label: 'Satisfacción del Cliente' },
+        { id: 'gerencia-estrategica-vigia',        label: 'Vigía de Riesgos' },
       ]
     },
     { 
@@ -182,10 +183,10 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       icon: UserCheck,
       type: 'expandable',
       subitems: [
-        { id: 'humana-nomina', label: '1. Costo de la Nómina' },
-        { id: 'humana-rotacion', label: '2. Rotación de Personal' },
-        { id: 'humana-causas', label: '3. Causas de Desvinculación' },
-        { id: 'humana-smlv', label: '4. Impacto Salario Mínimo' },
+        { id: 'humana-nomina', label: 'Costo de la Nómina' },
+        { id: 'humana-rotacion', label: 'Rotación de Personal' },
+        { id: 'humana-causas', label: 'Causas de Desvinculación' },
+        { id: 'humana-smlv', label: 'Impacto Salario Mínimo' },
       ]
     },
     { 
