@@ -23,7 +23,7 @@ export default function OperacionesTPMDashboard({ data }) {
     <div className="space-y-6">
       {/* Descripción */}
       <div className="bg-gradient-to-r from-orange-100 to-amber-100 rounded-xl p-6 border border-orange-300">
-        <p className="text-gray-700">La gestión de 2025 logró cumplir los objetivos de productividad (OEE), pero enfrenta un reto con los preventivos. El descenso del MTBF y el aumento del MTTR indican que los equipos están fallando con más frecuencia y las reparaciones son más largas, por esto se acumulan 104,30 horas de paro en el año. Se requiere revisar los planes de mantenimiento preventivo para estabilizar la frecuencia de fallas de los equipos críticos.</p>
+        <p className="text-gray-700">La gestión de 2025 logró cumplir los objetivos de productividad (OEE), pero enfrenta un reto con los preventivos. El descenso del MTBF y el aumento del MTTR indican que los equipos están fallando con más frecuencia y las reparaciones son más largas, por esto se acumulan <strong>104,30 horas de paro</strong> en el año. Se requiere revisar los planes de mantenimiento preventivo para estabilizar la frecuencia de fallas de los equipos críticos.</p>
       </div>
 
       {/* KPIs */}
@@ -216,7 +216,7 @@ export default function OperacionesTPMDashboard({ data }) {
             <div className="flex items-start gap-2">
               <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
               <div className="text-sm text-gray-700">
-                <span className="font-semibold text-gray-900">Conclusión:</span> En 8 de los 12 meses se logró o superó la meta del 86% del OEE. Es importante invertir en la confiabilidad de la Línea de Descargue y Calderas para evitar que el impacto económico supere los $250 millones en el 2026. Se debe implementar y/o fortalecer el mantenimiento predictivo.
+                <span className="font-semibold text-gray-900">Conclusión:</span> En 8 de los 12 meses se logró o superó la meta del 86% del OEE, lo que indica una gestión de mantenimiento estable, pero con vulnerabilidades específicas en equipos como línea de descargue (se realizó un overhaul mecánico y eléctrico dando buenos resultados hasta la fecha), Zona de Máquinas y Calderas (ya se logró estabilizar aplicando mantenimiento preventivo e inspecciones periódicas), Transferidor (fue puntual luego del cambio de la línea de descargue por enredo este fallo menos sin embargo las reparaciones fueron más largas), Línea de Selección Linco (se cambió cadena y accesorios importantes) y Desplumadura #1 (ITA) se debe priorizar inspecciones y recambios más frecuentes en bocines y dedos. Es importante invertir en la confiabilidad de la Línea de Descargue y Calderas para evitar que el impacto económico supere los $250 millones en el 2026. Se debe implementar y/o fortalecer el mantenimiento predictivo.
               </div>
             </div>
           </div>
@@ -255,7 +255,7 @@ export default function OperacionesTPMDashboard({ data }) {
         </div>
         <div className="mt-4 bg-amber-50 rounded-lg p-3 border border-amber-300">
           <p className="text-sm text-gray-700">
-            <span className="font-semibold">Acciones tomadas:</span> Línea de Descargue — overhaul mecánico y eléctrico con buenos resultados. Calderas — estabilizada con preventivo e inspecciones periódicas. Transferidor — mejoró tras cambio de línea de descargue. Linco — se cambió cadena y accesorios. Desplumadora #1 — priorizar inspecciones en bocines y dedos.
+            <span className="font-semibold">Acciones tomadas:</span> Línea de Descargue — overhaul mecánico y eléctrico con buenos resultados hasta la fecha. Calderas — estabilizada aplicando mantenimiento preventivo e inspecciones periódicas. Transferidor — fue puntual luego del cambio de la línea de descargue; falló menos pero las reparaciones fueron más largas. Linco — se cambió cadena y accesorios importantes. Desplumadora #1 (ITA) — priorizar inspecciones y recambios más frecuentes en bocines y dedos.
           </p>
         </div>
       </motion.div>

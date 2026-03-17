@@ -33,7 +33,7 @@ export default function OperacionesArquitecturaDashboard({ data }) {
       {/* Descripción */}
       <div className="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl p-6 border border-blue-300">
         <p className="text-gray-700">
-          Actualmente tenemos un cumplimiento global del <strong className="text-blue-700">70%</strong> en la gestión de novedades correctivas reportadas por líderes de sedes. Mantenimiento presenta un desempeño del <strong className="text-green-700">84%</strong>, sin embargo, en el área de Arquitectura tenemos un <strong className="text-red-700">58%</strong>, principalmente impactada por la baja ejecución en la Sede 1 (15%) y la Sede 4 (36%). Esta área cuenta con 4 técnicos ejecutando tareas por todas las sedes — vacaciones del señor Cástulo del 2 al 20 de enero y renuncia de Edwin Torres hace 5 meses. Se solicita al área de RH resolver lo antes posible.
+          Actualmente tenemos un cumplimiento global del <strong className="text-blue-700">70%</strong> en la gestión de novedades correctivas reportadas por líderes de sedes. Mantenimiento presenta un desempeño del <strong className="text-green-700">84%</strong>, sin embargo, tenemos en el área de Arquitectura, un <strong className="text-red-700">58%</strong>, principalmente impactada por la baja ejecución en la Sede 1 (15%) y la Sede 4 (36%). Se resalta que esta área cuenta con 4 técnicos ejecutando tareas por todas las sedes esto por dos cosas: vacaciones del señor Cástulo del 2 al 20 de enero y que uno de los técnicos Edwin Torres renunció hace 5 meses aproximadamente. Se solicita al área de RH resolver lo antes posible.
         </p>
       </div>
 
@@ -157,7 +157,7 @@ export default function OperacionesArquitecturaDashboard({ data }) {
         <div className="flex items-start gap-2">
           <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
           <div className="text-sm text-red-700">
-            <span className="font-semibold">Acción urgente — RH:</span> Arquitectura opera con 4 técnicos para todas las sedes. Vacaciones de Cástulo (2–20 enero) y renuncia de Edwin Torres (hace 5 meses) impactan directamente la ejecución en Sede 1 (15%) y Sede 4 (36%). Se solicita resolver la vacante lo antes posible.
+            <span className="font-semibold">Acción urgente — RH:</span> Arquitectura opera con 4 técnicos para todas las sedes. Vacaciones del señor Cástulo (2–20 enero) y renuncia de Edwin Torres (hace 5 meses aproximadamente) impactan directamente la ejecución en Sede 1 (15%) y Sede 4 (36%). Se solicita al área de RH resolver lo antes posible.
           </div>
         </div>
       </div>

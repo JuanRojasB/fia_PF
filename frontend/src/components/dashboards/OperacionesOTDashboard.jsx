@@ -20,7 +20,20 @@ export default function OperacionesOTDashboard({ data }) {
     // datos hardcodeados, continuar con array vacío
   }
 
-  const { ordenesTrabajo = [], totales } = data || {};
+  const ordenesTrabajo = [
+    { mes_nombre: 'Enero',      ot_correctivas: 24,  ot_preventivas: 43,   total: 67,   porcentaje_correctivas: '35,8' },
+    { mes_nombre: 'Febrero',    ot_correctivas: 26,  ot_preventivas: 75,   total: 101,  porcentaje_correctivas: '25,7' },
+    { mes_nombre: 'Marzo',      ot_correctivas: 44,  ot_preventivas: 142,  total: 186,  porcentaje_correctivas: '23,7' },
+    { mes_nombre: 'Abril',      ot_correctivas: 21,  ot_preventivas: 195,  total: 216,  porcentaje_correctivas: '9,7'  },
+    { mes_nombre: 'Mayo',       ot_correctivas: 37,  ot_preventivas: 265,  total: 302,  porcentaje_correctivas: '12,3' },
+    { mes_nombre: 'Junio',      ot_correctivas: 22,  ot_preventivas: 485,  total: 507,  porcentaje_correctivas: '4,3'  },
+    { mes_nombre: 'Julio',      ot_correctivas: 80,  ot_preventivas: 405,  total: 485,  porcentaje_correctivas: '16,5' },
+    { mes_nombre: 'Agosto',     ot_correctivas: 61,  ot_preventivas: 174,  total: 235,  porcentaje_correctivas: '26,0' },
+    { mes_nombre: 'Septiembre', ot_correctivas: 52,  ot_preventivas: 327,  total: 379,  porcentaje_correctivas: '13,7' },
+    { mes_nombre: 'Octubre',    ot_correctivas: 20,  ot_preventivas: 257,  total: 277,  porcentaje_correctivas: '7,2'  },
+    { mes_nombre: 'Noviembre',  ot_correctivas: 9,   ot_preventivas: 291,  total: 300,  porcentaje_correctivas: '3,0'  },
+    { mes_nombre: 'Diciembre',  ot_correctivas: 7,   ot_preventivas: 339,  total: 346,  porcentaje_correctivas: '2,0'  },
+  ];
 
   const datosOT = ordenesTrabajo.map(o => ({
     mes: o.mes_nombre?.substring(0, 3) || o.mes_num,
@@ -43,7 +56,7 @@ export default function OperacionesOTDashboard({ data }) {
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl p-6 border border-purple-300">
-        <p className="text-gray-700">El <strong className="text-green-700">88%</strong> de las intervenciones fueron de carácter preventivo y <strong>12% correctivas</strong> de acuerdo con reporte SIESA, lo que indica que se tiene un enfoque preventivo sólido.</p>
+        <p className="text-gray-700">El <strong className="text-green-700">88%</strong> de las intervenciones fueron de carácter preventivo y <strong>12% fueron correctivas</strong> de acuerdo con reporte SIESA.</p>
       </div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
@@ -51,7 +64,7 @@ export default function OperacionesOTDashboard({ data }) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-xl font-bold text-gray-900">Análisis de la Gestión de Órdenes de Trabajo (OT) SIESA 2025</h3>
-            <p className="text-sm text-gray-600 mt-1">El 88% preventivo y 12% correctivas</p>
+            <p className="text-sm text-gray-600 mt-1">El 88% preventivo y 12% fueron correctivas de acuerdo</p>
           </div>
           <button onClick={() => openModal('Análisis Detallado de Órdenes de Trabajo 2025',
             <div className="space-y-4">
@@ -103,9 +116,9 @@ export default function OperacionesOTDashboard({ data }) {
           totalRow={[
             { label: 'Total general' },
             { label: '403', color: 'text-red-600' },
-            { label: '3.298', color: 'text-green-600' },
-            { label: '3.701', color: 'text-gray-900' },
-            { label: '10,9%', color: 'text-green-600' },
+            { label: '2.998', color: 'text-green-600' },
+            { label: '3.401', color: 'text-gray-900' },
+            { label: '11,8%', color: 'text-green-600' },
           ]}
         >
           <table className="w-full text-sm">

@@ -22,7 +22,7 @@ export default function OperacionesVehiculosDashboard({ data }) {
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl p-6 border border-green-300">
-        <p className="text-gray-700">Se observa una reducción de <strong className="text-green-700">$166.084.545</strong> respecto al año anterior. Para el año 2026 se proyecta realizar renovación de la flota.</p>
+        <p className="text-gray-700">Se observa una reducción de <strong className="text-green-700">$166.084.545,00</strong> respecto al año anterior, para el año 2026 se proyecta realizar renovación de la flota.</p>
       </div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
@@ -87,7 +87,7 @@ export default function OperacionesVehiculosDashboard({ data }) {
                   <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-gray-900"><X className="w-6 h-6" /></button>
                 </div>
                 <div className="space-y-4 text-gray-700">
-                  <p>Se observa una reducción de <strong className="text-green-600">$166.084.545</strong> respecto al año anterior.</p>
+                  <p>Se observa una reducción de <strong className="text-green-600">$166.084.545,00</strong> respecto al año anterior, para el año 2026 se proyecta realizar renovación de la flota.</p>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                       <p className="text-xs text-gray-600 mb-1">2024</p>
