@@ -26,7 +26,7 @@ export default function CollapsibleTable({ title, children, defaultOpen = false,
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className={`bg-white rounded-xl shadow-lg overflow-hidden ${className}`}>
+    <div className={`bg-white rounded-xl shadow-lg overflow-hidden self-start ${className}`}>
       {/* Header clickeable */}
       <button
         onClick={() => setIsOpen(!isOpen)}

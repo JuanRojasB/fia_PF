@@ -6,7 +6,7 @@ export default function CollapsibleChart({ title, subtitle, children, defaultOpe
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className={`bg-white/95 backdrop-blur-xl rounded-xl border-4 border-gray-200 hover:border-blue-400 transition-all ${className}`}>
+    <div className={`bg-white/95 backdrop-blur-xl rounded-xl border-4 border-gray-200 hover:border-blue-400 transition-all self-start ${className}`}>
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between px-6 py-4 text-left"
