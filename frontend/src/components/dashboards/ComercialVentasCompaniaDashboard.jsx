@@ -97,7 +97,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
         className="bg-gradient-to-r from-blue-500/20 to-green-600/10 backdrop-blur-xl rounded-xl p-6 border-2 border-blue-500/30">
         <div className="flex items-center gap-3 mb-4">
           <ShoppingCart className="w-8 h-8 text-blue-400" />
-          <h2 className="text-3xl font-bold text-gray-900">VENTAS TOTAL COMPANIA - PIE / CANAL</h2>
+          <h2 className="text-3xl font-bold text-gray-900">VENTAS TOTAL COMPANIA - PIE + CANAL</h2>
         </div>
         <p className="text-gray-700 leading-relaxed">
           Analisis del desempeno del negocio de pollo, comparando las ventas en kilos de pollo en pie (mayorista) y pollo en canal.
@@ -173,7 +173,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2024.totalIngresos)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(datos2025.totalIngresos)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionIngresos > 0 ? '+' : ''}{variacionIngresos}%</div>
-            <div className={`text-xs font-semibold ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {formatCurrencyFull(datos2025.totalIngresos - datos2024.totalIngresos)}</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {parseFloat(variacionIngresos) >= 0 ? '+' : ''}{formatCurrencyFull(datos2025.totalIngresos - datos2024.totalIngresos)}</div>
           </div>
         </motion.div>
 
@@ -208,7 +208,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(precioProm2024)}/kg</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(precioProm2025)}/kg</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {variacionPrecio > 0 ? '+' : ''}{variacionPrecio}%</div>
-            <div className={`text-xs font-semibold ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {formatCurrencyFull(precioProm2025 - precioProm2024)}/kg</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {parseFloat(variacionPrecio) >= 0 ? '+' : ''}{formatCurrencyFull(precioProm2025 - precioProm2024)}/kg</div>
           </div>
         </motion.div>
 
@@ -335,7 +335,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
 
       {/* Tabla Detallada */}
       <CollapsibleTable
-        title="VENTAS TOTAL COMPANIA - DETALLE PIE / CANAL"
+        title="VENTAS TOTAL COMPANIA - DETALLE PIE + CANAL"
         defaultOpen={false}
         totalRow={[
           { label: 'TOTAL COMPANIA 2025' },
@@ -348,7 +348,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gradient-to-r from-blue-500 to-green-600 border-b-2 border-gray-300">
-                <th className="text-left py-3 px-4 text-gray-900 font-bold">PIE / CANAL</th>
+                <th className="text-left py-3 px-4 text-gray-900 font-bold">PIE + CANAL</th>
                 <th className="text-right py-3 px-4 text-gray-900 font-bold">Kls.</th>
                 <th className="text-right py-3 px-4 text-gray-900 font-bold">% Part</th>
                 <th className="text-right py-3 px-4 text-gray-900 font-bold">Venta</th>

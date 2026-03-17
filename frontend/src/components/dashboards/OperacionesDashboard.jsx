@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell, PieChart, Pie, ComposedChart } from 'recharts';
 import { Wrench, AlertTriangle, TrendingUp, TrendingDown, CheckCircle, XCircle, Info, X, Clock, Activity } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
+import CollapsibleChart from '../CollapsibleChart';
 import { CustomBarTooltip } from './CustomTooltip';
 
 export default function OperacionesDashboard({ data }) {
@@ -492,79 +493,95 @@ export default function OperacionesDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        onClick={() => {
-          const tableData = ordenesTrabajo.map(o => ({
-            'Mes': o.mes_nombre,
-            'Correctivas': o.ot_correctivas,
-            'Preventivas': o.ot_preventivas,
-            'Total': o.total_ot,
-            '% Correctivas': `${o.porcentaje_correctivas}%`
-          }));
-          openModal('Análisis Detallado de Órdenes de Trabajo 2025', 
-            <div className="space-y-4">
-              <p className="text-gray-700">El <strong className="text-green-600">89,3%</strong> de las intervenciones totales (<strong>3.807 OT</strong>) fueron de carácter preventivo y <strong>456 correctivas</strong> de acuerdo con reporte SIESA, lo que indica que se tiene un enfoque preventivo sólido.</p>
-              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
-                <p className="text-sm font-semibold text-red-800 mb-2">Meses con Más Correctivas:</p>
-                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
-                  <li><strong>Enero:</strong> 35,8% (inicio de año)</li>
-                  <li><strong>Agosto:</strong> 26%</li>
-                  <li><strong>Febrero:</strong> 25,7%</li>
-                  <li><strong>Marzo:</strong> 23,7%</li>
-                </ul>
-                <p className="text-xs text-gray-600 mt-2">Estos picos pueden estar relacionados con el inicio de año y períodos de alta producción.</p>
-              </div>
-              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
-                <p className="text-sm font-semibold text-green-800 mb-2">Meses con Mejor Gestión Preventiva:</p>
-                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
-                  <li><strong>Diciembre:</strong> 2% correctivas</li>
-                  <li><strong>Noviembre:</strong> 3% correctivas</li>
-                  <li><strong>Junio:</strong> 4,3% correctivas</li>
-                  <li><strong>Julio:</strong> 16,5% correctivas</li>
-                </ul>
-              </div>
-              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
-                <p className="text-sm font-semibold text-blue-800 mb-2">Objetivo:</p>
-                <p className="text-sm text-gray-700">Mantener el porcentaje de correctivas por debajo del <strong>15% mensual</strong>.</p>
-              </div>
-              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
-                <p className="text-sm font-semibold text-purple-800 mb-2">Línea de Tendencia:</p>
-                <p className="text-sm text-gray-700">La línea roja punteada muestra la tendencia calculada por regresión lineal sobre el total mensual de OT, indicando si el volumen de intervenciones está aumentando o disminuyendo en el año.</p>
-              </div>
-            </div>
-          , tableData);
-        }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
+        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-xl font-bold text-gray-900">2. Análisis de la Gestión de Órdenes de Trabajo (OT) SIESA 2025</h3>
             <p className="text-sm text-gray-600 mt-1">El 89,3% de las intervenciones totales (3.807 OT) fueron de carácter preventivo</p>
           </div>
-          <Info className="w-6 h-6 text-purple-600" />
+          <button
+            onClick={() => {
+              const tableData = ordenesTrabajo.map(o => ({
+                'Mes': o.mes_nombre,
+                'Correctivas': o.ot_correctivas,
+                'Preventivas': o.ot_preventivas,
+                'Total': o.total_ot,
+                '% Correctivas': `${o.porcentaje_correctivas}%`
+              }));
+              openModal('Análisis Detallado de Órdenes de Trabajo 2025',
+                <div className="space-y-4">
+                  <p className="text-gray-700">El <strong className="text-green-600">89,3%</strong> de las intervenciones totales (<strong>3.807 OT</strong>) fueron de carácter preventivo y <strong>456 correctivas</strong> de acuerdo con reporte SIESA, lo que indica que se tiene un enfoque preventivo sólido.</p>
+                  <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                    <p className="text-sm font-semibold text-red-800 mb-2">Meses con Más Correctivas:</p>
+                    <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                      <li><strong>Enero:</strong> 35,8% (inicio de año)</li>
+                      <li><strong>Agosto:</strong> 26%</li>
+                      <li><strong>Febrero:</strong> 25,7%</li>
+                      <li><strong>Marzo:</strong> 23,7%</li>
+                    </ul>
+                    <p className="text-xs text-gray-600 mt-2">Estos picos pueden estar relacionados con el inicio de año y períodos de alta producción.</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                    <p className="text-sm font-semibold text-green-800 mb-2">Meses con Mejor Gestión Preventiva:</p>
+                    <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                      <li><strong>Diciembre:</strong> 2% correctivas</li>
+                      <li><strong>Noviembre:</strong> 3% correctivas</li>
+                      <li><strong>Junio:</strong> 4,3% correctivas</li>
+                      <li><strong>Julio:</strong> 16,5% correctivas</li>
+                    </ul>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                    <p className="text-sm font-semibold text-blue-800 mb-2">Objetivo:</p>
+                    <p className="text-sm text-gray-700">Mantener el porcentaje de correctivas por debajo del <strong>15% mensual</strong>.</p>
+                  </div>
+                  <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                    <p className="text-sm font-semibold text-purple-800 mb-2">Línea de Tendencia:</p>
+                    <p className="text-sm text-gray-700">La línea roja punteada muestra la tendencia calculada por regresión lineal sobre el total mensual de OT, indicando si el volumen de intervenciones está aumentando o disminuyendo en el año.</p>
+                  </div>
+                </div>
+              , tableData);
+            }}
+            className="cursor-pointer hover:opacity-70 transition-opacity"
+          >
+            <Info className="w-6 h-6 text-purple-600" />
+          </button>
         </div>
 
         {/* Gráfico de Barras */}
-        <ResponsiveContainer width="100%" height={350}>
-          <ComposedChart data={datosOTConTend} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
-            <XAxis 
-              dataKey="mes" 
-              stroke="#6b7280" 
-              style={{ fontSize: '12px' }} 
-              angle={-45}
-              textAnchor="end"
-              height={60}
-            />
-            <YAxis stroke="#6b7280" style={{ fontSize: '13px' }} />
-            <Tooltip content={<CustomBarTooltip borderColor="#a855f7" />} />
-            <Bar dataKey="Preventivas" stackId="a" fill="#10b981" radius={[0, 0, 0, 0]} />
-            <Bar dataKey="Correctivas" stackId="a" fill="#ef4444" radius={[8, 8, 0, 0]} />
-            <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Total OT" />
-          </ComposedChart>
-        </ResponsiveContainer>
+        <CollapsibleChart title="Órdenes de Trabajo por Mes" defaultOpen={false}>
+          <ResponsiveContainer width="100%" height={350}>
+            <ComposedChart data={datosOTConTend} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
+              <XAxis 
+                dataKey="mes" 
+                stroke="#6b7280" 
+                style={{ fontSize: '12px' }} 
+                angle={-45}
+                textAnchor="end"
+                height={60}
+              />
+              <YAxis stroke="#6b7280" style={{ fontSize: '13px' }} />
+              <Tooltip content={<CustomBarTooltip borderColor="#a855f7" />} />
+              <Bar dataKey="Preventivas" stackId="a" fill="#10b981" radius={[0, 0, 0, 0]} />
+              <Bar dataKey="Correctivas" stackId="a" fill="#ef4444" radius={[8, 8, 0, 0]} />
+              <Line type="linear" dataKey="tendencia" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={false} name="Tendencia Total OT" />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </CollapsibleChart>
 
         {/* Tabla Detallada */}
-
+        <CollapsibleTable
+          title="Detalle Mensual de OT"
+          defaultOpen={false}
+          totalRow={[
+            { label: 'Total general' },
+            { label: totales.totalOtCorrectivas, color: 'text-red-600' },
+            { label: totales.totalOtPreventivas, color: 'text-green-600' },
+            { label: totales.totalOt, color: 'text-gray-900' },
+            { label: `${totales.porcentajeCorrectivas}%`, color: 'text-gray-900' },
+          ]}
+        >
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b-2 border-gray-300">
@@ -590,15 +607,9 @@ export default function OperacionesDashboard({ data }) {
                   </tr>
                 );
               })}
-              <tr className="border-t-2 border-gray-300 bg-gray-100 font-bold">
-                <td className="py-3 px-3 text-gray-900">Total general</td>
-                <td className="py-3 px-3 text-right text-red-600">{totales.totalOtCorrectivas}</td>
-                <td className="py-3 px-3 text-right text-green-600">{totales.totalOtPreventivas}</td>
-                <td className="py-3 px-3 text-right text-gray-900">{totales.totalOt}</td>
-                <td className="py-3 px-3 text-right text-gray-900">{totales.porcentajeCorrectivas}%</td>
-              </tr>
             </tbody>
           </table>
+        </CollapsibleTable>
       
 
         <div className="mt-4 bg-green-50 rounded-lg p-4 border border-green-300">
@@ -648,7 +659,7 @@ export default function OperacionesDashboard({ data }) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-xl font-bold text-gray-900">3. Mantenimiento de Vehículos</h3>
-            <p className="text-sm text-gray-600 mt-1">Reducción de $166M (-46,65%) vs 2024</p>
+            <p className="text-sm text-gray-600 mt-1">Reducción de $166.084.545 (-46,65%) vs 2024</p>
           </div>
           <Info className="w-6 h-6 text-purple-600" />
         </div>

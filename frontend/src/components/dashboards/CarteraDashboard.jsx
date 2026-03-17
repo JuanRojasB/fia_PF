@@ -38,7 +38,7 @@ export default function CarteraDashboard({ data }) {
     return <div className="text-gray-600">No hay datos disponibles</div>;
   }
 
-  const { resumenAnual, datosMensuales, exposicionCartera } = data;
+  const { resumenAnual, datosMensuales, datosMensuales2024, exposicionCartera } = data;
 
   const formatNumber = (value) => {
     if (!value || isNaN(value)) return '0';
@@ -132,9 +132,9 @@ export default function CarteraDashboard({ data }) {
       <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 mb-4">
         <p className="text-sm font-semibold text-gray-900 mb-2">Situación Diciembre 2025:</p>
         <p className="text-sm">• Cartera total: <strong className="text-purple-600">${formatNumber(resumenAnual.cartera_dic_2025)} millones</strong></p>
-        <p className="text-sm">• Cartera Dic 2024: <strong>${formatNumber(16971)} millones</strong></p>
+        <p className="text-sm">• Cartera Dic 2024: <strong>${formatNumber(17162)} millones</strong></p>
         <p className="text-sm mt-2">• Variación: <strong className="text-green-600">{resumenAnual.variacion_dic}%</strong></p>
-        <p className="text-sm mt-2">Bajó un 1%, lo que significa que se cobró más de lo que se vendió a crédito.</p>
+        <p className="text-sm mt-2">Bajó un 2%, lo que significa que se cobró más de lo que se vendió a crédito.</p>
       </div>
       <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
         <p className="text-sm font-semibold text-gray-900 mb-2">¿Por qué es importante?</p>
@@ -153,7 +153,7 @@ export default function CarteraDashboard({ data }) {
           <h2 className="text-3xl font-bold text-gray-900">GESTIÓN DE CARTERA 2025</h2>
         </div>
         <p className="text-gray-700 leading-relaxed">
-          El año 2025 fue un año de cambios estructurales en el área, orientados a tener un manejo más óptimo y real de los estados de cuenta de los diferentes clientes. La cartera presenta una rotación al final del periodo de 15,40 días a Dic/25, frente al periodo anterior con una rotación de 14,99 días. Se cumplió la meta de rotación establecida en ISO de 15 días. Las ventas de contado en promedio representan el 37,91% y las ventas de crédito el 62,09%, siendo el 46,63% el porcentaje promedio de índice de cartera morosa vencida por recaudar. El nivel de cierre de cartera a diciembre 2025 quedó en 16.785 millones, disminuyendo un -1% frente a Dic/24.
+          El año 2025 fue un año de cambios estructurales en el área, orientados a tener un manejo más óptimo y real de los estados de cuenta de los diferentes clientes. La cartera presenta una rotación al final del periodo de 15,40 días a Dic/25, frente al periodo anterior con una rotación de 14,99 días. Las ventas de contado a dic representan el 46,85% y las ventas de crédito el 53,15%. El nivel de cierre de cartera a diciembre 2025 quedó en $16.787M frente a Dic/24 $17.162M, disminuyendo un -2%.
         </p>
       </motion.div>
 
@@ -216,9 +216,10 @@ export default function CarteraDashboard({ data }) {
           </div>
           <div className="text-xl font-bold text-gray-900 leading-tight break-all">{formatCurrencyFull((resumenAnual.cartera_dic_2025 || 0) * 1000000)}</div>
           <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(16971 * 1000000)}</span></div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(17162 * 1000000)}</span></div>
             <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull((resumenAnual.cartera_dic_2025 || 0) * 1000000)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(resumenAnual.variacion_dic) <= 0 ? 'text-green-600' : 'text-red-600'}`}>Var: {resumenAnual.variacion_dic}%</div>
+            <div className={`text-xs font-semibold ${parseFloat(resumenAnual.variacion_dic) <= 0 ? 'text-green-600' : 'text-red-600'}`}>Dif: {formatCurrencyFull(((resumenAnual.cartera_dic_2025 || 0) - 17162) * 1000000)}</div>
           </div>
         </motion.div>
       </div>
@@ -261,7 +262,7 @@ export default function CarteraDashboard({ data }) {
           </ComposedChart>
         </ResponsiveContainer>
         <div className="mt-4 bg-green-50 rounded-lg p-4 border-2 border-green-300">
-          <p className="text-sm">El nivel de cierre de cartera a diciembre 2025, quedó en 16,785 millones disminuyendo un -1% frente a Dic/24.</p>
+          <p className="text-sm">El nivel de cierre de cartera a diciembre 2025 quedó en $16.787M frente a Dic/24 $17.162M, disminuyendo un -2%.</p>
         </div>
       </CollapsibleChart>
 
@@ -364,49 +365,96 @@ export default function CarteraDashboard({ data }) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr>
-                  <th className="text-left py-3 px-3">Mes</th>
-                  <th className="text-right py-3 px-3">Total Cartera</th>
-                  <th className="text-right py-3 px-3">Cartera Vencida</th>
-                  <th className="text-right py-3 px-3">Morosidad</th>
-                  <th className="text-right py-3 px-3">Rotación</th>
-                  <th className="text-right py-3 px-3">% Contado</th>
-                  <th className="text-right py-3 px-3">% Crédito</th>
+                <tr className="border-b-2 border-gray-300 bg-gray-50">
+                  <th className="text-left py-3 px-2 font-bold text-gray-900">Mes</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Total Cartera</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Cartera Vencida</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Morosidad</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Var. Cartera Vencida</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Días Rotación</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">% Contado</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Contado</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">% Crédito</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Crédito</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Netas</th>
                 </tr>
               </thead>
               <tbody>
-                {datosMensuales.map((mes, idx) => (
-                  <tr key={idx}>
-                    <td className="py-3 px-3 font-semibold">{mes.mes}</td>
-                    <td className="py-3 px-3 text-right">{formatCurrency(mes.total_cartera)}</td>
-                    <td className="py-3 px-3 text-right text-amber-700">{formatCurrency(mes.cartera_vencida)}</td>
-                    <td className="py-3 px-3 text-right"><span className="value-neutral">{mes.indice_morosidad}%</span></td>
-                    <td className="py-3 px-3 text-right font-bold">
-                      <span className={mes.dias_rotacion <= 15 ? 'value-positive' : mes.dias_rotacion <= 17 ? 'value-neutral' : 'value-negative'}>{mes.dias_rotacion}</span>
-                    </td>
-                    <td className="py-3 px-3 text-right text-blue-600">{mes.pct_contado}%</td>
-                    <td className="py-3 px-3 text-right text-purple-600">{mes.pct_credito}%</td>
-                  </tr>
-                ))}
+                {datosMensuales.map((mes, idx) => {
+                  const varPos = mes.variacion_cartera_vencida >= 0;
+                  return (
+                    <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-2 px-2 font-semibold text-gray-900">{mes.mes}</td>
+                      <td className="py-2 px-2 text-right text-gray-900">{formatCurrency(mes.total_cartera)}</td>
+                      <td className="py-2 px-2 text-right text-amber-700 font-semibold">{formatCurrency(mes.cartera_vencida)}</td>
+                      <td className="py-2 px-2 text-right"><span className={mes.indice_morosidad > 50 ? 'text-red-600 font-bold' : 'text-gray-700'}>{mes.indice_morosidad}%</span></td>
+                      <td className={`py-2 px-2 text-right font-semibold ${varPos ? 'text-red-600' : 'text-green-600'}`}>{varPos ? '' : ''}{formatCurrency(mes.variacion_cartera_vencida)}</td>
+                      <td className="py-2 px-2 text-right"><span className={mes.dias_rotacion <= 15 ? 'text-green-600 font-bold' : mes.dias_rotacion <= 17 ? 'text-yellow-600' : 'text-red-600'}>{mes.dias_rotacion}</span></td>
+                      <td className="py-2 px-2 text-right text-blue-600">{mes.pct_contado}%</td>
+                      <td className="py-2 px-2 text-right text-blue-700">{formatCurrency(mes.ventas_contado)}</td>
+                      <td className="py-2 px-2 text-right text-purple-600">{mes.pct_credito}%</td>
+                      <td className="py-2 px-2 text-right text-purple-700">{formatCurrency(mes.ventas_credito)}</td>
+                      <td className="py-2 px-2 text-right font-bold text-gray-900">{formatCurrency(mes.ventas_netas)}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-green-50 rounded-lg p-4 border border-green-300">
-              <div className="text-xs text-gray-600 mb-1">Rotación Dic 2025</div>
-              <div className="text-2xl font-bold text-green-600">{resumenAnual.rotacion_dic_2025} días</div>
-              <div className="text-xs text-gray-600 mt-1">Meta ISO cumplida</div>
-            </div>
-            <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
-              <div className="text-xs text-gray-600 mb-1">Ventas Contado Promedio</div>
-              <div className="text-2xl font-bold text-blue-600">{resumenAnual.ventas_contado_promedio}%</div>
-              <div className="text-xs text-gray-600 mt-1">Año 2025</div>
-            </div>
-            <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
-              <div className="text-xs text-gray-600 mb-1">Morosidad Promedio</div>
-              <div className="text-2xl font-bold text-yellow-600">{resumenAnual.morosidad_promedio}%</div>
-              <div className="text-xs text-gray-600 mt-1">Cartera vencida</div>
-            </div>
+        </CollapsibleTable>
+      </motion.div>
+
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 }}
+        className="bg-white/95 backdrop-blur-xl rounded-xl border-4 border-orange-500/30 overflow-hidden"
+      >
+        <CollapsibleTable
+          title="Detalle Mensual de Gestión de Cartera 2024"
+          defaultOpen={false}
+          totalRow={[
+            { label: 'CARTERA DIC 2024' },
+            { label: formatCurrency(17161524439), color: 'text-orange-600' },
+            { label: 'Rotación: 20,86 días', color: 'text-red-600' },
+            { label: 'Morosidad: 50,67%', color: 'text-yellow-600' },
+          ]}
+        >
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b-2 border-gray-300 bg-gray-50">
+                  <th className="text-left py-3 px-2 font-bold text-gray-900">Mes</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Total Cartera</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Cartera Vencida</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Morosidad</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Var. Cartera Vencida</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Días Rotación</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">% Contado</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Contado</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">% Crédito</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Crédito</th>
+                  <th className="text-right py-3 px-2 font-bold text-gray-900">Ventas Netas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(datosMensuales2024 || []).map((mes, idx) => {
+                  const varPos = mes.variacion_cartera_vencida >= 0;
+                  return (
+                    <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-2 px-2 font-semibold text-gray-900">{mes.mes}</td>
+                      <td className="py-2 px-2 text-right text-gray-900">{formatCurrency(mes.total_cartera)}</td>
+                      <td className="py-2 px-2 text-right text-amber-700 font-semibold">{formatCurrency(mes.cartera_vencida)}</td>
+                      <td className="py-2 px-2 text-right"><span className={mes.indice_morosidad > 50 ? 'text-red-600 font-bold' : 'text-gray-700'}>{mes.indice_morosidad}%</span></td>
+                      <td className={`py-2 px-2 text-right font-semibold ${varPos ? 'text-red-600' : 'text-green-600'}`}>{formatCurrency(mes.variacion_cartera_vencida)}</td>
+                      <td className="py-2 px-2 text-right"><span className={mes.dias_rotacion <= 15 ? 'text-green-600 font-bold' : mes.dias_rotacion <= 17 ? 'text-yellow-600' : 'text-red-600'}>{mes.dias_rotacion}</span></td>
+                      <td className="py-2 px-2 text-right text-blue-600">{mes.pct_contado}%</td>
+                      <td className="py-2 px-2 text-right text-blue-700">{formatCurrency(mes.ventas_contado)}</td>
+                      <td className="py-2 px-2 text-right text-purple-600">{mes.pct_credito}%</td>
+                      <td className="py-2 px-2 text-right text-purple-700">{formatCurrency(mes.ventas_credito)}</td>
+                      <td className="py-2 px-2 text-right font-bold text-gray-900">{formatCurrency(mes.ventas_netas)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </CollapsibleTable>
       </motion.div>

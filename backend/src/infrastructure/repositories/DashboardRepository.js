@@ -286,20 +286,36 @@ class DashboardRepository extends IDashboardRepository {
     const db = getInstance();
     const pool = db.getPool();
     
+    // Datos mensuales detallados de gestión de cartera 2024
+    const datosMensuales2024 = [
+      { mes: 'Ene-24', total_cartera: 17368824347, cartera_vencida: 7355885001, indice_morosidad: 42.35, variacion_cartera_vencida: 1627583813, dias_rotacion: 15.33, pct_contado: 43.53, ventas_contado: 14804790413, pct_credito: 57.88, ventas_credito: 20357461041, ventas_netas: 35174184601 },
+      { mes: 'Feb-24', total_cartera: 17667659324, cartera_vencida: 7554763544, indice_morosidad: 42.76, variacion_cartera_vencida: -198878543, dias_rotacion: 15.65, pct_contado: 42.33, ventas_contado: 14653779643, pct_credito: 58.11, ventas_credito: 20341586407, ventas_netas: 35006559698 },
+      { mes: 'Mar-24', total_cartera: 18554837177, cartera_vencida: 8731368137, indice_morosidad: 47.06, variacion_cartera_vencida: -1176804593, dias_rotacion: 16.58, pct_contado: 43.03, ventas_contado: 15813998981, pct_credito: 54.48, ventas_credito: 18942547900, ventas_netas: 34767205811 },
+      { mes: 'Abr-24', total_cartera: 17160989796, cartera_vencida: 6258895055, indice_morosidad: 36.47, variacion_cartera_vencida: 2472673082, dias_rotacion: 14.79, pct_contado: 37.39, ventas_contado: 14507990904, pct_credito: 59.68, ventas_credito: 21485828897, ventas_netas: 36003410790 },
+      { mes: 'May-24', total_cartera: 17296613033, cartera_vencida: 6385802980, indice_morosidad: 36.92, variacion_cartera_vencida: -126907925, dias_rotacion: 15.16, pct_contado: 36.77, ventas_contado: 13858670323, pct_credito: 61.42, ventas_credito: 21355314192, ventas_netas: 34767444917 },
+      { mes: 'Jun-24', total_cartera: 17369318696, cartera_vencida: 7027952880, indice_morosidad: 40.46, variacion_cartera_vencida: -642149900, dias_rotacion: 15.76, pct_contado: 39.76, ventas_contado: 13592178875, pct_credito: 62.28, ventas_credito: 20596911612, ventas_netas: 33072431000 },
+      { mes: 'Jul-24', total_cartera: 16985702845, cartera_vencida: 7631424812, indice_morosidad: 44.93, variacion_cartera_vencida: 603471932, dias_rotacion: 14.16, pct_contado: 40.36, ventas_contado: 14868008366, pct_credito: 61.05, ventas_credito: 21974083207, ventas_netas: 35994048000 },
+      { mes: 'Ago-24', total_cartera: 18241184484, cartera_vencida: 7487362499, indice_morosidad: 41.05, variacion_cartera_vencida: -144062313, dias_rotacion: 14.76, pct_contado: 40.99, ventas_contado: 15200467396, pct_credito: 58.92, ventas_credito: 21847344860, ventas_netas: 37080665532 },
+      { mes: 'Sep-24', total_cartera: 19078117955, cartera_vencida: 8562206834, indice_morosidad: 44.88, variacion_cartera_vencida: 1074844335, dias_rotacion: 16.68, pct_contado: 38.79, ventas_contado: 13306759121, pct_credito: 61.11, ventas_credito: 20964059466, ventas_netas: 34303533147 },
+      { mes: 'Oct-24', total_cartera: 20492871054, cartera_vencida: 9967323267, indice_morosidad: 48.64, variacion_cartera_vencida: 1405116433, dias_rotacion: 16.35, pct_contado: 39.93, ventas_contado: 15015991287, pct_credito: 59.98, ventas_credito: 22556031862, ventas_netas: 37606648926 },
+      { mes: 'Nov-24', total_cartera: 18127942076, cartera_vencida: 8108510595, indice_morosidad: 44.73, variacion_cartera_vencida: -1858812672, dias_rotacion: 18.39, pct_contado: 37.56, ventas_contado: 13229692488, pct_credito: 62.44, ventas_credito: 21990982839, ventas_netas: 35220896424 },
+      { mes: 'Dic-24', total_cartera: 17161524439, cartera_vencida: 8696468873, indice_morosidad: 50.67, variacion_cartera_vencida: 587958278, dias_rotacion: 20.86, pct_contado: 43.11, ventas_contado: 16664266926, pct_credito: 56.89, ventas_credito: 21991418905, ventas_netas: 38656486182 },
+    ];
+
     // Datos mensuales detallados de gestión de cartera 2025
     const datosMensuales = [
-      { mes: 'Ene', total_cartera: 14412689391, cartera_vencida: 6176399177, indice_morosidad: 43, dias_rotacion: 19.78, pct_contado: 35.86, pct_credito: 64.13, ventas_contado: 11987878785, ventas_credito: 21437479983 },
-      { mes: 'Feb', total_cartera: 15097421607, cartera_vencida: 7065964437, indice_morosidad: 47, dias_rotacion: 16.59, pct_contado: 33.54, pct_credito: 66.46, ventas_contado: 10438364907, ventas_credito: 20679848688 },
-      { mes: 'Mar', total_cartera: 14469921094, cartera_vencida: 7277406809, indice_morosidad: 50, dias_rotacion: 16.47, pct_contado: 35.13, pct_credito: 64.87, ventas_contado: 11609872525, ventas_credito: 21437803674 },
-      { mes: 'Abr', total_cartera: 17936508752, cartera_vencida: 8717656442, indice_morosidad: 49, dias_rotacion: 14.39, pct_contado: 33.84, pct_credito: 66.16, ventas_contado: 10356355285, ventas_credito: 20251153500 },
-      { mes: 'May', total_cartera: 18209254924, cartera_vencida: 7030281613, indice_morosidad: 39, dias_rotacion: 15.32, pct_contado: 39.09, pct_credito: 60.91, ventas_contado: 12985883589, ventas_credito: 20238388567 },
-      { mes: 'Jun', total_cartera: 18490901842, cartera_vencida: 8583907709, indice_morosidad: 46, dias_rotacion: 16.79, pct_contado: 38.01, pct_credito: 61.99, ventas_contado: 11041764270, ventas_credito: 18011416335 },
-      { mes: 'Jul', total_cartera: 16734768996, cartera_vencida: 6118360787, indice_morosidad: 37, dias_rotacion: 12.69, pct_contado: 38.59, pct_credito: 61.40, ventas_contado: 12805263305, ventas_credito: 20372743972 },
-      { mes: 'Ago', total_cartera: 20856456595, cartera_vencida: 10315161061, indice_morosidad: 49, dias_rotacion: 17.01, pct_contado: 36.90, pct_credito: 63.10, ventas_contado: 11388755473, ventas_credito: 19478201008 },
-      { mes: 'Sep', total_cartera: 17309202563, cartera_vencida: 7218602492, indice_morosidad: 42, dias_rotacion: 16.06, pct_contado: 35.76, pct_credito: 64.24, ventas_contado: 11061123842, ventas_credito: 19870276930 },
-      { mes: 'Oct', total_cartera: 19652177415, cartera_vencida: 11656799639, indice_morosidad: 59, dias_rotacion: 16.05, pct_contado: 40.81, pct_credito: 59.19, ventas_contado: 15827220099, ventas_credito: 22958626315 },
-      { mes: 'Nov', total_cartera: 20952520953, cartera_vencida: 10134081938, indice_morosidad: 48, dias_rotacion: 16.21, pct_contado: 40.58, pct_credito: 59.42, ventas_contado: 14939957297, ventas_credito: 21873567783 },
-      { mes: 'Dic', total_cartera: 16785466719, cartera_vencida: 8486129930, indice_morosidad: 51, dias_rotacion: 15.4, pct_contado: 46.85, pct_credito: 53.15, ventas_contado: 20054162655, ventas_credito: 22754467018 }
+      { mes: 'Ene-25', total_cartera: 14412689391, cartera_vencida: 6176399177, indice_morosidad: 42.85, variacion_cartera_vencida: -2520069696, dias_rotacion: 19.78, pct_contado: 35.86, pct_credito: 64.13, ventas_contado: 11987878785, ventas_credito: 21437479983, ventas_netas: 33428115870 },
+      { mes: 'Feb-25', total_cartera: 15097421607, cartera_vencida: 7065964437, indice_morosidad: 46.80, variacion_cartera_vencida: 889565260, dias_rotacion: 16.59, pct_contado: 33.54, pct_credito: 66.46, ventas_contado: 10438364907, ventas_credito: 20679848688, ventas_netas: 31118341350 },
+      { mes: 'Mar-25', total_cartera: 14469921094, cartera_vencida: 7277406809, indice_morosidad: 50.29, variacion_cartera_vencida: 211442372, dias_rotacion: 16.47, pct_contado: 35.13, pct_credito: 64.87, ventas_contado: 11609872525, ventas_credito: 21437803674, ventas_netas: 33048101757 },
+      { mes: 'Abr-25', total_cartera: 17936508752, cartera_vencida: 8717656442, indice_morosidad: 48.60, variacion_cartera_vencida: 1440249633, dias_rotacion: 14.39, pct_contado: 33.84, pct_credito: 66.16, ventas_contado: 10356355285, ventas_credito: 20251153500, ventas_netas: 30608104632 },
+      { mes: 'May-25', total_cartera: 18209254924, cartera_vencida: 7030281613, indice_morosidad: 38.61, variacion_cartera_vencida: -1687374829, dias_rotacion: 15.32, pct_contado: 39.09, pct_credito: 60.91, ventas_contado: 12985883589, ventas_credito: 20238388567, ventas_netas: 33224425996 },
+      { mes: 'Jun-25', total_cartera: 18490901842, cartera_vencida: 8583907709, indice_morosidad: 46.42, variacion_cartera_vencida: 1553626096, dias_rotacion: 16.79, pct_contado: 38.01, pct_credito: 61.99, ventas_contado: 11041764270, ventas_credito: 18011416335, ventas_netas: 29053428245 },
+      { mes: 'Jul-25', total_cartera: 16734768996, cartera_vencida: 6118360787, indice_morosidad: 36.56, variacion_cartera_vencida: -2465546922, dias_rotacion: 12.69, pct_contado: 38.59, pct_credito: 61.40, ventas_contado: 12805263305, ventas_credito: 20372743972, ventas_netas: 33178713394 },
+      { mes: 'Ago-25', total_cartera: 20856456595, cartera_vencida: 10315161061, indice_morosidad: 49.46, variacion_cartera_vencida: 4196800274, dias_rotacion: 17.01, pct_contado: 36.90, pct_credito: 63.10, ventas_contado: 11388755473, ventas_credito: 19478201008, ventas_netas: 30867655227 },
+      { mes: 'Sep-25', total_cartera: 17309202563, cartera_vencida: 7218602492, indice_morosidad: 41.70, variacion_cartera_vencida: -3096558569, dias_rotacion: 16.06, pct_contado: 35.76, pct_credito: 64.24, ventas_contado: 11061123842, ventas_credito: 19870276930, ventas_netas: 30931784737 },
+      { mes: 'Oct-25', total_cartera: 19652177415, cartera_vencida: 11656799639, indice_morosidad: 59.32, variacion_cartera_vencida: 4438197147, dias_rotacion: 16.05, pct_contado: 40.81, pct_credito: 59.19, ventas_contado: 15827220099, ventas_credito: 22958626315, ventas_netas: 38785846414 },
+      { mes: 'Nov-25', total_cartera: 20952520953, cartera_vencida: 10134081938, indice_morosidad: 48.37, variacion_cartera_vencida: -1522717701, dias_rotacion: 16.21, pct_contado: 40.58, pct_credito: 59.42, ventas_contado: 14939957297, ventas_credito: 21873567783, ventas_netas: 36813525080 },
+      { mes: 'Dic-25', total_cartera: 16786699697, cartera_vencida: 8487412907, indice_morosidad: 50.56, variacion_cartera_vencida: -1646669031, dias_rotacion: 15.40, pct_contado: 46.85, pct_credito: 53.15, ventas_contado: 20054162655, ventas_credito: 22754467018, ventas_netas: 42808629673 },
     ];
 
     // Exposición de cartera 2025 vs 2024
@@ -315,7 +331,7 @@ class DashboardRepository extends IDashboardRepository {
       { mes: 'Septiembre', t2025: 17110, t2024: 19078, variacion: '-10' },
       { mes: 'Octubre', t2025: 19652, t2024: 20493, variacion: '-4' },
       { mes: 'Noviembre', t2025: 22838, t2024: 18704, variacion: '22' },
-      { mes: 'Diciembre', t2025: 16785, t2024: 16971, variacion: '-1' }
+      { mes: 'Diciembre', t2025: 16787, t2024: 17162, variacion: '-2' }
     ];
 
     // Resumen anual
@@ -325,13 +341,14 @@ class DashboardRepository extends IDashboardRepository {
       ventas_contado_promedio: '37.91',
       ventas_credito_promedio: '62.09',
       morosidad_promedio: '46.63',
-      cartera_dic_2025: 16785,
-      variacion_dic: '-1'
+      cartera_dic_2025: 16787,
+      variacion_dic: '-2'
     };
     
     return {
       resumenAnual,
       datosMensuales,
+      datosMensuales2024,
       exposicionCartera
     };
   }
