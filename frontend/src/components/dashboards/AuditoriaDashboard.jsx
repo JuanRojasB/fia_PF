@@ -9,10 +9,10 @@ import { CustomPctTooltip } from './CustomTooltip';
 
 export default function AuditoriaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -105,7 +105,28 @@ export default function AuditoriaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
             'Total Auditorías / Informes Ejecutados 2025',
-            `Total general 2025: 349 auditorías e informes ejecutados.\n\n• Posproceso: auditorías diarias → 12 informes mensuales al año\n• Logística: auditorías diarias → 12 informes mensuales al año\n• Comercial: auditorías diarias → 12 informes mensuales al año\n• PDV Yopal: 4 auditorías/año × 6 PDV = 24 auditorías\n• PDV Bogotá (15 PDV), Tunja (1 PDV) y Sogamoso (1 PDV): 17 auditorías/año × 17 PDV = 289 auditorías\n\nTotal PDV: 313 | Total procesos misionales: 36 | Gran total: 349`
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">En 2025 se ejecutaron un total de <strong className="text-blue-600">349 auditorías e informes</strong>, distribuidos entre procesos misionales y puntos de venta. Este volumen refleja la cobertura integral del sistema de control interno sobre las operaciones críticas de la empresa.</p>
+              </div>
+              <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Desglose por proceso</p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span>Posproceso (diario → informe mensual):</span><strong>12 informes</strong></div>
+                  <div className="flex justify-between"><span>Logística (diario → informe mensual):</span><strong>12 informes</strong></div>
+                  <div className="flex justify-between"><span>Comercial (diario → informe mensual):</span><strong>12 informes</strong></div>
+                  <div className="flex justify-between"><span>PDV Yopal (4/año × 6 PDV):</span><strong>24 auditorías</strong></div>
+                  <div className="flex justify-between"><span>PDV Bogotá, Tunja, Sogamoso (17/año × 17 PDV):</span><strong>289 auditorías</strong></div>
+                  <div className="border-t border-indigo-200 pt-2 flex justify-between font-bold"><span>Total PDV:</span><span className="text-indigo-600">313</span></div>
+                  <div className="flex justify-between font-bold text-blue-600"><span>Gran Total:</span><span>349</span></div>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto en el negocio</p>
+                <p className="text-sm">La cobertura de 349 auditorías garantiza visibilidad continua sobre los procesos operativos y comerciales, permitiendo detectar desviaciones oportunamente. Las alertas preventivas diarias y semanales emitidas contribuyeron a la reducción del 0.28 p.p. en devoluciones.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
@@ -124,7 +145,25 @@ export default function AuditoriaDashboard({ data }) {
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
             'Porcentaje de Devolución Promedio 2025',
-            `En 2025, el promedio de devoluciones de la compañía (sedes) se ubica en 2,26%, con una disminución de 0,28 p.p. frente a 2024 (2,54%). El indicador se calcula como los kilos devueltos sobre la venta bruta, y permite evaluar la gestión de las áreas de logística y comercial. Por sede: Sede 1: 2,85% — Sede 2: 1,61% — Sede 3: 2,31%.`
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">El porcentaje de devolución se calcula como los <strong>kilos devueltos sobre la venta bruta</strong>. En 2025 el promedio de la compañía fue de <strong className="text-green-600">2.26%</strong>, con una reducción de <strong>0.28 p.p.</strong> frente al 2.54% de 2024.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Resultado por sede 2025</p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between bg-indigo-50 rounded p-2"><span>Sede 1:</span><strong className="text-indigo-600">2.85%</strong></div>
+                  <div className="flex justify-between bg-emerald-50 rounded p-2"><span>Sede 2:</span><strong className="text-emerald-600">1.61%</strong></div>
+                  <div className="flex justify-between bg-amber-50 rounded p-2"><span>Sede 3:</span><strong className="text-amber-600">2.31%</strong></div>
+                  <div className="flex justify-between bg-blue-100 rounded p-2 font-bold"><span>Compañía (promedio):</span><strong className="text-blue-600">2.26%</strong></div>
+                </div>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Causas de la mejora</p>
+                <p className="text-sm">Las alertas preventivas diarias y semanales emitidas por el área de Auditoría permitieron corregir desviaciones oportunamente en los procesos de logística y comercial, que son los principales generadores de devoluciones.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
         >
@@ -146,7 +185,25 @@ export default function AuditoriaDashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Variación de Devoluciones 2025 vs 2024',
-            `El promedio de devoluciones de la compañía pasó de 2,54% en 2024 a 2,26% en 2025, una reducción de 0,28 p.p. Esta mejora refleja el impacto positivo de las alertas preventivas diarias y semanales emitidas por el área de Auditoría, que permitieron corregir desviaciones oportunamente y fortalecer los controles existentes. Por sede en 2025: Sede 1: 2,85% — Sede 2: 1,61% — Sede 3: 2,31%.`
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Análisis de la variación</p>
+                <p className="text-sm">El promedio de devoluciones pasó de <strong>2.54%</strong> en 2024 a <strong className="text-green-600">2.26%</strong> en 2025, una reducción de <strong>0.28 p.p.</strong> Esta mejora, aunque moderada en términos absolutos, es significativa porque se logró en un contexto de crecimiento del volumen operado.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Factores que explican la mejora</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Alertas preventivas diarias y semanales del área de Auditoría</li>
+                  <li>Corrección oportuna de desviaciones en logística y comercial</li>
+                  <li>Fortalecimiento de los controles existentes en los procesos</li>
+                  <li>Seguimiento mensual por sede con análisis comparativo</li>
+                </ul>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto económico</p>
+                <p className="text-sm">Cada punto porcentual de reducción en devoluciones representa kilos de producto que no regresan a la planta, reduciendo costos de reprocesso, transporte de retorno y pérdida de producto. La reducción de 0.28 p.p. tiene un impacto directo en la rentabilidad operativa.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
         >
@@ -176,7 +233,25 @@ export default function AuditoriaDashboard({ data }) {
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
             'Seguimiento Mensual de Devoluciones',
-            `El área de Auditoría realiza seguimiento mensual al proceso de devoluciones por sede, evidenciando su comportamiento al cierre del año 2025 en comparación con 2024. Esto permite identificar variaciones, tendencias y oportunidades de mejora en la gestión del proceso. El indicador se calcula como los kilos devueltos sobre la venta bruta.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el promedio mensual de la compañía, mostrando la dirección general del indicador en el período.`
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Metodología de seguimiento</p>
+                <p className="text-sm">El área de Auditoría realiza seguimiento mensual al proceso de devoluciones por sede, evidenciando su comportamiento al cierre del año 2025 en comparación con 2024. El indicador se calcula como los <strong>kilos devueltos sobre la venta bruta</strong>.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Cómo leer el gráfico</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Cada línea representa el % de devolución mensual de una sede</li>
+                  <li>La línea roja punteada es la tendencia calculada por regresión lineal sobre el promedio mensual de la compañía</li>
+                  <li>Una tendencia descendente indica mejora sostenida en el proceso</li>
+                  <li>Picos en meses específicos pueden indicar problemas puntuales de calidad o logística</li>
+                </ul>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Valor del seguimiento continuo</p>
+                <p className="text-sm">El monitoreo mensual permite identificar variaciones, tendencias y oportunidades de mejora en la gestión del proceso. Las alertas preventivas emitidas por Auditoría son el mecanismo de corrección temprana que explica la reducción de 0.28 p.p. en el año.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 cursor-pointer hover:border-orange-500 transition-all"
         >
@@ -447,10 +522,10 @@ export default function AuditoriaDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-4 flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-blue-400" />
                   <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
@@ -462,10 +537,10 @@ export default function AuditoriaDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
+                {modalContent.content}
               </div>
-              <div className="mt-6 flex justify-end">
+              <div className="mt-6 flex justify-end flex-shrink-0">
                 <button
                   onClick={() => setModalOpen(false)}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"

@@ -7,10 +7,10 @@ import CollapsibleTable from '../CollapsibleTable';
 
 export default function LogisticaMermaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -89,7 +89,26 @@ export default function LogisticaMermaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
             'Merma General 2025',
-            `Merma general 2025: ${general2025.merma_2025}%. Meta: ${general2025.meta_establecida}%. Brecha: ${general2025.brecha_puntos_porcentuales} puntos porcentuales. Durante 2025 se implementaron cambios estructurales: la planta de beneficio pasó a despachar únicamente a Sede 3, que asumió la re-selección y redistribución hacia Sede 1, mejorando trazabilidad y centralizando control de calidad.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Meta establecida</p>
+                  <p className="text-xl font-bold text-gray-900">{general2025.meta_establecida}%</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-3 border border-red-200">
+                  <p className="text-xs text-red-600 font-semibold mb-1">Merma real 2025</p>
+                  <p className="text-xl font-bold text-red-700">{general2025.merma_2025}%</p>
+                </div>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-orange-800 mb-2">Brecha vs meta: {general2025.brecha_puntos_porcentuales} pp</p>
+                <p className="text-sm text-gray-700">La merma general supera la meta en {general2025.brecha_puntos_porcentuales} puntos porcentuales, lo que representa una oportunidad de mejora en el control de pérdidas a lo largo de la cadena logística.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Cambio estructural 2025:</p>
+                <p className="text-sm text-gray-700">La planta de beneficio pasó a despachar únicamente a Sede 3, que asumió la re-selección y redistribución hacia Sede 1. Esto mejoró la trazabilidad y centralizó el control de calidad, aunque el promedio anual incluye los meses previos al cambio.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
@@ -110,7 +129,26 @@ export default function LogisticaMermaDashboard({ data }) {
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
             'Sede 1 (U01) - 2025',
-            `Sede 1 cerró 2025 en ${u01_2025.merma_2025}%, una mejora significativa vs ${datosPorSede['U01']?.find(d => d.anio === 2024)?.merma}% en 2024. Pasó de operar históricamente en niveles superiores al 16% a estabilizarse después de marzo en rangos entre 7% y 8%. El promedio anual incluye los meses previos al cambio estructural. Opera bajo un modelo más eficiente y controlado.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Merma 2024</p>
+                  <p className="text-xl font-bold text-gray-900">{datosPorSede['U01']?.find(d => d.anio === 2024)?.merma}%</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">Merma 2025</p>
+                  <p className="text-xl font-bold text-blue-700">{u01_2025.merma_2025}%</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Mejora significativa:</p>
+                <p className="text-sm text-gray-700">Sede 1 pasó de operar históricamente en niveles superiores al 16% a estabilizarse después de marzo en rangos entre 7% y 8%. El promedio anual incluye los meses previos al cambio estructural.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Meta: {u01_2025.meta_establecida}%</p>
+                <p className="text-sm text-gray-700">Opera bajo un modelo más eficiente y controlado tras la reorganización logística. La tendencia post-marzo es consistentemente favorable.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
@@ -131,7 +169,26 @@ export default function LogisticaMermaDashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Sede 2 (U02) - 2025',
-            `Sede 2 cerró 2025 en ${u02_2025.merma_2025}%, acercándose a su meta de ${u02_2025.meta_establecida}%. Ha mostrado mejora progresiva en los últimos tres años. Tras la reorganización, la sede mantuvo estabilidad y mostró capacidad de adaptación al nuevo esquema operativo. Existe brecha frente a la meta, pero la tendencia es favorable y consistente.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Meta establecida</p>
+                  <p className="text-xl font-bold text-gray-900">{u02_2025.meta_establecida}%</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">Merma real 2025</p>
+                  <p className="text-xl font-bold text-green-700">{u02_2025.merma_2025}%</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Tendencia favorable:</p>
+                <p className="text-sm text-gray-700">Sede 2 ha mostrado mejora progresiva en los últimos tres años, acercándose a su meta. Tras la reorganización, la sede mantuvo estabilidad y mostró capacidad de adaptación al nuevo esquema operativo.</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="text-sm font-semibold text-yellow-800 mb-2">Brecha: {u02_2025.brecha_puntos_porcentuales} pp</p>
+                <p className="text-sm text-gray-700">Existe brecha frente a la meta, pero la tendencia es favorable y consistente. Los valores negativos en U02 representan ganancia de peso (característica de productos congelados).</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -152,7 +209,26 @@ export default function LogisticaMermaDashboard({ data }) {
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
             'Sede 3 (U03) - 2025',
-            `Sede 3 cerró 2025 en ${u03_2025.merma_2025}%, mostrando reducción progresiva. No alcanzó la meta de ${u03_2025.meta_establecida}%, manteniendo una brecha de ${u03_2025.brecha_puntos_porcentuales} puntos porcentuales. Con la reorganización, asumió el proceso de re-selección y redistribución de producto hacia Sede 1, concentrando el control en un punto intermedio.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Meta establecida</p>
+                  <p className="text-xl font-bold text-gray-900">{u03_2025.meta_establecida}%</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">Merma real 2025</p>
+                  <p className="text-xl font-bold text-purple-700">{u03_2025.merma_2025}%</p>
+                </div>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-orange-800 mb-2">Brecha: {u03_2025.brecha_puntos_porcentuales} pp vs meta</p>
+                <p className="text-sm text-gray-700">Sede 3 muestra reducción progresiva pero no alcanzó la meta. La brecha de {u03_2025.brecha_puntos_porcentuales} puntos porcentuales requiere atención en el control de pérdidas.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Nuevo rol en la cadena:</p>
+                <p className="text-sm text-gray-700">Con la reorganización, Sede 3 asumió el proceso de re-selección y redistribución de producto hacia Sede 1, concentrando el control en un punto intermedio. Este nuevo rol implica mayor responsabilidad en la gestión de mermas.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -334,7 +410,7 @@ export default function LogisticaMermaDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -349,8 +425,8 @@ export default function LogisticaMermaDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed whitespace-pre-line">
-                {modalContent.description}
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">
+                {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">
                 <button
@@ -381,7 +457,33 @@ export default function LogisticaMermaDashboard({ data }) {
             className="w-5 h-5 text-red-400 cursor-pointer hover:text-red-600 transition-colors"
             onClick={() => openModal(
               'Comparativo de Mermas 2025/24/23',
-              'Gráfico unificado con las 4 sedes:\n\n• GENERAL: 11.70% (2025) vs meta 10% — brecha 1.70pp\n• U01: 9.49% (2025) vs meta 10% — ✓ Cumple meta\n• U02: -22.31% (2025) vs meta -25% — valores negativos = ganancia de peso\n• U03: 13.05% (2025) vs meta 12% — brecha 1.05pp\n\nLas barras grises representan la meta establecida para cada sede.'
+              <div className="space-y-4">
+                <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                  <p className="text-sm font-semibold text-gray-800 mb-3">Resultados 2025 por sede:</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between p-2 bg-orange-50 rounded border border-orange-200">
+                      <span className="text-sm font-semibold text-gray-800">GENERAL</span>
+                      <span className="text-sm text-orange-700 font-bold">{general2025.merma_2025}% — brecha {general2025.brecha_puntos_porcentuales}pp vs meta {general2025.meta_establecida}%</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 bg-green-50 rounded border border-green-200">
+                      <span className="text-sm font-semibold text-gray-800">U01 (Sede 1)</span>
+                      <span className="text-sm text-green-700 font-bold">{u01_2025.merma_2025}% — ✓ Cumple meta {u01_2025.meta_establecida}%</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 bg-blue-50 rounded border border-blue-200">
+                      <span className="text-sm font-semibold text-gray-800">U02 (Sede 2)</span>
+                      <span className="text-sm text-blue-700 font-bold">{u02_2025.merma_2025}% — valores negativos = ganancia de peso</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 bg-purple-50 rounded border border-purple-200">
+                      <span className="text-sm font-semibold text-gray-800">U03 (Sede 3)</span>
+                      <span className="text-sm text-purple-700 font-bold">{u03_2025.merma_2025}% — brecha {u03_2025.brecha_puntos_porcentuales}pp vs meta {u03_2025.meta_establecida}%</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                  <p className="text-sm font-semibold text-yellow-800 mb-2">Nota sobre el gráfico:</p>
+                  <p className="text-sm text-gray-700">Las barras grises representan la meta establecida para cada sede. U02 presenta valores negativos porque en el proceso de congelación el producto gana peso (absorción de agua), lo que es normal y esperado.</p>
+                </div>
+              </div>
             )}
           />
         </div>

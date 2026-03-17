@@ -11,10 +11,10 @@ import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function LogisticaSede3Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '', showTable: false });
+  const [modalContent, setModalContent] = useState({ title: '', content: null, showTable: false });
 
-  const openModal = (title, description, showTable = false) => {
-    setModalContent({ title, description, showTable });
+  const openModal = (title, content, showTable = false) => {
+    setModalContent({ title, content, showTable });
     setModalOpen(true);
   };
 
@@ -101,7 +101,26 @@ export default function LogisticaSede3Dashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
             'Gastos Totales 2025',
-            `Total de gastos operacionales logísticos Sede 3 para 2025: ${formatCurrency(total2025)}. La reducción del ${variacionTotal}% vs 2024 se logró mediante la optimización del túnel de congelación (-71.95%) y una gestión eficiente de recursos manteniendo ventas estables.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Total 2024</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(total2024)}</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">Total 2025</p>
+                  <p className="text-lg font-bold text-purple-700">{formatCurrencyFull(total2025)}</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionTotal) <= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionTotal) <= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación {variacionTotal}%:</p>
+                <p className="text-sm text-gray-700">{parseFloat(variacionTotal) <= 0 ? 'Reducción lograda' : 'Incremento'} mediante la optimización del túnel de congelación (<strong>-71.95%</strong>) y una gestión eficiente de recursos manteniendo ventas estables (+0.93%).</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Cambio estructural 2025:</p>
+                <p className="text-sm text-gray-700">Sede 3 asumió el proceso de re-selección y redistribución de producto hacia Sede 1, concentrando el control de calidad en un punto intermedio y mejorando la trazabilidad de la cadena logística.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -123,7 +142,24 @@ export default function LogisticaSede3Dashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Conceptos de Gasto',
-            `Sede 3 gestiona ${conceptosArray.length} conceptos de gasto operacional logístico para la atención de clientes institucionales. Estos rubros incluyen arriendos, fletes, personal, servicios públicos, túnel de congelación y otros gastos necesarios para la operación. Cada concepto es monitoreado mensualmente para optimizar costos y mantener la eficiencia operativa.`
+            <div className="space-y-4">
+              <div className="bg-fuchsia-50 rounded-lg p-4 border border-fuchsia-300">
+                <p className="text-sm font-semibold text-fuchsia-800 mb-2">{conceptosArray.length} rubros controlados:</p>
+                <p className="text-sm text-gray-700">Sede 3 gestiona {conceptosArray.length} conceptos de gasto operacional logístico para la atención de clientes institucionales.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Rubros principales:</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {conceptosArray.slice(0, 5).map((c, i) => (
+                    <li key={i}>• <strong>{c.concepto}</strong>: {formatCurrencyFull(c.valor2025)}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Logro destacado:</p>
+                <p className="text-sm text-gray-700">El túnel de congelación redujo su costo en <strong>-71.95%</strong>, siendo el principal factor de la reducción total de gastos operacionales en 2025.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-fuchsia-500/30 hover:border-fuchsia-500 transition-all cursor-pointer"
         >
@@ -323,11 +359,7 @@ export default function LogisticaSede3Dashboard({ data }) {
                 </button>
               </div>
               
-              <div className="mb-6 bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  {modalContent.description}
-                </p>
-              </div>
+              <div className="overflow-y-auto flex-1 pr-2">{modalContent.content}</div>
 
               {/* Tabla dentro del modal - solo si showTable es true */}
               {modalContent.showTable && (

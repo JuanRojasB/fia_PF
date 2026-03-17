@@ -8,10 +8,10 @@ import { CustomBarTooltip } from './CustomTooltip';
 
 export default function OperacionesDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '', table: null });
+  const [modalContent, setModalContent] = useState({ title: '', content: null, table: null });
 
-  const openModal = (title, description, table = null) => {
-    setModalContent({ title, description, table });
+  const openModal = (title, content, table = null) => {
+    setModalContent({ title, content, table });
     setModalOpen(true);
   };
 
@@ -82,7 +82,41 @@ export default function OperacionesDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          onClick={() => openModal('Disponibilidad de Mantenimiento', 'La disponibilidad cayó de 97% (2024) a 95,70% (2025). Picos de eficiencia: Septiembre (98,75%) y Diciembre (98,51%) presentan los niveles de disponibilidad más altos del año, coincidiendo con los tiempos medios de reparación (MTTR) más bajos: 0,10 y 0,11 horas respectivamente. Puntos Críticos: Agosto (94,77%) y Noviembre (94,71%) muestran las caídas más significativas. En noviembre, esto impactó directamente el OEE Global, llevándolo a su punto más bajo del año (80,1%). Se requiere enfoque en mantenimiento preventivo para estabilizar estos indicadores.')}
+          onClick={() => openModal('Disponibilidad de Mantenimiento 2025 vs 2024', 
+            <div className="space-y-4">
+              <p>La disponibilidad cayó de <strong className="text-gray-700">97%</strong> en 2024 a <strong className="text-orange-600">95,70%</strong> en 2025.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-2xl font-bold text-gray-900">97%</p>
+                </div>
+                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                  <p className="text-xs text-orange-600 font-semibold mb-1">2025</p>
+                  <p className="text-2xl font-bold text-orange-700">95,70%</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Picos de Eficiencia:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Septiembre:</strong> 98,75% (MTTR: 0,10 hrs)</li>
+                  <li><strong>Diciembre:</strong> 98,51% (MTTR: 0,11 hrs)</li>
+                </ul>
+                <p className="text-xs text-gray-600 mt-2">Los niveles de disponibilidad más altos coinciden con los tiempos medios de reparación más bajos.</p>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Puntos Críticos:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Agosto:</strong> 94,77% (caída significativa)</li>
+                  <li><strong>Noviembre:</strong> 94,71% (punto más bajo del año)</li>
+                </ul>
+                <p className="text-xs text-gray-600 mt-2">En noviembre, esto impactó directamente el OEE Global, llevándolo a su punto más bajo del año (80,1%).</p>
+              </div>
+              <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+                <p className="text-sm font-semibold text-amber-800 mb-2">Recomendación:</p>
+                <p className="text-sm text-gray-700">Se requiere enfoque en mantenimiento preventivo para estabilizar estos indicadores y evitar caídas en meses críticos.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
@@ -98,7 +132,38 @@ export default function OperacionesDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          onClick={() => openModal('OEE Global 2025', 'Se acumularon 104,30 horas de paro por mantenimiento en el año 2025. El promedio global del OEE se mantuvo en 86,4%, logrando superar la meta general del 86%. En 8 de los 12 meses se logró o superó la meta del 86%, lo que indica una gestión de mantenimiento estable. Noviembre fue el mes más bajo (80,1%) debido a problemas de disponibilidad. Los meses de septiembre y diciembre destacaron con los mejores resultados. Este logro demuestra una gestión efectiva del mantenimiento preventivo, aunque se identifican oportunidades de mejora en equipos críticos.')}
+          onClick={() => openModal('OEE Global Planta 2025', 
+            <div className="space-y-4">
+              <p>Se acumularon <strong className="text-red-600">104,30 horas de paro</strong> por mantenimiento en el año 2025. El promedio global del OEE se mantuvo en <strong className="text-green-600">86,4%</strong>, logrando superar la meta general del 86%.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">OEE 2025</p>
+                  <p className="text-2xl font-bold text-green-700">86,4%</p>
+                  <p className="text-xs text-gray-600 mt-1">Meta: 86% ✓</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">OEE 2024</p>
+                  <p className="text-2xl font-bold text-gray-900">84%</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Cumplimiento de Meta:</p>
+                <p className="text-sm text-gray-700">En <strong>8 de los 12 meses</strong> se logró o superó la meta del 86%, lo que indica una gestión de mantenimiento estable.</p>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Mes Crítico:</p>
+                <p className="text-sm text-gray-700"><strong>Noviembre:</strong> 80,1% (mes más bajo del año) debido a problemas de disponibilidad.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Meses Destacados:</p>
+                <p className="text-sm text-gray-700">Septiembre y diciembre presentaron los mejores resultados del año, coincidiendo con alta disponibilidad y bajo MTTR.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Conclusión:</p>
+                <p className="text-sm text-gray-700">Este logro demuestra una gestión efectiva del mantenimiento preventivo, aunque se identifican oportunidades de mejora en equipos críticos.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
@@ -114,7 +179,40 @@ export default function OperacionesDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          onClick={() => openModal('MTBF - Tiempo Medio Entre Fallas', 'El MTBF cayó de 13,35 hrs (2024) a 10,42 hrs (2025), indicando que los equipos están fallando con más frecuencia. Este indicador para la planta de beneficio es inestable. El valor más alto se registró en abril (4,16 hrs), indicando mayor confiabilidad, mientras que en septiembre cayó a 1,77 hrs, sugiriendo una alta frecuencia de intervenciones cortas. Esta tendencia negativa requiere atención inmediata. Se requiere revisar los planes de mantenimiento preventivo para estabilizar la frecuencia de fallas de los equipos críticos, especialmente Línea de Descargue, Zona de Máquinas y Calderas, y Transferidor.')}
+          onClick={() => openModal('MTBF - Tiempo Medio Entre Fallas', 
+            <div className="space-y-4">
+              <p>El MTBF cayó de <strong className="text-gray-700">13,35 hrs</strong> en 2024 a <strong className="text-red-600">10,42 hrs</strong> en 2025, indicando que los equipos están fallando con más frecuencia.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-2xl font-bold text-gray-900">13,35 hrs</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-3 border border-red-200">
+                  <p className="text-xs text-red-600 font-semibold mb-1">2025</p>
+                  <p className="text-2xl font-bold text-red-700">10,42 hrs</p>
+                </div>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
+                <p className="text-sm font-semibold text-orange-800 mb-2">Indicador Inestable:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Máximo:</strong> Abril con 4,16 hrs (mayor confiabilidad)</li>
+                  <li><strong>Mínimo:</strong> Septiembre con 1,77 hrs (alta frecuencia de intervenciones)</li>
+                </ul>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Equipos Críticos Identificados:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Línea de Descargue:</strong> 17,32 hrs de paro (22 eventos)</li>
+                  <li><strong>Zona de Máquinas y Calderas:</strong> 14,15 hrs (23 eventos)</li>
+                  <li><strong>Transferidor:</strong> 10,47 hrs (42 eventos - frecuencia alarmante)</li>
+                </ul>
+              </div>
+              <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+                <p className="text-sm font-semibold text-amber-800 mb-2">Acción Requerida:</p>
+                <p className="text-sm text-gray-700">Esta tendencia negativa requiere atención inmediata. Se requiere revisar los planes de mantenimiento preventivo para estabilizar la frecuencia de fallas de los equipos críticos.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-red-500/30 cursor-pointer hover:border-red-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
@@ -130,7 +228,45 @@ export default function OperacionesDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          onClick={() => openModal('MTTR - Tiempo Medio de Reparación', 'El MTTR aumentó de 0,35 hrs (2024) a 0,47 hrs (2025), indicando que las reparaciones son más largas. A pesar del incremento, se observa una gestión de respuesta relativamente rápida. El promedio suele estar por debajo de 0,30 horas (18 minutos) en la mayoría de los meses. Sin embargo, meses como mayo y octubre (0,37 hrs) muestran reparaciones más complejas que castigaron la disponibilidad mensual. Los mejores tiempos se registraron en septiembre (0,10 hrs) y diciembre (0,11 hrs). El aumento del MTTR combinado con la caída del MTBF indica que los equipos fallan más seguido y tardan más en repararse, lo que impacta directamente la productividad.')}
+          onClick={() => openModal('MTTR - Tiempo Medio de Reparación', 
+            <div className="space-y-4">
+              <p>El MTTR aumentó de <strong className="text-gray-700">0,35 hrs</strong> en 2024 a <strong className="text-yellow-600">0,47 hrs</strong> en 2025, indicando que las reparaciones son más largas.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-2xl font-bold text-gray-900">0,35 hrs</p>
+                  <p className="text-xs text-gray-600 mt-1">21 minutos</p>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
+                  <p className="text-xs text-yellow-600 font-semibold mb-1">2025</p>
+                  <p className="text-2xl font-bold text-yellow-700">0,47 hrs</p>
+                  <p className="text-xs text-gray-600 mt-1">28 minutos</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Gestión de Respuesta:</p>
+                <p className="text-sm text-gray-700">A pesar del incremento, se observa una gestión de respuesta relativamente rápida. El promedio suele estar por debajo de 0,30 horas (18 minutos) en la mayoría de los meses.</p>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
+                <p className="text-sm font-semibold text-orange-800 mb-2">Meses con Reparaciones Complejas:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Mayo:</strong> 0,37 hrs (reparaciones más complejas)</li>
+                  <li><strong>Octubre:</strong> 0,37 hrs (castigó la disponibilidad mensual)</li>
+                </ul>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Mejores Tiempos:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Septiembre:</strong> 0,10 hrs (6 minutos)</li>
+                  <li><strong>Diciembre:</strong> 0,11 hrs (7 minutos)</li>
+                </ul>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Impacto Combinado:</p>
+                <p className="text-sm text-gray-700">El aumento del MTTR combinado con la caída del MTBF indica que los equipos fallan más seguido y tardan más en repararse, lo que impacta directamente la productividad.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-yellow-500/30 cursor-pointer hover:border-yellow-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
@@ -232,7 +368,56 @@ export default function OperacionesDashboard({ data }) {
             'Eventos': e.numero_novedades,
             'Impacto': e.impacto
           }));
-          openModal('Equipos Ofensores', 'Línea de Descargue (17,32 hrs, 22 eventos) - Crítico 17% del tiempo total. Se realizó overhaul mecánico y eléctrico con buenos resultados. Zona de Máquinas y Calderas (14,15 hrs, 23 eventos) - Muy Alto 14%. Ya estabilizada con preventivo. Transferidor (10,47 hrs, 42 eventos) - Frecuencia Alarmante. Línea de Selección Linco (9,70 hrs, 17 eventos) - Se cambió cadena y accesorios. Desplumadora #1 ITA (6,78 hrs, 20 eventos) - Priorizar inspecciones en bocines y dedos. Es importante invertir en la confiabilidad de Línea de Descargue y Calderas para evitar que impacto económico supere los $250 millones en 2026.', tableData);
+          openModal('Equipos Ofensores - Top 5 Críticos', 
+            <div className="space-y-4">
+              <p className="text-gray-700">Los 5 equipos críticos acumularon <strong className="text-red-600">104,30 horas de paro</strong> en 2025:</p>
+              <div className="space-y-3">
+                <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                  <p className="text-sm font-semibold text-red-800 mb-2">1. Línea de Descargue - CRÍTICO</p>
+                  <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                    <li><strong>17,32 hrs de paro</strong> (17% del tiempo total)</li>
+                    <li><strong>22 eventos</strong> registrados</li>
+                    <li>Se realizó overhaul mecánico y eléctrico con buenos resultados</li>
+                  </ul>
+                </div>
+                <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
+                  <p className="text-sm font-semibold text-orange-800 mb-2">2. Zona de Máquinas y Calderas - MUY ALTO</p>
+                  <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                    <li><strong>14,15 hrs de paro</strong> (14% del tiempo total)</li>
+                    <li><strong>23 eventos</strong> registrados</li>
+                    <li>Ya estabilizada con preventivo</li>
+                  </ul>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-300">
+                  <p className="text-sm font-semibold text-yellow-800 mb-2">3. Transferidor - FRECUENCIA ALARMANTE</p>
+                  <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                    <li><strong>10,47 hrs de paro</strong></li>
+                    <li><strong>42 eventos</strong> (frecuencia más alta)</li>
+                  </ul>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">4. Línea de Selección Linco - ALTO</p>
+                  <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                    <li><strong>9,70 hrs de paro</strong> (9% del tiempo)</li>
+                    <li><strong>17 eventos</strong></li>
+                    <li>Se cambió cadena y accesorios</li>
+                  </ul>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">5. Desplumadora #1 ITA - MODERADO-ALTO</p>
+                  <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                    <li><strong>6,78 hrs de paro</strong> (7% del tiempo)</li>
+                    <li><strong>20 eventos</strong></li>
+                    <li>Priorizar inspecciones en bocines y dedos</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+                <p className="text-sm font-semibold text-amber-800 mb-2">Recomendación Crítica:</p>
+                <p className="text-sm text-gray-700">Es importante invertir en la confiabilidad de Línea de Descargue y Calderas para evitar que el impacto económico supere los <strong>$250 millones</strong> en 2026.</p>
+              </div>
+            </div>
+          , tableData);
         }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 cursor-pointer hover:border-red-500 transition-all"
       >
@@ -315,7 +500,38 @@ export default function OperacionesDashboard({ data }) {
             'Total': o.total_ot,
             '% Correctivas': `${o.porcentaje_correctivas}%`
           }));
-          openModal('Análisis Detallado de Órdenes de Trabajo', 'El 89,3% de las intervenciones totales (3.807 OT) fueron de carácter preventivo y 456 correctivas de acuerdo con reporte SIESA, lo que indica que se tiene un enfoque preventivo sólido. Meses con más correctivas: Enero (35,8%), Agosto (26%), Febrero (25,7%) y Marzo (23,7%). Estos picos pueden estar relacionados con el inicio de año y períodos de alta producción. Meses con mejor gestión preventiva: Diciembre (2%), Noviembre (3%), Junio (4,3%) y Julio (16,5%). El objetivo es mantener el porcentaje de correctivas por debajo del 15% mensual.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre el total mensual de OT, mostrando si el volumen de intervenciones está aumentando o disminuyendo en el año.', tableData);
+          openModal('Análisis Detallado de Órdenes de Trabajo 2025', 
+            <div className="space-y-4">
+              <p className="text-gray-700">El <strong className="text-green-600">89,3%</strong> de las intervenciones totales (<strong>3.807 OT</strong>) fueron de carácter preventivo y <strong>456 correctivas</strong> de acuerdo con reporte SIESA, lo que indica que se tiene un enfoque preventivo sólido.</p>
+              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Meses con Más Correctivas:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Enero:</strong> 35,8% (inicio de año)</li>
+                  <li><strong>Agosto:</strong> 26%</li>
+                  <li><strong>Febrero:</strong> 25,7%</li>
+                  <li><strong>Marzo:</strong> 23,7%</li>
+                </ul>
+                <p className="text-xs text-gray-600 mt-2">Estos picos pueden estar relacionados con el inicio de año y períodos de alta producción.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Meses con Mejor Gestión Preventiva:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Diciembre:</strong> 2% correctivas</li>
+                  <li><strong>Noviembre:</strong> 3% correctivas</li>
+                  <li><strong>Junio:</strong> 4,3% correctivas</li>
+                  <li><strong>Julio:</strong> 16,5% correctivas</li>
+                </ul>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Objetivo:</p>
+                <p className="text-sm text-gray-700">Mantener el porcentaje de correctivas por debajo del <strong>15% mensual</strong>.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Línea de Tendencia:</p>
+                <p className="text-sm text-gray-700">La línea roja punteada muestra la tendencia calculada por regresión lineal sobre el total mensual de OT, indicando si el volumen de intervenciones está aumentando o disminuyendo en el año.</p>
+              </div>
+            </div>
+          , tableData);
         }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
       >
@@ -400,7 +616,33 @@ export default function OperacionesDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        onClick={() => openModal('Costos de Vehículos', 'Se observa una reducción de $166.084.545 respecto al año anterior, aunque cabe notar que los datos de diciembre 2025 aún no están contabilizados. Vehículo SPS-047 fue el vehículo con el costo más alto en el año. En el mes de abril 2025 se cambió sistema hidráulico de dirección y la caja de este sistema. Esta reducción del 46,65% representa una gestión eficiente de mantenimiento vehicular.')}
+        onClick={() => openModal('Costos de Mantenimiento de Vehículos', 
+          <div className="space-y-4">
+            <p className="text-gray-700">Se observa una reducción de <strong className="text-green-600">$166.084.545</strong> respecto al año anterior, aunque cabe notar que los datos de diciembre 2025 aún no están contabilizados.</p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                <p className="text-xs text-orange-600 font-semibold mb-1">2024</p>
+                <p className="text-xl font-bold text-orange-700">${parseFloat(mantenimientoVehiculos[1]?.costo_total || 0).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                <p className="text-xl font-bold text-green-700">${parseFloat(mantenimientoVehiculos[0]?.costo_total || 0).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+              </div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+              <p className="text-sm font-semibold text-green-800 mb-2">Reducción Lograda:</p>
+              <p className="text-sm text-gray-700">La reducción del <strong>46,65%</strong> representa una gestión eficiente de mantenimiento vehicular.</p>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+              <p className="text-sm font-semibold text-red-800 mb-2">Vehículo con Mayor Costo:</p>
+              <p className="text-sm text-gray-700"><strong>SPS-047</strong> fue el vehículo con el costo más alto en el año. En el mes de abril 2025 se cambió sistema hidráulico de dirección y la caja de este sistema.</p>
+            </div>
+            <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+              <p className="text-sm font-semibold text-amber-800 mb-2">Nota Importante:</p>
+              <p className="text-sm text-gray-700">Los datos de diciembre 2025 aún no están contabilizados, por lo que el ahorro final podría variar.</p>
+            </div>
+          </div>
+        )}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
       >
         <div className="flex items-center justify-between mb-6">
@@ -466,7 +708,36 @@ export default function OperacionesDashboard({ data }) {
             isTotal: true
           });
           
-          openModal('Novedades Correctivas', 'Cumplimiento global del 70% en la gestión de novedades correctivas reportadas por líderes de sedes. Mantenimiento presenta un desempeño del 84% (buen nivel). Arquitectura tiene 58%, principalmente impactada por la baja ejecución en Sede 1 (15%) y Sede 4 (36%). Esta área cuenta con 4 técnicos ejecutando tareas por todas las sedes. Factores: vacaciones del señor Cástulo del 2 al 20 de enero y renuncia de Edwin Torres hace 5 meses. Se solicita al área de RH resolver lo antes posible.', tableData);
+          openModal('Novedades Correctivas - Gestión por Área', 
+            <div className="space-y-4">
+              <p className="text-gray-700">Cumplimiento global del <strong className="text-blue-600">70%</strong> en la gestión de novedades correctivas reportadas por líderes de sedes.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Mantenimiento: 84%</p>
+                  <p className="text-sm text-gray-700">Buen nivel de desempeño en la gestión de novedades.</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                  <p className="text-sm font-semibold text-red-800 mb-2">Arquitectura: 58%</p>
+                  <p className="text-sm text-gray-700">Principalmente impactada por baja ejecución en Sede 1 (15%) y Sede 4 (36%).</p>
+                </div>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
+                <p className="text-sm font-semibold text-orange-800 mb-2">Contexto de Arquitectura:</p>
+                <p className="text-sm text-gray-700">Esta área cuenta con <strong>4 técnicos</strong> ejecutando tareas por todas las sedes.</p>
+              </div>
+              <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+                <p className="text-sm font-semibold text-amber-800 mb-2">Factores que Afectaron el Desempeño:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li>Vacaciones del señor Cástulo del 2 al 20 de enero</li>
+                  <li>Renuncia de Edwin Torres hace 5 meses</li>
+                </ul>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Acción Requerida:</p>
+                <p className="text-sm text-gray-700">Se solicita al área de RH resolver lo antes posible la vacante dejada por Edwin Torres para mejorar la capacidad de ejecución del equipo de arquitectura.</p>
+              </div>
+            </div>
+          , tableData);
         }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border border-gray-300 cursor-pointer hover:border-gray-400 transition-all"
       >
@@ -613,7 +884,7 @@ export default function OperacionesDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed mb-4">{modalContent.description}</div>
+              <div className="text-gray-700 leading-relaxed mb-4">{modalContent.content}</div>
               
               {/* Tabla de datos */}
               {modalContent.table && modalContent.table.length > 0 && (

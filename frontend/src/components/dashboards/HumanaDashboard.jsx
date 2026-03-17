@@ -7,10 +7,10 @@ import { Users, TrendingUp, UserMinus, UserPlus, Clock, DollarSign, X, Info, Arr
 
 export default function HumanaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -68,7 +68,11 @@ export default function HumanaDashboard({ data }) {
               <p>La planta cerró 2025 con <strong>{formatNumber(kpis.personal2025)} colaboradores</strong>, frente a {formatNumber(kpis.personal2024)} en 2024.</p>
               <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
                 <p className="text-sm font-semibold text-blue-800 mb-1">Variación: {kpis.variacionPersonal >= 0 ? '+' : ''}{kpis.variacionPersonal}% ({kpis.personal2025 - kpis.personal2024 >= 0 ? '+' : ''}{kpis.personal2025 - kpis.personal2024} personas)</p>
-                <p className="text-sm text-gray-700">El crecimiento moderado responde al fortalecimiento de áreas estratégicas y la cobertura de requerimientos operativos específicos, sin comprometer la eficiencia del gasto en nómina.</p>
+                <p className="text-sm text-gray-700">El crecimiento moderado responde al fortalecimiento de áreas estratégicas y la cobertura de requerimientos operativos específicos en las tres sedes, sin comprometer la eficiencia del gasto en nómina.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                <p className="text-sm font-semibold text-purple-800 mb-1">Contexto:</p>
+                <p className="text-sm text-gray-700">Los nuevos ingresos responden al fortalecimiento de áreas estratégicas y la cobertura de requerimientos operativos específicos. El saldo neto 2025 fue de {kpis.ingresos2025 - kpis.retiros2025 >= 0 ? '+' : ''}{formatNumber(kpis.ingresos2025 - kpis.retiros2025)} personas (Ingresos: {formatNumber(kpis.ingresos2025)} - Retiros: {formatNumber(kpis.retiros2025)}).</p>
               </div>
             </div>
           )}
@@ -138,10 +142,10 @@ export default function HumanaDashboard({ data }) {
               <p>En 2025 se registraron <strong>{formatNumber(kpis.retiros2025)} retiros</strong>, frente a {formatNumber(kpis.retiros2024)} en 2024 ({kpis.variacionRetiros >= 0 ? '+' : ''}{kpis.variacionRetiros}%).</p>
               <div className="bg-red-50 rounded-lg p-3 border border-red-200">
                 <p className="text-sm font-semibold text-red-800 mb-1">Contexto</p>
-                <p className="text-sm text-gray-700">El incremento en retiros es consistente con el mayor volumen de ingresos, reflejando una dinámica activa de renovación de personal. Ver el dashboard de <strong>Causas de Desvinculación</strong> para el detalle por motivo.</p>
+                <p className="text-sm text-gray-700">El incremento en retiros es consistente con el mayor volumen de ingresos, reflejando una dinámica activa de renovación de personal. La renuncia voluntaria representa el <strong>83.81%</strong> de los retiros, lo que indica que la mayoría de las salidas son decisiones del colaborador.</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-                <p className="text-sm text-gray-600">La renuncia voluntaria representa el <strong>83.81%</strong> de los retiros, lo que indica que la mayoría de las salidas son decisiones del colaborador.</p>
+                <p className="text-sm text-gray-600">Ver el dashboard de <strong>Causas de Desvinculación</strong> para el detalle completo por motivo de retiro.</p>
               </div>
             </div>
           )}
@@ -430,7 +434,7 @@ export default function HumanaDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">{modalContent.description}</div>
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">{modalContent.content}</div>
               <div className="mt-6 flex justify-end">
                 <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                   Entendido

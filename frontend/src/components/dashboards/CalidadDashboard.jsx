@@ -5,10 +5,10 @@ import { Shield, TrendingDown, Users, Droplet, Recycle, FileCheck, X, Info, Chec
 
 export default function CalidadDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -24,7 +24,30 @@ export default function CalidadDashboard({ data }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          onClick={() => openModal('Accidentes de Trabajo', 'Se registraron 112 accidentes de trabajo en 2025, con picos en áreas como planta de beneficio y posproceso. Se implementó gimnasia laboral para mitigar riesgos osteomusculares y fortalecer el clima organizacional.')}
+          onClick={() => openModal('Accidentes de Trabajo 2025', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">En 2025 se registraron <strong className="text-orange-600">112 accidentes de trabajo</strong>, con mayor concentración en las áreas de planta de beneficio y posproceso, que por su naturaleza operativa presentan mayor exposición a riesgos osteomusculares y de seguridad física.</p>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Causas y factores explicativos</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Alta carga física en líneas de producción y posproceso</li>
+                  <li>Movimientos repetitivos que generan lesiones osteomusculares</li>
+                  <li>Condiciones propias del entorno de planta de beneficio</li>
+                </ul>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Acciones implementadas</p>
+                <p className="text-sm">Se implementó <strong>gimnasia laboral</strong> como medida preventiva para mitigar riesgos osteomusculares y fortalecer el clima organizacional. Adicionalmente se realizaron 22 capacitaciones con 347 asistentes y un simulacro de evacuación en octubre.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto en el negocio</p>
+                <p className="text-sm">Los accidentes laborales generan ausentismo, costos de atención médica y afectación en la productividad operativa. El seguimiento continuo y las acciones preventivas son clave para reducir este indicador en 2026.</p>
+              </div>
+            </div>
+          ))}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -43,7 +66,32 @@ export default function CalidadDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          onClick={() => openModal('Reducción de PQRs', 'Reducción de PQRs en un 28.45% respecto a 2024, reflejando mejoras en la experiencia del cliente y en los procesos de calidad.')}
+          onClick={() => openModal('Reducción de PQRs 2025 vs 2024', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">Las PQRs (Peticiones, Quejas y Reclamos) son el principal termómetro de la experiencia del cliente. En 2025 se logró una <strong className="text-green-600">reducción del 28.45%</strong> frente a 2024, uno de los resultados más destacados del área de Calidad.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Causas de la mejora</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Implementación de 154 planes de acción (+27.92% vs 2024)</li>
+                  <li>Metodologías de análisis causal para identificar raíces de los problemas</li>
+                  <li>Capacitación a líderes de proceso en gestión de calidad</li>
+                  <li>Actualización del CRM SIESA para mejor trazabilidad de reclamos</li>
+                  <li>Ejecución mensual del Comité Triángulo de Calidad</li>
+                </ul>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto en el negocio</p>
+                <p className="text-sm">Menos PQRs significa mayor satisfacción del cliente, menor costo de atención posventa y mejor reputación de marca. Esta reducción es coherente con la ejecución de 1.166 encuestas de satisfacción realizadas en el año.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Conclusión</p>
+                <p className="text-sm">La reducción del 28.45% en PQRs es un indicador sólido de que las acciones correctivas y preventivas implementadas están generando resultados tangibles en la experiencia del cliente.</p>
+              </div>
+            </div>
+          ))}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -62,7 +110,31 @@ export default function CalidadDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          onClick={() => openModal('Planes de Acción', 'Incremento en planes de acción: 154 en 2025, un 27.92% más que en 2024. Implementación de metodologías de análisis causales y capacitación a líderes.')}
+          onClick={() => openModal('Planes de Acción Ejecutados 2025', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">En 2025 se ejecutaron <strong className="text-blue-600">154 planes de acción</strong>, lo que representa un incremento del <strong>+27.92%</strong> frente a 2024. Este aumento refleja una cultura organizacional más proactiva en la identificación y corrección de desviaciones.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Factores que explican el incremento</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Implementación de metodologías de análisis causal</li>
+                  <li>Capacitación a líderes en gestión de no conformidades</li>
+                  <li>Digitalización del SGC mediante plataforma ISOLUCION</li>
+                  <li>Mayor visibilidad de hallazgos gracias al CRM SIESA actualizado</li>
+                </ul>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Relación con otros indicadores</p>
+                <p className="text-sm">El aumento en planes de acción está directamente relacionado con la reducción del 28.45% en PQRs: más acciones correctivas ejecutadas generan menos reclamaciones de clientes. Es un ciclo virtuoso de mejora continua.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Conclusión</p>
+                <p className="text-sm">154 planes ejecutados en 2025 demuestran que el sistema de gestión de calidad está madurando y que los procesos de mejora continua están institucionalizados en la organización.</p>
+              </div>
+            </div>
+          ))}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -81,7 +153,32 @@ export default function CalidadDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          onClick={() => openModal('Auditorías Internas', 'Realización de auditorías internas bajo la norma ISO 9001:2015 en 14 procesos. Avances en la transición hacia la ISO 9001:2026.')}
+          onClick={() => openModal('Auditorías Internas ISO 9001:2015', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">En 2025 se realizaron auditorías internas bajo la norma <strong className="text-purple-600">ISO 9001:2015</strong> a <strong>14 procesos</strong> de la organización. Este ejercicio es fundamental para verificar el cumplimiento del sistema de gestión y preparar la transición hacia la nueva versión.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Avances en la transición ISO 9001:2026</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Actualización de matrices de partes interesadas, DOFA y PESTEL</li>
+                  <li>Actualización de caracterización de procesos</li>
+                  <li>Mayor integración digital y tecnológica del SGC</li>
+                  <li>Reorganización del capítulo de mejora</li>
+                  <li>Énfasis en la experiencia del cliente como eje central</li>
+                </ul>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Herramientas implementadas</p>
+                <p className="text-sm">Se implementó la plataforma <strong>ISOLUCION</strong> para digitalizar el sistema de gestión de calidad, y se actualizó el CRM SIESA para mejorar la trazabilidad. El Comité Triángulo de Calidad se ejecutó mensualmente.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto estratégico</p>
+                <p className="text-sm">Las auditorías a 14 procesos garantizan que la organización mantiene sus estándares de calidad y está preparada para la transición a ISO 9001:2026, que exigirá mayor integración digital y enfoque en el cliente.</p>
+              </div>
+            </div>
+          ))}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-5 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
           <div className="flex items-center justify-between mb-2">
@@ -102,7 +199,29 @@ export default function CalidadDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        onClick={() => openModal('Gestión Ambiental', 'Reducción del consumo de agua potable por ave beneficiada: 5.9% respecto a 2024 y 16.07% respecto a 2023. Gestión de residuos sólidos: aumento del 24.65% en residuos aprovechables respecto a 2024. Realización de 23 capacitaciones y 24 sensibilizaciones sobre prevención de plagas, manejo de residuos y ahorro de recursos.')}
+        onClick={() => openModal('Gestión Ambiental 2025', (
+          <div className="space-y-4 text-gray-700">
+            <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Consumo de agua por ave beneficiada</p>
+              <p className="text-sm">Se logró una reducción del <strong className="text-blue-600">5.9%</strong> en el consumo de agua potable por ave beneficiada frente a 2024, y del <strong className="text-blue-600">16.07%</strong> frente a 2023. Esta tendencia acumulada de tres años demuestra una gestión ambiental sostenida y efectiva.</p>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Gestión de residuos sólidos</p>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li>Residuos aprovechables: <strong>+24.65%</strong> vs 2024 (más material reciclado)</li>
+                <li>Canastillas rotas: <strong>-20.02%</strong> vs 2024 (menos desperdicio de activos)</li>
+              </ul>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Capacitaciones y sensibilizaciones</p>
+              <p className="text-sm">Se realizaron <strong>23 capacitaciones</strong> y <strong>24 sensibilizaciones</strong> sobre prevención de plagas, manejo de residuos y ahorro de recursos, fortaleciendo la cultura ambiental en toda la organización.</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Conclusión</p>
+              <p className="text-sm">La reducción acumulada del 16.07% en consumo de agua desde 2023 y el aumento del 24.65% en residuos aprovechables posicionan a la empresa en una trayectoria sólida de sostenibilidad ambiental.</p>
+            </div>
+          </div>
+        ))}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 cursor-pointer transition-all"
       >
         <div className="flex items-center justify-between mb-6">
@@ -193,7 +312,35 @@ export default function CalidadDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        onClick={() => openModal('SST 2025', 'Ejecución de un simulacro de evacuación en octubre y 22 capacitaciones con 347 asistentes. Implementación de gimnasia laboral para mitigar riesgos osteomusculares. Retorno de visitas a sedes y puntos de venta para inspecciones de seguridad. Actualización de documentos como matriz legal, matriz de riesgos y reglamento de higiene y seguridad industrial.')}
+        onClick={() => openModal('Seguridad y Salud en el Trabajo SST 2025', (
+          <div className="space-y-4 text-gray-700">
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Actividades ejecutadas en 2025</p>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li><strong>22 capacitaciones</strong> con <strong>347 asistentes</strong> en temas de seguridad y salud</li>
+                <li><strong>1 simulacro de evacuación</strong> realizado en octubre 2025</li>
+                <li>Retorno de visitas a sedes y puntos de venta para inspecciones de seguridad</li>
+                <li>Implementación de <strong>gimnasia laboral</strong> para prevención osteomuscular</li>
+              </ul>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Actualización documental</p>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li>Actualización de la matriz legal SST</li>
+                <li>Actualización de la matriz de riesgos</li>
+                <li>Actualización del reglamento de higiene y seguridad industrial</li>
+              </ul>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Contexto de los 112 accidentes</p>
+              <p className="text-sm">Los 112 accidentes registrados en 2025 se concentran principalmente en planta de beneficio y posproceso. Las acciones de SST buscan reducir este número mediante prevención activa, capacitación y mejora de condiciones de trabajo.</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Impacto</p>
+              <p className="text-sm">Un programa SST robusto reduce el ausentismo, mejora la productividad y protege el bienestar de los colaboradores. Las 347 personas capacitadas representan una cobertura significativa del personal operativo.</p>
+            </div>
+          </div>
+        ))}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 cursor-pointer transition-all"
       >
         <div className="flex items-center justify-between mb-6">
@@ -234,7 +381,35 @@ export default function CalidadDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          onClick={() => openModal('ISO 9001', 'Actualización de matrices de partes interesadas, DOFA/PESTEL y caracterización de procesos. Implementación de la plataforma ISOLUCION para digitalizar el sistema de gestión de calidad. Avances en la transición hacia la ISO 9001:2026, con mayor integración digital y tecnológica, reorganización del capítulo de mejora y énfasis en la experiencia del cliente.')}
+          onClick={() => openModal('Sistema de Gestión ISO 9001 - Transición 2025-2026', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Estado actual del SGC</p>
+                <p className="text-sm">El sistema de gestión de calidad opera bajo la norma <strong>ISO 9001:2015</strong> con auditorías a 14 procesos. En 2025 se inició la preparación para la transición a <strong>ISO 9001:2026</strong>, que incorpora mayor integración digital y énfasis en la experiencia del cliente.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Avances de digitalización</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Implementación de plataforma <strong>ISOLUCION</strong> para digitalizar el SGC</li>
+                  <li>Actualización del CRM SIESA para mejor trazabilidad</li>
+                  <li>Ejecución mensual del Comité Triángulo de Calidad</li>
+                </ul>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Cambios para ISO 9001:2026</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Actualización de matrices de partes interesadas, DOFA y PESTEL</li>
+                  <li>Actualización de caracterización de procesos</li>
+                  <li>Reorganización del capítulo de mejora</li>
+                  <li>Mayor énfasis en la experiencia del cliente</li>
+                </ul>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto estratégico</p>
+                <p className="text-sm">La transición a ISO 9001:2026 posiciona a la empresa en la vanguardia de la gestión de calidad, con un sistema más digital, más orientado al cliente y más integrado con los riesgos del negocio.</p>
+              </div>
+            </div>
+          ))}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 cursor-pointer transition-all"
         >
           <div className="flex items-center justify-between mb-4">
@@ -274,7 +449,30 @@ export default function CalidadDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          onClick={() => openModal('Satisfacción Cliente', 'Ejecución de 1.166 encuestas de satisfacción, con una disminución del 38% frente a 2024. La reducción de PQRs en un 28.45% refleja mejoras en la experiencia del cliente.')}
+          onClick={() => openModal('Encuestas de Satisfacción al Cliente 2025', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-cyan-50 rounded-lg p-4 border border-cyan-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">En 2025 se ejecutaron <strong className="text-cyan-600">1.166 encuestas de satisfacción</strong>, lo que representa una disminución del <strong>38%</strong> frente a 2024. Esta reducción en el número de encuestas puede estar relacionada con cambios en la metodología de medición o en la segmentación de clientes encuestados.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Relación con PQRs y planes de acción</p>
+                <p className="text-sm">A pesar de la reducción en encuestas, los indicadores de calidad muestran mejora: las PQRs bajaron un <strong>28.45%</strong> y los planes de acción aumentaron un <strong>27.92%</strong>. Esto sugiere que la calidad percibida por el cliente mejoró en 2025.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Herramientas de seguimiento</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>CRM SIESA actualizado para trazabilidad de reclamos</li>
+                  <li>Comité Triángulo de Calidad con ejecución mensual</li>
+                  <li>Plataforma ISOLUCION para gestión digital del SGC</li>
+                </ul>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Conclusión</p>
+                <p className="text-sm">La combinación de menos PQRs (-28.45%) y más planes de acción (+27.92%) indica que el sistema de calidad está funcionando: se detectan y corrigen problemas antes de que lleguen al cliente.</p>
+              </div>
+            </div>
+          ))}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-cyan-500/30 hover:border-cyan-500 cursor-pointer transition-all"
         >
           <div className="flex items-center justify-between mb-4">
@@ -357,10 +555,10 @@ export default function CalidadDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-4 flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-cyan-600" />
                   <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
@@ -369,8 +567,8 @@ export default function CalidadDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">{modalContent.description}</div>
-              <div className="mt-6 flex justify-end">
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">{modalContent.content}</div>
+              <div className="mt-6 flex justify-end flex-shrink-0">
                 <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                   Entendido
                 </button>

@@ -8,11 +8,11 @@ import CollapsibleChart from '../CollapsibleChart';
 
 export default function GranjasDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
   const hasAnimated = useRef(false);
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -163,8 +163,25 @@ export default function GranjasDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Total de Granjas Activas',
-            `${totalGranjas} granjas activas registradas en el sistema. Estas instalaciones están distribuidas en diferentes zonas climáticas (Frío, Cálido, Caliente) para optimizar las condiciones de crianza según las características de cada región.`
+            'Total de Granjas Activas 2025',
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">Se tienen <strong className="text-blue-600">{totalGranjas} granjas activas</strong> registradas en el sistema, distribuidas estratégicamente en diferentes zonas climáticas para optimizar las condiciones de crianza según las características de cada región.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Distribución por zona climática</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Zona Fría: condiciones óptimas para menor estrés calórico</li>
+                  <li>Zona Cálida: balance entre temperatura y productividad</li>
+                  <li>Zona Caliente: requiere mayor gestión de bienestar animal</li>
+                </ul>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto estratégico</p>
+                <p className="text-sm">La distribución en múltiples zonas climáticas diversifica los riesgos operativos y permite optimizar costos de producción según las condiciones ambientales de cada región, garantizando continuidad en el suministro de aves.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -182,8 +199,21 @@ export default function GranjasDashboard({ data }) {
           transition={{ delay: 0.1 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Densidad Promedio de Aves',
-            `Densidad promedio: ${Math.round(totalAves / totalMetros)} aves/m². Este indicador mide la eficiencia del uso del espacio disponible. Cálculo: ${formatNumber(totalAves)} aves ÷ ${formatNumber(totalMetros)} m² = ${Math.round(totalAves / totalMetros)} aves/m². Una densidad adecuada garantiza el bienestar animal y optimiza la producción.`
+            'Densidad Promedio de Aves por m² 2025',
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Cálculo del indicador</p>
+                <p className="text-sm">Densidad promedio: <strong className="text-green-600">{Math.round(totalAves / totalMetros)} aves/m²</strong>. Cálculo: {formatNumber(totalAves)} aves ÷ {formatNumber(totalMetros)} m² = {Math.round(totalAves / totalMetros)} aves/m².</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Importancia del indicador</p>
+                <p className="text-sm">Una densidad adecuada garantiza el <strong>bienestar animal</strong> y optimiza la producción. Densidades muy altas pueden generar estrés en las aves, aumentar la mortalidad y afectar la calidad del producto final.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Variación por zona</p>
+                <p className="text-sm">La densidad varía entre granjas según la zona climática. Las granjas en zona fría pueden manejar densidades ligeramente mayores, mientras que las de zona caliente requieren menor densidad para reducir el estrés calórico.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -201,8 +231,25 @@ export default function GranjasDashboard({ data }) {
           transition={{ delay: 0.2 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Capacidad Total por Ciclo',
-            `Capacidad total: ${formatNumber(totalAves)} aves por ciclo. Esta es la capacidad máxima de alojamiento en todas las granjas durante un ciclo de producción de ${diasPorCiclo} días. Representa el número total de aves que pueden estar en crianza simultáneamente en todas las instalaciones.`
+            'Capacidad Total por Ciclo 2025',
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Qué representa este indicador</p>
+                <p className="text-sm">La capacidad total de <strong className="text-purple-600">{formatNumber(totalAves)} aves por ciclo</strong> es el número máximo de aves que pueden estar en crianza simultáneamente en todas las granjas durante un ciclo de producción de {diasPorCiclo} días.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Ciclo de producción</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Duración del ciclo: <strong>{diasPorCiclo} días</strong></li>
+                  <li>Ciclos por año: <strong>{ciclosPorAnio}</strong></li>
+                  <li>Capacidad bruta anual: <strong>{formatNumber(Math.round(totalAves * ciclosPorAnio))} aves</strong></li>
+                </ul>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto en el abastecimiento</p>
+                <p className="text-sm">Esta capacidad instalada determina el volumen máximo de aves que puede suministrar la empresa a sus plantas de beneficio, siendo el punto de partida para la planificación de la producción y las ventas.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -220,8 +267,31 @@ export default function GranjasDashboard({ data }) {
           transition={{ delay: 0.3 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
           onClick={() => openModal(
-            'Capacidad Anual Estimada',
-            `Capacidad anual estimada: ${formatNumber(Math.round(avesEstimadasSalida))} aves. Cálculo detallado:\n\n1. Capacidad por ciclo: ${formatNumber(totalAves)} aves\n2. Ciclos por año: ${ciclosPorAnio} ciclos (cada ${diasPorCiclo} días)\n3. Capacidad bruta anual: ${formatNumber(totalAves)} × ${ciclosPorAnio} = ${formatNumber(Math.round(capacidadAnual))} aves\n4. Mortalidad estimada: ${(mortalidadEstimada * 100).toFixed(0)}%\n5. Capacidad neta anual: ${formatNumber(Math.round(capacidadAnual))} × ${((1 - mortalidadEstimada) * 100).toFixed(0)}% = ${formatNumber(Math.round(avesEstimadasSalida))} aves\n\nEste cálculo considera la rotación de ciclos y la mortalidad esperada durante el proceso de crianza.`
+            'Capacidad Anual Estimada 2025',
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Cálculo detallado</p>
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between bg-white rounded p-2"><span>Capacidad por ciclo:</span><strong>{formatNumber(totalAves)} aves</strong></div>
+                  <div className="flex justify-between bg-white rounded p-2"><span>Ciclos por año:</span><strong>{ciclosPorAnio} ciclos</strong></div>
+                  <div className="flex justify-between bg-white rounded p-2"><span>Capacidad bruta anual:</span><strong>{formatNumber(Math.round(capacidadAnual))} aves</strong></div>
+                  <div className="flex justify-between bg-white rounded p-2"><span>Mortalidad estimada:</span><strong>{(mortalidadEstimada * 100).toFixed(0)}%</strong></div>
+                  <div className="flex justify-between bg-orange-100 rounded p-2 font-bold"><span>Capacidad neta anual:</span><strong className="text-orange-600">{formatNumber(Math.round(avesEstimadasSalida))} aves</strong></div>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Supuestos del cálculo</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Ciclo de {diasPorCiclo} días por lote</li>
+                  <li>{ciclosPorAnio} ciclos por año (rotación continua)</li>
+                  <li>Mortalidad estimada del {(mortalidadEstimada * 100).toFixed(0)}% durante la crianza</li>
+                </ul>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Relevancia estratégica</p>
+                <p className="text-sm">La capacidad anual estimada de {formatNumber(Math.round(avesEstimadasSalida))} aves define el techo de producción de la empresa y es el insumo clave para la planificación de ventas, compras de insumos y capacidad de planta de beneficio.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -530,11 +600,27 @@ export default function GranjasDashboard({ data }) {
         transition={{ delay: 0.8 }}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-2 border-gray-200 cursor-pointer hover:border-yellow-500 transition-all"
         onClick={() => openModal(
-          'Resumen por Zona',
-          `${tipoData.map(t => {
-            const pct = ((t.aves / totalAves) * 100).toFixed(1);
-            return `${t.tipo}: ${t.granjas} granjas | ${formatNumber(t.aves)} aves (${pct}%)`;
-          }).join('\n\n')}`
+          'Resumen por Zona Climática',
+          <div className="space-y-4 text-gray-700">
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+              <p className="text-sm font-semibold text-gray-900 mb-3">Distribución por zona</p>
+              <div className="space-y-2 text-sm">
+                {tipoData.map((t, idx) => {
+                  const pct = ((t.aves / totalAves) * 100).toFixed(1);
+                  return (
+                    <div key={idx} className="flex justify-between bg-white rounded p-2">
+                      <span>Zona {t.tipo}:</span>
+                      <strong>{t.granjas} granjas | {formatNumber(t.aves)} aves ({pct}%)</strong>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+              <p className="text-sm font-semibold text-gray-900 mb-2">Estrategia de distribución</p>
+              <p className="text-sm">Las {totalGranjas} granjas están distribuidas estratégicamente en {tipoData.length} zonas climáticas para diversificar riesgos operativos y optimizar costos de producción según las condiciones ambientales de cada región.</p>
+            </div>
+          </div>
         )}
       >
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Capacidad Instalada por Zona Climática</h2>
@@ -623,10 +709,10 @@ export default function GranjasDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-4 flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-blue-600" />
                   <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
@@ -638,10 +724,10 @@ export default function GranjasDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
+                {modalContent.content}
               </div>
-              <div className="mt-6 flex justify-end">
+              <div className="mt-6 flex justify-end flex-shrink-0">
                 <button
                   onClick={() => setModalOpen(false)}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors"

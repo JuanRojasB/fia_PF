@@ -10,10 +10,10 @@ import KpiCard from '../KpiCard';
 
 export default function ProduccionPolloEntregadoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -127,7 +127,22 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               icon={<Package className="w-6 h-6 text-purple-500" />}
               borderColor="border-purple-400"
               delay={0.2}
-              onClick={() => openModal('Programado Aves 2025', `El volumen programado para 2025 fue de ${formatNumber(datos2025.programado)} aves, frente a ${formatNumber(datos2024.programado)} programadas en 2024.`)}
+              onClick={() => openModal('Programado Aves 2025', (
+                <div className="space-y-4 text-gray-700">
+                  <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                    <p className="text-sm">El volumen programado para 2025 fue de <strong className="text-purple-600">{formatNumber(datos2025.programado)} aves</strong>, frente a {formatNumber(datos2024.programado)} programadas en 2024. La programación define el objetivo de producción que deben cumplir las granjas propias.</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Cumplimiento del programado</p>
+                    <p className="text-sm">El real de granjas ({formatNumber(datos2025.real_granjas)} aves) representa el {((datos2025.real_granjas / datos2025.programado) * 100).toFixed(1)}% del programado 2025. La diferencia entre programado y real refleja la capacidad de ejecución de las granjas propias.</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4 border border-gray-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Impacto en la planificación</p>
+                    <p className="text-sm">El programado es el insumo clave para la planificación de la planta de beneficio, las ventas y las compras de insumos. Una desviación significativa entre programado y real requiere ajustes en toda la cadena de suministro.</p>
+                  </div>
+                </div>
+              ))}
             />
             <KpiCard
               title="Real Aves Entregadas 2025"
@@ -138,7 +153,22 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               icon={<Truck className="w-6 h-6 text-green-500" />}
               borderColor="border-green-400"
               delay={0.3}
-              onClick={() => openModal('Real Aves Entregadas 2025', `Las granjas propias entregaron ${formatNumber(datos2025.real_granjas)} aves en 2025, frente a ${formatNumber(datos2024.real_granjas)} en 2024.`)}
+              onClick={() => openModal('Real Aves Entregadas por Granjas Propias 2025', (
+                <div className="space-y-4 text-gray-700">
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Resultado 2025</p>
+                    <p className="text-sm">Las granjas propias entregaron <strong className="text-green-600">{formatNumber(datos2025.real_granjas)} aves</strong> en 2025, frente a {formatNumber(datos2024.real_granjas)} en 2024. Esto representa un crecimiento del <strong>+2.7%</strong> en el total de aves entregadas.</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Contexto histórico</p>
+                    <p className="text-sm">Tras el decrecimiento de -2.4% en 2024 (impactado por factores externos), 2025 muestra una recuperación positiva. El volumen real de granjas es el componente principal del total de aves entregadas a planta de beneficio.</p>
+                  </div>
+                  <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Complemento con aves compradas</p>
+                    <p className="text-sm">Al real de granjas ({formatNumber(datos2025.real_granjas)}) se suman las aves compradas a terceros ({formatNumber(datos2025.comprado)}), alcanzando un total de {formatNumber(datos2025.total)} aves entregadas a planta en 2025.</p>
+                  </div>
+                </div>
+              ))}
             />
             <KpiCard
               title="Comprado de Aves (Avi/cambulos) 2025"
@@ -149,7 +179,22 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               icon={<Package className="w-6 h-6 text-orange-500" />}
               borderColor="border-orange-400"
               delay={0.4}
-              onClick={() => openModal('Comprado de Aves 2025', `En 2025 se compraron ${formatNumber(datos2025.comprado)} aves a terceros, frente a ${formatNumber(datos2024.comprado)} en 2024.`)}
+              onClick={() => openModal('Aves Compradas a Terceros (Avi/cambulos) 2025', (
+                <div className="space-y-4 text-gray-700">
+                  <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                    <p className="text-sm">En 2025 se compraron <strong className="text-orange-600">{formatNumber(datos2025.comprado)} aves</strong> a terceros (Avi/cambulos), frente a {formatNumber(datos2024.comprado)} en 2024. Esta reducción del {(((datos2025.comprado - datos2024.comprado) / datos2024.comprado) * 100).toFixed(1)}% refleja mayor autosuficiencia de las granjas propias.</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Tendencia histórica</p>
+                    <p className="text-sm">Las aves compradas han venido reduciéndose consistentemente: de 664.575 en 2018 a 238.502 en 2025. Esta tendencia indica una estrategia de mayor integración vertical y menor dependencia de proveedores externos.</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Impacto en costos</p>
+                    <p className="text-sm">Reducir las aves compradas a terceros generalmente mejora el margen de producción, ya que el costo de producción propio suele ser menor que el precio de compra a terceros. La reducción de {formatNumber(datos2024.comprado - datos2025.comprado)} aves vs 2024 tiene un impacto positivo en la estructura de costos.</p>
+                  </div>
+                </div>
+              ))}
             />
             <KpiCard
               title="Total de Aves 2025"
@@ -160,7 +205,26 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               icon={<TrendingDown className="w-6 h-6 text-blue-500" />}
               borderColor="border-blue-400"
               delay={0.5}
-              onClick={() => openModal('Total de Aves 2025', `El total de aves entregadas en 2025 fue de ${formatNumber(datos2025.total)}, frente a ${formatNumber(datos2024.total)} en 2024.`)}
+              onClick={() => openModal('Total de Aves Entregadas 2025', (
+                <div className="space-y-4 text-gray-700">
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Resultado consolidado 2025</p>
+                    <p className="text-sm">El total de aves entregadas a planta en 2025 fue de <strong className="text-blue-600">{formatNumber(datos2025.total)} aves</strong>, frente a {formatNumber(datos2024.total)} en 2024. Esto representa un crecimiento del <strong>+2.7%</strong>, equivalente a +{formatNumber(datos2025.total - datos2024.total)} aves adicionales.</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Composición del total 2025</p>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between bg-white rounded p-2"><span>Real granjas propias:</span><strong className="text-green-600">{formatNumber(datos2025.real_granjas)} aves</strong></div>
+                      <div className="flex justify-between bg-white rounded p-2"><span>Comprado a terceros:</span><strong className="text-orange-600">{formatNumber(datos2025.comprado)} aves</strong></div>
+                      <div className="flex justify-between bg-blue-100 rounded p-2 font-bold"><span>Total entregado:</span><strong className="text-blue-600">{formatNumber(datos2025.total)} aves</strong></div>
+                    </div>
+                  </div>
+                  <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Recuperación tras 2024</p>
+                    <p className="text-sm">El crecimiento de +2.7% en 2025 representa una recuperación positiva tras el decrecimiento de -2.4% en 2024. El total de {formatNumber(datos2025.total)} aves es el segundo mayor de la serie histórica desde 2018.</p>
+                  </div>
+                </div>
+              ))}
             />
           </>);
         })()}
@@ -489,10 +553,10 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-4 flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-blue-400" />
                   <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
@@ -504,10 +568,10 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
+                {modalContent.content}
               </div>
-              <div className="mt-6 flex justify-end">
+              <div className="mt-6 flex justify-end flex-shrink-0">
                 <button
                   onClick={() => setModalOpen(false)}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"

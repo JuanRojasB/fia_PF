@@ -7,10 +7,10 @@ import CollapsibleTable from '../CollapsibleTable';
 
 export default function ProduccionIndicadoresDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -81,11 +81,11 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                 const anterior = zootecniaPollo[1] || {};
 
                 const cards = [
-                  { label: 'Conversión Alimenticia 2025', value: formatDecimal(conversionPollo, 3), val2025: conversionPollo, val2024: parseFloat(anterior.conversion)||0, decimals: 3, suffix: '', sub: 'kg alimento/kg carne', icon: <Target className="w-5 h-5 text-cyan-400" />, border: 'border-cyan-500/30 hover:border-cyan-500', varKey: 'conversion', invertir: true, modal: { title: 'Conversión Alimenticia', desc: `Actual 2025: ${formatDecimal(conversionPollo, 3)} kg alimento/kg carne\nAnterior 2024: ${formatDecimal(anterior.conversion, 3)} kg alimento/kg carne\n\nMide cuántos kg de alimento se necesitan para producir 1 kg de carne. Un valor MENOR es mejor — significa que el ave aprovecha más eficientemente el alimento.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, al contrario del estándar financiero.` } },
-                  { label: 'Mortalidad 2025', value: `${formatDecimal(mortalidadPollo, 3)}%`, val2025: mortalidadPollo, val2024: parseFloat(anterior.mortalidad_pct)||0, decimals: 3, suffix: '%', sub: 'Tasa de mortalidad', icon: <AlertTriangle className="w-5 h-5 text-red-400" />, border: 'border-red-500/30 hover:border-red-500', varKey: 'mortalidad_pct', invertir: true, modal: { title: 'Mortalidad Pollo', desc: `Actual 2025: ${formatDecimal(mortalidadPollo, 3)}%\nAnterior 2024: ${formatDecimal(anterior.mortalidad_pct, 3)}%\n\nRepresenta el porcentaje de aves que mueren durante el ciclo de engorde. Un valor MENOR es mejor — indica buena bioseguridad, manejo sanitario y condiciones de bienestar animal.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, aunque el número sea negativo.` } },
-                  { label: 'Peso Promedio 2025', value: formatDecimal(pesoPromedioPollo, 3), val2025: pesoPromedioPollo, val2024: parseFloat(anterior.peso_promedio)||0, decimals: 3, suffix: ' kg', sub: 'kg por ave', icon: <Award className="w-5 h-5 text-yellow-400" />, border: 'border-yellow-500/30 hover:border-yellow-500', varKey: 'peso_promedio', invertir: false, modal: { title: 'Peso Promedio al Sacrificio', desc: `Actual 2025: ${formatDecimal(pesoPromedioPollo, 3)} kg\nAnterior 2024: ${formatDecimal(anterior.peso_promedio, 3)} kg\n\nPeso promedio del ave al momento del sacrificio. Un valor MAYOR es mejor — más peso por ave significa mayor rendimiento en canal y mejor aprovechamiento del ciclo productivo.\n\nPor eso sigue el estándar normal: VERDE cuando sube, ROJO cuando baja.` } },
-                  { label: 'Días de Engorde 2025', value: formatDecimal(diasEngordePollo, 3), val2025: diasEngordePollo, val2024: parseFloat(anterior.dias_promedio_engorde)||0, decimals: 3, suffix: ' días', sub: 'días promedio', icon: <TrendingUp className="w-5 h-5 text-orange-400" />, border: 'border-orange-500/30 hover:border-orange-500', varKey: 'dias_promedio_engorde', invertir: true, modal: { title: 'Días de Engorde', desc: `Actual 2025: ${formatDecimal(diasEngordePollo, 3)} días\nAnterior 2024: ${formatDecimal(anterior.dias_promedio_engorde, 3)} días\n\nDías promedio que tarda el ave en alcanzar el peso de sacrificio. Un valor MENOR es mejor — ciclos más cortos reducen costos de alimento, mano de obra y rotación de galpones.\n\nPor eso el color es VERDE cuando baja y ROJO cuando sube, al contrario del estándar financiero.` } },
-                  { label: 'Índice Productivo (IP) 2025', value: formatDecimal(efiAlimPollo, 3), val2025: efiAlimPollo, val2024: parseFloat(anterior.efi_alim_ip)||0, decimals: 3, suffix: '', sub: 'IP (Eficiencia)', icon: <Zap className="w-5 h-5 text-purple-400" />, border: 'border-purple-500/30 hover:border-purple-500', varKey: 'efi_alim_ip', invertir: false, modal: { title: 'Índice Productivo (IP)', desc: `Actual 2025: ${formatDecimal(efiAlimPollo, 3)}\nAnterior 2024: ${formatDecimal(anterior.efi_alim_ip, 3)}\n\nIndicador compuesto que integra peso promedio, conversión alimenticia, mortalidad y días de engorde en una sola cifra de eficiencia global. Un valor MAYOR es mejor — refleja que la operación es más eficiente en todos los frentes simultáneamente.\n\nSigue el estándar normal: VERDE cuando sube, ROJO cuando baja.` } },
+                  { label: 'Conversión Alimenticia 2025', value: formatDecimal(conversionPollo, 3), val2025: conversionPollo, val2024: parseFloat(anterior.conversion)||0, decimals: 3, suffix: '', sub: 'kg alimento/kg carne', icon: <Target className="w-5 h-5 text-cyan-400" />, border: 'border-cyan-500/30 hover:border-cyan-500', varKey: 'conversion', invertir: true, modal: { title: 'Conversión Alimenticia', content: <div className="space-y-4"><div className="grid grid-cols-2 gap-3"><div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">{formatDecimal(anterior.conversion, 3)} kg/kg</p></div><div className="bg-cyan-50 rounded-lg p-3 border border-cyan-200"><p className="text-xs text-cyan-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-cyan-700">{formatDecimal(conversionPollo, 3)} kg/kg</p></div></div><div className="bg-blue-50 rounded-lg p-4 border border-blue-300"><p className="text-sm font-semibold text-blue-800 mb-2">¿Qué mide?</p><p className="text-sm text-gray-700">Cuántos kg de alimento se necesitan para producir 1 kg de carne. Un valor MENOR es mejor — significa que el ave aprovecha más eficientemente el alimento.</p></div><div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300"><p className="text-sm font-semibold text-yellow-800 mb-2">Interpretación del color:</p><p className="text-sm text-gray-700">El color es VERDE cuando baja y ROJO cuando sube, al contrario del estándar financiero, porque una conversión menor implica mayor eficiencia productiva.</p></div></div> } },
+                  { label: 'Mortalidad 2025', value: `${formatDecimal(mortalidadPollo, 3)}%`, val2025: mortalidadPollo, val2024: parseFloat(anterior.mortalidad_pct)||0, decimals: 3, suffix: '%', sub: 'Tasa de mortalidad', icon: <AlertTriangle className="w-5 h-5 text-red-400" />, border: 'border-red-500/30 hover:border-red-500', varKey: 'mortalidad_pct', invertir: true, modal: { title: 'Mortalidad Pollo', content: <div className="space-y-4"><div className="grid grid-cols-2 gap-3"><div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">{formatDecimal(anterior.mortalidad_pct, 3)}%</p></div><div className="bg-red-50 rounded-lg p-3 border border-red-200"><p className="text-xs text-red-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-red-700">{formatDecimal(mortalidadPollo, 3)}%</p></div></div><div className="bg-blue-50 rounded-lg p-4 border border-blue-300"><p className="text-sm font-semibold text-blue-800 mb-2">¿Qué mide?</p><p className="text-sm text-gray-700">Porcentaje de aves que mueren durante el ciclo de engorde. Un valor MENOR es mejor — indica buena bioseguridad, manejo sanitario y condiciones de bienestar animal.</p></div><div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300"><p className="text-sm font-semibold text-yellow-800 mb-2">Interpretación del color:</p><p className="text-sm text-gray-700">El color es VERDE cuando baja y ROJO cuando sube, aunque el número sea negativo, porque una mortalidad menor es siempre positiva para la operación.</p></div></div> } },
+                  { label: 'Peso Promedio 2025', value: formatDecimal(pesoPromedioPollo, 3), val2025: pesoPromedioPollo, val2024: parseFloat(anterior.peso_promedio)||0, decimals: 3, suffix: ' kg', sub: 'kg por ave', icon: <Award className="w-5 h-5 text-yellow-400" />, border: 'border-yellow-500/30 hover:border-yellow-500', varKey: 'peso_promedio', invertir: false, modal: { title: 'Peso Promedio al Sacrificio', content: <div className="space-y-4"><div className="grid grid-cols-2 gap-3"><div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">{formatDecimal(anterior.peso_promedio, 3)} kg</p></div><div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200"><p className="text-xs text-yellow-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-yellow-700">{formatDecimal(pesoPromedioPollo, 3)} kg</p></div></div><div className="bg-blue-50 rounded-lg p-4 border border-blue-300"><p className="text-sm font-semibold text-blue-800 mb-2">¿Qué mide?</p><p className="text-sm text-gray-700">Peso promedio del ave al momento del sacrificio. Un valor MAYOR es mejor — más peso por ave significa mayor rendimiento en canal y mejor aprovechamiento del ciclo productivo.</p></div><div className="bg-green-50 rounded-lg p-4 border border-green-300"><p className="text-sm font-semibold text-green-800 mb-2">Interpretación del color:</p><p className="text-sm text-gray-700">Sigue el estándar normal: VERDE cuando sube, ROJO cuando baja. El rango óptimo para pollo de engorde es 2.4–2.6 kg.</p></div></div> } },
+                  { label: 'Días de Engorde 2025', value: formatDecimal(diasEngordePollo, 3), val2025: diasEngordePollo, val2024: parseFloat(anterior.dias_promedio_engorde)||0, decimals: 3, suffix: ' días', sub: 'días promedio', icon: <TrendingUp className="w-5 h-5 text-orange-400" />, border: 'border-orange-500/30 hover:border-orange-500', varKey: 'dias_promedio_engorde', invertir: true, modal: { title: 'Días de Engorde', content: <div className="space-y-4"><div className="grid grid-cols-2 gap-3"><div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">{formatDecimal(anterior.dias_promedio_engorde, 3)} días</p></div><div className="bg-orange-50 rounded-lg p-3 border border-orange-200"><p className="text-xs text-orange-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-orange-700">{formatDecimal(diasEngordePollo, 3)} días</p></div></div><div className="bg-blue-50 rounded-lg p-4 border border-blue-300"><p className="text-sm font-semibold text-blue-800 mb-2">¿Qué mide?</p><p className="text-sm text-gray-700">Días promedio que tarda el ave en alcanzar el peso de sacrificio. Un valor MENOR es mejor — ciclos más cortos reducen costos de alimento, mano de obra y rotación de galpones.</p></div><div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300"><p className="text-sm font-semibold text-yellow-800 mb-2">Interpretación del color:</p><p className="text-sm text-gray-700">El color es VERDE cuando baja y ROJO cuando sube, al contrario del estándar financiero, porque menos días de engorde implica mayor eficiencia operativa.</p></div></div> } },
+                  { label: 'Índice Productivo (IP) 2025', value: formatDecimal(efiAlimPollo, 3), val2025: efiAlimPollo, val2024: parseFloat(anterior.efi_alim_ip)||0, decimals: 3, suffix: '', sub: 'IP (Eficiencia)', icon: <Zap className="w-5 h-5 text-purple-400" />, border: 'border-purple-500/30 hover:border-purple-500', varKey: 'efi_alim_ip', invertir: false, modal: { title: 'Índice Productivo (IP)', content: <div className="space-y-4"><div className="grid grid-cols-2 gap-3"><div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-600 mb-1">2024</p><p className="text-xl font-bold text-gray-900">{formatDecimal(anterior.efi_alim_ip, 3)}</p></div><div className="bg-purple-50 rounded-lg p-3 border border-purple-200"><p className="text-xs text-purple-600 font-semibold mb-1">2025</p><p className="text-xl font-bold text-purple-700">{formatDecimal(efiAlimPollo, 3)}</p></div></div><div className="bg-blue-50 rounded-lg p-4 border border-blue-300"><p className="text-sm font-semibold text-blue-800 mb-2">¿Qué mide?</p><p className="text-sm text-gray-700">Indicador compuesto que integra peso promedio, conversión alimenticia, mortalidad y días de engorde en una sola cifra de eficiencia global. Un valor MAYOR es mejor — refleja que la operación es más eficiente en todos los frentes simultáneamente.</p></div><div className="bg-green-50 rounded-lg p-4 border border-green-300"><p className="text-sm font-semibold text-green-800 mb-2">Interpretación del color:</p><p className="text-sm text-gray-700">Sigue el estándar normal: VERDE cuando sube, ROJO cuando baja. Un IP superior a 300 se considera excelente en la industria avícola.</p></div></div> } },
                 ];
 
                 return cards.map((c, i) => {
@@ -98,7 +98,7 @@ export default function ProduccionIndicadoresDashboard({ data }) {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
                       className={`bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 ${c.border} transition-all cursor-pointer`}
-                      onClick={() => openModal(c.modal.title, c.modal.desc)}
+                      onClick={() => openModal(c.modal.title, c.modal.content)}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-gray-600 text-sm">{c.label}</span>
@@ -341,6 +341,46 @@ export default function ProduccionIndicadoresDashboard({ data }) {
           )}
         </>
       )}
+
+      {/* Modal */}
+      {createPortal(
+      <AnimatePresence>
+        {modalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+            onClick={() => setModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-cyan-500 shadow-2xl max-h-[90vh] flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Info className="w-6 h-6 text-cyan-600" />
+                  <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
+                </div>
+                <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">
+                {modalContent.content}
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors font-semibold">
+                  Entendido
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

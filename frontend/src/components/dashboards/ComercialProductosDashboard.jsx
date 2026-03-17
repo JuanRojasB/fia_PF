@@ -11,10 +11,10 @@ import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function ComercialProductosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -144,8 +144,31 @@ export default function ComercialProductosDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
-            'Ventas Totales 2025 en Kilogramos',
-            `Total de kilogramos vendidos en 2025: ${formatNumber(total2025)} kg. La variación del ${variacionKilos}% vs 2024 representa un crecimiento de ${formatNumber(total2025 - total2024)} kg adicionales. Este incremento se debe principalmente al mayor dinamismo en las líneas Mayorista (+6.05%) y Pollo Entero (+4.94%). En 2024 se vendieron ${formatNumber(total2024)} kg.`
+            'Ventas Totales Pollo Canal 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatNumber(total2024)} kg</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-blue-700">{formatNumber(total2025)} kg</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionKilos) >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionKilos) >= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación:</p>
+                <p className="text-sm text-gray-700">Las ventas crecieron <strong className="text-green-600">{variacionKilos > 0 ? '+' : ''}{variacionKilos}%</strong>, equivalente a {formatNumber(total2025 - total2024)} kg adicionales.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Líneas impulsoras:</p>
+                <p className="text-sm text-gray-700">El crecimiento se debe principalmente al mayor dinamismo en las líneas Mayorista (+6.05%), Pollo Entero (+4.94%), Gallos/Gallinas (+12.41%) y Menudencia (+0.46%).</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">El crecimiento en volumen, combinado con la presión en precios (-{Math.abs(variacionPrecio)}%), refleja una estrategia de expansión de mercado que prioriza el volumen sobre el margen unitario.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
@@ -166,8 +189,27 @@ export default function ComercialProductosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Ingresos Totales 2025 - Solo Pollo en Canal',
-            `Ingresos totales en 2025: ${formatCurrency(ingresos2025)}\nVariación vs 2024: ${variacionIngresos}%\n\nQUÉ INCLUYE:\n• Solo Pollo en Canal por líneas de producto\n• Mayorista, Pollo Entero, Presa, Menudencia, Combos, Carnes Frías, Pollo Campesino, Gallos/Gallinas\n\nNO INCLUYE:\n• Pollo en Pie\n• Huevos\n\nEste ingreso es MENOR que "Ventas Total Compañía" porque solo incluye pollo procesado en canal.\n\nCálculo: Suma de (kg vendidos × precio) de cada línea de producto en canal.`
+            'Ingresos Totales Pollo Canal 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatCurrencyFull(ingresos2024)}</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-green-700">{formatCurrencyFull(ingresos2025)}</p>
+                </div>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="text-sm font-semibold text-yellow-800 mb-2">Alcance del indicador:</p>
+                <p className="text-sm text-gray-700"><strong>Incluye:</strong> Solo Pollo en Canal por líneas de producto (Mayorista, Pollo Entero, Presa, Menudencia, Combos, Carnes Frías, Pollo Campesino, Gallos/Gallinas). <strong>No incluye:</strong> Pollo en Pie ni Huevos.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Análisis:</p>
+                <p className="text-sm text-gray-700">Los ingresos variaron <strong className={parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}>{variacionIngresos > 0 ? '+' : ''}{variacionIngresos}%</strong>. La presión en precios (-{Math.abs(variacionPrecio)}%) modera el impacto del crecimiento en volumen (+{variacionKilos}%).</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -188,8 +230,27 @@ export default function ComercialProductosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
-            'Precio Promedio por Kilogramo 2025',
-            `Precio promedio por kilogramo en 2025: ${formatCurrency(precioProm2025)}/kg. La variación del ${variacionPrecio}% vs 2024 (${formatCurrency(precioProm2024)}/kg) refleja presión en precios en la mayoría de las líneas. Menudencia (-3.56%), Gallos/Gallinas (-8.84%), y Pollo Entero (-0.42%) presentaron disminuciones, mientras que Presa (+0.16%) y Combos (+12.24%) registraron aumentos. El precio promedio ponderado considera el volumen de ventas de cada línea de producto.`
+            'Precio Promedio $/kg Canal 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatCurrencyFull(precioProm2024)}/kg</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-purple-700">{formatCurrencyFull(precioProm2025)}/kg</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionPrecio) >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionPrecio) >= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación:</p>
+                <p className="text-sm text-gray-700">El precio promedio varió <strong className={parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}>{variacionPrecio > 0 ? '+' : ''}{variacionPrecio}%</strong>, reflejando presión competitiva en la mayoría de las líneas.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Por línea:</p>
+                <p className="text-sm text-gray-700">Menudencia (-3.56%), Gallos/Gallinas (-8.84%) y Pollo Entero (-0.42%) presentaron disminuciones. Presa (+0.16%) y Combos (+12.24%) registraron aumentos. El precio ponderado refleja el mix de volumen por línea.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -210,8 +271,39 @@ export default function ComercialProductosDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
-            'Líneas de Producto en Crecimiento',
-            `${lineasCrecimiento.length} líneas de producto presentan crecimiento en kilogramos vendidos: ${lineasCrecimiento.map(l => l.linea).join(', ')}. Las líneas que impulsan el crecimiento son Mayorista (+6.05%), Pollo Entero (+4.94%), Gallos/Gallinas (+12.41%), y Menudencia (+0.46%). Estas líneas compensan las contracciones en Carnes Frías (-88.69%), Pollo Campesino (-83.26%), Presa (-2.20%), y Combos (-42.12%). El balance neto es positivo con ${lineasCrecimiento.length} líneas en expansión vs ${lineasContraccion.length} en contracción.`
+            'Líneas de Producto en Crecimiento 2025',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">En crecimiento</p>
+                  <p className="text-xl font-bold text-green-700">{lineasCrecimiento.length} líneas</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-3 border border-red-200">
+                  <p className="text-xs text-red-600 font-semibold mb-1">En contracción</p>
+                  <p className="text-xl font-bold text-red-700">{lineasContraccion.length} líneas</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Líneas en crecimiento:</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {lineasCrecimiento.map((l, idx) => (
+                    <li key={idx}>• {l.linea}: <strong className="text-green-600">+{l.varPct}%</strong></li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Líneas en contracción:</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {lineasContraccion.map((l, idx) => (
+                    <li key={idx}>• {l.linea}: <strong className="text-red-600">{l.varPct}%</strong></li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">Las líneas en crecimiento compensan las contracciones, generando un balance neto positivo de +{variacionKilos}% en el total de kilos vendidos.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
@@ -345,7 +437,34 @@ export default function ComercialProductosDashboard({ data }) {
         transition={{ delay: 0.4 }}
         onClick={() => openModal(
           'Total General — Ventas Pollo en Canal',
-          `Kilos 2025: ${formatNumber(total2025)} kg\nKilos 2024: ${formatNumber(total2024)} kg\nVariación: ${formatNumber(total2025-total2024)} kg (${variacionKilos}%)\nPrecio prom. 2025: $${formatNumber(precioProm2025)}/kg\nPrecio prom. 2024: $${formatNumber(precioProm2024)}/kg\nVar. precio: ${variacionPrecio}%`
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                <p className="text-xs text-gray-600 mb-1">Kilos 2024</p>
+                <p className="text-xl font-bold text-gray-900">{formatNumber(total2024)} kg</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                <p className="text-xs text-blue-600 font-semibold mb-1">Kilos 2025</p>
+                <p className="text-xl font-bold text-blue-700">{formatNumber(total2025)} kg</p>
+              </div>
+            </div>
+            <div className={`rounded-lg p-4 border ${parseFloat(variacionKilos) >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+              <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionKilos) >= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación en Volumen:</p>
+              <p className="text-sm text-gray-700">Diferencia: <strong className={parseFloat(variacionKilos) >= 0 ? 'text-green-600' : 'text-red-600'}>{formatNumber(total2025 - total2024)} kg ({variacionKilos > 0 ? '+' : ''}{variacionKilos}%)</strong>. El crecimiento neto refleja el balance entre líneas en expansión y contracción.</p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+              <p className="text-sm font-semibold text-purple-800 mb-2">Precio Promedio:</p>
+              <div className="grid grid-cols-2 gap-2 text-sm text-gray-700 mb-2">
+                <div>2024: <strong>{formatNumber(precioProm2024)}/kg</strong></div>
+                <div>2025: <strong>{formatNumber(precioProm2025)}/kg</strong></div>
+              </div>
+              <p className="text-sm text-gray-700">Variación precio: <strong className={parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}>{variacionPrecio > 0 ? '+' : ''}{variacionPrecio}%</strong>. La presión en precios modera el impacto positivo del crecimiento en volumen.</p>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+              <p className="text-sm font-semibold text-blue-800 mb-2">Conclusión:</p>
+              <p className="text-sm text-gray-700">El crecimiento en volumen (+{variacionKilos}%) combinado con la variación en precio ({variacionPrecio}%) define el resultado neto de ingresos. La estrategia de expansión de mercado prioriza el volumen sobre el margen unitario, coherente con el objetivo de consolidar participación de mercado.</p>
+            </div>
+          </div>
         )}
         className="bg-gradient-to-r from-blue-500/20 to-purple-600/10 backdrop-blur-xl rounded-xl p-6 border-2 border-blue-500/30 cursor-pointer hover:border-blue-500 transition-all"
       >
@@ -529,7 +648,7 @@ export default function ComercialProductosDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -544,8 +663,8 @@ export default function ComercialProductosDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">
+                {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">
                 <button

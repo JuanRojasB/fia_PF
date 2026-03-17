@@ -201,7 +201,37 @@ export default function PlantaBeneficioDashboard({ data }) {
           icon={<Factory className="w-5 h-5 text-blue-400" />}
           borderColor="border-blue-400"
           delay={0}
-          onClick={() => openModal('Total Aves Procesadas 2025', <div className="space-y-4"><div className="grid grid-cols-2 gap-4"><div className="bg-blue-50 rounded-xl p-4 border border-blue-200"><div className="text-sm text-blue-600 font-semibold mb-1">Total 2025</div><div className="text-2xl font-bold text-blue-700">{formatNumber(totalAves2025)}</div></div><div className="bg-green-50 rounded-xl p-4 border border-green-200"><div className="text-sm text-green-600 font-semibold mb-1">Total 2024</div><div className="text-2xl font-bold text-green-700">{formatNumber(totalAves2024)}</div></div></div></div>)}
+          onClick={() => openModal('Total Aves Procesadas 2025', 
+            <div className="space-y-4">
+              <p>En 2025 se procesaron <strong className="text-blue-600">{formatNumber(totalAves2025)} aves</strong>, una reducción del <strong className="text-orange-600">-0,77%</strong> respecto a 2024.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                  <div className="text-sm text-blue-600 font-semibold mb-1">Total 2025</div>
+                  <div className="text-2xl font-bold text-blue-700">{formatNumber(totalAves2025)}</div>
+                </div>
+                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                  <div className="text-sm text-green-600 font-semibold mb-1">Total 2024</div>
+                  <div className="text-2xl font-bold text-green-700">{formatNumber(totalAves2024)}</div>
+                </div>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
+                <p className="text-sm font-semibold text-orange-800 mb-2">Meses de Menor Procesamiento:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Enero:</strong> 1.138.593 aves (mes más bajo del año)</li>
+                  <li><strong>Febrero:</strong> 987.813 aves (segundo más bajo)</li>
+                </ul>
+                <p className="text-xs text-gray-600 mt-2">Estos dos meses representan el período de menor actividad operativa del año.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Meses de Mayor Procesamiento:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Octubre:</strong> 1.844.070 aves (mes más alto)</li>
+                  <li><strong>Mayo:</strong> 1.743.130 aves</li>
+                  <li><strong>Noviembre:</strong> 1.663.280 aves</li>
+                </ul>
+              </div>
+            </div>
+          )}
         />
         <KpiCard
           title="Peso Promedio Canal 2025 vs 2024"
@@ -213,7 +243,25 @@ export default function PlantaBeneficioDashboard({ data }) {
           icon={<Activity className="w-5 h-5 text-green-400" />}
           borderColor="border-green-400"
           delay={0.1}
-          onClick={() => openModal('Promedio de Peso', <div className="space-y-4"><div className="grid grid-cols-2 gap-4"><div className="bg-green-50 rounded-xl p-4 border border-green-200"><div className="text-sm text-green-600 font-semibold mb-1">Promedio 2025</div><div className="text-2xl font-bold text-green-700">{totales.promedioPeso2025}g</div></div><div className="bg-blue-50 rounded-xl p-4 border border-blue-200"><div className="text-sm text-blue-600 font-semibold mb-1">Promedio 2024</div><div className="text-2xl font-bold text-blue-700">{totales.promedioPeso2024}g</div></div></div></div>)}
+          onClick={() => openModal('Promedio de Peso por Ave', 
+            <div className="space-y-4">
+              <p>El peso promedio por ave en 2025 fue de <strong className="text-green-600">{totales.promedioPeso2025}g</strong>, un incremento de <strong>{totales.promedioPeso2025 - totales.promedioPeso2024}g</strong> respecto a 2024.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                  <div className="text-sm text-green-600 font-semibold mb-1">Promedio 2025</div>
+                  <div className="text-2xl font-bold text-green-700">{totales.promedioPeso2025}g</div>
+                </div>
+                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                  <div className="text-sm text-blue-600 font-semibold mb-1">Promedio 2024</div>
+                  <div className="text-2xl font-bold text-blue-700">{totales.promedioPeso2024}g</div>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto:</p>
+                <p className="text-sm text-gray-700">El peso promedio se mantuvo más estable en 2025 comparado con 2024, lo que indica mejor control en el proceso de crianza y alimentación.</p>
+              </div>
+            </div>
+          )}
         />
         <KpiCard
           title="Merma Planta Beneficio 2025 vs 2024"
@@ -226,7 +274,29 @@ export default function PlantaBeneficioDashboard({ data }) {
           borderColor="border-green-400"
           invertColors={true}
           delay={0.2}
-          onClick={() => openModal('Merma de Planta', <div className="space-y-4"><div className="grid grid-cols-2 gap-4"><div className="bg-green-50 rounded-xl p-4 border border-green-200"><div className="text-sm text-green-600 font-semibold mb-1">Merma 2025</div><div className="text-2xl font-bold text-green-700">5,38%</div></div><div className="bg-orange-50 rounded-xl p-4 border border-orange-200"><div className="text-sm text-orange-600 font-semibold mb-1">Merma 2024</div><div className="text-2xl font-bold text-orange-700">6,55%</div></div></div></div>)}
+          onClick={() => openModal('Merma de Planta Beneficio', 
+            <div className="space-y-4">
+              <p>La merma de planta se redujo significativamente de <strong className="text-orange-600">6,55%</strong> en 2024 a <strong className="text-green-600">5,38%</strong> en 2025.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                  <div className="text-sm text-green-600 font-semibold mb-1">Merma 2025</div>
+                  <div className="text-2xl font-bold text-green-700">5,38%</div>
+                </div>
+                <div className="bg-orange-50 rounded-xl p-4 border border-orange-200">
+                  <div className="text-sm text-orange-600 font-semibold mb-1">Merma 2024</div>
+                  <div className="text-2xl font-bold text-orange-700">6,55%</div>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Reducción Lograda:</p>
+                <p className="text-sm text-gray-700">La reducción de <strong>-1,17 puntos porcentuales</strong> representa una mejora del <strong>-17.86%</strong> en la merma, lo que indica mejor eficiencia operativa en la planta de beneficio.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">La reducción de merma contribuye directamente a mejorar el rendimiento canal + víscera, que alcanzó 94,68% en 2025 vs 93,45% en 2024.</p>
+              </div>
+            </div>
+          )}
         />
         <KpiCard
           title="Rendimiento Canal + Víscera 2025"
@@ -238,7 +308,29 @@ export default function PlantaBeneficioDashboard({ data }) {
           icon={<Award className="w-5 h-5 text-purple-400" />}
           borderColor="border-purple-400"
           delay={0.3}
-          onClick={() => openModal('Participación Canal + Víscera', <div className="space-y-4"><div className="grid grid-cols-2 gap-4"><div className="bg-purple-50 rounded-xl p-4 border border-purple-200"><div className="text-sm text-purple-600 font-semibold mb-1">Canal + Víscera 2025</div><div className="text-2xl font-bold text-purple-700">94,68%</div></div><div className="bg-blue-50 rounded-xl p-4 border border-blue-200"><div className="text-sm text-blue-600 font-semibold mb-1">Canal + Víscera 2024</div><div className="text-2xl font-bold text-blue-700">93,45%</div></div></div></div>)}
+          onClick={() => openModal('Participación Canal + Víscera', 
+            <div className="space-y-4">
+              <p>El rendimiento canal + víscera alcanzó <strong className="text-purple-600">94,68%</strong> en 2025, un incremento de <strong className="text-green-600">+1,23 puntos porcentuales</strong> respecto a 2024.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                  <div className="text-sm text-purple-600 font-semibold mb-1">Canal + Víscera 2025</div>
+                  <div className="text-2xl font-bold text-purple-700">94,68%</div>
+                </div>
+                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                  <div className="text-sm text-blue-600 font-semibold mb-1">Canal + Víscera 2024</div>
+                  <div className="text-2xl font-bold text-blue-700">93,45%</div>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Mejora Operativa:</p>
+                <p className="text-sm text-gray-700">El incremento del +1,32% en participación canal + víscera está directamente relacionado con la reducción de merma de planta (de 6,55% a 5,38%), lo que indica mejor aprovechamiento del producto.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto:</p>
+                <p className="text-sm text-gray-700">Este indicador mide el rendimiento total aprovechable de cada ave procesada. Un valor de 94,68% significa que solo el 5,38% se pierde como merma en el proceso de beneficio.</p>
+              </div>
+            </div>
+          )}
         />
       </div>
       {/* Gráfico 1: Aves Procesadas Mensual */}

@@ -9,10 +9,10 @@ import KpiCard from '../KpiCard';
 
 export default function ProduccionEncasetadoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -154,7 +154,26 @@ export default function ProduccionEncasetadoDashboard({ data }) {
               icon={<Factory className="w-5 h-5 text-blue-500" />}
               borderColor="border-blue-400"
               delay={0}
-              onClick={() => openModal('Total Pollitos Encasetados 2025', `Se encasetaron ${formatNumber(totalEncasetado2025)} pollitos durante el año 2025. El valor programado fue de ${formatNumber(totalProgramado2025)} pollitos.`)}
+              onClick={() => openModal('Total Pollitos Encasetados 2025',
+                <div className="space-y-4 text-gray-700">
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                    <p className="font-semibold text-blue-700 mb-1">Contexto del indicador</p>
+                    <p className="text-sm">Mide el total de pollitos encasetados (ingresados a galpones) durante el año 2025, comparado contra el plan programado. Es el punto de partida de toda la cadena productiva avícola.</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                    <p className="font-semibold text-green-700 mb-2">Resultado 2025</p>
+                    <p className="text-sm">Real 2025: <strong>{formatNumber(totalEncasetado2025)} pollitos</strong> vs programado de {formatNumber(totalProgramado2025)} pollitos. Cumplimiento: <strong className={parseFloat(cumplimiento2025) >= 100 ? 'text-green-600' : 'text-orange-600'}>{cumplimiento2025}%</strong>.</p>
+                  </div>
+                  <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                    <p className="font-semibold text-yellow-700 mb-2">Análisis del cumplimiento</p>
+                    <p className="text-sm">Enero 2025 fue el mes de mayor encasetamiento con 6.034.568 pollitos, muy por encima del programado de 2.709.400, lo que impulsó el cumplimiento anual. Noviembre y Diciembre presentaron los menores registros, afectando el cierre del año.</p>
+                  </div>
+                  <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                    <p className="font-semibold text-purple-700 mb-2">Impacto en la cadena productiva</p>
+                    <p className="text-sm">El encasetamiento determina directamente el volumen de pollo disponible para beneficio y venta en los meses siguientes. Un encasetamiento superior al programado en enero anticipa mayor disponibilidad de producto en el primer trimestre.</p>
+                  </div>
+                </div>
+              )}
             />
             <KpiCard
               title="Encasetamiento Real 2024 vs Programado 2024"
@@ -168,7 +187,26 @@ export default function ProduccionEncasetadoDashboard({ data }) {
               icon={<Factory className="w-5 h-5 text-green-500" />}
               borderColor="border-green-400"
               delay={0.1}
-              onClick={() => openModal('Total Pollitos Encasetados 2024', `Se encasetaron ${formatNumber(totalEncasetado2024)} pollitos durante el año 2024. El valor programado fue de ${formatNumber(totalProgramado2024)} pollitos, logrando un cumplimiento del ${cumplimiento2024}%.`)}
+              onClick={() => openModal('Total Pollitos Encasetados 2024',
+                <div className="space-y-4 text-gray-700">
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                    <p className="font-semibold text-green-700 mb-1">Contexto del indicador</p>
+                    <p className="text-sm">Refleja el desempeño productivo del año 2024 en encasetamiento, sirviendo como línea base para evaluar el crecimiento de 2025.</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                    <p className="font-semibold text-blue-700 mb-2">Resultado 2024</p>
+                    <p className="text-sm">Real 2024: <strong>{formatNumber(totalEncasetado2024)} pollitos</strong> vs programado de {formatNumber(totalProgramado2024)} pollitos. Cumplimiento: <strong>{cumplimiento2024}%</strong>.</p>
+                  </div>
+                  <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                    <p className="font-semibold text-yellow-700 mb-2">Análisis del año</p>
+                    <p className="text-sm">Noviembre 2024 presentó una caída significativa (real: 2.164.644 vs programado: 2.820.600), y Diciembre registró solo 360.162 pollitos, lo que impactó el total anual. Estos meses de bajo desempeño son la referencia para entender el crecimiento de 2025.</p>
+                  </div>
+                  <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                    <p className="font-semibold text-purple-700 mb-2">Relevancia como línea base</p>
+                    <p className="text-sm">El total de 2024 es el denominador para calcular la variación interanual. La base relativamente baja de Noviembre y Diciembre 2024 contribuye a que la variación 2025 vs 2024 sea positiva en esos meses.</p>
+                  </div>
+                </div>
+              )}
             />
             <KpiCard
               title="Comparación Encasetamiento Real 2025 vs 2024"
@@ -180,7 +218,26 @@ export default function ProduccionEncasetadoDashboard({ data }) {
               icon={<TrendingUp className="w-5 h-5 text-purple-500" />}
               borderColor="border-purple-400"
               delay={0.2}
-              onClick={() => openModal('Comparación 2025 vs 2024', `La variación de ${variacionEncasetado}% representa la comparación entre 2025 y 2024.`)}
+              onClick={() => openModal('Comparación 2025 vs 2024',
+                <div className="space-y-4 text-gray-700">
+                  <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                    <p className="font-semibold text-purple-700 mb-1">Contexto del indicador</p>
+                    <p className="text-sm">Mide el crecimiento porcentual del encasetamiento real entre 2025 y 2024. Fórmula: (Real 2025 − Real 2024) / Real 2024 × 100.</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                    <p className="font-semibold text-green-700 mb-2">Resultado</p>
+                    <p className="text-sm">Variación: <strong className={parseFloat(variacionEncasetado) >= 0 ? 'text-green-600' : 'text-red-600'}>{parseFloat(variacionEncasetado) >= 0 ? '+' : ''}{variacionEncasetado}%</strong>. Diferencia absoluta: {formatNumber(totalEncasetado2025 - totalEncasetado2024)} pollitos adicionales en 2025 frente a 2024.</p>
+                  </div>
+                  <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                    <p className="font-semibold text-yellow-700 mb-2">Factores explicativos</p>
+                    <p className="text-sm">El crecimiento está impulsado principalmente por el extraordinario encasetamiento de Enero 2025 (6.034.568 pollitos, +68% vs Enero 2024). Sin ese mes atípico, la variación anual sería más moderada. Los demás meses muestran comportamiento estable.</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                    <p className="font-semibold text-blue-700 mb-2">Conclusión</p>
+                    <p className="text-sm">El crecimiento interanual es positivo y refleja mayor capacidad de encasetamiento. Sin embargo, la concentración del crecimiento en un solo mes (Enero) sugiere que fue un evento puntual más que una tendencia sostenida a lo largo del año.</p>
+                  </div>
+                </div>
+              )}
             />
             <KpiCard
               title="Promedio Mensual Encasetamiento 2025 vs 2024"
@@ -193,7 +250,26 @@ export default function ProduccionEncasetadoDashboard({ data }) {
               icon={<Calendar className="w-5 h-5 text-orange-500" />}
               borderColor="border-orange-400"
               delay={0.3}
-              onClick={() => openModal('Promedio Mensual 2025', `El promedio mensual es de ${formatNumber(promedioMensual2025)} pollitos. En 2024 el promedio fue de ${formatNumber(promedioMensual2024)} pollitos/mes.`)}
+              onClick={() => openModal('Promedio Mensual 2025',
+                <div className="space-y-4 text-gray-700">
+                  <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                    <p className="font-semibold text-orange-700 mb-1">Contexto del indicador</p>
+                    <p className="text-sm">El promedio mensual se calcula dividiendo el total anual real entre 12 meses. Permite evaluar la capacidad de encasetamiento sostenida mes a mes, independientemente de picos o valles puntuales.</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                    <p className="font-semibold text-blue-700 mb-2">Resultado</p>
+                    <p className="text-sm">Promedio mensual 2025: <strong>{formatNumber(Math.round(promedioMensual2025))} pollitos/mes</strong> vs {formatNumber(Math.round(promedioMensual2024))} pollitos/mes en 2024. Variación: <strong className={promedioMensual2025 >= promedioMensual2024 ? 'text-green-600' : 'text-red-600'}>{promedioMensual2024 > 0 ? (((promedioMensual2025 - promedioMensual2024) / promedioMensual2024) * 100).toFixed(1) : 0}%</strong>.</p>
+                  </div>
+                  <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                    <p className="font-semibold text-yellow-700 mb-2">Análisis de la capacidad</p>
+                    <p className="text-sm">El promedio mensual superior en 2025 indica que la operación de encasetamiento creció en capacidad promedio. Sin embargo, la alta variabilidad mensual (desde 2.3M hasta 6.0M en Enero) sugiere que la planificación de la demanda y la disponibilidad de pollitos de un día tiene fluctuaciones importantes.</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                    <p className="font-semibold text-green-700 mb-2">Implicación operativa</p>
+                    <p className="text-sm">Un promedio mensual más alto implica mayor demanda de insumos (alimento, medicamentos, mano de obra) y mayor presión sobre la capacidad de galpones. La planificación de compras y logística debe alinearse con este nivel de actividad.</p>
+                  </div>
+                </div>
+              )}
             />
           </>);
         })()}
@@ -563,10 +639,10 @@ export default function ProduccionEncasetadoDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-4 flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <Info className="w-6 h-6 text-blue-400" />
                   <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
@@ -578,13 +654,13 @@ export default function ProduccionEncasetadoDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">
+                {modalContent.content}
               </div>
-              <div className="mt-6 flex justify-end">
+              <div className="mt-6 flex justify-end flex-shrink-0">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                 >
                   Entendido
                 </button>

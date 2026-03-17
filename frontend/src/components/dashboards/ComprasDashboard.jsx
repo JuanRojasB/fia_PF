@@ -11,10 +11,10 @@ import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function ComprasDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -82,7 +82,32 @@ export default function ComprasDashboard({ data }) {
           icon={<ShoppingCart className="w-5 h-5 text-blue-400" />}
           borderColor="border-blue-400"
           delay={0}
-          onClick={() => openModal('Total Compras 2025', `El total de compras incluye materias primas, bienes y servicios necesarios para la operación. Este crecimiento del ${totales.variacion2025vs2024}% revierte la contracción del año anterior.`)}
+          onClick={() => openModal('Total Compras 2025', 
+            <div className="space-y-4">
+              <p>El total de compras en 2025 alcanzó <strong className="text-blue-600">{formatCurrencyFull(totales.total2025)}</strong>, representando un crecimiento del <strong className="text-green-600">+{totales.variacion2025vs2024}%</strong> respecto a 2024.</p>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto del Indicador:</p>
+                <p className="text-sm text-gray-700">Las compras incluyen materias primas, bienes y servicios necesarios para la operación, excluyendo alimento, gas, pollo en pie y pollito. Este proceso estratégico garantiza el suministro oportuno con impacto directo en costos, productividad y calidad.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Análisis de la Variación:</p>
+                <p className="text-sm text-gray-700">El crecimiento de <strong>+{totales.variacion2025vs2024}%</strong> ({formatCurrencyFull(totales.total2025 - totales.total2024)}) revierte la contracción del -2.97% registrada en 2024. Este resultado positivo indica una recuperación sólida en la gestión de compras.</p>
+              </div>
+              <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+                <p className="text-sm font-semibold text-amber-800 mb-2">Factores Explicativos:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li>Restablecimiento de la demanda en el segundo semestre</li>
+                  <li>Mejor planificación de inventarios</li>
+                  <li>Optimización de la cadena de suministro</li>
+                  <li>Recuperación del volumen de producción</li>
+                </ul>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
+                <p className="text-sm font-semibold text-gray-800 mb-2">Impacto en el Negocio:</p>
+                <p className="text-sm text-gray-700">La recuperación en compras refleja una mayor actividad operativa y respalda el crecimiento en ventas. El promedio mensual de {formatCurrencyFull(totales.total2025 / 12)} muestra estacionalidad con picos en el último trimestre.</p>
+              </div>
+            </div>
+          )}
         />
         <KpiCard
           title="Crecimiento 2025 vs 2024"
@@ -94,7 +119,31 @@ export default function ComprasDashboard({ data }) {
           icon={<TrendingUp className="w-5 h-5 text-green-400" />}
           borderColor="border-green-400"
           delay={0.1}
-          onClick={() => openModal('Crecimiento 2025', `Después de un año de contracción en 2024 (-2.97%), las compras se recuperaron con fuerza.`)}
+          onClick={() => openModal('Crecimiento 2025 vs 2024', 
+            <div className="space-y-4">
+              <p>El crecimiento de <strong className="text-green-600">+{totales.variacion2025vs2024}%</strong> en 2025 marca un punto de inflexión después del año de ajuste 2024.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-red-50 rounded-lg p-3 border border-red-200">
+                  <p className="text-xs text-red-600 font-semibold mb-1">2024: Contracción</p>
+                  <p className="text-2xl font-bold text-red-700">-2.97%</p>
+                  <p className="text-xs text-gray-600 mt-1">Año de ajuste</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">2025: Recuperación</p>
+                  <p className="text-2xl font-bold text-green-700">+{totales.variacion2025vs2024}%</p>
+                  <p className="text-xs text-gray-600 mt-1">Crecimiento sólido</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Patrón de Recuperación:</p>
+                <p className="text-sm text-gray-700">9 de 12 meses presentan crecimiento positivo. Los meses destacados son Octubre (+49.83%), Agosto (+35.59%) y Septiembre (+31.87%), concentrados en el segundo semestre del año.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Conclusión:</p>
+                <p className="text-sm text-gray-700">La recuperación sostenida indica que la estrategia de optimización de compras está funcionando. El balance general es positivo con una tendencia al alza que se mantiene estable.</p>
+              </div>
+            </div>
+          )}
         />
         <KpiCard
           title="Promedio Mensual 2025"
@@ -106,7 +155,34 @@ export default function ComprasDashboard({ data }) {
           icon={<DollarSign className="w-5 h-5 text-purple-400" />}
           borderColor="border-purple-400"
           delay={0.2}
-          onClick={() => openModal('Promedio Mensual', `La distribución mensual muestra estacionalidad con picos en el último trimestre.`)}
+          onClick={() => openModal('Promedio Mensual de Compras', 
+            <div className="space-y-4">
+              <p>El promedio mensual de compras en 2025 fue de <strong className="text-purple-600">{formatCurrencyFull(totales.total2025 / 12)}</strong>, un incremento del <strong className="text-green-600">+{totales.variacion2025vs2024}%</strong> respecto al promedio de 2024.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Promedio 2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatCurrencyFull(totales.total2024 / 12)}</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">Promedio 2025</p>
+                  <p className="text-xl font-bold text-purple-700">{formatCurrencyFull(totales.total2025 / 12)}</p>
+                </div>
+              </div>
+              <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+                <p className="text-sm font-semibold text-amber-800 mb-2">Estacionalidad Identificada:</p>
+                <p className="text-sm text-gray-700 mb-2">La distribución mensual muestra un patrón claro con picos en el último trimestre:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Octubre:</strong> Mes más alto con crecimiento del +49.83%</li>
+                  <li><strong>Agosto-Septiembre:</strong> Segundo pico con +35.59% y +31.87%</li>
+                  <li><strong>Febrero-Julio:</strong> Meses con caídas moderadas (-6.26%, -2.38%, -1.76%)</li>
+                </ul>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Interpretación:</p>
+                <p className="text-sm text-gray-700">El patrón estacional sugiere mayor demanda en el segundo semestre, posiblemente relacionado con temporadas de mayor producción y ventas. Esta información es clave para la planificación de inventarios y negociación con proveedores.</p>
+              </div>
+            </div>
+          )}
         />
       </div>
 
@@ -115,7 +191,37 @@ export default function ComprasDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        onClick={() => openModal('Meses Destacados', 'Estos tres meses explican gran parte del crecimiento total en 2025. El patrón sugiere un restablecimiento de la demanda en el segundo semestre, posiblemente relacionado con mejor planificación de inventarios y optimización de la cadena de suministro.')}
+        onClick={() => openModal('Análisis de Crecimiento 2025', 
+          <div className="space-y-4">
+            <p className="text-gray-700">Los tres meses con mayor crecimiento explican gran parte de la recuperación total en 2025:</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {mesesMayorCrecimiento.map((mes, idx) => (
+                <div key={idx} className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                  <p className="text-sm font-semibold text-green-700 mb-1">{mes.mes}</p>
+                  <p className="text-3xl font-bold text-green-600">+{mes.variacion}%</p>
+                  <p className="text-xs text-gray-600 mt-1">Crecimiento vs 2024</p>
+                </div>
+              ))}
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+              <p className="text-sm font-semibold text-blue-800 mb-2">Patrón Identificado:</p>
+              <p className="text-sm text-gray-700">El crecimiento se concentra en el segundo semestre (Agosto, Septiembre, Octubre), sugiriendo un restablecimiento de la demanda después del primer semestre más moderado.</p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+              <p className="text-sm font-semibold text-purple-800 mb-2">Factores Explicativos:</p>
+              <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                <li><strong>Mejor planificación de inventarios:</strong> Optimización de stocks para temporada alta</li>
+                <li><strong>Cadena de suministro:</strong> Mejoras en logística y tiempos de entrega</li>
+                <li><strong>Demanda estacional:</strong> Mayor actividad productiva en Q3 y Q4</li>
+                <li><strong>Recuperación post-ajuste:</strong> Normalización después del año 2024</li>
+              </ul>
+            </div>
+            <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+              <p className="text-sm font-semibold text-amber-800 mb-2">Impacto en el Negocio:</p>
+              <p className="text-sm text-gray-700">Estos tres meses representan el motor de crecimiento del año. El patrón estacional debe considerarse en la planificación presupuestal 2026 para anticipar necesidades de capital de trabajo.</p>
+            </div>
+          </div>
+        )}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 cursor-pointer hover:border-green-500 transition-all"
       >
         <div className="flex items-center justify-between mb-6">
@@ -152,7 +258,42 @@ export default function ComprasDashboard({ data }) {
           defaultOpen={true}
           className="border-blue-500/30 hover:border-blue-500"
         >
-          <div onClick={() => openModal('Evolución Anual', 'El gráfico muestra tres años con comportamientos distintos: 2023 como año base, 2024 con ajuste y contracción, y 2025 con recuperación sostenida.\n\nLínea roja punteada: tendencia calculada por regresión lineal sobre los valores mensuales de 2025, mostrando la dirección general del gasto en el período.')} className="cursor-pointer">
+          <div onClick={() => openModal('Evolución Anual de Compras 2023-2025', 
+            <div className="space-y-4">
+              <p className="text-gray-700">El gráfico muestra tres años con comportamientos distintos que reflejan diferentes etapas de la gestión de compras:</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+                  <p className="text-sm font-semibold text-amber-700 mb-2">2023: Año Base</p>
+                  <p className="text-sm text-gray-700">Nivel de referencia para comparaciones. Representa la operación normal antes de ajustes.</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                  <p className="text-sm font-semibold text-red-700 mb-2">2024: Ajuste (-2.97%)</p>
+                  <p className="text-sm text-gray-700">Año de contracción y optimización. Reducción estratégica del gasto.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                  <p className="text-sm font-semibold text-green-700 mb-2">2025: Recuperación (+9.66%)</p>
+                  <p className="text-sm text-gray-700">Crecimiento sostenido con tendencia positiva durante todo el año.</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Línea de Tendencia (Roja Punteada):</p>
+                <p className="text-sm text-gray-700">Calculada por regresión lineal sobre los valores mensuales de 2025. Muestra la dirección general del gasto en el período, confirmando una tendencia al alza consistente.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Análisis Comparativo:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li>2025 supera consistentemente a 2024 en 9 de 12 meses</li>
+                  <li>El segundo semestre 2025 muestra los mejores resultados</li>
+                  <li>La estacionalidad se mantiene similar entre años</li>
+                  <li>Octubre es consistentemente el mes más alto</li>
+                </ul>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
+                <p className="text-sm font-semibold text-gray-800 mb-2">Conclusión:</p>
+                <p className="text-sm text-gray-700">La evolución trianual muestra un ciclo completo: estabilidad (2023) → ajuste (2024) → recuperación (2025). La tendencia positiva de 2025 indica que la estrategia de optimización está dando resultados.</p>
+              </div>
+            </div>
+          )} className="cursor-pointer">
             <ResponsiveContainer width="100%" height={450}>
           <ComposedChart data={datosComparativoConTendencia} margin={{ top: 5, right: 30, left: 20, bottom: 80 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -188,7 +329,48 @@ export default function ComprasDashboard({ data }) {
           defaultOpen={true}
           className="border-purple-500/30 hover:border-purple-500"
         >
-          <div onClick={() => openModal('Variación Mensual', '9 de 12 meses presentan crecimiento positivo. Las caídas en Febrero, Abril y Julio pueden estar relacionadas con ajustes estacionales o cambios en la estrategia de inventarios. El balance general es positivo con recuperación sostenida.')} className="cursor-pointer">
+          <div onClick={() => openModal('Variación Mensual 2025 vs 2024', 
+            <div className="space-y-4">
+              <p className="text-gray-700">El análisis mes a mes revela un patrón de recuperación con 9 de 12 meses en positivo:</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                  <p className="text-sm font-semibold text-green-700 mb-2">Meses Positivos (9)</p>
+                  <ul className="text-xs text-gray-700 space-y-1">
+                    <li>• Octubre: <strong>+49.83%</strong></li>
+                    <li>• Agosto: <strong>+35.59%</strong></li>
+                    <li>• Septiembre: <strong>+31.87%</strong></li>
+                    <li>• Enero, Marzo, Mayo, Junio, Noviembre, Diciembre</li>
+                  </ul>
+                </div>
+                <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                  <p className="text-sm font-semibold text-red-700 mb-2">Meses Negativos (3)</p>
+                  <ul className="text-xs text-gray-700 space-y-1">
+                    <li>• Julio: <strong>-6.26%</strong></li>
+                    <li>• Junio: <strong>-2.38%</strong></li>
+                    <li>• Febrero: <strong>-1.76%</strong></li>
+                  </ul>
+                  <p className="text-xs text-gray-600 mt-2">Caídas moderadas y puntuales</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Causas de las Caídas:</p>
+                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                  <li><strong>Ajustes estacionales:</strong> Febrero y Julio son meses tradicionalmente más bajos</li>
+                  <li><strong>Estrategia de inventarios:</strong> Posible reducción planificada de stocks</li>
+                  <li><strong>Ciclo productivo:</strong> Menor demanda en ciertos períodos del año</li>
+                  <li><strong>Optimización:</strong> Compras más eficientes con menor volumen</li>
+                </ul>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto en el Negocio:</p>
+                <p className="text-sm text-gray-700">Las caídas son menores comparadas con las de 2024, lo que indica mayor estabilidad en la gestión. El balance general es positivo con una recuperación sostenida que se mantiene durante todo el año.</p>
+              </div>
+              <div className="bg-amber-50 rounded-lg p-4 border-2 border-amber-300">
+                <p className="text-sm font-semibold text-amber-800 mb-2">Conclusión:</p>
+                <p className="text-sm text-gray-700">El 75% de los meses en positivo (9/12) confirma una tendencia de recuperación sólida. Las caídas puntuales no afectan el resultado anual de +9.66%.</p>
+              </div>
+            </div>
+          )} className="cursor-pointer">
             <ResponsiveContainer width="100%" height={450}>
           <BarChart data={datosVariacion} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -308,7 +490,40 @@ export default function ComprasDashboard({ data }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        onClick={() => openModal('Caídas 2025', 'Aunque 2025 fue un año de recuperación general, estos tres meses presentaron caídas menores. Las reducciones fueron moderadas comparadas con las caídas de 2024, lo que indica una mayor estabilidad en la gestión de compras.')}
+        onClick={() => openModal('Meses con Mayor Caída 2025 vs 2024', 
+          <div className="space-y-4">
+            <p className="text-gray-700">Aunque 2025 fue un año de recuperación general (+9.66%), estos tres meses presentaron caídas menores:</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {mesesCaidas2025.map((mes, idx) => (
+                <div key={idx} className="bg-red-50 rounded-lg p-4 border-2 border-red-300">
+                  <p className="text-sm font-semibold text-red-700 mb-1">{mes.mes}</p>
+                  <p className="text-3xl font-bold text-red-600">{mes.variacion}%</p>
+                  <p className="text-xs text-gray-600 mt-1">Caída vs 2024</p>
+                </div>
+              ))}
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+              <p className="text-sm font-semibold text-blue-800 mb-2">Contexto de las Caídas:</p>
+              <p className="text-sm text-gray-700">Las reducciones fueron moderadas comparadas con las caídas de 2024 (que llegaron hasta -30.83% en Agosto). Esto indica una mayor estabilidad en la gestión de compras.</p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+              <p className="text-sm font-semibold text-purple-800 mb-2">Análisis por Mes:</p>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li><strong>Julio (-6.26%):</strong> Mayor caída del año, posiblemente relacionada con ajuste de inventarios post-semestre</li>
+                <li><strong>Junio (-2.38%):</strong> Reducción menor, dentro de variación normal</li>
+                <li><strong>Febrero (-1.76%):</strong> Caída mínima, mes tradicionalmente bajo</li>
+              </ul>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+              <p className="text-sm font-semibold text-green-800 mb-2">Comparación con 2024:</p>
+              <p className="text-sm text-gray-700">En 2024, las caídas fueron mucho más pronunciadas: Agosto (-30.83%), Marzo (-28.25%), Enero (-21%). Las caídas de 2025 son significativamente menores, lo que refleja mejor control y planificación.</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-300">
+              <p className="text-sm font-semibold text-gray-800 mb-2">Conclusión:</p>
+              <p className="text-sm text-gray-700">Las caídas puntuales no comprometen el resultado anual positivo. La magnitud reducida de estas variaciones negativas demuestra una gestión más estable y predecible en 2025.</p>
+            </div>
+          </div>
+        )}
         className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 cursor-pointer hover:border-red-500 transition-all"
       >
         <div className="flex items-center justify-between mb-6">
@@ -399,7 +614,7 @@ export default function ComprasDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">{modalContent.description}</div>
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">{modalContent.content}</div>
               <div className="mt-6 flex justify-end">
                 <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                   Entendido

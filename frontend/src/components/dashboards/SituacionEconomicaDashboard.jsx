@@ -70,7 +70,33 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/95 rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal('Utilidad Neta 2025', 'La utilidad neta después de impuestos para el año 2025 se determinó en $16.714.000 y de $12.129.000 para el año 2024, arrojando un incremento de $4.585.000, que corresponde a un 37.8%.')}
+          onClick={() => openModal('Utilidad Neta 2025 vs 2024', 
+            <div className="space-y-4">
+              <p>La utilidad neta después de impuestos para el año 2025 se determinó en <strong className="text-green-600">$16.714.000</strong> y de <strong>$12.129.000</strong> para el año 2024.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">${formatNumber(12129000000)}</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-green-700">${formatNumber(16714000000)}</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Incremento Logrado:</p>
+                <p className="text-sm text-gray-700">Arrojando un incremento de <strong>$4.585.000</strong>, que corresponde a un <strong className="text-green-600">37.8%</strong>.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto:</p>
+                <p className="text-sm text-gray-700">Este crecimiento en utilidad neta refleja la mejora en la eficiencia operativa, el control de costos y el incremento en ingresos operacionales del 1.04%.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">El incremento del 37.8% en utilidad neta fortalece el patrimonio y mejora la capacidad de inversión de la empresa para el año 2026.</p>
+              </div>
+            </div>
+          )}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Utilidad Neta 2025 vs 2024</span>
@@ -89,7 +115,29 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="bg-white/95 rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
-          onClick={() => openModal('Ingresos Operacionales 2025', 'Los ingresos netos por actividades ordinarias devengados durante el año 2025 fueron por $431.000.000, frente a $426.000.000 del año 2024, presentaron un crecimiento de $4.451.000.000, es decir, +1.04%.')}
+          onClick={() => openModal('Ingresos Operacionales 2025 vs 2024', 
+            <div className="space-y-4">
+              <p>Los ingresos netos por actividades ordinarias devengados durante el año 2025 fueron por <strong className="text-blue-600">$431.000.000</strong>, frente a <strong>$426.000.000</strong> del año 2024.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">${formatNumber(426000000000)}</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-blue-700">${formatNumber(431000000000)}</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Crecimiento:</p>
+                <p className="text-sm text-gray-700">Presentaron un crecimiento de <strong>$4.451.000.000</strong>, es decir, <strong className="text-green-600">+1.04%</strong>.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto:</p>
+                <p className="text-sm text-gray-700">El crecimiento moderado del 1.04% en ingresos, combinado con la reducción de costos de ventas (-0.43%), permitió mejorar la utilidad bruta en un 11.1%.</p>
+              </div>
+            </div>
+          )}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Ingresos Operacionales 2025 vs 2024</span>
@@ -108,7 +156,33 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="bg-white/95 rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
-          onClick={() => openModal('Patrimonio 2025', 'El Patrimonio Contable al 31 de diciembre del año 2025 quedó valorado en $245.333.000 y, para el año 2024 en $83.530.000; diferencia de $161.802.000 un fortalecimiento al incrementar el 194%.')}
+          onClick={() => openModal('Patrimonio Total 2025 vs 2024', 
+            <div className="space-y-4">
+              <p>El Patrimonio Contable al 31 de diciembre del año 2025 quedó valorado en <strong className="text-purple-600">$245.333.000</strong> y, para el año 2024 en <strong>$83.530.000</strong>.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">${formatNumber(83530000000)}</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-purple-700">${formatNumber(245333000000)}</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Fortalecimiento Patrimonial:</p>
+                <p className="text-sm text-gray-700">Diferencia de <strong>$161.802.000</strong>, un fortalecimiento al incrementar el <strong className="text-green-600">194%</strong>.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Causas del Incremento:</p>
+                <p className="text-sm text-gray-700">El crecimiento patrimonial se explica principalmente por la utilidad neta del ejercicio ($16.714.000) y la capitalización de resultados acumulados.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">El fortalecimiento patrimonial mejora la solidez financiera (4,71 en 2025 vs 2,55 en 2024) y reduce el nivel de endeudamiento (21,2% vs 39,2%).</p>
+              </div>
+            </div>
+          )}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Patrimonio Total 2025 vs 2024</span>
@@ -127,7 +201,33 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           className="bg-white/95 rounded-xl p-6 border-4 border-cyan-500/30 hover:border-cyan-500 transition-all cursor-pointer"
-          onClick={() => openModal('Activos Totales 2025', 'Los activos totales a 31 de diciembre del ejercicio económico del año 2025 cerraron en $311.430.000 para el año 2024 quedaron en $137.287.000, variación de $174.143.000, determinando un aumento del 127%.')}
+          onClick={() => openModal('Activos Totales 2025 vs 2024', 
+            <div className="space-y-4">
+              <p>Los activos totales a 31 de diciembre del ejercicio económico del año 2025 cerraron en <strong className="text-cyan-600">$311.430.000</strong> para el año 2024 quedaron en <strong>$137.287.000</strong>.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">${formatNumber(137287000000)}</p>
+                </div>
+                <div className="bg-cyan-50 rounded-lg p-3 border border-cyan-200">
+                  <p className="text-xs text-cyan-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-cyan-700">${formatNumber(311430000000)}</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Crecimiento de Activos:</p>
+                <p className="text-sm text-gray-700">Variación de <strong>$174.143.000</strong>, determinando un aumento del <strong className="text-green-600">127%</strong>.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Composición:</p>
+                <p className="text-sm text-gray-700">El incremento se concentra principalmente en activos corrientes, mejorando el capital de trabajo de $57.705.588.903 en 2024 a $96.138.091.362 en 2025.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">El crecimiento de activos mejora la razón corriente (4,22 vs 3,35) y fortalece la capacidad operativa de la empresa.</p>
+              </div>
+            </div>
+          )}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Activos Totales 2025 vs 2024</span>
@@ -152,7 +252,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             <h3 className="text-xl font-bold text-gray-900">Estado de Resultados Pollo Fiesta 2025</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 cursor-pointer hover:border-blue-500 transition-all"
-            onClick={() => openModal('Utilidad Bruta', 'La utilidad bruta por los años de 2025 y 2024 se determinaron en: $64,781 y $58.309.000 respectivamente, generando un incremento $6.472.000 correspondiente al 11.1%.')}>
+            onClick={() => openModal('Utilidad Bruta 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">${formatNumber(58309000000)}</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                    <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-blue-700">${formatNumber(64781000000)}</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Incremento logrado:</p>
+                  <p className="text-sm text-gray-700">La utilidad bruta creció <strong>$6.472.000.000</strong>, equivalente al <strong className="text-green-600">+11.1%</strong>, superando ampliamente el crecimiento de ingresos del 1.04%.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Causas:</p>
+                  <p className="text-sm text-gray-700">El resultado se explica por la combinación de ingresos operacionales crecientes (+1.04%) y la reducción simultánea de costos de ventas (-0.43%), principalmente por la disminución en el costo directo del ABA (alimento balanceado avícola).</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">El margen bruto mejoró de 13.7% en 2024 a 15.0% en 2025, reflejando mayor eficiencia en la estructura de costos productivos.</p>
+                </div>
+              </div>
+            )}>
             <p className="text-sm text-gray-600 mb-2">Utilidad Bruta 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(64781000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -161,7 +286,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             </div>
           </div>
           <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
-            onClick={() => openModal('Utilidad Operacional', 'El valor de la utilidad operacional se determinó en $27.229.000 para el año 2025 y en $22,534 para el año 2024 reflejando crecimiento del +20.8% por valor de $4.695.000.')}>
+            onClick={() => openModal('Utilidad Operacional 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">${formatNumber(22534000000)}</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                    <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-green-700">${formatNumber(27229000000)}</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Crecimiento:</p>
+                  <p className="text-sm text-gray-700">La utilidad operacional creció <strong>$4.695.000.000</strong>, un <strong className="text-green-600">+20.8%</strong>, duplicando el ritmo de crecimiento de los ingresos.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">El margen operacional mejoró de 5.3% a 6.3%. Aunque los gastos de ventas (+9.90%) y beneficios a empleados (+9%) aumentaron, el crecimiento de la utilidad bruta (+11.1%) fue suficiente para absorberlos y generar mayor utilidad operativa.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">El EBITDA creció de $25.734 millones (6.0%) a $29.713 millones (6.8%), confirmando la mejora en la generación de caja operativa.</p>
+                </div>
+              </div>
+            )}>
             <p className="text-sm text-gray-600 mb-2">Utilidad Operacional 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(27229000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -170,7 +320,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             </div>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 cursor-pointer hover:border-purple-500 transition-all"
-            onClick={() => openModal('Costos de Ventas', 'Pollo Fiesta S.A., cierra el ejercicio con costes de ventas por el año 2025, en cuantía de $368.749.000 y en el año 2024 en cuantía de $370.332.000, es decir una disminución del -0.43%, hecho explicado principalmente por la disminución en el costo directo del ABA.')}>
+            onClick={() => openModal('Costos de Ventas 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">${formatNumber(370332000000)}</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                    <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-green-700">${formatNumber(368749000000)}</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Reducción lograda:</p>
+                  <p className="text-sm text-gray-700">Los costos de ventas disminuyeron <strong>$1.583.000.000</strong>, equivalente al <strong className="text-green-600">-0.43%</strong>, a pesar del crecimiento en volumen de operaciones.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Causa principal:</p>
+                  <p className="text-sm text-gray-700">La disminución se explica principalmente por la reducción en el costo directo del ABA (alimento balanceado avícola), el insumo de mayor peso en la estructura de costos de producción avícola.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto estratégico:</p>
+                  <p className="text-sm text-gray-700">La reducción de costos con ingresos crecientes es la combinación ideal: permitió que el margen bruto mejorara 1.3 puntos porcentuales (de 13.7% a 15.0%).</p>
+                </div>
+              </div>
+            )}>
             <p className="text-sm text-gray-600 mb-2">Costos de Ventas 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(368749000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -179,7 +354,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             </div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
-            onClick={() => openModal('Costo Neto Financiero', 'El coste financiero fue de $6.061.000 para el año 2025 y de $6.880.000 para el año 2024, lo que arrojó un decrecimiento de $819.000.000 que corresponde a un -11.91%. En relación directa con los intereses pagados por obligaciones financieras, gravamen al movimiento financiero GMF por la bancarización de los pagos.')}>
+            onClick={() => openModal('Costo Neto Financiero 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">${formatNumber(6880000000)}</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                    <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-green-700">${formatNumber(6061000000)}</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Reducción:</p>
+                  <p className="text-sm text-gray-700">El costo financiero disminuyó <strong>$819.000.000</strong>, equivalente al <strong className="text-green-600">-11.91%</strong>, una mejora significativa en la carga financiera.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Componentes:</p>
+                  <p className="text-sm text-gray-700">El costo financiero está compuesto por: intereses pagados por obligaciones financieras y el gravamen al movimiento financiero (GMF) generado por la bancarización de los pagos.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">La cobertura de gastos financieros mejoró de 1.6% a 1.4% de las ventas netas, y el apalancamiento financiero se redujo de 37.4% a 14.3% del capital contable.</p>
+                </div>
+              </div>
+            )}>
             <p className="text-sm text-gray-600 mb-2">Costo Financiero 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(6061000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -188,7 +388,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
             </div>
           </div>
           <div className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"
-            onClick={() => openModal('Otros Ingresos Financieros', 'Los otros ingresos financieros fueron determinados por los intereses recibidos en la colocación de recursos en portafolios de rentabilidad, aumentando en un 61.53% es decir en $1.572.000, al pasar de $2.555.000 en el año 2024 a $4.127.000 del año 2025, resultado producto de la mayor colocación de recursos en las fiducias.')}>
+            onClick={() => openModal('Otros Ingresos Financieros 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">${formatNumber(2555000000)}</p>
+                  </div>
+                  <div className="bg-cyan-50 rounded-lg p-3 border border-cyan-200">
+                    <p className="text-xs text-cyan-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-cyan-700">${formatNumber(4127000000)}</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Crecimiento:</p>
+                  <p className="text-sm text-gray-700">Los ingresos financieros crecieron <strong>$1.572.000.000</strong>, equivalente al <strong className="text-green-600">+61.53%</strong>, el mayor crecimiento porcentual entre todos los indicadores del estado de resultados.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Causa:</p>
+                  <p className="text-sm text-gray-700">El incremento es producto de la mayor colocación de recursos en fiducias de rentabilidad, generando intereses adicionales sobre los portafolios de inversión.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Los ingresos financieros contribuyeron positivamente a la utilidad antes de impuestos, compensando parcialmente el costo financiero neto de $6.061 millones.</p>
+                </div>
+              </div>
+            )}>
             <p className="text-sm text-gray-600 mb-2">Ingresos Financieros 2025</p>
             <p className="text-2xl font-bold text-gray-900">${formatNumber(4127000000)}</p>
             <div className="border-t border-gray-200 pt-1 mt-1 space-y-0.5">
@@ -359,7 +584,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div 
             className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300 cursor-pointer hover:border-blue-500 transition-all"
-            onClick={() => openModal('Capital de Trabajo', 'Son los recursos con que se dispone para desarrollar su actividad fluidamente. Se calcula restando el Pasivo Corriente del Activo Corriente. Un capital de trabajo positivo indica que la empresa tiene suficientes recursos líquidos para cubrir sus obligaciones a corto plazo.')}
+            onClick={() => openModal('Capital de Trabajo 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">$57.705.588.903</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                    <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-blue-700">$96.138.091.362</p>
+                  </div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Son los recursos con que se dispone para desarrollar la actividad fluidamente. Se calcula restando el Pasivo Corriente del Activo Corriente.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">El capital de trabajo creció <strong>$38.432.502.459</strong> (+66.6%), reflejando el fortalecimiento patrimonial del 194% y el crecimiento de activos corrientes. La empresa dispone de mayor liquidez operativa para 2026.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Un capital de trabajo positivo y creciente garantiza la continuidad operativa sin necesidad de recurrir a financiamiento de corto plazo para cubrir obligaciones corrientes.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">CAPITAL DE TRABAJO</p>
             <p className="text-xs text-gray-600">(Activo Corriente - Pasivo Corriente)</p>
@@ -369,7 +619,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-cyan-50 rounded-lg p-4 border-2 border-cyan-300 cursor-pointer hover:border-cyan-500 transition-all"
-            onClick={() => openModal('Razón Corriente', 'Por cada peso de deuda en el corto plazo se dispone de n veces de respaldo para cumplir con la obligación. Una razón corriente mayor a 1 indica que la empresa tiene más activos corrientes que pasivos corrientes.')}
+            onClick={() => openModal('Razón Corriente 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">$3,35</p>
+                  </div>
+                  <div className="bg-cyan-50 rounded-lg p-3 border border-cyan-200">
+                    <p className="text-xs text-cyan-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-cyan-700">$4,22</p>
+                  </div>
+                </div>
+                <div className="bg-cyan-50 rounded-lg p-4 border border-cyan-300">
+                  <p className="text-sm font-semibold text-cyan-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Por cada peso de deuda en el corto plazo, la empresa dispone de $4.22 de respaldo para cumplir con la obligación.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La razón corriente mejoró de 3.35 a 4.22, superando ampliamente el umbral mínimo de 1.0. Este nivel indica una posición de liquidez muy sólida, con activos corrientes que cuadruplican los pasivos corrientes.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Una razón corriente de 4.22 refleja la capacidad de la empresa para honrar todas sus obligaciones de corto plazo con amplio margen, reduciendo el riesgo de iliquidez operativa.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">RAZÓN CORRIENTE</p>
             <p className="text-xs text-gray-600">Activo corriente / Pasivo corriente</p>
@@ -379,7 +654,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-indigo-50 rounded-lg p-4 border-2 border-indigo-300 cursor-pointer hover:border-indigo-500 transition-all"
-            onClick={() => openModal('Prueba Ácida', 'Es el respaldo que se tiene para cancelar un peso en el corto plazo sin comprometer los inventarios. Es una medida más estricta de liquidez que la razón corriente.')}
+            onClick={() => openModal('Prueba Ácida 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">$3,31</p>
+                  </div>
+                  <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-200">
+                    <p className="text-xs text-indigo-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-indigo-700">$4,05</p>
+                  </div>
+                </div>
+                <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-300">
+                  <p className="text-sm font-semibold text-indigo-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es el respaldo para cancelar un peso en el corto plazo sin comprometer los inventarios. Fórmula: (Activo corriente - Inventario) / Pasivo corriente.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La prueba ácida de 4.05 es casi igual a la razón corriente (4.22), lo que indica que los inventarios representan una porción muy pequeña del activo corriente. La liquidez no depende de la venta de inventarios.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">La mejora de 3.31 a 4.05 confirma que la empresa mantiene una posición de liquidez inmediata muy robusta, con activos líquidos suficientes para cubrir cuatro veces sus obligaciones corrientes.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">PRUEBA ÁCIDA</p>
             <p className="text-xs text-gray-600">(Activo corriente - inventario) / pasivo corriente</p>
@@ -389,7 +689,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-sky-50 rounded-lg p-4 border-2 border-sky-300 cursor-pointer hover:border-sky-500 transition-all"
-            onClick={() => openModal('Solidez', 'Es la consistencia financiera para cubrir su deuda total. Mide la capacidad de la empresa para cubrir todas sus deudas con sus activos totales.')}
+            onClick={() => openModal('Solidez Financiera 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">$2,55</p>
+                  </div>
+                  <div className="bg-sky-50 rounded-lg p-3 border border-sky-200">
+                    <p className="text-xs text-sky-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-sky-700">$4,71</p>
+                  </div>
+                </div>
+                <div className="bg-sky-50 rounded-lg p-4 border border-sky-300">
+                  <p className="text-sm font-semibold text-sky-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Mide la consistencia financiera para cubrir la deuda total. Fórmula: Activo total / Pasivo total. Por cada peso de deuda total, la empresa tiene $4.71 en activos.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La solidez casi se duplicó (de 2.55 a 4.71), impulsada por el crecimiento de activos totales del 127% frente a un crecimiento de pasivos del 23%. El fortalecimiento patrimonial del 194% es el principal motor.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Una solidez de 4.71 posiciona a Pollo Fiesta con una estructura financiera muy sólida, con capacidad para asumir nuevas obligaciones sin comprometer su estabilidad.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">SOLIDEZ</p>
             <p className="text-xs text-gray-600">Activo total / Pasivo total</p>
@@ -399,7 +724,34 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-blue-100 rounded-lg p-4 border-2 border-blue-400 md:col-span-2 cursor-pointer hover:border-blue-600 transition-all"
-            onClick={() => openModal('EBITDA', 'Beneficio Bruto sin gastos financieros, amortizaciones e impuestos. Es un indicador de la rentabilidad operativa de la empresa antes de considerar la estructura de capital, impuestos y depreciación.')}
+            onClick={() => openModal('EBITDA 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">$25.734.246.272</p>
+                    <p className="text-sm font-semibold text-gray-600">Margen: 6.0%</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                    <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-blue-700">$29.712.979.101</p>
+                    <p className="text-sm font-semibold text-blue-600">Margen: 6.8%</p>
+                  </div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Beneficio Bruto sin gastos financieros, amortizaciones e impuestos. Mide la rentabilidad operativa pura de la empresa, independiente de la estructura de capital y política fiscal.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">El EBITDA creció <strong>$3.978.732.829</strong> (+15.5%), con el margen mejorando de 6.0% a 6.8%. Esto confirma que la mejora en rentabilidad es estructural y no depende de factores financieros o fiscales.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Un EBITDA creciente y con mayor margen indica que la empresa genera más caja operativa por cada peso de ingreso, fortaleciendo su capacidad de inversión y servicio de deuda.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">EBITDA</p>
             <p className="text-xs text-gray-600">Margen Ebitda = Ebitda / Ingresos Totales</p>
@@ -476,7 +828,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div 
             className="bg-red-50 rounded-lg p-4 border-2 border-red-300 cursor-pointer hover:border-red-500 transition-all"
-            onClick={() => openModal('Nivel de Endeudamiento', 'Es el % en que participan los acreedores en los activos de la empresa. Un 21.2% indica que solo el 21.2% de los activos están financiados con deuda, lo cual es un nivel saludable.')}
+            onClick={() => openModal('Nivel de Endeudamiento 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">39,2%</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                    <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-green-700">21,2%</p>
+                  </div>
+                </div>
+                <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+                  <p className="text-sm font-semibold text-red-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es el porcentaje en que participan los acreedores en los activos de la empresa. Fórmula: Pasivo Total / Activo Total.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">El endeudamiento se redujo drásticamente de 39.2% a 21.2% (-18 puntos porcentuales). Esto se explica porque los activos crecieron 127% mientras los pasivos solo crecieron 23%, gracias al fortalecimiento patrimonial del 194%.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Un nivel de endeudamiento del 21.2% es considerado bajo y saludable para el sector avícola, indicando que la empresa financia la mayor parte de sus activos con recursos propios.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">NIVEL DE ENDEUDAMIENTO</p>
             <p className="text-xs text-gray-600">Pasivo / Activo</p>
@@ -486,7 +863,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-orange-50 rounded-lg p-4 border-2 border-orange-300 cursor-pointer hover:border-orange-500 transition-all"
-            onClick={() => openModal('Endeudamiento a Corto Plazo', 'Es el % en que participan los acreedores del corto plazo en los activos de la compañía. Un 45.1% indica que casi la mitad de las deudas son de corto plazo.')}
+            onClick={() => openModal('Endeudamiento a Corto Plazo 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">45,7%</p>
+                  </div>
+                  <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                    <p className="text-xs text-orange-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-orange-700">45,1%</p>
+                  </div>
+                </div>
+                <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                  <p className="text-sm font-semibold text-orange-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es el porcentaje en que participan los acreedores de corto plazo en el pasivo total. Fórmula: Pasivo Corriente / Pasivo Total.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">El indicador se mantuvo estable (45.7% → 45.1%), mostrando que la estructura de vencimientos de la deuda no cambió significativamente. Aproximadamente la mitad de las obligaciones son de corto plazo.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Con una razón corriente de 4.22, la empresa tiene amplia capacidad para cubrir sus obligaciones de corto plazo, por lo que este nivel de endeudamiento corriente no representa un riesgo de liquidez.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">ENDEUDAMIENTO A CORTO PLAZO</p>
             <p className="text-xs text-gray-600">Pasivo Corriente / Pasivo Total</p>
@@ -496,7 +898,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-rose-50 rounded-lg p-4 border-2 border-rose-300 cursor-pointer hover:border-rose-500 transition-all"
-            onClick={() => openModal('Cobertura de Gastos Financieros', 'Es el % en que participa de la parte de las ventas. Un 1.4% indica que los costos financieros representan una porción muy pequeña de las ventas.')}
+            onClick={() => openModal('Cobertura de Gastos Financieros 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">1,6%</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                    <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-green-700">1,4%</p>
+                  </div>
+                </div>
+                <div className="bg-rose-50 rounded-lg p-4 border border-rose-300">
+                  <p className="text-sm font-semibold text-rose-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es el porcentaje que representan los costos financieros sobre las ventas netas. Fórmula: Costos financieros / Ventas netas.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La carga financiera se redujo de 1.6% a 1.4% de las ventas, gracias a la disminución del costo financiero en -11.91% ($819 millones menos). Los costos financieros consumen una porción mínima de los ingresos.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Un 1.4% de cobertura financiera es muy bajo, indicando que la empresa no está sobre-apalancada y que sus obligaciones financieras no comprometen significativamente su rentabilidad operativa.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">COBERTURA DE GASTOS FINANCIEROS</p>
             <p className="text-xs text-gray-600">Costos financieros / Ventas netas</p>
@@ -506,7 +933,39 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-red-100 rounded-lg p-4 border-2 border-red-400 md:col-span-3 cursor-pointer hover:border-red-600 transition-all"
-            onClick={() => openModal('Indicador de Apalancamiento', 'Mide el grado de compromiso de los accionistas para con el sector financiero. Los tres sub-indicadores muestran diferentes perspectivas del apalancamiento.')}
+            onClick={() => openModal('Indicador de Apalancamiento 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+                  <p className="text-sm font-semibold text-red-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Mide el grado de compromiso de los accionistas para con el sector financiero. Relaciona el pasivo con el capital contable desde tres perspectivas.</p>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white rounded-lg p-3 border border-red-200 text-center">
+                    <p className="text-xs text-gray-600 mb-1">Pasivo / Capital</p>
+                    <p className="text-lg font-bold text-red-600">26,9%</p>
+                    <p className="text-xs text-gray-500">2024: 64,4%</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-3 border border-red-200 text-center">
+                    <p className="text-xs text-gray-600 mb-1">Pasivo Cte / Capital</p>
+                    <p className="text-lg font-bold text-red-600">12,2%</p>
+                    <p className="text-xs text-gray-500">2024: 29,4%</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-3 border border-red-200 text-center">
+                    <p className="text-xs text-gray-600 mb-1">Pasivo Fin / Capital</p>
+                    <p className="text-lg font-bold text-red-600">14,3%</p>
+                    <p className="text-xs text-gray-500">2024: 37,4%</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">Los tres indicadores de apalancamiento se redujeron drásticamente. El apalancamiento total pasó de 64.4% a 26.9%, el financiero de 37.4% a 14.3%. El fortalecimiento patrimonial del 194% es la causa principal.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">La reducción del apalancamiento mejora la percepción de riesgo crediticio de la empresa y amplía su capacidad de acceder a nuevas líneas de crédito en condiciones favorables.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900 mb-3">INDICADOR DE APALANCAMIENTO</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -592,7 +1051,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div 
             className="bg-green-50 rounded-lg p-4 border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all"
-            onClick={() => openModal('Rotación de Cartera', 'Es el número de veces en que rota la cartera respecto a las ventas del año. Un valor de 15.40 indica una buena gestión de cobros.')}
+            onClick={() => openModal('Rotación de Cartera 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">14,99 veces</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                    <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-green-700">15,40 veces</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es el número de veces que rota la cartera respecto a las ventas del año. Indica la eficiencia en el cobro de las cuentas por cobrar.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La rotación mejoró de 14.99 a 15.40 veces, equivalente a un período de cobro de aproximadamente 23.7 días. Esto refleja una gestión de cartera eficiente, consistente con los resultados del área de Cartera reportados en el informe.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Una rotación de cartera alta reduce el ciclo de conversión de efectivo y mejora la liquidez operativa, contribuyendo al crecimiento del capital de trabajo.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">ROTACIÓN DE CARTERA</p>
             <p className="text-2xl font-bold text-green-600 mt-2">15,40</p>
@@ -601,7 +1085,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-emerald-50 rounded-lg p-4 border-2 border-emerald-300 cursor-pointer hover:border-emerald-500 transition-all"
-            onClick={() => openModal('Rotación de Inventarios', 'Es la cantidad de tiempo que estuvo el inventario en la compañía. Un valor de 39.2 indica una rotación muy eficiente del inventario.')}
+            onClick={() => openModal('Rotación de Inventarios 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">22,2 veces</p>
+                  </div>
+                  <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
+                    <p className="text-xs text-emerald-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-emerald-700">39,2 veces</p>
+                  </div>
+                </div>
+                <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-300">
+                  <p className="text-sm font-semibold text-emerald-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es la cantidad de veces que el inventario se renueva en el año. Fórmula: Costo de mercancía / Promedio de inventarios.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La rotación casi se duplicó (22.2 → 39.2 veces), equivalente a un período de inventario de ~9.3 días en 2025 vs ~16.4 días en 2024. Esto refleja una gestión de inventarios significativamente más eficiente.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Una mayor rotación de inventarios reduce los costos de almacenamiento, minimiza el riesgo de obsolescencia y libera capital de trabajo, contribuyendo a la mejora del capital de trabajo observada.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">ROTACIÓN DE INVENTARIOS</p>
             <p className="text-xs text-gray-600">(Costo de Mcia / Prom. de Inventarios)</p>
@@ -611,7 +1120,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-teal-50 rounded-lg p-4 border-2 border-teal-300 cursor-pointer hover:border-teal-500 transition-all"
-            onClick={() => openModal('Rotación del Patrimonio', 'Es el volumen de ventas generado con el patrimonio invertido. Indica cuántas veces se recupera el patrimonio a través de las ventas.')}
+            onClick={() => openModal('Rotación del Patrimonio 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">5,1 veces</p>
+                  </div>
+                  <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
+                    <p className="text-xs text-teal-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-teal-700">1,8 veces</p>
+                  </div>
+                </div>
+                <div className="bg-teal-50 rounded-lg p-4 border border-teal-300">
+                  <p className="text-sm font-semibold text-teal-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es el volumen de ventas generado por cada peso de patrimonio invertido. Fórmula: Ventas Netas / Patrimonio.</p>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                  <p className="text-sm font-semibold text-yellow-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La reducción de 5.1 a 1.8 se explica por el crecimiento extraordinario del patrimonio (+194%), mientras las ventas solo crecieron 1.04%. No indica deterioro operativo, sino fortalecimiento patrimonial.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">La reducción en rotación de patrimonio es consecuencia directa del fortalecimiento de la base patrimonial. A medida que las ventas crezcan en los próximos años, este indicador se recuperará naturalmente.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">ROTACIÓN DEL PATRIMONIO</p>
             <p className="text-xs text-gray-600">(Vtas Netas / Patrimonio)</p>
@@ -621,7 +1155,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-green-100 rounded-lg p-4 border-2 border-green-400 cursor-pointer hover:border-green-600 transition-all"
-            onClick={() => openModal('Variación de las Ventas Netas', 'Es el % de crecimiento o decrecimiento con respecto al año anterior. Un 1.5% indica crecimiento moderado en las ventas.')}
+            onClick={() => openModal('Variación de las Ventas Netas 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-red-600">-1,6%</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                    <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-green-700">+1,5%</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La empresa revirtió la tendencia negativa de 2024 (-1.6%) para crecer 1.5% en 2025. Los ingresos operacionales pasaron de $426.000 millones a $431.000 millones, un incremento de $4.451 millones.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Contexto:</p>
+                  <p className="text-sm text-gray-700">El crecimiento moderado de ventas, combinado con la reducción de costos (-0.43%), generó un efecto multiplicador en la utilidad: las ventas crecieron 1.5% pero la utilidad neta creció 37.8%.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">La recuperación del crecimiento en ventas, aunque moderada, confirma la resiliencia del modelo de negocio y sienta las bases para un crecimiento más acelerado en 2026.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">VARIACIÓN DE LAS VENTAS NETAS</p>
             <p className="text-xs text-gray-600">(Vtas Presente Ejercicio / Ventas Ejercicio Anterior)</p>
@@ -683,7 +1242,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div 
             className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300 cursor-pointer hover:border-purple-500 transition-all"
-            onClick={() => openModal('Margen Bruto de Utilidad', 'Es la participación de la utilidad operacional en las ventas del año. Un 15.0% indica una buena rentabilidad bruta.')}
+            onClick={() => openModal('Margen Bruto de Utilidad 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">13,7%</p>
+                  </div>
+                  <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                    <p className="text-xs text-purple-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-purple-700">15,0%</p>
+                  </div>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es la participación de la utilidad bruta en las ventas del año. Fórmula: Utilidad Bruta / Ventas Netas.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">El margen bruto mejoró 1.3 puntos porcentuales (13.7% → 15.0%), resultado de la combinación de ingresos crecientes (+1.04%) y costos de ventas decrecientes (-0.43%), principalmente por la reducción del costo del ABA.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Un margen bruto del 15% indica que por cada $100 de ventas, $15 quedan disponibles para cubrir gastos operativos y generar utilidad. La mejora refleja mayor eficiencia en la cadena productiva.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">MARGEN BRUTO DE UTILIDAD</p>
             <p className="text-xs text-gray-600">Utilidad Bruta / Ventas netas</p>
@@ -693,7 +1277,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-violet-50 rounded-lg p-4 border-2 border-violet-300 cursor-pointer hover:border-violet-500 transition-all"
-            onClick={() => openModal('Margen Operacional de Utilidad', 'Indica la rentabilidad si el negocio es o no lucrativo. Un 6.3% muestra que el negocio genera utilidad operativa.')}
+            onClick={() => openModal('Margen Operacional de Utilidad 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">5,3%</p>
+                  </div>
+                  <div className="bg-violet-50 rounded-lg p-3 border border-violet-200">
+                    <p className="text-xs text-violet-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-violet-700">6,3%</p>
+                  </div>
+                </div>
+                <div className="bg-violet-50 rounded-lg p-4 border border-violet-300">
+                  <p className="text-sm font-semibold text-violet-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Indica la rentabilidad operativa del negocio. Fórmula: Utilidad Operativa / Ventas Netas. Muestra cuánto genera la operación por cada peso vendido.</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                  <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">El margen operacional mejoró de 5.3% a 6.3% (+1 punto porcentual), con la utilidad operacional creciendo 20.8% frente a ventas que crecieron solo 1.04%. Esto confirma la mejora en eficiencia operativa.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">El margen operacional del 6.3% es consistente con el margen EBITDA del 6.8%, confirmando que la empresa genera valor operativo real y sostenible en su actividad principal.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">MARGEN OPERACIONAL DE UTILIDAD</p>
             <p className="text-xs text-gray-600">Utilidad Operativa / Ventas netas</p>
@@ -703,7 +1312,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-fuchsia-50 rounded-lg p-4 border-2 border-fuchsia-300 cursor-pointer hover:border-fuchsia-500 transition-all"
-            onClick={() => openModal('Rentabilidad del Patrimonio', 'Es el rendimiento de la inversión de los socios en el ejercicio económico. Muestra qué tan rentable es la inversión de los accionistas.')}
+            onClick={() => openModal('Rentabilidad del Patrimonio 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">21,8%</p>
+                  </div>
+                  <div className="bg-fuchsia-50 rounded-lg p-3 border border-fuchsia-200">
+                    <p className="text-xs text-fuchsia-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-fuchsia-700">10,3%</p>
+                  </div>
+                </div>
+                <div className="bg-fuchsia-50 rounded-lg p-4 border border-fuchsia-300">
+                  <p className="text-sm font-semibold text-fuchsia-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Es el rendimiento de la inversión de los socios. Fórmula: Utilidad Antes de Impuesto / Patrimonio.</p>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                  <p className="text-sm font-semibold text-yellow-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La reducción de 21.8% a 10.3% se explica por el crecimiento extraordinario del patrimonio (+194%), no por deterioro en la utilidad. La utilidad antes de impuestos creció, pero el denominador (patrimonio) creció mucho más.</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">Un 10.3% sigue siendo un retorno positivo para los accionistas. A medida que la utilidad crezca sobre la nueva base patrimonial, este indicador se recuperará en los próximos ejercicios.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">RENTABIL. DEL PATRIMONIO</p>
             <p className="text-xs text-gray-600">(Utilidad Antes de Impuesto / Patrimonio)</p>
@@ -713,7 +1347,32 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
 
           <div 
             className="bg-purple-100 rounded-lg p-4 border-2 border-purple-400 cursor-pointer hover:border-purple-600 transition-all"
-            onClick={() => openModal('Rendimiento del Capital Contable - ROE', 'Representa que por cada peso invertido en activo cuanto se genera en utilidad. Es un indicador clave de rentabilidad para los inversionistas.')}
+            onClick={() => openModal('Rendimiento del Capital Contable - ROE 2025 vs 2024',
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <p className="text-xs text-gray-600 mb-1">2024</p>
+                    <p className="text-xl font-bold text-gray-900">14,5%</p>
+                  </div>
+                  <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                    <p className="text-xs text-purple-600 font-semibold mb-1">2025</p>
+                    <p className="text-xl font-bold text-purple-700">6,8%</p>
+                  </div>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                  <p className="text-sm font-semibold text-purple-800 mb-2">Definición:</p>
+                  <p className="text-sm text-gray-700">Representa cuánto genera en utilidad neta cada peso invertido en capital contable. Fórmula: Utilidad Neta / Capital Contable. Es el indicador de rentabilidad más relevante para los accionistas.</p>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                  <p className="text-sm font-semibold text-yellow-800 mb-2">Análisis:</p>
+                  <p className="text-sm text-gray-700">La reducción de 14.5% a 6.8% es consecuencia del crecimiento patrimonial del 194% vs utilidad neta que creció 37.8%. La utilidad neta pasó de $12.129 millones a $16.714 millones, pero el patrimonio pasó de $83.530 a $245.333 millones.</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                  <p className="text-sm font-semibold text-blue-800 mb-2">Impacto:</p>
+                  <p className="text-sm text-gray-700">El ROE del 6.8% refleja la transición hacia una empresa con mayor solidez patrimonial. El EBITDA del 6.8% confirma que la generación de valor operativo es consistente con el retorno sobre el capital.</p>
+                </div>
+              </div>
+            )}
           >
             <p className="text-sm font-bold text-gray-900">RENDIMIENTO DEL CAPITAL CONTABLE -ROE</p>
             <p className="text-xs text-gray-600">Utilidad Neta / Capital Contable</p>
@@ -795,7 +1454,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -810,7 +1469,7 @@ export default function SituacionEconomicaDashboard({ onNavigate }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
                 {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">

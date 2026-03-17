@@ -297,7 +297,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -313,7 +313,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
                 </button>
               </div>
               
-              <div className="text-gray-700">
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700">
                 {modalContent.content}
               </div>
 

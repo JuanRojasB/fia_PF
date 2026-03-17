@@ -11,11 +11,11 @@ import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function GestionLogisticaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '', showTable: false });
+  const [modalContent, setModalContent] = useState({ title: '', content: null, showTable: false });
   const hasAnimated = useRef(false);
 
-  const openModal = (title, description, showTable = false) => {
-    setModalContent({ title, description, showTable });
+  const openModal = (title, content, showTable = false) => {
+    setModalContent({ title, content, showTable });
     setModalOpen(true);
   };
 
@@ -142,7 +142,30 @@ export default function GestionLogisticaDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
             'Total Consolidado 2025',
-            `Total consolidado de gastos operacionales logísticos de las 3 sedes para 2025: ${formatCurrency(total2025)}. La variación del ${variacionTotal}% vs 2024 refleja el crecimiento operativo de Sede 2 y Sede 3, compensado parcialmente por la optimización en Sede 1.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Total 2024</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(total2024)}</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">Total 2025</p>
+                  <p className="text-lg font-bold text-purple-700">{formatCurrencyFull(total2025)}</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionTotal) <= 0 ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionTotal) <= 0 ? 'text-green-800' : 'text-orange-800'}`}>Variación consolidada: {variacionTotal > 0 ? '+' : ''}{variacionTotal}%</p>
+                <p className="text-sm text-gray-700">El resultado refleja el crecimiento operativo de Sede 2 y Sede 3, compensado parcialmente por la optimización en Sede 1.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Por sede:</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• Sede 1: {formatCurrencyFull(sedesData[0]?.total2025 || 0)} ({sedesData[0]?.variacion || 0}%)</li>
+                  <li>• Sede 2: {formatCurrencyFull(sedesData[1]?.total2025 || 0)} ({sedesData[1]?.variacion || 0}%)</li>
+                  <li>• Sede 3: {formatCurrencyFull(sedesData[2]?.total2025 || 0)} ({sedesData[2]?.variacion || 0}%)</li>
+                </ul>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -162,7 +185,26 @@ export default function GestionLogisticaDashboard({ data }) {
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
             'Sede 1 - Pollo Asadero',
-            `Gastos operacionales logísticos Sede 1 para 2025: ${formatCurrency(sedesData[0]?.total2025 || 0)}. La variación del ${sedesData[0]?.variacion || 0}% vs 2024 representa una reducción controlada gracias a la optimización de fletes y reducción de personal de postproceso por la unificación de procesos en Sede 3.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(sedesData[0]?.total2024 || 0)}</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                  <p className="text-lg font-bold text-blue-700">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(sedesData[0]?.variacion || 0) <= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(sedesData[0]?.variacion || 0) <= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación: {sedesData[0]?.variacion || 0}%</p>
+                <p className="text-sm text-gray-700">Reducción controlada gracias a la optimización de fletes y reducción de personal de postproceso por la unificación de procesos en Sede 3.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Operación:</p>
+                <p className="text-sm text-gray-700">Sede 1 se dedica a la comercialización de pollo entero tipo asadero. Responsable: Clara Fontalvo. 52 colaboradores.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
@@ -182,7 +224,26 @@ export default function GestionLogisticaDashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Sede 2 - Productos Congelados',
-            `Gastos operacionales logísticos Sede 2 para 2025: ${formatCurrency(sedesData[1]?.total2025 || 0)}. El incremento del ${sedesData[1]?.variacion || 0}% vs 2024 está directamente relacionado con el crecimiento del 31.3% en ventas, principalmente por mayor capacidad instalada y personal para atender la demanda de D1 y ARA.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(sedesData[1]?.total2024 || 0)}</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                  <p className="text-lg font-bold text-green-700">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(sedesData[1]?.variacion || 0) <= 0 ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(sedesData[1]?.variacion || 0) <= 0 ? 'text-green-800' : 'text-orange-800'}`}>Variación: {sedesData[1]?.variacion || 0}%</p>
+                <p className="text-sm text-gray-700">El incremento está directamente relacionado con el <strong>crecimiento del 31.3% en ventas</strong>, principalmente por mayor capacidad instalada y personal para atender la demanda de D1 y ARA.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Operación:</p>
+                <p className="text-sm text-gray-700">Sede 2 transforma sobrantes de pollo en productos congelados. Responsable: Alexis Pérez. 56 colaboradores. El incremento en gastos es proporcional al crecimiento en ventas.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -202,7 +263,26 @@ export default function GestionLogisticaDashboard({ data }) {
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
             'Sede 3 - Clientes Institucionales',
-            `Gastos operacionales logísticos Sede 3 para 2025: ${formatCurrency(sedesData[2]?.total2025 || 0)}. El incremento del ${sedesData[2]?.variacion || 0}% vs 2024 refleja el crecimiento operativo y la consolidación de procesos, principalmente por personal de postproceso (+23.43%) y fletes (+28.17%) para atender clientes institucionales.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(sedesData[2]?.total2024 || 0)}</p>
+                </div>
+                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                  <p className="text-xs text-orange-600 font-semibold mb-1">2025</p>
+                  <p className="text-lg font-bold text-orange-700">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(sedesData[2]?.variacion || 0) <= 0 ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(sedesData[2]?.variacion || 0) <= 0 ? 'text-green-800' : 'text-orange-800'}`}>Variación: {sedesData[2]?.variacion || 0}%</p>
+                <p className="text-sm text-gray-700">El incremento refleja el crecimiento operativo y la consolidación de procesos, principalmente por personal de postproceso (<strong>+23.43%</strong>) y fletes (<strong>+28.17%</strong>) para atender clientes institucionales.</p>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-orange-800 mb-2">Operación:</p>
+                <p className="text-sm text-gray-700">Sede 3 atiende clientes institucionales y asumió el proceso de re-selección y redistribución de producto. Responsable: Ing. Angélica Cárdenas. 89 colaboradores.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
@@ -330,11 +410,7 @@ export default function GestionLogisticaDashboard({ data }) {
                 </button>
               </div>
               
-              <div className="mb-6 bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  {modalContent.description}
-                </p>
-              </div>
+              <div className="overflow-y-auto flex-1 pr-2">{modalContent.content}</div>
 
               {/* Tabla dentro del modal - solo si showTable es true */}
               {modalContent.showTable && (

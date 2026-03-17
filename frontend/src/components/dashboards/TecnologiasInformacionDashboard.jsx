@@ -5,10 +5,10 @@ import { Monitor, CheckCircle2, Clock, Database, Info, X, Zap, Shield, Cloud, Vi
 
 export default function TecnologiasInformacionDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -135,7 +135,22 @@ export default function TecnologiasInformacionDashboard({ data }) {
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
             'Iniciativas Tecnológicas 2025',
-            `El año 2025 representó un periodo de importantes avances con ${iniciativas.length} iniciativas tecnológicas principales: Transformación Digital (gestión documental), Seguridad y CCTV (videovigilancia integral), Automatización (BOT y Power Apps), Microsoft 365 (Teams y suite de productividad), Backup y Continuidad (OneDrive automático), ERP ENTERPRISE (nómina, comercial, finanzas), Marketplace (plataforma de ventas digitales), Seguridad Informática (fortalecimiento integral), Gestión de Contratos (contratos de personal), Carnets Digitales (control de acceso) y Control de Vigías QR (supervisión por zonas). Los logros alcanzados contribuyen directamente a la eficiencia operativa, la mejora de procesos empresariales y la preparación de la organización para los retos tecnológicos del 2026.`
+            <div className="space-y-4">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Resumen ejecutivo:</p>
+                <p className="text-sm text-gray-700">El año 2025 representó un periodo de importantes avances con <strong>{iniciativas.length} iniciativas tecnológicas principales</strong>, orientadas a la transformación digital, modernización operativa y seguridad tecnológica.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <p className="text-sm font-semibold text-gray-800 mb-2">Iniciativas implementadas:</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {iniciativas.map((ini, i) => <li key={i}>• <strong>{ini.titulo}</strong></li>)}
+                </ul>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">Los logros alcanzados contribuyen directamente a la eficiencia operativa, la mejora de procesos empresariales y la preparación de la organización para los retos tecnológicos del 2026.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 rounded-xl p-5 border-4 border-blue-500/30 shadow-lg cursor-pointer hover:border-blue-500 transition-all"
         >
@@ -153,7 +168,20 @@ export default function TecnologiasInformacionDashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Plataformas Microsoft',
-            'Consolidación del uso institucional de Microsoft Teams como plataforma de reuniones, comunicación y trabajo colaborativo, Microsoft 365 como suite principal de productividad, y OneDrive para backup automático en la nube. Todos los usuarios cuentan con acceso seguro, licenciamiento formal y operación remota estable, garantizando la continuidad del negocio y la seguridad de la información.'
+            <div className="space-y-4">
+              <div className="bg-cyan-50 rounded-lg p-4 border border-cyan-300">
+                <p className="text-sm font-semibold text-cyan-800 mb-2">Suite implementada:</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• <strong>Microsoft Teams:</strong> Plataforma de reuniones, comunicación y trabajo colaborativo</li>
+                  <li>• <strong>Microsoft 365:</strong> Suite principal de productividad con licenciamiento formal</li>
+                  <li>• <strong>OneDrive:</strong> Backup automático en la nube para todos los usuarios</li>
+                </ul>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Beneficios:</p>
+                <p className="text-sm text-gray-700">Acceso seguro, operación remota estable y continuidad del negocio garantizada. Todos los usuarios cuentan con respaldo automático de su información, eliminando el riesgo de pérdida de datos.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 rounded-xl p-5 border-4 border-cyan-500/30 shadow-lg cursor-pointer hover:border-cyan-500 transition-all"
         >
@@ -188,7 +216,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.05 * idx }}
                 className={`flex items-center gap-3 p-4 rounded-lg border-2 ${getColorClasses(item.color)} hover:scale-[1.02] transition-all cursor-pointer`}
-                onClick={() => openModal(item.titulo, item.descripcion)}
+                onClick={() => openModal(item.titulo, <div className="bg-blue-50 rounded-lg p-4 border border-blue-300"><p className="text-sm text-gray-700 leading-relaxed">{item.descripcion}</p></div>)}
               >
                 <div className="p-2 bg-white/95 rounded-lg flex-shrink-0">
                   <IconComponent className="w-5 h-5" />
@@ -215,7 +243,7 @@ export default function TecnologiasInformacionDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -227,8 +255,8 @@ export default function TecnologiasInformacionDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">
+                {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">
                 <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-semibold">

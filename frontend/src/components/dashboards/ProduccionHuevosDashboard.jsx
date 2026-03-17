@@ -9,10 +9,10 @@ import KpiCard from '../KpiCard';
 
 export default function ProduccionHuevosDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -104,7 +104,26 @@ export default function ProduccionHuevosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Huevos Producidos 2025 vs 2024',
-            `Se produjeron ${formatNumber(totalHuevos2025)} huevos en 2025 vs ${formatNumber(totalHuevos2024)} en 2024. Variación: ${variacionHuevos > 0 ? '+' : ''}${variacionHuevos}%. Con ${formatNumber(aves2025)} aves en producción en 2025 vs ${formatNumber(aves2024)} en 2024.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatNumber(totalHuevos2024)} huevos</p>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
+                  <p className="text-xs text-yellow-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-yellow-700">{formatNumber(totalHuevos2025)} huevos</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionHuevos) >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionHuevos) >= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación:</p>
+                <p className="text-sm text-gray-700">La producción <strong className={parseFloat(variacionHuevos) >= 0 ? 'text-green-600' : 'text-red-600'}>{parseFloat(variacionHuevos) >= 0 ? 'creció' : 'cayó'} {variacionHuevos > 0 ? '+' : ''}{variacionHuevos}%</strong> respecto al año anterior.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto:</p>
+                <p className="text-sm text-gray-700">Con <strong>{formatNumber(aves2025)}</strong> aves en producción en 2025 vs <strong>{formatNumber(aves2024)}</strong> en 2024. El volumen de producción está directamente relacionado con el tamaño del plantel y la productividad por ave.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -130,7 +149,26 @@ export default function ProduccionHuevosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Aves en Producción 2025 vs 2024',
-            `Saldo inicial de aves en producción: ${formatNumber(aves2025)} en 2025 vs ${formatNumber(aves2024)} en 2024. Este es el inventario de gallinas ponedoras al inicio del período, base para calcular la productividad por ave.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatNumber(aves2024)} aves</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-green-700">{formatNumber(aves2025)} aves</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">¿Qué representa?</p>
+                <p className="text-sm text-gray-700">El saldo inicial de aves es el inventario de gallinas ponedoras al inicio del período. Es la base para calcular la productividad por ave y determinar la capacidad productiva del plantel.</p>
+              </div>
+              <div className={`rounded-lg p-4 border ${aves2025 >= aves2024 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${aves2025 >= aves2024 ? 'text-green-800' : 'text-red-800'}`}>Impacto:</p>
+                <p className="text-sm text-gray-700">{aves2025 >= aves2024 ? 'Un mayor plantel permite incrementar la producción total de huevos, siempre que la productividad por ave se mantenga.' : 'Una reducción en el plantel puede impactar el volumen total de producción si no se compensa con mayor productividad por ave.'}</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -156,7 +194,26 @@ export default function ProduccionHuevosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Productividad Real vs Tabla 2025',
-            `La productividad real de 2025 es ${formatDecimal(productividadReal2025)} huevos/gallina/mes vs el estándar de tabla de ${formatDecimal(productividadTabla2025)} huevos/gallina/mes. Diferencia: ${formatDecimal(productividadReal2025 - productividadTabla2025)} huevos/gallina/mes (${productividadReal2025 >= productividadTabla2025 ? 'por encima' : 'por debajo'} del estándar). El valor de tabla proviene de la genética Hy-Line Brown.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">Valor de Tabla (Estándar)</p>
+                  <p className="text-xl font-bold text-blue-700">{formatDecimal(productividadTabla2025)} h/g/mes</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">Productividad Real</p>
+                  <p className="text-xl font-bold text-purple-700">{formatDecimal(productividadReal2025)} h/g/mes</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${productividadReal2025 >= productividadTabla2025 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${productividadReal2025 >= productividadTabla2025 ? 'text-green-800' : 'text-red-800'}`}>Resultado vs Estándar:</p>
+                <p className="text-sm text-gray-700">Diferencia: <strong className={productividadReal2025 >= productividadTabla2025 ? 'text-green-600' : 'text-red-600'}>{productividadReal2025 >= productividadTabla2025 ? '+' : ''}{formatDecimal(productividadReal2025 - productividadTabla2025)} huevos/gallina/mes</strong> ({productividadReal2025 >= productividadTabla2025 ? 'por encima' : 'por debajo'} del estándar).</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="text-sm font-semibold text-yellow-800 mb-2">Fuente del estándar:</p>
+                <p className="text-sm text-gray-700">El valor de tabla proviene de la genética Hy-Line Brown, que establece los parámetros de producción esperados según la edad del lote. Superar este estándar indica un manejo nutricional y sanitario óptimo.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -182,7 +239,30 @@ export default function ProduccionHuevosDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
           onClick={() => openModal(
             'Productividad Real 2025 vs 2024',
-            `La productividad real ${diferenciaProductividad > 0 ? 'mejoró' : 'bajó'} de ${formatDecimal(productividadReal2024)} en 2024 a ${formatDecimal(productividadReal2025)} en 2025. Diferencia: ${diferenciaProductividad > 0 ? '+' : ''}${formatDecimal(diferenciaProductividad)} huevos/gallina/mes (${variacionProductividad > 0 ? '+' : ''}${variacionProductividad}%). Fórmula: (${formatDecimal(productividadReal2025)} - ${formatDecimal(productividadReal2024)}) / ${formatDecimal(productividadReal2024)} × 100.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatDecimal(productividadReal2024)} h/g/mes</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-blue-700">{formatDecimal(productividadReal2025)} h/g/mes</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${diferenciaProductividad >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${diferenciaProductividad >= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación interanual:</p>
+                <p className="text-sm text-gray-700">La productividad real <strong className={diferenciaProductividad >= 0 ? 'text-green-600' : 'text-red-600'}>{diferenciaProductividad > 0 ? 'mejoró' : 'bajó'} {diferenciaProductividad > 0 ? '+' : ''}{formatDecimal(diferenciaProductividad)} h/g/mes ({variacionProductividad > 0 ? '+' : ''}{variacionProductividad}%)</strong> respecto a 2024.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Fórmula:</p>
+                <p className="text-sm text-gray-700 font-mono">({formatDecimal(productividadReal2025)} - {formatDecimal(productividadReal2024)}) / {formatDecimal(productividadReal2024)} × 100 = {variacionProductividad > 0 ? '+' : ''}{variacionProductividad}%</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">{diferenciaProductividad >= 0 ? 'Una mayor productividad por ave permite producir más huevos con el mismo plantel, mejorando la eficiencia del capital invertido en aves.' : 'Una menor productividad por ave puede indicar factores como envejecimiento del lote, problemas nutricionales o sanitarios que requieren atención.'}</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-2">
@@ -525,7 +605,7 @@ export default function ProduccionHuevosDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -540,13 +620,13 @@ export default function ProduccionHuevosDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">
+                {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-gray-900 rounded-lg transition-colors"
+                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors"
                 >
                   Entendido
                 </button>

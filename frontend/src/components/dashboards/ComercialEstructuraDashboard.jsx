@@ -7,10 +7,12 @@ import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
 
 export default function ComercialEstructuraDashboard({ data }) {
-  const [modalOpen, setModalOpen] = useState(false);  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [showEquipoModal, setShowEquipoModal] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
   
@@ -63,8 +65,31 @@ export default function ComercialEstructuraDashboard({ data }) {
         <div 
           className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
           onClick={() => openModal(
-            'Total Unidades Procesadas 2025',
-            `En 2025 se procesaron ${formatNumber(total2025)} unidades en total a través de todas las sedes mayoristas. Esto representa un ${total2024 > 0 ? (((total2025 - total2024) / total2024) * 100).toFixed(1) : 0}% ${total2025 > total2024 ? 'de crecimiento' : 'de variación'} respecto a 2024 (${formatNumber(total2024)} unidades). La redistribución estratégica entre sedes permitió optimizar la eficiencia operativa y mejorar el control de calidad en el proceso de selección y despacho.`
+            'Total Unidades Procesadas 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatNumber(total2024)} uds</p>
+                </div>
+                <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-200">
+                  <p className="text-xs text-indigo-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-indigo-700">{formatNumber(total2025)} uds</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${total2025 >= total2024 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${total2025 >= total2024 ? 'text-green-800' : 'text-red-800'}`}>Variación:</p>
+                <p className="text-sm text-gray-700">Las unidades procesadas variaron <strong className={total2025 >= total2024 ? 'text-green-600' : 'text-red-600'}>{total2024 > 0 ? (((total2025 - total2024) / total2024) * 100).toFixed(1) : 0}%</strong> respecto a 2024.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Análisis:</p>
+                <p className="text-sm text-gray-700">La redistribución estratégica entre sedes permitió optimizar la eficiencia operativa y mejorar el control de calidad en el proceso de selección y despacho. Sede 1 fue trasladada a Sede U03 (Ángel Blanco).</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">La reorganización generó un incremento en U03 de +119.28% y una disminución en U01 de -84.45%, concentrando el procesamiento mayorista en la sede más eficiente.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-4">
@@ -81,8 +106,31 @@ export default function ComercialEstructuraDashboard({ data }) {
         <div 
           className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
           onClick={() => openModal(
-            'Sede U03 y Sede U01 en Procesamiento 2025',
-            `Sede ${u03_2025?.asignacion.replace('Sede ', '') || 'U03'} lidera el procesamiento con ${formatNumber(u03_2025?.unidades2025 || 0)} unidades (${u03_2025?.participacion2025.toFixed(1) || 0}% del total). Experimentó un crecimiento de +${u03_2025?.variacionPct.toFixed(1) || 0}% respecto a 2024, consolidándose como el centro principal de selección y despacho tras la reorganización estratégica implementada este año.`
+            'Sede U03 — Liderazgo en Procesamiento 2025',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatNumber(u03_2025?.unidades2024 || 0)} uds</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-purple-700">{formatNumber(u03_2025?.unidades2025 || 0)} uds</p>
+                </div>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Participación:</p>
+                <p className="text-sm text-gray-700">Sede U03 lidera el procesamiento con <strong className="text-purple-600">{u03_2025?.participacion2025.toFixed(1) || 0}%</strong> del total, experimentando un crecimiento de <strong className="text-green-600">+{u03_2025?.variacionPct.toFixed(1) || 0}%</strong> respecto a 2024.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Causa:</p>
+                <p className="text-sm text-gray-700">La consolidación de Sede U03 como centro principal de selección y despacho se debe a la reorganización estratégica implementada en 2025, trasladando operaciones de Sede U01 para mayor eficiencia.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">La concentración en U03 mejora el control de calidad, reduce costos logísticos y permite una gestión más eficiente del canal mayorista.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-4">
@@ -99,8 +147,31 @@ export default function ComercialEstructuraDashboard({ data }) {
         <div 
           className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer" 
           onClick={() => openModal(
-            'Sede UO1 y UO3 en Procesamiento 2025',
-            `${analisisAsignacion[0]?.asignacion || 'Sede UO1 y UO3'} es la sede con mayor participación en 2025 con ${formatNumber(analisisAsignacion[0]?.unidades2025 || 0)} unidades (${analisisAsignacion[0]?.participacion2025.toFixed(1) || 0}% del total). Variación vs 2024: ${analisisAsignacion[0]?.variacionPct >= 0 ? '+' : ''}${analisisAsignacion[0]?.variacionPct.toFixed(1) || 0}%.`
+            'Estructura del Equipo Comercial 2025',
+            <div className="space-y-4">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Pollo en Pie (1 Agrupación):</p>
+                <p className="text-sm text-gray-700">Mayorista — José Rodríguez</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Pollo en Canal (5 Agrupaciones):</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• Institucional — Hernán Benito</li>
+                  <li>• Asadero — German Rodríguez</li>
+                  <li>• Sede 5 — Yenny Alvarado</li>
+                  <li>• PDV — Elmira González & Michael Arias</li>
+                  <li>• Yopal — Julián Mora</li>
+                </ul>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="text-sm font-semibold text-yellow-800 mb-2">Huevos (1 Agrupación):</p>
+                <p className="text-sm text-gray-700">Comercial — Margarita Roa Barrera</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">Esta estructura de 3 categorías, 7 agrupaciones y 10 líderes permite atención especializada y enfoque estratégico en cada segmento de mercado, contribuyendo al crecimiento de ventas del +1.04% en 2025.</p>
+              </div>
+            </div>
           )}
         >
           <div className="flex items-center justify-between mb-4">
@@ -316,7 +387,7 @@ export default function ComercialEstructuraDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -331,8 +402,8 @@ export default function ComercialEstructuraDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
+                {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">
                 <button

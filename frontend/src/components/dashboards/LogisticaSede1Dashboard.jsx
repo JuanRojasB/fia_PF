@@ -11,10 +11,10 @@ import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function LogisticaSede1Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '', showTable: false });
+  const [modalContent, setModalContent] = useState({ title: '', content: null, showTable: false });
 
-  const openModal = (title, description, showTable = false) => {
-    setModalContent({ title, description, showTable });
+  const openModal = (title, content, showTable = false) => {
+    setModalContent({ title, content, showTable });
     setModalOpen(true);
   };
 
@@ -114,7 +114,26 @@ export default function LogisticaSede1Dashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
             'Gastos Totales 2025',
-            `Total de gastos operacionales logísticos Sede 1 para 2025: ${formatCurrency(total2025)}. La variación del ${variacionTotal}% vs 2024 representa una reducción controlada gracias a la optimización de fletes y reducción de personal de postproceso.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Total 2024</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(total2024)}</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">Total 2025</p>
+                  <p className="text-lg font-bold text-blue-700">{formatCurrencyFull(total2025)}</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionTotal) <= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionTotal) <= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación {variacionTotal}%:</p>
+                <p className="text-sm text-gray-700">{parseFloat(variacionTotal) <= 0 ? 'Reducción controlada de gastos' : 'Incremento de gastos'} gracias a la optimización de fletes y reducción de personal de postproceso en Sede 1.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto operativo:</p>
+                <p className="text-sm text-gray-700">Sede 1 se dedica a la comercialización de pollo entero tipo asadero. Los gastos operacionales logísticos incluyen arriendos, fletes, personal de postproceso y servicios públicos, todos monitoreados mensualmente.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
@@ -136,7 +155,23 @@ export default function LogisticaSede1Dashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Conceptos de Gasto',
-            `Sede 1 gestiona ${conceptosArray.length} conceptos de gasto operacional logístico para la comercialización de pollo entero tipo asadero. Estos rubros incluyen arriendos, fletes, personal, servicios públicos y otros gastos necesarios para la operación. Cada concepto es monitoreado mensualmente para optimizar costos y mantener la eficiencia operativa.`
+            <div className="space-y-4">
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">{conceptosArray.length} rubros controlados:</p>
+                <p className="text-sm text-gray-700">Sede 1 gestiona {conceptosArray.length} conceptos de gasto operacional logístico para la comercialización de pollo entero tipo asadero.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Rubros principales:</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {conceptosArray.slice(0, 5).map((c, i) => (
+                    <li key={i}>• <strong>{c.concepto}</strong>: {formatCurrencyFull(c.valor2025)}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <p className="text-sm text-gray-700">Cada concepto es monitoreado mensualmente para optimizar costos y mantener la eficiencia operativa de la sede.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -333,11 +368,7 @@ export default function LogisticaSede1Dashboard({ data }) {
                 </button>
               </div>
               
-              <div className="mb-6 bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  {modalContent.description}
-                </p>
-              </div>
+              <div className="overflow-y-auto flex-1 pr-2">{modalContent.content}</div>
 
               {/* Tabla dentro del modal - solo si showTable es true */}
               {modalContent.showTable && (

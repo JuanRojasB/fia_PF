@@ -8,10 +8,10 @@ import CollapsibleChart from '../CollapsibleChart';
 
 export default function ComercialPolloEnteroDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -115,8 +115,31 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
-            'Pollo Entero Planta 2025',
-            `Total de pollos enteros producidos en planta Fiesta durante 2025: ${formatNumber(datos2025.polloEnteroPlanta)} unidades. La variación del ${variacionPlanta2025vs2024}% vs 2024 representa ${variacionPlanta2025vs2024 > 0 ? 'un incremento' : 'una reducción'} de ${formatNumber(Math.abs(datos2025.polloEnteroPlanta - datos2024.polloEnteroPlanta))} unidades. Este volumen incluye toda la producción de pollo entero de la compañía.`
+            'Producción Pollo Entero Planta 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatNumber(datos2024.polloEnteroPlanta)} uds</p>
+                </div>
+                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                  <p className="text-xs text-orange-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-orange-700">{formatNumber(datos2025.polloEnteroPlanta)} uds</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionPlanta2025vs2024) >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionPlanta2025vs2024) >= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación:</p>
+                <p className="text-sm text-gray-700">La producción varió <strong className={parseFloat(variacionPlanta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}>{variacionPlanta2025vs2024 > 0 ? '+' : ''}{variacionPlanta2025vs2024}%</strong>, representando {parseFloat(variacionPlanta2025vs2024) >= 0 ? 'un incremento' : 'una reducción'} de {formatNumber(Math.abs(datos2025.polloEnteroPlanta - datos2024.polloEnteroPlanta))} unidades.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto:</p>
+                <p className="text-sm text-gray-700">Este volumen incluye toda la producción de pollo entero de la compañía en planta Fiesta. El crecimiento del encasetamiento del 6.6% en 2025 impacta directamente en el volumen disponible para comercialización.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">Mayor producción en planta amplía la base disponible para la línea Asadero, contribuyendo al objetivo estratégico de alcanzar el 50% de participación.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
@@ -137,8 +160,31 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Venta Línea Asadero 2025',
-            `Ventas de la línea Asadero (pollo entero) durante 2025: ${formatNumber(datos2025.ventaLineaAsadero)} unidades. La variación del ${variacionVenta2025vs2024}% vs 2024 representa ${variacionVenta2025vs2024 > 0 ? 'un crecimiento' : 'una reducción'} de ${formatNumber(Math.abs(datos2025.ventaLineaAsadero - datos2024.ventaLineaAsadero))} unidades. Esta línea es estratégica para la comercialización de pollo entero tipo asadero.`
+            'Ventas Línea Asadero 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatNumber(datos2024.ventaLineaAsadero)} uds</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-blue-700">{formatNumber(datos2025.ventaLineaAsadero)} uds</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionVenta2025vs2024) >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionVenta2025vs2024) >= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación:</p>
+                <p className="text-sm text-gray-700">Las ventas variaron <strong className={parseFloat(variacionVenta2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}>{variacionVenta2025vs2024 > 0 ? '+' : ''}{variacionVenta2025vs2024}%</strong>, representando {parseFloat(variacionVenta2025vs2024) >= 0 ? 'un crecimiento' : 'una reducción'} de {formatNumber(Math.abs(datos2025.ventaLineaAsadero - datos2024.ventaLineaAsadero))} unidades.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Análisis:</p>
+                <p className="text-sm text-gray-700">La línea Asadero es estratégica para la comercialización de pollo entero. Su crecimiento contribuye directamente a mejorar la participación respecto al total producido en planta, acercándose a la meta del 50%.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">La participación lograda en 2025 ({datos2025.participacionLograda}%) refleja la eficiencia en la comercialización de esta línea, con solo {datos2025.puntosFaltantes} puntos para alcanzar la meta estratégica.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
@@ -159,8 +205,31 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
-            'Participación Lograda 2025',
-            `Participación de la línea Asadero respecto al total de pollos enteros: ${datos2025.participacionLograda}%. Fórmula: (Venta Asadero ÷ Pollo Entero Planta) × 100 = (${formatNumber(datos2025.ventaLineaAsadero)} ÷ ${formatNumber(datos2025.polloEnteroPlanta)}) × 100. La mejora de ${mejoraParticipacion} puntos porcentuales vs 2024 refleja una mayor eficiencia en la comercialización de pollo entero.`
+            'Participación Asadero vs Planta 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{datos2024.participacionLograda}%</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-green-700">{datos2025.participacionLograda}%</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Fórmula y resultado:</p>
+                <p className="text-sm text-gray-700">Participación = (Venta Asadero ÷ Pollo Entero Planta) × 100 = ({formatNumber(datos2025.ventaLineaAsadero)} ÷ {formatNumber(datos2025.polloEnteroPlanta)}) × 100 = <strong className="text-green-600">{datos2025.participacionLograda}%</strong></p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Análisis:</p>
+                <p className="text-sm text-gray-700">La mejora de <strong>{mejoraParticipacion} puntos porcentuales</strong> vs 2024 refleja mayor eficiencia en la comercialización de pollo entero. La tendencia histórica muestra crecimiento sostenido: 45.82% (2023) → {datos2024.participacionLograda}% (2024) → {datos2025.participacionLograda}% (2025).</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">Con solo {datos2025.puntosFaltantes} puntos para alcanzar la meta del 50%, la empresa está muy cerca de lograr el objetivo estratégico de comercializar la mitad de su producción de pollo entero a través del canal Asadero.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -181,8 +250,31 @@ export default function ComercialPolloEnteroDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
-            'Meta vs Logrado',
-            `Meta objetivo: ${datos2025.metaObjetivo}%. Participación lograda: ${datos2025.participacionLograda}%. Puntos faltantes: ${datos2025.puntosFaltantes} puntos porcentuales. La compañía se encuentra a ${datos2025.puntosFaltantes} puntos de alcanzar la meta del 50% de participación. En 2024 faltaban ${datos2024.puntosFaltantes} puntos, mostrando una mejora en el cumplimiento del objetivo estratégico.`
+            'Puntos Faltantes para Meta 50%',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Meta objetivo</p>
+                  <p className="text-xl font-bold text-gray-900">{datos2025.metaObjetivo}%</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">Logrado 2025</p>
+                  <p className="text-xl font-bold text-purple-700">{datos2025.participacionLograda}%</p>
+                </div>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Brecha actual:</p>
+                <p className="text-sm text-gray-700">La empresa se encuentra a solo <strong className="text-purple-600">{datos2025.puntosFaltantes} puntos porcentuales</strong> de alcanzar la meta estratégica del 50% de participación.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Progreso histórico:</p>
+                <p className="text-sm text-gray-700">En 2024 faltaban {datos2024.puntosFaltantes} puntos, mostrando una mejora de {(datos2024.puntosFaltantes - datos2025.puntosFaltantes).toFixed(2)} puntos en el cumplimiento del objetivo estratégico durante 2025.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Proyección:</p>
+                <p className="text-sm text-gray-700">Manteniendo el ritmo de mejora actual, la empresa podría alcanzar la meta del 50% en el próximo ejercicio, consolidando la línea Asadero como el canal principal de comercialización de pollo entero.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
         >
@@ -412,7 +504,7 @@ export default function ComercialPolloEnteroDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -427,13 +519,13 @@ export default function ComercialPolloEnteroDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
+                {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-gray-900 rounded-lg transition-colors"
+                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
                 >
                   Entendido
                 </button>

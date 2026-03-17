@@ -11,10 +11,10 @@ import { formatCurrencyFull } from './CustomTooltip';
 
 export default function ComercialVentasCompaniaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -109,7 +109,25 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal('Ventas Totales 2025',
-            'Total de kilos vendidos en 2025: ' + formatNumber(datos2025.totalKilos) + ' kg. La variacion del ' + variacionKilosTotal + '% vs 2024 representa un crecimiento de ' + formatNumber(datos2025.totalKilos - datos2024.totalKilos) + ' kg. Este incremento se debe principalmente al mayor dinamismo en la linea Mayorista (+6.05%).')}
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="font-semibold text-blue-700 mb-1">Contexto del indicador</p>
+                <p className="text-sm">Mide el volumen total de kilos vendidos por la compañía en el año 2025, consolidando las líneas de Pollo en Pie (Mayorista) y Pollo en Canal en todas las sedes.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="font-semibold text-green-700 mb-2">Resultado 2025</p>
+                <p className="text-sm">Total vendido: <strong>{formatNumber(datos2025.totalKilos)} kg</strong> vs {formatNumber(datos2024.totalKilos)} kg en 2024. Variación: <strong className="text-green-600">+{variacionKilosTotal}%</strong>, equivalente a {formatNumber(datos2025.totalKilos - datos2024.totalKilos)} kg adicionales.</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="font-semibold text-yellow-700 mb-2">Causas del crecimiento</p>
+                <p className="text-sm">El principal motor fue la línea Mayorista (Pollo en Pie) con un crecimiento de +6.05%, que compensó el crecimiento marginal de la línea Canal (+0.03%). El dinamismo mayorista refleja mayor demanda de clientes distribuidores y expansión de cobertura.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="font-semibold text-purple-700 mb-2">Impacto en el negocio</p>
+                <p className="text-sm">El crecimiento en volumen consolida la posición competitiva de Pollo Fiesta en el mercado avícola. Sin embargo, la caída en precio promedio (-{Math.abs(variacionPrecio)}%) modera el impacto positivo en ingresos, lo que exige atención a la estrategia de precios en la línea mayorista.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Ventas Totales Compania 2025 (kg)</span>
@@ -125,7 +143,25 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           onClick={() => openModal('Ingresos Totales 2025 - Toda la Compania',
-            'Ingresos totales en 2025: ' + formatCurrencyFull(datos2025.totalIngresos) + '. Variacion vs 2024: ' + variacionIngresos + '%. Incluye Pollo en Pie (Mayorista), Pollo en Canal (todas las lineas), Huevos y todas las sedes. Este es el ingreso mas alto porque consolida TODAS las operaciones de la compania. Calculo: suma de todos los ingresos por ventas (kg x precio) de todas las categorias.')}
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="font-semibold text-green-700 mb-1">Contexto del indicador</p>
+                <p className="text-sm">Consolida los ingresos de todas las operaciones: Pollo en Pie (Mayorista), Pollo en Canal en todas las sedes, Huevos y demás líneas. Es el indicador de mayor alcance financiero de la compañía.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="font-semibold text-blue-700 mb-2">Resultado 2025</p>
+                <p className="text-sm">Ingresos totales: <strong>{formatCurrencyFull(datos2025.totalIngresos)}</strong> vs {formatCurrencyFull(datos2024.totalIngresos)} en 2024. Variación: <strong className={parseFloat(variacionIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}>{variacionIngresos > 0 ? '+' : ''}{variacionIngresos}%</strong>.</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="font-semibold text-yellow-700 mb-2">Análisis de la variación</p>
+                <p className="text-sm">El crecimiento en volumen (+{variacionKilosTotal}%) fue parcialmente contrarrestado por la caída en precio promedio (-{Math.abs(variacionPrecio)}%), especialmente en la línea Mayorista (-4.19%). Esto explica que el crecimiento en ingresos sea proporcionalmente menor al crecimiento en kilos.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="font-semibold text-purple-700 mb-2">Conclusión</p>
+                <p className="text-sm">La compañía logró crecer en ingresos a pesar de la presión sobre precios, gracias al incremento en volumen. La diversificación de líneas (Canal + Mayorista) actúa como amortiguador ante la volatilidad de precios del mercado avícola.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Ingresos Totales Compania 2025</span>
@@ -141,7 +177,25 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           onClick={() => openModal('Precio Promedio 2025',
-            'Precio promedio por kilo en 2025: ' + formatCurrencyFull(precioProm2025) + '/kg. La variacion del ' + variacionPrecio + '% vs 2024 refleja una disminucion en el precio promedio. El pollo en canal registro un aumento de +0.15%, mientras que el pollo Mayorista presento una disminucion de -4.19%.')}
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="font-semibold text-purple-700 mb-1">Contexto del indicador</p>
+                <p className="text-sm">El precio promedio por kilo refleja el valor de realización del producto en el mercado. Se calcula como el cociente entre ingresos totales y kilos vendidos, consolidando todas las líneas comerciales.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="font-semibold text-blue-700 mb-2">Resultado 2025</p>
+                <p className="text-sm">Precio promedio 2025: <strong>{formatCurrencyFull(precioProm2025)}/kg</strong> vs {formatCurrencyFull(precioProm2024)}/kg en 2024. Variación: <strong className={parseFloat(variacionPrecio) >= 0 ? 'text-green-600' : 'text-red-600'}>{variacionPrecio > 0 ? '+' : ''}{variacionPrecio}%</strong>.</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="font-semibold text-yellow-700 mb-2">Comportamiento por línea</p>
+                <p className="text-sm">El Pollo en Canal registró un aumento de precio de +0.15%, mientras que el Pollo Mayorista presentó una disminución de -4.19%. La mezcla de líneas explica la variación consolidada del precio promedio.</p>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+                <p className="font-semibold text-red-700 mb-2">Impacto y alerta</p>
+                <p className="text-sm">La caída en precio mayorista es una señal de alerta: aunque el volumen creció, la rentabilidad por kilo se redujo en esa línea. Es necesario monitorear la evolución de precios de mercado y la estrategia de negociación con clientes mayoristas para proteger el margen.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Precio Promedio $/kg Compania 2025</span>
@@ -157,7 +211,28 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           onClick={() => openModal('Variacion Total',
-            'La variacion total de ' + formatNumber(datos2025.totalKilos - datos2024.totalKilos) + ' kg representa un crecimiento del ' + variacionKilosTotal + '%. Las ventas en kilos de pollo en canal mostraron un incremento marginal de +0.03%, mientras que las ventas en kilos de pollo Mayorista crecieron de manera mas dinamica, con un +6.05% respecto al ano anterior.')}
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="font-semibold text-orange-700 mb-1">Contexto del indicador</p>
+                <p className="text-sm">Mide el delta absoluto y porcentual en kilos vendidos entre 2025 y 2024, desagregado por línea comercial. Permite identificar qué segmento impulsó o frenó el crecimiento total.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="font-semibold text-green-700 mb-2">Resultado consolidado</p>
+                <p className="text-sm">Variación total: <strong className="text-green-600">+{formatNumber(datos2025.totalKilos - datos2024.totalKilos)} kg (+{variacionKilosTotal}%)</strong>. La compañía creció en volumen por segundo año consecutivo, consolidando su tendencia de expansión.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="font-semibold text-blue-700 mb-2">Desagregación por línea</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li><strong>Pollo en Pie (Mayorista):</strong> +{variacionPieKilos}% — principal motor del crecimiento, con mayor dinamismo comercial en clientes distribuidores.</li>
+                  <li><strong>Pollo en Canal:</strong> +{variacionCanalKilos}% — crecimiento marginal, refleja estabilidad en los canales de distribución directa (PDV, Asadero, Institucional).</li>
+                </ul>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="font-semibold text-purple-700 mb-2">Conclusión estratégica</p>
+                <p className="text-sm">El crecimiento está concentrado en la línea mayorista, lo que implica una dependencia creciente de ese segmento. Diversificar el crecimiento hacia el canal directo (mayor margen) es una oportunidad estratégica para mejorar la rentabilidad global.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm font-medium">Variacion Volumen 2025 vs 2024</span>
@@ -172,7 +247,25 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
           onClick={() => openModal('Pollo en Pie (Mayorista)',
-            'Ventas 2025: ' + formatNumber(datos2025.pie.kilos) + ' kg (' + partPie2025 + '% del total). Variacion: +' + variacionPieKilos + '% vs 2024. Las ventas en kilos de pollo Mayorista crecieron de manera mas dinamica con un +6.05% respecto al ano anterior, impulsando el crecimiento total de la compania. Precio promedio: ' + formatCurrency(datos2025.pie.kilos > 0 ? (datos2025.pie.ingresos / datos2025.pie.kilos).toFixed(0) : 0) + '/kg.')}
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="font-semibold text-blue-700 mb-1">Contexto del indicador</p>
+                <p className="text-sm">El canal Mayorista (Pollo en Pie) representa la venta directa a distribuidores y comercializadores que adquieren el pollo sin procesar. Es el canal de mayor volumen y el de mayor sensibilidad al precio de mercado.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="font-semibold text-green-700 mb-2">Resultado 2025</p>
+                <p className="text-sm">Ventas: <strong>{formatNumber(datos2025.pie.kilos)} kg</strong> ({partPie2025}% del total). Variación vs 2024: <strong className="text-green-600">+{variacionPieKilos}%</strong>. Precio promedio: {formatCurrency(datos2025.pie.kilos > 0 ? (datos2025.pie.ingresos / datos2025.pie.kilos).toFixed(0) : 0)}/kg.</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="font-semibold text-yellow-700 mb-2">Análisis de la variación</p>
+                <p className="text-sm">El crecimiento de +{variacionPieKilos}% en kilos es el más dinámico de la compañía, impulsado por mayor demanda de clientes distribuidores. Sin embargo, el precio promedio cayó -4.19%, lo que indica presión competitiva en este segmento y posible ajuste a condiciones de mercado.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="font-semibold text-purple-700 mb-2">Impacto en el negocio</p>
+                <p className="text-sm">Aunque el volumen creció significativamente, la caída de precio reduce el ingreso por kilo. La estrategia debe equilibrar el crecimiento en volumen con la defensa del precio para no sacrificar margen en el canal de mayor peso.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-bold text-gray-900">Pollo en Pie (Mayorista) - Kilos y Precio 2025</h3>
@@ -196,7 +289,25 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
           onClick={() => openModal('Pollo en Canal',
-            'Ventas 2025: ' + formatNumber(datos2025.canal.kilos) + ' kg (' + partCanal2025 + '% del total). Variacion: +' + variacionCanalKilos + '% vs 2024. Las ventas en kilos de pollo en canal mostraron un incremento marginal de +0.03%. El precio registro un aumento de +0.15%. Precio promedio: ' + formatCurrency(datos2025.canal.kilos > 0 ? (datos2025.canal.ingresos / datos2025.canal.kilos).toFixed(0) : 0) + '/kg.')}
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="font-semibold text-green-700 mb-1">Contexto del indicador</p>
+                <p className="text-sm">El canal de Pollo en Canal agrupa las ventas a través de Puntos de Venta (PDV), Asadero, Institucional y otras líneas de distribución directa. Es el canal de mayor valor agregado y precio por kilo.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="font-semibold text-blue-700 mb-2">Resultado 2025</p>
+                <p className="text-sm">Ventas: <strong>{formatNumber(datos2025.canal.kilos)} kg</strong> ({partCanal2025}% del total). Variación vs 2024: <strong className={parseFloat(variacionCanalKilos) >= 0 ? 'text-green-600' : 'text-red-600'}>{variacionCanalKilos > 0 ? '+' : ''}{variacionCanalKilos}%</strong>. Precio promedio: {formatCurrency(datos2025.canal.kilos > 0 ? (datos2025.canal.ingresos / datos2025.canal.kilos).toFixed(0) : 0)}/kg.</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="font-semibold text-yellow-700 mb-2">Análisis de la variación</p>
+                <p className="text-sm">El crecimiento marginal de +{variacionCanalKilos}% en kilos refleja estabilidad en los canales directos. El precio registró un aumento de +0.15%, lo que indica que este canal mantiene mejor poder de fijación de precios frente al mayorista.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="font-semibold text-purple-700 mb-2">Oportunidad estratégica</p>
+                <p className="text-sm">El canal directo (Canal) ofrece mayor margen por kilo que el mayorista. Fortalecer el crecimiento en PDV, Asadero e Institucional permitiría mejorar la rentabilidad global de la compañía, reduciendo la dependencia del canal mayorista de menor precio.</p>
+              </div>
+            </div>
+          )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-bold text-gray-900">Pollo en Canal - Kilos y Precio 2025</h3>
@@ -538,7 +649,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
               className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
               onClick={() => setModalOpen(false)}>
               <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-                className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+                className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
                 onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -549,7 +660,7 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
                     <X className="w-6 h-6" />
                   </button>
                 </div>
-                <div className="text-gray-700 leading-relaxed">{modalContent.description}</div>
+                <div className="overflow-y-auto flex-1 pr-2 text-gray-700 leading-relaxed">{modalContent.content}</div>
                 <div className="mt-6 flex justify-end">
                   <button onClick={() => setModalOpen(false)}
                     className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">

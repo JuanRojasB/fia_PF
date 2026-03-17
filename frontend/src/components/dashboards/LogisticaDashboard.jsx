@@ -11,11 +11,11 @@ import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function LogisticaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
   const hasAnimated = useRef(false);
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -121,7 +121,22 @@ export default function LogisticaDashboard({ data }) {
           borderColor="border-blue-400"
           invertColors={true}
           delay={0}
-          onClick={() => openModal('Total Gastos Logísticos 2025', `El área logística opera con una capacidad de aproximadamente 3 millones de kg/mes distribuidos en 3 sedes activas.`)}
+          onClick={() => openModal('Total Gastos Logísticos 2025', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Contexto del indicador</p>
+                <p className="text-sm">El área logística opera con una capacidad de aproximadamente <strong className="text-blue-600">3 millones de kg/mes</strong> distribuidos en 3 sedes activas (Sede 1, Sede 2 y Sede 3). Los gastos logísticos incluyen transporte, almacenamiento, personal operativo y costos de distribución a puntos de venta y clientes mayoristas.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Composición del gasto</p>
+                <p className="text-sm">Los gastos se distribuyen entre las tres sedes operativas, cada una con su propia estructura de costos según el volumen de operación y la cobertura geográfica que atiende. La variación frente a 2024 refleja el crecimiento del volumen operado y los ajustes en la estructura logística.</p>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Impacto en el negocio</p>
+                <p className="text-sm">Los gastos logísticos son un componente crítico del costo de ventas. Un incremento superior al crecimiento en ventas indica pérdida de eficiencia logística, mientras que un incremento menor al crecimiento en ventas indica mejora en la productividad del área.</p>
+              </div>
+            </div>
+          ))}
         />
         <KpiCard
           title="Variación Gastos Logísticos 2025 vs 2024"
@@ -133,7 +148,31 @@ export default function LogisticaDashboard({ data }) {
           borderColor="border-green-400"
           invertColors={true}
           delay={0.1}
-          onClick={() => openModal('Variación de Gastos Logísticos 2025 vs 2024', `Este indicador muestra la diferencia absoluta en pesos entre el gasto logístico total de 2025 y el de 2024.`)}
+          onClick={() => openModal('Variación de Gastos Logísticos 2025 vs 2024', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Qué mide este indicador</p>
+                <p className="text-sm">Este indicador muestra la <strong>diferencia absoluta en pesos</strong> entre el gasto logístico total de 2025 y el de 2024, así como el porcentaje de variación. Permite evaluar si la estructura de costos logísticos está creciendo de forma controlada o si hay desviaciones que requieren atención.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Cómo interpretar la variación</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Verde (reducción): el área logística mejoró su eficiencia de costos</li>
+                  <li>Rojo (incremento): los costos crecieron, requiere análisis por concepto y sede</li>
+                  <li>La variación debe compararse con el crecimiento en volumen de ventas para determinar si es proporcional</li>
+                </ul>
+              </div>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Factores que pueden explicar variaciones</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Incremento en tarifas de transporte y combustible</li>
+                  <li>Mayor volumen de operación en alguna sede</li>
+                  <li>Cambios en la estructura de distribución</li>
+                  <li>Ajustes salariales del personal logístico</li>
+                </ul>
+              </div>
+            </div>
+          ))}
         />
         <KpiCard
           title="Sedes Logísticas Activas 2025"
@@ -142,7 +181,26 @@ export default function LogisticaDashboard({ data }) {
           icon={<Building className="w-6 h-6 text-purple-400" />}
           borderColor="border-purple-400"
           delay={0.2}
-          onClick={() => openModal('Sedes Logísticas Activas 2025', `La operación logística se distribuye en 3 centros de distribución: Sede 1, Sede 2 y Sede 3.`)}
+          onClick={() => openModal('Sedes Logísticas Activas 2025', (
+            <div className="space-y-4 text-gray-700">
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Estructura operativa</p>
+                <p className="text-sm">La operación logística se distribuye en <strong className="text-purple-600">3 centros de distribución</strong>: Sede 1, Sede 2 y Sede 3. Cada sede atiende una zona geográfica específica y tiene su propia estructura de costos según el volumen operado y la complejidad de la distribución.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Rol de cada sede</p>
+                <ul className="text-sm space-y-1 list-disc list-inside">
+                  <li>Cada sede gestiona la distribución a puntos de venta y clientes de su zona</li>
+                  <li>Los gastos varían según el volumen de kilos distribuidos y la cobertura geográfica</li>
+                  <li>La comparación entre sedes permite identificar oportunidades de eficiencia</li>
+                </ul>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-gray-900 mb-2">Análisis comparativo</p>
+                <p className="text-sm">Las tablas detalladas por sede permiten identificar qué conceptos de gasto crecieron más en cada sede y tomar decisiones focalizadas para optimizar la estructura de costos logísticos.</p>
+              </div>
+            </div>
+          ))}
         />
       </div>
 
@@ -456,10 +514,10 @@ export default function LogisticaDashboard({ data }) {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
-                className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+                className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex items-start justify-between mb-4 flex-shrink-0">
                   <div className="flex items-center gap-3">
                     <Info className="w-6 h-6 text-blue-400" />
                     <h3 className="text-xl font-bold text-gray-900">{modalContent.title}</h3>
@@ -471,10 +529,10 @@ export default function LogisticaDashboard({ data }) {
                     <X className="w-6 h-6" />
                   </button>
                 </div>
-                <div className="text-gray-700 leading-relaxed">
-                  {modalContent.description}
+                <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
+                  {modalContent.content}
                 </div>
-                <div className="mt-6 flex justify-end">
+                <div className="mt-6 flex justify-end flex-shrink-0">
                   <button
                     onClick={() => setModalOpen(false)}
                     className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg transition-colors"

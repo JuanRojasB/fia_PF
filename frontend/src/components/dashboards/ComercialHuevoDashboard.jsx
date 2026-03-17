@@ -10,10 +10,10 @@ import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function ComercialHuevoDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '' });
+  const [modalContent, setModalContent] = useState({ title: '', content: null });
 
-  const openModal = (title, description) => {
-    setModalContent({ title, description });
+  const openModal = (title, content) => {
+    setModalContent({ title, content });
     setModalOpen(true);
   };
 
@@ -121,8 +121,31 @@ export default function ComercialHuevoDashboard({ data }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
-            'Unidades Vendidas 2025',
-            `Total de unidades vendidas en 2025: ${formatNumber(datos2025.unidades_vendidas)}. Variación vs 2024: ${varUnidades2025vs2024}%. El volumen se mantiene relativamente estable, con fluctuaciones dentro de un rango estrecho. En 2024 se logró el máximo volumen del periodo con ${formatNumber(datos2024.unidades_vendidas)} unidades.`
+            'Unidades Vendidas Huevo 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatNumber(datos2024.unidades_vendidas)} uds</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-blue-700">{formatNumber(datos2025.unidades_vendidas)} uds</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Variación:</p>
+                <p className="text-sm text-gray-700">El volumen varió <strong className={parseFloat(varUnidades2025vs2024) >= 0 ? 'text-green-600' : 'text-red-600'}>{parseFloat(varUnidades2025vs2024) >= 0 ? '+' : ''}{varUnidades2025vs2024}%</strong> respecto a 2024. En 2024 se logró el máximo volumen del periodo con {formatNumber(datos2024.unidades_vendidas)} unidades.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Análisis:</p>
+                <p className="text-sm text-gray-700">El comportamiento del volumen sugiere estabilidad general en la demanda, con fluctuaciones dentro de un rango estrecho. La unidad de negocio de huevo opera con producción de la raza Hy-Line Brown.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">La estabilidad en volumen indica una demanda consolidada, aunque la presión en precios (-{Math.abs(varPrecio3años)}% en 3 años) impacta los ingresos totales del canal.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-blue-500/30 hover:border-blue-500 transition-all cursor-pointer"
         >
@@ -145,8 +168,31 @@ export default function ComercialHuevoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => openModal(
-            'Precio Promedio 2025',
-            `Precio promedio por unidad en 2025: ${formatCurrency(datos2025.precio_promedio_unidad)}. El precio presenta una tendencia descendente continua, acumulando una caída del ${Math.abs(varPrecio3años)}% en tres años (2023-2025). Esto indica presión en márgenes por mayor competencia en el mercado.`
+            'Precio Promedio por Unidad Huevo 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatCurrencyFull(datos2024.precio_promedio_unidad)}</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-3 border border-red-200">
+                  <p className="text-xs text-red-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-red-700">{formatCurrencyFull(datos2025.precio_promedio_unidad)}</p>
+                </div>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Tendencia descendente:</p>
+                <p className="text-sm text-gray-700">El precio presenta una caída acumulada del <strong className="text-red-600">{Math.abs(varPrecio3años)}%</strong> en tres años (2023-2025), pasando de {formatCurrencyFull(datos2023.precio_promedio_unidad)} a {formatCurrencyFull(datos2025.precio_promedio_unidad)}.</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="text-sm font-semibold text-yellow-800 mb-2">Causas:</p>
+                <p className="text-sm text-gray-700">La tendencia descendente indica presión en márgenes por mayor competencia en el mercado avícola. Mientras el volumen se mantiene estable, la disminución del precio promedio comprime los ingresos.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Estrategia:</p>
+                <p className="text-sm text-gray-700">Se han adoptado estrategias de ajuste gradual de precios y segmentación de clientes para mitigar el impacto de la presión competitiva en el canal de huevo.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30 hover:border-red-500 transition-all cursor-pointer"
         >
@@ -167,8 +213,31 @@ export default function ComercialHuevoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
-            'Ingresos Totales 2025',
-            `Ingresos totales en 2025: ${formatCurrency(datos2025.ingresos_totales_calculados)}. Variación vs 2024: ${varIngresos}%. Aunque la demanda se mantiene sólida, los ingresos disminuyen debido a la caída continua en precios. Se han adoptado estrategias de ajuste gradual de precios y segmentación de clientes.`
+            'Ingresos Totales Huevo 2025 vs 2024',
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">2024</p>
+                  <p className="text-xl font-bold text-gray-900">{formatCurrencyFull(datos2024.ingresos_totales_calculados)}</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                  <p className="text-xl font-bold text-green-700">{formatCurrencyFull(datos2025.ingresos_totales_calculados)}</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(varIngresos) >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(varIngresos) >= 0 ? 'text-green-800' : 'text-red-800'}`}>Variación:</p>
+                <p className="text-sm text-gray-700">Los ingresos variaron <strong className={parseFloat(varIngresos) >= 0 ? 'text-green-600' : 'text-red-600'}>{parseFloat(varIngresos) >= 0 ? '+' : ''}{varIngresos}%</strong> respecto a 2024.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Análisis:</p>
+                <p className="text-sm text-gray-700">Aunque la demanda se mantiene sólida, los ingresos se ven afectados por la caída continua en precios (-{Math.abs(varPrecio3años)}% en 3 años). El volumen estable no logra compensar la presión de precios.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto:</p>
+                <p className="text-sm text-gray-700">La combinación de volumen estable con precios decrecientes genera una tendencia de ingresos a la baja, requiriendo estrategias de diferenciación y segmentación para recuperar márgenes.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -191,8 +260,35 @@ export default function ComercialHuevoDashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onClick={() => openModal(
-            'Caída de Precio en 3 Años',
-            `El precio promedio ha caído ${Math.abs(varPrecio3años)}% en tres años, pasando de ${formatCurrency(datos2023.precio_promedio_unidad)} en 2023 a ${formatCurrency(datos2025.precio_promedio_unidad)} en 2025. Esta tendencia descendente continua indica presión competitiva en el mercado. Mientras el volumen se mantiene estable, la disminución del precio impacta los márgenes.`
+            'Caída de Precio Huevo 2023 → 2025',
+            <div className="space-y-4">
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200 text-center">
+                  <p className="text-xs text-gray-600 mb-1">2023</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(datos2023.precio_promedio_unidad)}</p>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200 text-center">
+                  <p className="text-xs text-yellow-600 mb-1">2024</p>
+                  <p className="text-lg font-bold text-yellow-700">{formatCurrencyFull(datos2024.precio_promedio_unidad)}</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-3 border border-red-200 text-center">
+                  <p className="text-xs text-red-600 font-semibold mb-1">2025</p>
+                  <p className="text-lg font-bold text-red-700">{formatCurrencyFull(datos2025.precio_promedio_unidad)}</p>
+                </div>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4 border border-red-300">
+                <p className="text-sm font-semibold text-red-800 mb-2">Caída acumulada:</p>
+                <p className="text-sm text-gray-700">El precio acumula una caída del <strong className="text-red-600">{Math.abs(varPrecio3años)}%</strong> en tres años, una tendencia descendente continua y sostenida.</p>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-300">
+                <p className="text-sm font-semibold text-yellow-800 mb-2">Contexto del mercado:</p>
+                <p className="text-sm text-gray-700">Esta tendencia descendente continua indica presión competitiva en el mercado avícola. Mientras el volumen se mantiene estable, la disminución del precio impacta directamente los márgenes del canal de huevo.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto estratégico:</p>
+                <p className="text-sm text-gray-700">La caída sostenida de precios requiere una revisión de la estrategia comercial del canal de huevo, incluyendo diferenciación por calidad (raza Hy-Line Brown) y segmentación de clientes de mayor valor.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-orange-500/30 hover:border-orange-500 transition-all cursor-pointer"
         >
@@ -349,7 +445,7 @@ export default function ComercialHuevoDashboard({ data }) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl"
+              className="bg-white rounded-xl p-6 max-w-2xl w-full border-4 border-blue-500 shadow-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
@@ -364,8 +460,8 @@ export default function ComercialHuevoDashboard({ data }) {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="text-gray-700 leading-relaxed">
-                {modalContent.description}
+              <div className="text-gray-700 leading-relaxed overflow-y-auto flex-1 pr-2">
+                {modalContent.content}
               </div>
               <div className="mt-6 flex justify-end">
                 <button

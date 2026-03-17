@@ -11,10 +11,10 @@ import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function LogisticaSede2Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '', showTable: false });
+  const [modalContent, setModalContent] = useState({ title: '', content: null, showTable: false });
 
-  const openModal = (title, description, showTable = false) => {
-    setModalContent({ title, description, showTable });
+  const openModal = (title, content, showTable = false) => {
+    setModalContent({ title, content, showTable });
     setModalOpen(true);
   };
 
@@ -101,7 +101,26 @@ export default function LogisticaSede2Dashboard({ data }) {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => openModal(
             'Gastos Totales 2025',
-            `Total de gastos operacionales logísticos Sede 2 para 2025: ${formatCurrency(total2025)}. El incremento del ${variacionTotal}% vs 2024 está directamente relacionado con el crecimiento del 31.3% en ventas, principalmente por mayor capacidad instalada y personal para atender la demanda de D1 y ARA.`
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Total 2024</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(total2024)}</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">Total 2025</p>
+                  <p className="text-lg font-bold text-green-700">{formatCurrencyFull(total2025)}</p>
+                </div>
+              </div>
+              <div className={`rounded-lg p-4 border ${parseFloat(variacionTotal) <= 0 ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
+                <p className={`text-sm font-semibold mb-2 ${parseFloat(variacionTotal) <= 0 ? 'text-green-800' : 'text-orange-800'}`}>Variación {variacionTotal > 0 ? '+' : ''}{variacionTotal}%:</p>
+                <p className="text-sm text-gray-700">El incremento está directamente relacionado con el crecimiento del <strong>31.3% en ventas</strong>, principalmente por mayor capacidad instalada y personal para atender la demanda de D1 y ARA.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto operativo:</p>
+                <p className="text-sm text-gray-700">Sede 2 transforma sobrantes de pollo en productos congelados. El incremento en gastos es proporcional al crecimiento en ventas, lo que indica eficiencia en la gestión de costos variables.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
         >
@@ -123,7 +142,23 @@ export default function LogisticaSede2Dashboard({ data }) {
           transition={{ delay: 0.2 }}
           onClick={() => openModal(
             'Conceptos de Gasto',
-            `Sede 2 gestiona ${conceptosArray.length} conceptos de gasto operacional logístico, incluyendo arriendos y congelación, fletes, personal de postproceso, servicios públicos y otros rubros necesarios para la operación de productos congelados. Cada concepto es monitoreado mensualmente para optimizar costos.`
+            <div className="space-y-4">
+              <div className="bg-teal-50 rounded-lg p-4 border border-teal-300">
+                <p className="text-sm font-semibold text-teal-800 mb-2">{conceptosArray.length} rubros controlados:</p>
+                <p className="text-sm text-gray-700">Sede 2 gestiona {conceptosArray.length} conceptos de gasto operacional logístico para la operación de productos congelados.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Rubros principales:</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {conceptosArray.slice(0, 5).map((c, i) => (
+                    <li key={i}>• <strong>{c.concepto}</strong>: {formatCurrencyFull(c.valor2025)}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <p className="text-sm text-gray-700">Incluye arriendos y congelación, fletes, personal de postproceso y servicios públicos. Cada concepto es monitoreado mensualmente para optimizar costos.</p>
+              </div>
+            </div>
           )}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-teal-500/30 hover:border-teal-500 transition-all cursor-pointer"
         >
@@ -319,11 +354,7 @@ export default function LogisticaSede2Dashboard({ data }) {
                 </button>
               </div>
               
-              <div className="mb-6 bg-green-500/10 border border-green-500/30 rounded-lg p-4">
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  {modalContent.description}
-                </p>
-              </div>
+              <div className="overflow-y-auto flex-1 pr-2">{modalContent.content}</div>
 
               {/* Tabla dentro del modal - solo si showTable es true */}
               {modalContent.showTable && (

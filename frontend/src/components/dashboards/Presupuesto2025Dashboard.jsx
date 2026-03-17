@@ -86,10 +86,22 @@ export default function Presupuesto2025Dashboard({ data }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal('Crecimiento 2025',
-            <div className="text-gray-700">
-              <p className="mb-3">La inflación estuvo muy similar año 2024 (<strong>5.2%</strong>), respecto al 2025 (<strong>5.1%</strong>) lo que ayudó con el crecimiento del <strong className="text-green-600">5.4%</strong>.</p>
-              <p>Es de resaltar que se redujo el índice de mortalidad que en el 2024 fue de <strong>10.05%</strong> en comparación al 2025 que fue de <strong className="text-green-600">9.03%</strong>.</p>
+          onClick={() => openModal('Crecimiento Ventas Presupuesto 2025 vs 2024',
+            <div className="text-gray-700 space-y-4">
+              <p className="mb-3">El crecimiento de <strong className="text-green-600">{variablesMacro.crecimiento}%</strong> en ventas presupuestadas para 2025 marca una recuperación importante.</p>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Contexto Macroeconómico:</p>
+                <p className="text-sm">La inflación estuvo muy similar año 2024 (<strong>5.2%</strong>), respecto al 2025 (<strong>5.1%</strong>) lo que ayudó con el crecimiento del <strong className="text-green-600">5.4%</strong>.</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Factor Clave - Reducción de Mortalidad:</p>
+                <p className="text-sm">Es de resaltar que se redujo el índice de mortalidad que en el 2024 fue de <strong>10.05%</strong> en comparación al 2025 que fue de <strong className="text-green-600">9.03%</strong>.</p>
+                <p className="text-xs text-gray-600 mt-2">Esta reducción de 1.02 puntos porcentuales impacta positivamente la productividad y rentabilidad.</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm font-semibold text-purple-800 mb-2">Impacto en el Negocio:</p>
+                <p className="text-sm">El crecimiento del 5.4% en ventas, combinado con la reducción de mortalidad y la estabilidad inflacionaria, crea condiciones favorables para mejorar los márgenes operativos.</p>
+              </div>
             </div>
           )}
         >
@@ -127,10 +139,27 @@ export default function Presupuesto2025Dashboard({ data }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
-          onClick={() => openModal('Índice de Mortalidad',
-            <div className="text-gray-700">
+          onClick={() => openModal('Índice de Mortalidad Presupuestado 2025',
+            <div className="text-gray-700 space-y-4">
               <p className="mb-3">Se redujo el índice de mortalidad que en el 2024 fue de <strong>10.05%</strong> en comparación al 2025 que fue de <strong className="text-green-600">9.03%</strong>.</p>
-              <p>Reducción de <strong className="text-green-600">{variablesMacro.reduccion_mortalidad} puntos porcentuales</strong>, lo que refleja mejoras en los procesos productivos.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-red-50 rounded-lg p-3 border border-red-200">
+                  <p className="text-xs text-red-600 font-semibold mb-1">2024</p>
+                  <p className="text-2xl font-bold text-red-700">10.05%</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
+                  <p className="text-2xl font-bold text-green-700">{variablesMacro.mortalidad_2025}%</p>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
+                <p className="text-sm font-semibold text-green-800 mb-2">Reducción Lograda:</p>
+                <p className="text-sm">Reducción de <strong className="text-green-600">{variablesMacro.reduccion_mortalidad} puntos porcentuales</strong>, lo que refleja mejoras en los procesos productivos, manejo sanitario y condiciones de crianza.</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
+                <p className="text-sm font-semibold text-blue-800 mb-2">Impacto Operativo:</p>
+                <p className="text-sm">La reducción de mortalidad significa mayor cantidad de aves disponibles para procesamiento, lo que impacta directamente en la productividad y rentabilidad del negocio.</p>
+              </div>
             </div>
           )}
         >

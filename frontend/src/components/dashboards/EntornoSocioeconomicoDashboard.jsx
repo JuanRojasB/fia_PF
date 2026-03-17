@@ -995,33 +995,57 @@ const granosData = [
 
             {/* Datos específicos */}
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 rounded-lg bg-sky-50 border-2 border-sky-300">
-                <h6 className="text-sm font-semibold text-sky-700 mb-2">Maíz Amarillo</h6>
+              <div className="p-4 rounded-lg bg-yellow-50 border-2 border-yellow-400">
+                <h6 className="text-sm font-semibold text-yellow-700 mb-1">Maíz Amarillo</h6>
+                <p className="text-xs text-gray-500 mb-2">Pesos por tonelada</p>
                 <div className="space-y-1 text-xs text-gray-700">
-                  <p>2023: <span className="font-semibold">1,567</span></p>
-                  <p>2024: <span className="font-semibold">1,735</span></p>
-                  <p>2025: <span className="font-semibold">1,806</span></p>
-                  <p>2026: <span className="font-semibold text-sky-700">1,904</span></p>
+                  {[
+                    { año: '2023', val: 1567 },
+                    { año: '2024', val: 1735 },
+                    { año: '2025', val: 1806 },
+                    { año: '2026', val: 1904 },
+                  ].map(({ año, val }) => (
+                    <div key={año} className="flex justify-between">
+                      <span>{año}:</span>
+                      <span className="font-semibold tabular-nums">${(val * 1_000_000).toLocaleString('es-CO')}/ton</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
-                <h6 className="text-sm font-semibold text-blue-700 mb-2">Soya Grano</h6>
+              <div className="p-4 rounded-lg bg-lime-50 border-2 border-lime-400">
+                <h6 className="text-sm font-semibold text-lime-700 mb-1">Soya Grano</h6>
+                <p className="text-xs text-gray-500 mb-2">Pesos por tonelada</p>
                 <div className="space-y-1 text-xs text-gray-700">
-                  <p>2023: <span className="font-semibold">1,576</span></p>
-                  <p>2024: <span className="font-semibold">1,248</span></p>
-                  <p>2025: <span className="font-semibold">1,313</span></p>
-                  <p>2026: <span className="font-semibold text-blue-700">1,923</span></p>
+                  {[
+                    { año: '2023', val: 1576 },
+                    { año: '2024', val: 1635 },
+                    { año: '2025', val: 1675 },
+                    { año: '2026', val: 1923 },
+                  ].map(({ año, val }) => (
+                    <div key={año} className="flex justify-between">
+                      <span>{año}:</span>
+                      <span className="font-semibold tabular-nums">${(val * 1_000_000).toLocaleString('es-CO')}/ton</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg bg-indigo-50 border-2 border-indigo-300">
-                <h6 className="text-sm font-semibold text-indigo-700 mb-2">Torta de Soya</h6>
+              <div className="p-4 rounded-lg bg-amber-50 border-2 border-amber-800/40">
+                <h6 className="text-sm font-semibold text-amber-900 mb-1">Torta de Soya</h6>
+                <p className="text-xs text-gray-500 mb-2">Pesos por tonelada</p>
                 <div className="space-y-1 text-xs text-gray-700">
-                  <p>2023: <span className="font-semibold">1,133</span></p>
-                  <p>2024: <span className="font-semibold">1,248</span></p>
-                  <p>2025: <span className="font-semibold">1,313</span></p>
-                  <p>2026: <span className="font-semibold text-indigo-700">1,382</span></p>
+                  {[
+                    { año: '2023', val: 1133 },
+                    { año: '2024', val: 1248 },
+                    { año: '2025', val: 1313 },
+                    { año: '2026', val: 1382 },
+                  ].map(({ año, val }) => (
+                    <div key={año} className="flex justify-between">
+                      <span>{año}:</span>
+                      <span className="font-semibold tabular-nums">${(val * 1_000_000).toLocaleString('es-CO')}/ton</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
