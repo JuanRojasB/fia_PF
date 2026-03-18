@@ -151,6 +151,15 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
         { id: 'logistica-sede3', label: 'Sede 3 - Clientes Institucionales' }
       ]
     },
+    {
+      id: 'marketing',
+      label: 'Gestión de Publicidad y Mercadeo',
+      icon: TrendingUp,
+      type: 'expandable',
+      subitems: [
+        { id: 'marketing-detalle', label: 'Análisis Detallado' },
+      ]
+    },
     { 
       id: 'gerencia-estrategica', 
       label: 'Gerencia Estratégica y Mejoramiento Continuo', 
