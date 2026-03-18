@@ -196,9 +196,8 @@ function SeccionNomina() {
           </div>
           <span className="font-bold text-gray-800 text-base">Costo de Horas Extras</span>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           <StdKpi title="Horas extras 2025" value2025="130.890" value2024="127.199" varPct="2.90" varAbs="+3.691 horas" positiveIsGood={false} icon={Clock} borderColor="border-purple-400" />
-          <StdKpi title="Crecimiento horas" value2025="+2,90%" value2024="127.199 horas" varPct="2.90" varAbs="+3.691 horas" positiveIsGood={false} icon={TrendingUp} borderColor="border-gray-400" />
           <StdKpi title="Costo total 2025" value2025="$1.286.579.002" value2024="$1.065.657.115" varPct="20.73" varAbs="+$220.921.887" positiveIsGood={false} icon={DollarSign} borderColor="border-red-400" />
           <StdKpi title="Costo/hora promedio" value2025="+17,32%" value2024="Reforma laboral" varPct="17.32" varAbs="Jornada reducida" positiveIsGood={false} icon={TrendingUp} borderColor="border-red-600" />
         </div>

@@ -123,8 +123,8 @@ function Modal({ open, title, children, onClose }) {
 function KpiClickCard({ label, value2025, value2024, unit = '', varPct, varAbs, color, icon: Icon, good = true, onClick, children }) {
   const isUp = parseFloat(varPct) >= 0;
   const isGood = good ? isUp : !isUp;
-  const varColor = isGood ? 'text-green-600' : 'text-red-600';
-  const borderColor = isGood ? 'border-green-500/30 hover:border-green-500' : 'border-red-500/30 hover:border-red-500';
+  const varColor = isGood ? 'text-green-600' : 'text-red-400';
+  const borderColor = isGood ? 'border-green-500/30 hover:border-green-500' : 'border-red-400/40 hover:border-red-400';
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
       onClick={onClick}
