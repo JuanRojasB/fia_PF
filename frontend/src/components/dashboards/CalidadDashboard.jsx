@@ -893,7 +893,7 @@ function SeccionSatisfaccion() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <KpiClickCard label="Encuestas realizadas" value2025="1.166" value2024="1.894"
           varPct="-38.44" varAbs="–728 encuestas · caída canal PDV"
-          color="#8b5cf6" icon={Star} good={false}
+          color="#8b5cf6" icon={Star} good={true}
           onClick={() => open('Encuestas de satisfacción 2025 vs 2024', <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">1.894 encuestas</p></div>
