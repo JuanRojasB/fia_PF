@@ -157,9 +157,9 @@ export default function LogisticaMermaDashboard({ data }) {
             <TrendingDown className="w-6 h-6 text-blue-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{u01_2025.merma_2025}%</div>
-          <div className="text-xs text-green-600 flex items-center gap-1">
-            <TrendingDown className="w-4 h-4" />
-            Mejora vs 2024: {datosPorSede['U01']?.find(d => d.anio === 2024)?.merma}%
+          <div className="text-xs text-blue-600 flex items-center gap-1">
+            <Target className="w-4 h-4" />
+            Meta: {u01_2025.meta_establecida}% | Brecha: {u01_2025.brecha_puntos_porcentuales}pp
           </div>
         </motion.div>
 
@@ -198,8 +198,8 @@ export default function LogisticaMermaDashboard({ data }) {
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{u02_2025.merma_2025}%</div>
           <div className="text-xs text-green-600 flex items-center gap-1">
-            <TrendingUp className="w-4 h-4" />
-            Mejora progresiva hacia meta
+            <Target className="w-4 h-4" />
+            Meta: {u02_2025.meta_establecida}% | Brecha: {u02_2025.brecha_puntos_porcentuales}pp
           </div>
         </motion.div>
 
@@ -237,9 +237,9 @@ export default function LogisticaMermaDashboard({ data }) {
             <TrendingDown className="w-6 h-6 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">{u03_2025.merma_2025}%</div>
-          <div className="text-xs text-orange-600 flex items-center gap-1">
+          <div className="text-xs text-purple-600 flex items-center gap-1">
             <Target className="w-4 h-4" />
-            Brecha: {u03_2025.brecha_puntos_porcentuales}pp vs meta
+            Meta: {u03_2025.meta_establecida}% | Brecha: {u03_2025.brecha_puntos_porcentuales}pp
           </div>
         </motion.div>
       </div>

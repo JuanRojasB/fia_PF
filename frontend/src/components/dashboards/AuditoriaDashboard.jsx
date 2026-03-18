@@ -109,6 +109,10 @@ export default function AuditoriaDashboard({ data }) {
                   </div>
                 ))}
               </div>
+              <div className="flex justify-between bg-blue-100 rounded p-3 border border-blue-300 font-bold text-sm">
+                <span>Total procesos misionales</span>
+                <strong className="text-blue-700">36 auditorías/año</strong>
+              </div>
               <div className="bg-green-50 rounded-lg p-4 border border-green-300 text-sm">
                 Las auditorías evaluaron la correcta aplicación de controles para mitigar riesgos e impacto en inventarios, merma y eficiencia operativa.
               </div>
@@ -120,9 +124,9 @@ export default function AuditoriaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Auditorías por Proceso Misional</span>
             <CheckCircle className="w-5 h-5 text-blue-500" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">12</div>
-          <div className="text-sm text-gray-600 mt-1">auditorías por proceso / año</div>
-          <div className="text-xs text-blue-600 mt-2">Posproceso (diaria) · Logística · Comercial</div>
+          <div className="text-3xl font-bold text-gray-900">36</div>
+          <div className="text-sm text-gray-600 mt-1">auditorías totales / año</div>
+          <div className="text-xs text-blue-600 mt-1">Posproceso · Logística · Comercial — 12 c/u</div>
           <Info className="w-4 h-4 text-blue-500 animate-pulse mt-2" />
         </motion.div>
 
@@ -141,16 +145,20 @@ export default function AuditoriaDashboard({ data }) {
                 <div className="flex justify-between items-center bg-purple-50 rounded p-3 border border-purple-200">
                   <div>
                     <span className="font-medium">Bogotá · Tunja · Sogamoso · Chiquinquirá</span>
-                    <span className="text-xs text-gray-500 ml-2">— 14 PDV</span>
+                    <span className="text-xs text-gray-500 ml-2">— 14 PDV × 17</span>
                   </div>
-                  <strong className="text-purple-600">17 auditorías/año c/u</strong>
+                  <strong className="text-purple-600">238 auditorías</strong>
                 </div>
                 <div className="flex justify-between items-center bg-indigo-50 rounded p-3 border border-indigo-200">
                   <div>
                     <span className="font-medium">Yopal</span>
-                    <span className="text-xs text-gray-500 ml-2">— 4 PDV</span>
+                    <span className="text-xs text-gray-500 ml-2">— 4 PDV × 6</span>
                   </div>
-                  <strong className="text-indigo-600">6 auditorías/año c/u</strong>
+                  <strong className="text-indigo-600">24 auditorías</strong>
+                </div>
+                <div className="flex justify-between bg-blue-100 rounded p-3 border border-blue-300 font-bold">
+                  <span>Total PDV</span>
+                  <strong className="text-blue-700">262 auditorías/año</strong>
                 </div>
               </div>
             </div>
@@ -158,12 +166,25 @@ export default function AuditoriaDashboard({ data }) {
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 cursor-pointer hover:border-purple-500 transition-all"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm font-medium">Auditorías por Punto de Venta</span>
+            <span className="text-gray-600 text-sm font-medium">Auditorías a Puntos de Venta</span>
             <CheckCircle className="w-5 h-5 text-purple-500" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">17 / 6</div>
-          <div className="text-sm text-gray-600 mt-1">auditorías/año por PDV</div>
-          <div className="text-xs text-purple-600 mt-2">Bogotá+: 17 · Yopal (4 PDV): 6</div>
+          <div className="text-3xl font-bold text-gray-900">262</div>
+          <div className="text-sm text-gray-600 mt-1">auditorías totales PDV / año</div>
+          <div className="mt-3 space-y-1.5">
+            <div className="flex justify-between items-center text-xs bg-purple-50 rounded px-2 py-1">
+              <span className="text-gray-600">Bogotá · Tunja · Sogamoso · Chiquinquirá</span>
+              <span className="font-bold text-purple-700">14 × 17 = 238</span>
+            </div>
+            <div className="flex justify-between items-center text-xs bg-indigo-50 rounded px-2 py-1">
+              <span className="text-gray-600">Yopal (4 PDV)</span>
+              <span className="font-bold text-indigo-700">4 × 6 = 24</span>
+            </div>
+            <div className="flex justify-between items-center text-xs bg-gray-100 rounded px-2 py-1 font-bold">
+              <span className="text-gray-700">Total</span>
+              <span className="text-purple-700">238 + 24 = 262</span>
+            </div>
+          </div>
           <Info className="w-4 h-4 text-purple-500 animate-pulse mt-2" />
         </motion.div>
 

@@ -281,6 +281,16 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
               <div className="text-xs text-blue-600">Participacion: {partPie2025}%</div>
             </div>
             <div>
+              <div className="text-sm text-gray-600">Ventas 2024</div>
+              <div className="text-lg font-semibold text-gray-500">{formatNumber(datos2024.pie.kilos)} kg</div>
+            </div>
+            <div>
+              <div className="text-sm text-gray-600">Diferencia</div>
+              <div className={`text-lg font-bold ${datos2025.pie.kilos - datos2024.pie.kilos >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {datos2025.pie.kilos - datos2024.pie.kilos >= 0 ? '+' : ''}{formatNumber(datos2025.pie.kilos - datos2024.pie.kilos)} kg
+              </div>
+            </div>
+            <div>
               <div className="text-sm text-gray-600">Variacion vs 2024</div>
               <div className={`text-xl font-bold flex items-center gap-1 ${parseFloat(variacionPieKilos) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 {parseFloat(variacionPieKilos) >= 0 ? <ArrowUpRight className="w-5 h-5" /> : <ArrowDownRight className="w-5 h-5" />}
@@ -321,6 +331,16 @@ export default function ComercialVentasCompaniaDashboard({ data }) {
               <div className="text-sm text-gray-600">Ventas 2025</div>
               <div className="text-2xl font-bold text-gray-900">{formatNumber(datos2025.canal.kilos)} kg</div>
               <div className="text-xs text-green-600">Participacion: {partCanal2025}%</div>
+            </div>
+            <div>
+              <div className="text-sm text-gray-600">Ventas 2024</div>
+              <div className="text-lg font-semibold text-gray-500">{formatNumber(datos2024.canal.kilos)} kg</div>
+            </div>
+            <div>
+              <div className="text-sm text-gray-600">Diferencia</div>
+              <div className={`text-lg font-bold ${datos2025.canal.kilos - datos2024.canal.kilos >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {datos2025.canal.kilos - datos2024.canal.kilos >= 0 ? '+' : ''}{formatNumber(datos2025.canal.kilos - datos2024.canal.kilos)} kg
+              </div>
             </div>
             <div>
               <div className="text-sm text-gray-600">Variacion vs 2024</div>
