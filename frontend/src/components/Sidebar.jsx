@@ -152,15 +152,6 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       ]
     },
     { 
-      id: 'marketing', 
-      label: 'Gestión de Publicidad y Mercadeo', 
-      icon: TrendingUp,
-      type: 'expandable',
-      subitems: [
-        { id: 'marketing-indicadores', label: 'Indicadores y Resumen' },
-      ]
-    },
-    { 
       id: 'gerencia-estrategica', 
       label: 'Gerencia Estratégica y Mejoramiento Continuo', 
       icon: Shield,

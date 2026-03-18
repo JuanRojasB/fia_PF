@@ -45,7 +45,6 @@ export default function Dashboard() {
     'comercial': ['comercial-estructura-equipo', 'comercial-resumen', 'comercial-ventas-compania', 'comercial-pollo-entero', 'comercial-productos', 'comercial-asadero', 'comercial-institucional', 'comercial-huevo', 'logistica-merma'],
     'logistica': ['logistica-consolidado', 'logistica-sede1', 'logistica-sede2', 'logistica-sede3'],
     'operaciones': ['operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura'],
-    'marketing': ['marketing-indicadores'],
     'humana': ['humana-nomina', 'humana-rotacion', 'humana-causas', 'humana-smlv'],
     'gerencia-estrategica': ['gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion'],
   }), []);
@@ -197,7 +196,6 @@ export default function Dashboard() {
     'logistica-sede1',
     'logistica-sede2',
     'logistica-sede3',
-    'marketing-indicadores',
     'gerencia-estrategica-calidad',
     'gerencia-estrategica-compras',
     'gerencia-estrategica-bienestar',
@@ -243,16 +241,9 @@ export default function Dashboard() {
   }, [activeSection, allSections, handleSectionChange]);
 
   const goToNextSection = useCallback(() => {
-    // Desde consolidado, Siguiente salta directo a marketing (omite sedes)
-    if (activeSection === 'logistica-consolidado') {
-      handleSectionChange('marketing-indicadores');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
     const currentIndex = allSections.indexOf(activeSection);
     if (currentIndex < allSections.length - 1) {
       handleSectionChange(allSections[currentIndex + 1]);
-      // Scroll suave al inicio
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [activeSection, allSections, handleSectionChange]);
