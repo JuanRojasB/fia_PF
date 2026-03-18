@@ -157,7 +157,7 @@ export default function CarteraDashboard({ data }) {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
           onClick={() => openModal('Rotación de Cartera', modalRotacion)}
@@ -179,7 +179,7 @@ export default function CarteraDashboard({ data }) {
           onClick={() => openModal('Ventas de Contado vs Crédito', modalContado)}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Ventas Contado 2025 vs 2024</span>
+            <span className="text-gray-600 text-sm">Ventas Contado 2025</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{resumenAnual.ventas_contado_promedio}%</div>
@@ -190,21 +190,6 @@ export default function CarteraDashboard({ data }) {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-yellow-500/30 hover:border-yellow-500 transition-all cursor-pointer"
-          onClick={() => openModal('Índice de Morosidad', modalMorosidad)}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Morosidad Promedio Cartera 2025 vs Meta</span>
-            <AlertTriangle className="w-5 h-5 text-yellow-600" />
-          </div>
-          <div className="text-3xl font-bold text-gray-900">{resumenAnual.morosidad_promedio}%</div>
-          <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{resumenAnual.morosidad_promedio}% promedio</span></div>
-            <div className="text-xs text-gray-500">Cartera vencida por recaudar</div>
-            <div className="text-sm font-bold text-yellow-600">Requiere seguimiento</div>
-          </div>
-        </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
