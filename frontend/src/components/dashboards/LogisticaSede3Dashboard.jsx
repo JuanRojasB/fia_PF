@@ -1,12 +1,13 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList } from 'recharts';
 import { Truck, TrendingUp, Users, X, Info, DollarSign } from 'lucide-react';
 import CollapsibleTable from '../CollapsibleTable';
-import { formatMM } from '../../utils/formatCurrency';
+import { formatCurrencyFull } from './CustomTooltip';
 import CollapsibleChart from '../CollapsibleChart';
 import KpiCard from '../KpiCard';
+import { formatCOPShort } from '../../utils/formatCurrency';
 
 export default function LogisticaSede3Dashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function LogisticaSede3Dashboard({ data }) {
     );
   }
 
-  const formatCurrency = formatMM;
+  const formatCurrency = formatCOPShort;
 
   // Filtrar solo datos de SEDE3
   const sede3Data = logisticaData.filter(d => {
@@ -46,8 +47,8 @@ export default function LogisticaSede3Dashboard({ data }) {
       conceptosMap[concepto] = { concepto, valor2024: 0, valor2025: 0 };
     }
     
-    if (anio === 2024) conceptosMap[concepto].valor2024 = valor * 1000;
-    if (anio === 2025) conceptosMap[concepto].valor2025 = valor * 1000;
+    if (anio === 2024) conceptosMap[concepto].valor2024 = valor;
+    if (anio === 2025) conceptosMap[concepto].valor2025 = valor;
   });
 
   const conceptosArray = Object.values(conceptosMap).map(c => ({
@@ -104,11 +105,11 @@ export default function LogisticaSede3Dashboard({ data }) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                   <p className="text-xs text-gray-600 mb-1">Total 2024</p>
-                  <p className="text-lg font-bold text-gray-900">{formatMM(total2024)}</p>
+                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(total2024)}</p>
                 </div>
                 <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
                   <p className="text-xs text-purple-600 font-semibold mb-1">Total 2025</p>
-                  <p className="text-lg font-bold text-purple-700">{formatMM(total2025)}</p>
+                  <p className="text-lg font-bold text-purple-700">{formatCurrencyFull(total2025)}</p>
                 </div>
               </div>
               <div className={`rounded-lg p-4 border ${parseFloat(variacionTotal) <= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
@@ -127,12 +128,12 @@ export default function LogisticaSede3Dashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos Sede 3 2025</span>
             <DollarSign className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-xl font-bold text-gray-900 leading-tight break-all">{formatMM(total2025)}</div>
+          <div className="text-xl font-bold text-gray-900 leading-tight break-all">{formatCurrencyFull(total2025)}</div>
           <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatMM(total2024)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatMM(total2025)}</span></div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2025)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(variacionTotal) >= 0 ? '+' : ''}{variacionTotal}%</div>
-            <div className={`text-xs font-semibold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatMM(total2025 - total2024)}</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull(total2025 - total2024)}</div>
           </div>
         </motion.div>
 
@@ -151,7 +152,7 @@ export default function LogisticaSede3Dashboard({ data }) {
                 <p className="text-sm font-semibold text-blue-800 mb-2">Rubros principales:</p>
                 <ul className="text-sm text-gray-700 space-y-1">
                   {conceptosArray.slice(0, 5).map((c, i) => (
-                    <li key={i}>• <strong>{c.concepto}</strong>: {formatMM(c.valor2025)}</li>
+                    <li key={i}>• <strong>{c.concepto}</strong>: {formatCurrencyFull(c.valor2025)}</li>
                   ))}
                 </ul>
               </div>
@@ -178,10 +179,10 @@ export default function LogisticaSede3Dashboard({ data }) {
         defaultOpen={false}
         totalRow={[
           { label: 'TOTAL GASTOS LOGÍSTICOS 2024 VS 2025' },
-          { label: `{formatMM(total2024)}`, color: 'text-cyan-600' },
-          { label: `{formatMM(total2025)}`, color: 'text-orange-500' },
+          { label: `$ ${total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-cyan-600' },
+          { label: `$ ${total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
           { label: `${variacionTotal}%`, color: parseFloat(variacionTotal) > 0 ? 'text-red-500' : 'text-green-500', badge: true, badgeColor: parseFloat(variacionTotal) > 0 ? 'bg-red-500' : 'bg-green-500', badgeIcon: parseFloat(variacionTotal) > 0 ? '↑' : '↓' },
-          { label: `{formatMM(Math.abs(total2025 - total2024))}`, color: 'text-orange-500' },
+          { label: `$ ${Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, color: 'text-orange-500' },
         ]}
       >
         <div className="overflow-x-auto">
@@ -213,9 +214,11 @@ export default function LogisticaSede3Dashboard({ data }) {
               return (
                 <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
                   <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
-                  <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">{formatMM(row.valor2024)}
+                  <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">
+                    $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </td>
-                  <td className="py-2 px-4 text-right text-orange-600 tabular-nums">{formatMM(row.valor2025)}
+                  <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
+                    $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </td>
                   <td className="py-2 px-4 text-right tabular-nums">
                     <span className={`inline-flex items-center gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
@@ -226,7 +229,8 @@ export default function LogisticaSede3Dashboard({ data }) {
                     </span>
                   </td>
                   <td className="py-2 px-4 text-center">
-                    <span className={esIncremento ? 'text-red-600' : 'text-green-600'}>{formatMM(Math.abs(row.diferencia))}
+                    <span className={esIncremento ? 'text-red-600' : 'text-green-600'}>
+                      $ {Math.abs(row.diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                     </span>
                   </td>
                 </tr>
@@ -234,9 +238,11 @@ export default function LogisticaSede3Dashboard({ data }) {
             })}
             <tr className="bg-gray-50 border-t-2 border-gray-400 font-bold">
               <td className="py-3 px-4 text-gray-900">TOTAL GASTOS LOGÍSTICOS 2024 VS 2025</td>
-              <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">{formatMM(total2024)}
+              <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">
+                $ {total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
               </td>
-              <td className="py-3 px-4 text-right text-orange-700 tabular-nums">{formatMM(total2025)}
+              <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
+                $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
               </td>
               <td className="py-3 px-4 text-right tabular-nums">
                 <span className={`inline-flex items-center gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}`}>
@@ -247,7 +253,8 @@ export default function LogisticaSede3Dashboard({ data }) {
                 </span>
               </td>
               <td className="py-3 px-4 text-center">
-                <span className={parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}>{formatMM(Math.abs(total2025 - total2024))}
+                <span className={parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}>
+                  $ {Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </span>
               </td>
             </tr>
@@ -271,7 +278,7 @@ export default function LogisticaSede3Dashboard({ data }) {
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={conceptosArray} layout="vertical" margin={{ left: 180, right: 30 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis type="number" stroke="#9ca3af" tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`} />
+            <XAxis type="number" stroke="#9ca3af" tickFormatter={(value) => `$${(value / 1000).toFixed(0)}mil`} />
             <YAxis type="category" dataKey="concepto" stroke="#9ca3af" width={170} style={{ fontSize: '12px' }} />
             <Tooltip content={({ active, payload, label }) => {
               if (active && payload && payload.length) {
@@ -389,9 +396,11 @@ export default function LogisticaSede3Dashboard({ data }) {
                         return (
                           <tr key={idx} className="border-b border-gray-200/30 hover:bg-gray-100/20">
                             <td className="py-2 px-4 text-gray-900">{row.concepto}</td>
-                            <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">{formatMM(row.valor2024)}
+                            <td className="py-2 px-4 text-right text-cyan-600 tabular-nums">
+                              $ {row.valor2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                             </td>
-                            <td className="py-2 px-4 text-right text-orange-600 tabular-nums">{formatMM(row.valor2025)}
+                            <td className="py-2 px-4 text-right text-orange-600 tabular-nums">
+                              $ {row.valor2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                             </td>
                             <td className="py-2 px-4 text-right">
                               <span className={`inline-flex items-center justify-end gap-1 ${esIncremento ? 'text-red-600' : 'text-green-600'}`}>
@@ -402,7 +411,8 @@ export default function LogisticaSede3Dashboard({ data }) {
                               </span>
                             </td>
                             <td className="py-2 px-4 text-center">
-                              <span className={esIncremento ? 'text-red-600' : 'text-green-600'}>{formatMM(Math.abs(row.diferencia))}
+                              <span className={esIncremento ? 'text-red-600' : 'text-green-600'}>
+                                $ {Math.abs(row.diferencia).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                               </span>
                             </td>
                           </tr>
@@ -410,9 +420,11 @@ export default function LogisticaSede3Dashboard({ data }) {
                       })}
                       <tr className="bg-gray-50 border-t-2 border-gray-400 font-bold">
                         <td className="py-3 px-4 text-gray-900">TOTAL GASTOS LOGÍSTICOS 2024 VS 2025</td>
-                        <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">{formatMM(total2024)}
+                        <td className="py-3 px-4 text-right text-cyan-700 tabular-nums">
+                          $ {total2024.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </td>
-                        <td className="py-3 px-4 text-right text-orange-700 tabular-nums">{formatMM(total2025)}
+                        <td className="py-3 px-4 text-right text-orange-700 tabular-nums">
+                          $ {total2025.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </td>
                         <td className="py-3 px-4 text-right">
                           <span className={`inline-flex items-center justify-end gap-1 ${parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}`}>
@@ -423,7 +435,8 @@ export default function LogisticaSede3Dashboard({ data }) {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-center">
-                          <span className={parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}>{formatMM(Math.abs(total2025 - total2024))}
+                          <span className={parseFloat(variacionTotal) > 0 ? 'text-red-600' : 'text-green-600'}>
+                            $ {Math.abs(total2025 - total2024).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </span>
                         </td>
                       </tr>
@@ -438,5 +451,4 @@ export default function LogisticaSede3Dashboard({ data }) {
     </div>
   );
 }
-
 
