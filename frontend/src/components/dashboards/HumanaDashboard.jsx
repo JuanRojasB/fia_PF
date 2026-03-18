@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿﻿import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Users, TrendingUp, UserMinus, UserPlus, Clock, DollarSign, ChevronDown, ChevronUp
@@ -38,10 +38,10 @@ const IMPACTO_SMVL = [
 function Section({ title, color, icon: Icon, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors rounded-xl"
       >
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: `${color}20` }}>
@@ -295,6 +295,44 @@ function SeccionRotacion() {
   );
 }
 
+function TablaCausas() {
+  const filas = [
+    ['Mutuo Acuerdo', 4, false],
+    ['Renuncia Voluntaria', 471, true],
+    ['Terminación con Justa Causa', 11, false],
+    ['Terminación Contrato SENA', 32, false],
+    ['Terminación de Contrato', 23, false],
+    ['Terminación en Período de Prueba', 15, false],
+    ['Terminación por Muerte del Trabajador', 1, false],
+    ['Terminación por Pensión', 3, false],
+    ['Terminación sin Justa Causa', 2, false],
+  ];
+  const thStyle = { padding: '12px 16px', color: '#fff', fontWeight: 700, backgroundColor: '#2563eb' };
+  const totalStyle = { padding: '12px 16px', color: '#fff', fontWeight: 700, fontSize: '0.95rem', backgroundColor: '#2563eb' };
+  return (
+    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+      <thead>
+        <tr>
+          <th style={{ ...thStyle, textAlign: 'left' }}>Motivo de Retiro</th>
+          <th style={{ ...thStyle, textAlign: 'center' }}>Personas Retiradas</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filas.map(([motivo, n, hl], i) => (
+          <tr key={i} style={{ backgroundColor: hl ? '#fef2f2' : i % 2 === 0 ? '#f9fafb' : '#fff' }}>
+            <td style={{ padding: '10px 16px', color: '#1f2937', fontWeight: hl ? 700 : 400 }}>{motivo}</td>
+            <td style={{ padding: '10px 16px', textAlign: 'center', fontWeight: 700, color: '#111827' }}>{n}</td>
+          </tr>
+        ))}
+        <tr>
+          <td style={totalStyle}>Total general</td>
+          <td style={{ ...totalStyle, textAlign: 'center' }}>562</td>
+        </tr>
+      </tbody>
+    </table>
+  );
+}
+
 function SeccionCausas() {
   return (
     <div className="space-y-4">
@@ -307,7 +345,7 @@ function SeccionCausas() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: 'Renuncia voluntaria', n: 471, pct: '84%', color: '#ef4444', sub: 'Principal causa de retiro' },
+            { label: 'Renuncia voluntaria', n: 471, pct: '84%', color: '#ef4444', sub: 'Principal causa de retiro', total: 562 },
             { label: 'Terminaciones contrato', n: 66, pct: '12%', color: '#f97316', sub: 'SENA + justa/sin causa' },
             { label: 'Período de prueba', n: 15, pct: '3%', color: '#eab308', sub: 'Revisar proceso de selección' },
             { label: 'Otras causas', n: 10, pct: '1%', color: '#94a3b8', sub: 'Pensión, fallecimiento, mutuo acuerdo' },
@@ -315,6 +353,7 @@ function SeccionCausas() {
             <div key={i} className="rounded-xl p-4 text-center border-2" style={{ borderColor: k.color, background: `${k.color}10` }}>
               <p className="text-3xl font-black" style={{ color: k.color }}>{k.pct}</p>
               <p className="text-2xl font-bold text-gray-800">{k.n} <span className="text-sm font-normal text-gray-500">personas</span></p>
+              {k.total && <p className="text-xs font-semibold text-gray-600 mt-0.5">de {k.total} retiros totales</p>}
               <p className="text-xs font-semibold text-gray-700 mt-1">{k.label}</p>
               <p className="text-xs text-gray-500 mt-0.5">{k.sub}</p>
             </div>
@@ -324,43 +363,13 @@ function SeccionCausas() {
           En 2025 se registraron <strong>562 retiros</strong>. El predominio de renuncias voluntarias sugiere revisar estrategias de atracción, satisfacción y retención del talento.
         </p>
         <Section title="Ver tabla de causas" color="#0891b2" icon={UserMinus}>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="bg-cyan-700 text-white">
-                  <th className="p-3 text-left rounded-tl-lg">Motivo de Retiro</th>
-                  <th className="p-3 text-center rounded-tr-lg">Personas Retiradas</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { motivo: 'Mutuo Acuerdo', n: 4 },
-                  { motivo: 'Renuncia Voluntaria', n: 471, highlight: true },
-                  { motivo: 'Terminación con Justa Causa', n: 11 },
-                  { motivo: 'Terminación Contrato SENA', n: 32 },
-                  { motivo: 'Terminación de Contrato', n: 23 },
-                  { motivo: 'Terminación en Período de Prueba', n: 15 },
-                  { motivo: 'Terminación por Muerte del Trabajador', n: 1 },
-                  { motivo: 'Terminación por Pensión', n: 3 },
-                  { motivo: 'Terminación sin Justa Causa', n: 2 },
-                ].map((r, i) => (
-                  <tr key={i} className={r.highlight ? 'bg-red-50 font-bold' : i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                    <td className="p-3 text-gray-800">{r.motivo}</td>
-                    <td className="p-3 text-center font-bold text-gray-900">{r.n}</td>
-                  </tr>
-                ))}
-                <tr className="bg-cyan-700 text-white font-bold">
-                  <td className="p-3 rounded-bl-lg">Total general</td>
-                  <td className="p-3 text-center rounded-br-lg">562</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <TablaCausas />
         </Section>
       </div>
     </div>
   );
 }
+
 
 function SeccionSMLV() {
   return (
