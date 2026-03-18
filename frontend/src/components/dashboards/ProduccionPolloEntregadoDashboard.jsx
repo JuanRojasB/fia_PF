@@ -95,20 +95,6 @@ export default function ProduccionPolloEntregadoDashboard({ data }) {
         </div>
       </motion.div>
 
-      {/* Alerta Contexto */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg"
-      >
-        <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
-          <div className="text-sm text-gray-700">
-            {datos2025.notas || 'Del total recibido (REAL) de granjas para el año 2024 sumado al pollo comprado arroja un total de 28.6 millones de pollos el cual presentó un decrecimiento frente al año anterior de -2.4%, lo que representa -733.456 pollos menos.'}
-          </div>
-        </div>
-      </motion.div>
 
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

@@ -278,7 +278,6 @@ export default function AgradecimientosDashboard() {
                     />
                   </div>
                   <p className="text-xs text-gray-500 font-medium tracking-wide">Escanea para visitar la plataforma</p>
-                  <p className="text-xs text-amber-600 font-semibold">asamblea-2025pf.up.railway.app</p>
                 </motion.div>
               </motion.div>
             </div>
