@@ -34,7 +34,6 @@ function SeccionBienestar()`,
             'Cierre del año con compras a la baja, excepto picos por auditorías HACCP y dotaciones',
             'Aumento en volumen y costo del inventario por repuestos importados',
             'Evaluación de 36 proveedores con visitas conjuntas con Calidad (HACCP)',
-            'Avance en la aplicación de la matriz Kraljic',
           ]} />
         </div>
       </div>
