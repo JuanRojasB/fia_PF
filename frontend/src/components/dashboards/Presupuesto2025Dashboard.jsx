@@ -131,8 +131,10 @@ export default function Presupuesto2025Dashboard({ data }) {
           <div className="text-3xl font-bold text-gray-900">${formatNumber(presupuestoCaja.efectivo_2025)}</div>
           <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Incremento vs 2024</div>
-            <div className="text-lg font-semibold text-green-600">+{presupuestoCaja.incremento_porcentual}%</div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(presupuestoCaja.efectivo_2024)} M</span></div>
+            <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">${formatNumber(presupuestoCaja.efectivo_2025)} M</span></div>
+            <div className="text-sm font-bold text-green-600 mt-1">Var: +{presupuestoCaja.incremento_porcentual}%</div>
+            <div className="text-xs font-semibold text-green-600">Dif: +${formatNumber(presupuestoCaja.incremento_absoluto)} M</div>
           </div>
         </motion.div>
 
@@ -170,14 +172,32 @@ export default function Presupuesto2025Dashboard({ data }) {
           <div className="text-3xl font-bold text-gray-900">{variablesMacro.mortalidad_2025}%</div>
           <div className="text-sm text-gray-600 mt-1">Índice de mortalidad</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Reducción vs 2024</div>
-            <div className="text-lg font-semibold text-green-600">-{variablesMacro.reduccion_mortalidad}pp</div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">10.05%</span></div>
+            <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">{variablesMacro.mortalidad_2025}%</span></div>
+            <div className="text-sm font-bold text-green-600 mt-1">Var: -{variablesMacro.reduccion_mortalidad}pp</div>
           </div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer"
+          onClick={() => openModal('Inflación Proyectada 2025 vs 2024',
+            <div className="text-gray-700 space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-600 font-semibold mb-1">2024</p>
+                  <p className="text-2xl font-bold text-gray-900">{variablesMacro.inflacion_2024}%</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-semibold mb-1">2025</p>
+                  <p className="text-2xl font-bold text-purple-700">{variablesMacro.inflacion_2025}%</p>
+                </div>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+                <p className="text-sm text-gray-700">La inflación estuvo muy similar año 2024 (<strong>5.2%</strong>), respecto al 2025 (<strong>5.1%</strong>) lo que ayudó con el crecimiento del <strong className="text-green-600">5.4%</strong>.</p>
+              </div>
+            </div>
+          )}
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-600 text-sm">Inflación Proyectada 2025 vs 2024</span>
@@ -186,8 +206,9 @@ export default function Presupuesto2025Dashboard({ data }) {
           <div className="text-3xl font-bold text-gray-900">{variablesMacro.inflacion_2025}%</div>
           <div className="text-sm text-gray-600 mt-1">Tasa de inflación</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">Similar a 2024</div>
-            <div className="text-lg font-semibold text-purple-600">{variablesMacro.inflacion_2024}%</div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{variablesMacro.inflacion_2024}%</span></div>
+            <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">{variablesMacro.inflacion_2025}%</span></div>
+            <div className="text-sm font-bold text-green-600 mt-1">Dif: -0.1pp</div>
           </div>
         </motion.div>
       </div>
