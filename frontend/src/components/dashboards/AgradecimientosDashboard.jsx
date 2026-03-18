@@ -183,7 +183,13 @@ export default function AgradecimientosDashboard() {
                     className="absolute inset-0 rounded-full bg-amber-300"
                     style={{ filter: 'blur(10px)' }}
                   />
-                  <img src={polloLogo} alt="Logo" className="h-20 object-contain relative z-10" />
+                  <motion.img
+                    src={polloLogo}
+                    alt="Logo"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                    className="h-20 object-contain relative z-10"
+                  />
                 </div>
               </motion.div>
 

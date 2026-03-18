@@ -106,7 +106,7 @@ export default function Presupuesto2025Dashboard({ data }) {
           )}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-600 text-sm">Crecimiento Ventas Presupuesto 2025 vs 2024</span>
+            <span className="text-gray-600 text-sm">Crecimiento en Unidades</span>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
           <div className="text-3xl font-bold text-gray-900">{variablesMacro.crecimiento}%</div>
