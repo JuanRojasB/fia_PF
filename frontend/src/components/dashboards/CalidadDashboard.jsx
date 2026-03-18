@@ -921,7 +921,7 @@ function SeccionSatisfaccion() {
 
         <KpiClickCard label="Planes de acción generados" value2025="154" value2024="120"
           varPct={varPlanes} varAbs="+34 planes · mayor madurez del sistema"
-          color="#f59e0b" icon={TrendingUp} good={true}
+          color="#f59e0b" icon={TrendingUp} good={false}
           onClick={() => open('Planes de acción 2025 vs 2024', <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024</p><p className="text-xl font-bold text-gray-900">120 planes</p></div>
@@ -942,7 +942,7 @@ function SeccionSatisfaccion() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <KpiClickCard label="Satisfacción positiva (Excelente + Bueno)" value2025={`${pos2025.toFixed(2)}%`} value2024={`${pos2024.toFixed(2)}%`}
           varPct={varPos} varAbs={`${Math.abs(pos2025 - pos2024).toFixed(2)} pp de diferencia`}
-          color="#8b5cf6" icon={Star} good={false}
+          color="#8b5cf6" icon={Star} good={true}
           onClick={() => open('Satisfacción positiva 2025 vs 2024', <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200"><p className="text-xs text-gray-500 mb-1">2024 — 1.894 encuestas</p><p className="text-xl font-bold text-gray-900">{pos2024.toFixed(2)}%</p></div>
