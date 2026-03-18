@@ -145,14 +145,14 @@ export default function AuditoriaDashboard({ data }) {
                 <div className="flex justify-between items-center bg-purple-50 rounded p-3 border border-purple-200">
                   <div>
                     <span className="font-medium">Bogotá · Tunja · Sogamoso · Chiquinquirá</span>
-                    <span className="text-xs text-gray-500 ml-2">— 14 PDV × 17</span>
+                    <span className="text-xs text-gray-500 ml-2"></span>
                   </div>
                   <strong className="text-purple-600">238 auditorías</strong>
                 </div>
                 <div className="flex justify-between items-center bg-indigo-50 rounded p-3 border border-indigo-200">
                   <div>
                     <span className="font-medium">Yopal</span>
-                    <span className="text-xs text-gray-500 ml-2">— 4 PDV × 6</span>
+                    <span className="text-xs text-gray-500 ml-2"></span>
                   </div>
                   <strong className="text-indigo-600">24 auditorías</strong>
                 </div>
@@ -174,15 +174,11 @@ export default function AuditoriaDashboard({ data }) {
           <div className="mt-3 space-y-1.5">
             <div className="flex justify-between items-center text-xs bg-purple-50 rounded px-2 py-1">
               <span className="text-gray-600">Bogotá · Tunja · Sogamoso · Chiquinquirá</span>
-              <span className="font-bold text-purple-700">14 × 17 = 238</span>
+              <span className="font-bold text-purple-700">238 auditorías</span>
             </div>
             <div className="flex justify-between items-center text-xs bg-indigo-50 rounded px-2 py-1">
               <span className="text-gray-600">Yopal (4 PDV)</span>
-              <span className="font-bold text-indigo-700">4 × 6 = 24</span>
-            </div>
-            <div className="flex justify-between items-center text-xs bg-gray-100 rounded px-2 py-1 font-bold">
-              <span className="text-gray-700">Total</span>
-              <span className="text-purple-700">238 + 24 = 262</span>
+              <span className="font-bold text-indigo-700">24 auditorías</span>
             </div>
           </div>
           <Info className="w-4 h-4 text-purple-500 animate-pulse mt-2" />

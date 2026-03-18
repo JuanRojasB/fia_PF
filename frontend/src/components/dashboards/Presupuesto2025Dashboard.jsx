@@ -128,13 +128,12 @@ export default function Presupuesto2025Dashboard({ data }) {
             <span className="text-gray-600 text-sm">Flujo de Efectivo Presupuestado 2025</span>
             <DollarSign className="w-5 h-5 text-blue-600" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">${formatNumber(presupuestoCaja.efectivo_2025)}</div>
-          <div className="text-sm text-gray-600 mt-1">Millones de pesos</div>
+          <div className="text-2xl font-bold text-gray-900">{formatMillones(presupuestoCaja.efectivo_2025)}</div>
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">${formatNumber(presupuestoCaja.efectivo_2024)} M</span></div>
-            <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">${formatNumber(presupuestoCaja.efectivo_2025)} M</span></div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatMillones(presupuestoCaja.efectivo_2024)}</span></div>
+            <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">{formatMillones(presupuestoCaja.efectivo_2025)}</span></div>
             <div className="text-sm font-bold text-green-600 mt-1">Var: +{presupuestoCaja.incremento_porcentual}%</div>
-            <div className="text-xs font-semibold text-green-600">Dif: +${formatNumber(presupuestoCaja.incremento_absoluto)} M</div>
+            <div className="text-xs font-semibold text-green-600">Dif: +{formatMillones(presupuestoCaja.incremento_absoluto)}</div>
           </div>
         </motion.div>
 
@@ -175,6 +174,7 @@ export default function Presupuesto2025Dashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">10.05%</span></div>
             <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">{variablesMacro.mortalidad_2025}%</span></div>
             <div className="text-sm font-bold text-green-600 mt-1">Var: -{variablesMacro.reduccion_mortalidad}pp</div>
+            <div className="text-xs font-semibold text-green-600">Dif: -1.02pp</div>
           </div>
         </motion.div>
 
@@ -208,7 +208,8 @@ export default function Presupuesto2025Dashboard({ data }) {
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{variablesMacro.inflacion_2024}%</span></div>
             <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">{variablesMacro.inflacion_2025}%</span></div>
-            <div className="text-sm font-bold text-green-600 mt-1">Dif: -0.1pp</div>
+            <div className="text-sm font-bold text-green-600 mt-1">Var: -0.1pp</div>
+            <div className="text-xs font-semibold text-green-600">Dif: Similar a 2024</div>
           </div>
         </motion.div>
       </div>
