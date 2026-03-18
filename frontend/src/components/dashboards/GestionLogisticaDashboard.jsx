@@ -72,8 +72,8 @@ export default function GestionLogisticaDashboard({ data }) {
     if (!conceptosPorSede[key]) {
       conceptosPorSede[key] = { sede: d.sede, concepto: d.concepto, valor2024: 0, valor2025: 0 };
     }
-    if (d.anio === 2024) conceptosPorSede[key].valor2024 = d.valor;
-    else if (d.anio === 2025) conceptosPorSede[key].valor2025 = d.valor;
+    if (d.anio === 2024) conceptosPorSede[key].valor2024 = d.valor * 1000;
+    else if (d.anio === 2025) conceptosPorSede[key].valor2025 = d.valor * 1000;
   });
   
   const conceptosData = Object.values(conceptosPorSede);

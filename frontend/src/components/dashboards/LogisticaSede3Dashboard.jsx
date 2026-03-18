@@ -47,8 +47,8 @@ export default function LogisticaSede3Dashboard({ data }) {
       conceptosMap[concepto] = { concepto, valor2024: 0, valor2025: 0 };
     }
     
-    if (anio === 2024) conceptosMap[concepto].valor2024 = valor;
-    if (anio === 2025) conceptosMap[concepto].valor2025 = valor;
+    if (anio === 2024) conceptosMap[concepto].valor2024 = valor * 1000;
+    if (anio === 2025) conceptosMap[concepto].valor2025 = valor * 1000;
   });
 
   const conceptosArray = Object.values(conceptosMap).map(c => ({

@@ -65,8 +65,8 @@ export default function LogisticaSede1Dashboard({ data }) {
       conceptosMap[concepto] = { concepto, valor2024: 0, valor2025: 0 };
     }
     
-    if (anio === 2024) conceptosMap[concepto].valor2024 = valor;
-    if (anio === 2025) conceptosMap[concepto].valor2025 = valor;
+    if (anio === 2024) conceptosMap[concepto].valor2024 = valor * 1000;
+    if (anio === 2025) conceptosMap[concepto].valor2025 = valor * 1000;
   });
 
   const conceptosArray = Object.values(conceptosMap).map(c => ({
@@ -277,10 +277,11 @@ export default function LogisticaSede1Dashboard({ data }) {
         
         <div className="mt-6 bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
           <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-semibold text-gray-900">Análisis Sede 1:</span> Los rubros analizados son: costo de personal de distribución (+11,62%), 
-            costo de personal de postproceso (-16,09% por unificación de 18 personas en Sede 3 desde febrero), fletes (-0,86% por optimización de flota propia 
-            y negociaciones a menor costo, resultado -10,36% por debajo de lo negociado), combustible (-15,32% por mayor utilización de vehículos y reducción 
-            de traslados entre sedes) y peajes y multas (+175%).
+            <span className="font-semibold text-gray-900">Análisis Sede 1:</span> Personal de distribución $852.983.000 (+11,62%) por incremento salarial del 9,54%, con ventas disminuyendo -9,4%. 
+            Personal de postproceso $960.105.000 (-16,09%) por unificación de 18 personas en Sede 3 desde febrero. 
+            Fletes $2.354.905.000 (-0,86%) por optimización de flota propia y negociaciones a menor costo, resultado -10,36% por debajo de lo negociado. 
+            Combustible $47.208.000 (-15,32%) por mayor utilización de vehículos y reducción de traslados entre sedes. 
+            Peajes y multas $18.631.000 (+175%).
           </p>
         </div>
         </div>
