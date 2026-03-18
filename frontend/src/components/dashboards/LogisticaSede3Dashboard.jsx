@@ -278,7 +278,7 @@ export default function LogisticaSede3Dashboard({ data }) {
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={conceptosArray} layout="vertical" margin={{ left: 180, right: 30 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis type="number" stroke="#9ca3af" tickFormatter={(value) => `$${(value / 1000).toFixed(0)}mil`} />
+            <XAxis type="number" stroke="#9ca3af" tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`} />
             <YAxis type="category" dataKey="concepto" stroke="#9ca3af" width={170} style={{ fontSize: '12px' }} />
             <Tooltip content={({ active, payload, label }) => {
               if (active && payload && payload.length) {

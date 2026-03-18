@@ -323,12 +323,12 @@ export default function GestionLogisticaDashboard({ data }) {
         defaultOpen={false}
         totalRow={[
           { label: 'TOTAL GASTOS LOGÍSTICOS 2024 VS 2025' },
-          { label: '$ 14.984.636', color: 'text-blue-600' },
-          { label: '$ 15.339.066', color: 'text-blue-600' },
+          { label: '$ 14.984.636.000', color: 'text-blue-600' },
+          { label: '$ 15.339.066.000', color: 'text-blue-600' },
           { label: '2,37%', color: 'text-red-500', badge: true, badgeColor: 'bg-red-500', badgeIcon: '↑' },
-          { label: '$ 354.430', color: 'text-red-500' },
+          { label: '$ 354.430.000', color: 'text-red-500' },
           { label: '8,6%', color: 'text-gray-600' },
-          { label: '$ 1.423.540', color: 'text-gray-600' },
+          { label: '$ 1.386.360.636', color: 'text-gray-600' },
         ]}
       >
         <div className="space-y-4">
@@ -356,12 +356,12 @@ export default function GestionLogisticaDashboard({ data }) {
               </thead>
               <tbody>
                 {[
-                  { concepto: 'Costo Personal Distribución',     t2024: 2808305, t2025: 2638910, var: -6.03,  dif: -169395, pct: 9.5,  inc: 266788.98 },
-                  { concepto: 'Costo Personal Post Proceso',     t2024: 4639449, t2025: 5124946, var: 10.46,  dif:  485497, pct: 9.5,  inc: 440747.66 },
-                  { concepto: 'Arriendos y Congelación',         t2024: 2388825, t2025: 1799077, var: -24.69, dif: -589748, pct: 8.0,  inc: 226938.38 },
-                  { concepto: 'Fletes, Cargues, Acarreos, Ttes', t2024: 4885450, t2025: 5542117, var: 13.44,  dif:  656667, pct: 9.5,  inc: 464117.78 },
-                  { concepto: 'Combustibles (ACPM)',              t2024:  204251, t2025:  177990, var: -12.86, dif:  -26261, pct: 10.0, inc:  19403.85 },
-                  { concepto: 'Peajes y Multas',                  t2024:   58356, t2025:   56026, var: -3.99,  dif:   -2330, pct: 5.1,  inc:   5543.82 },
+                  { concepto: 'Costo Personal Distribución',     t2024: 2808305000, t2025: 2638910000, var: -6.03,  dif: -169395000, pct: 9.5,  inc: 266788975 },
+                  { concepto: 'Costo Personal Post Proceso',     t2024: 4639449000, t2025: 5124946000, var: 10.46,  dif:  485497000, pct: 9.5,  inc: 440747655 },
+                  { concepto: 'Arriendos y Congelación',         t2024: 2388825000, t2025: 1799077000, var: -24.69, dif: -589748000, pct: 8.0,  inc: 191106000 },
+                  { concepto: 'Fletes, Cargues, Acarreos, Ttes', t2024: 4885450000, t2025: 5542117000, var: 13.44,  dif:  656667000, pct: 9.5,  inc: 464117750 },
+                  { concepto: 'Combustibles (ACPM)',              t2024:  204251000, t2025:  177990000, var: -12.86, dif:  -26261000, pct: 10.0, inc:  20425100 },
+                  { concepto: 'Peajes y Multas',                  t2024:   58356000, t2025:   56026000, var: -3.99,  dif:   -2330000, pct: 5.1,  inc:   2976156 },
                 ].map((row, i) => (
                   <tr key={i} className="border-b border-gray-200 hover:bg-blue-50 transition-colors">
                     <td className="py-2.5 px-4 text-gray-900">{row.concepto}</td>
@@ -384,17 +384,17 @@ export default function GestionLogisticaDashboard({ data }) {
                 ))}
                 <tr className="bg-blue-50 border-t-2 border-blue-400 font-bold">
                   <td className="py-3 px-4 text-blue-900">Total Gastos Logísticos 2024 vs 2025</td>
-                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 14.984.636</td>
-                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 15.339.066</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 14.984.636.000</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 15.339.066.000</td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1 font-bold text-red-600">
                       <span className="w-4 h-4 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">↑</span>
                       2,37%
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-right tabular-nums text-red-600">$ 354.430</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-red-600">$ 354.430.000</td>
                   <td className="py-3 px-4 text-right tabular-nums text-blue-900">8,6%</td>
-                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 1.423.540</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 1.386.360.636</td>
                 </tr>
               </tbody>
             </table>
@@ -413,7 +413,7 @@ export default function GestionLogisticaDashboard({ data }) {
             />
             <YAxis 
               stroke="#9ca3af" 
-              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}mil`}
+              tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
             />
             <Tooltip content={({ active, payload }) => {
               if (active && payload && payload.length) {
@@ -447,12 +447,12 @@ export default function GestionLogisticaDashboard({ data }) {
           <BarChart
             layout="vertical"
             data={[
-              { concepto: 'Costo Personal Distribución',     valor2024: 2808305, valor2025: 2638910 },
-              { concepto: 'Costo Personal Post Proceso',     valor2024: 4639449, valor2025: 5124946 },
-              { concepto: 'Arriendos y Congelación',         valor2024: 2388825, valor2025: 1799077 },
-              { concepto: 'Fletes, Cargues, Acarreos, Ttes', valor2024: 4885450, valor2025: 5542117 },
-              { concepto: 'Combustibles (ACPM)',              valor2024:  204251, valor2025:  177990 },
-              { concepto: 'Peajes y Multas',                  valor2024:   58356, valor2025:   56026 },
+              { concepto: 'Costo Personal Distribución',     valor2024: 2808305000, valor2025: 2638910000 },
+              { concepto: 'Costo Personal Post Proceso',     valor2024: 4639449000, valor2025: 5124946000 },
+              { concepto: 'Arriendos y Congelación',         valor2024: 2388825000, valor2025: 1799077000 },
+              { concepto: 'Fletes, Cargues, Acarreos, Ttes', valor2024: 4885450000, valor2025: 5542117000 },
+              { concepto: 'Combustibles (ACPM)',              valor2024:  204251000, valor2025:  177990000 },
+              { concepto: 'Peajes y Multas',                  valor2024:   58356000, valor2025:   56026000 },
             ]}
             margin={{ left: 10, right: 80, top: 10, bottom: 10 }}
           >
