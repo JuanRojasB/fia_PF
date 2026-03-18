@@ -158,7 +158,6 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       type: 'expandable',
       subitems: [
         { id: 'marketing-indicadores', label: 'Indicadores y Resumen' },
-        { id: 'marketing-detalle', label: 'Análisis Detallado' }
       ]
     },
     { 
@@ -173,7 +172,6 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
         { id: 'gerencia-estrategica-ambiental',    label: 'Gestión Ambiental' },
         { id: 'gerencia-estrategica-sgc',          label: 'Sistema de Gestión de Calidad' },
         { id: 'gerencia-estrategica-satisfaccion', label: 'Satisfacción del Cliente' },
-        { id: 'gerencia-estrategica-vigia',        label: 'Vigía de Riesgos' },
       ]
     },
     { 

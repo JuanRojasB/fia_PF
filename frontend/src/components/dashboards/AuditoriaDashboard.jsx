@@ -139,27 +139,62 @@ export default function AuditoriaDashboard({ data }) {
             'Auditorías a Puntos de Venta 2025',
             <div className="space-y-3 text-gray-700">
               <div className="bg-purple-50 rounded-lg p-4 border border-purple-300">
-                <p className="text-sm">La frecuencia de auditoría varía según la ciudad. Los PDV de Bogotá, Tunja, Sogamoso y Chiquinquirá reciben <strong>17 auditorías al año</strong> cada uno (14 PDV en total). Los 4 PDV de Yopal reciben <strong>6 auditorías al año</strong> cada uno.</p>
+                <p className="text-sm">La frecuencia varía según la zona. PDV de Bogotá, Boyacá y Chiquinquirá reciben <strong>17 auditorías/año</strong> cada uno. Los PDV de Casanare (Yopal) reciben <strong>6 auditorías/año</strong> cada uno.</p>
               </div>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between items-center bg-purple-50 rounded p-3 border border-purple-200">
-                  <div>
-                    <span className="font-medium">Bogotá · Tunja · Sogamoso · Chiquinquirá</span>
-                    <span className="text-xs text-gray-500 ml-2"></span>
-                  </div>
-                  <strong className="text-purple-600">238 auditorías</strong>
+
+              {/* Zona Sur — Elmira González */}
+              <div className="bg-pink-50 rounded-lg p-3 border border-pink-200">
+                <p className="text-xs font-bold text-pink-700 mb-2">Zona Sur — Elmira González (7 PDV × 17)</p>
+                <div className="flex flex-wrap gap-1">
+                  {['20 de Julio','Abastos','Kennedy','Santa Rita','Pradera','Soacha','Fusagasugá'].map(p => (
+                    <span key={p} className="text-xs bg-white border border-pink-200 rounded px-2 py-0.5 text-gray-700">{p}</span>
+                  ))}
                 </div>
-                <div className="flex justify-between items-center bg-indigo-50 rounded p-3 border border-indigo-200">
-                  <div>
-                    <span className="font-medium">Yopal</span>
-                    <span className="text-xs text-gray-500 ml-2"></span>
-                  </div>
-                  <strong className="text-indigo-600">24 auditorías</strong>
+              </div>
+
+              {/* Zona Norte — Michael Arias */}
+              <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                <p className="text-xs font-bold text-blue-700 mb-2">Zona Norte — Michael Arias (5 PDV × 17)</p>
+                <div className="flex flex-wrap gap-1">
+                  {['Market Toberín','Engativá Centro','Floresta','Suba','Cabaña'].map(p => (
+                    <span key={p} className="text-xs bg-white border border-blue-200 rounded px-2 py-0.5 text-gray-700">{p}</span>
+                  ))}
                 </div>
-                <div className="flex justify-between bg-blue-100 rounded p-3 border border-blue-300 font-bold">
-                  <span>Total PDV</span>
-                  <strong className="text-blue-700">262 auditorías/año</strong>
+              </div>
+
+              {/* Casanare — Julián Mora */}
+              <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-200">
+                <p className="text-xs font-bold text-indigo-700 mb-2">Casanare — Julián Mora (4 PDV × 6)</p>
+                <div className="flex flex-wrap gap-1">
+                  {['Yopal Alcaraván','Yopal Garcero','Yopal Canaguaro','Yopal Aguazul'].map(p => (
+                    <span key={p} className="text-xs bg-white border border-indigo-200 rounded px-2 py-0.5 text-gray-700">{p}</span>
+                  ))}
                 </div>
+              </div>
+
+              {/* Boyacá — John Ramírez */}
+              <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                <p className="text-xs font-bold text-green-700 mb-2">Boyacá — John Ramírez (2 PDV × 17)</p>
+                <div className="flex flex-wrap gap-1">
+                  {['Tunja','Sogamoso'].map(p => (
+                    <span key={p} className="text-xs bg-white border border-green-200 rounded px-2 py-0.5 text-gray-700">{p}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Otros */}
+              <div className="bg-amber-50 rounded-lg p-3 border border-amber-200">
+                <p className="text-xs font-bold text-amber-700 mb-2">Otros PDV (2 PDV × 17)</p>
+                <div className="flex flex-wrap gap-1">
+                  {['Chiquinquirá — Adriana','Visión Colombia — Belisario Eguis'].map(p => (
+                    <span key={p} className="text-xs bg-white border border-amber-200 rounded px-2 py-0.5 text-gray-700">{p}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex justify-between bg-purple-100 rounded p-3 border border-purple-300 font-bold text-sm">
+                <span>Total PDV auditados</span>
+                <strong className="text-purple-700">262 auditorías/año</strong>
               </div>
             </div>
           )}
@@ -171,14 +206,26 @@ export default function AuditoriaDashboard({ data }) {
           </div>
           <div className="text-3xl font-bold text-gray-900">262</div>
           <div className="text-sm text-gray-600 mt-1">auditorías totales PDV / año</div>
-          <div className="mt-3 space-y-1.5">
-            <div className="flex justify-between items-center text-xs bg-purple-50 rounded px-2 py-1">
-              <span className="text-gray-600">Bogotá · Tunja · Sogamoso · Chiquinquirá</span>
-              <span className="font-bold text-purple-700">238 auditorías</span>
+          <div className="mt-3 space-y-2">
+            <div className="bg-pink-50 rounded p-2 border border-pink-200">
+              <p className="text-xs font-bold text-pink-700 mb-1">Elmira González — Zona Sur (7 PDV)</p>
+              <p className="text-xs text-gray-600 leading-relaxed">20 de Julio · Abastos · Kennedy · Santa Rita · Pradera · Soacha · Fusagasugá</p>
             </div>
-            <div className="flex justify-between items-center text-xs bg-indigo-50 rounded px-2 py-1">
-              <span className="text-gray-600">Yopal (4 PDV)</span>
-              <span className="font-bold text-indigo-700">24 auditorías</span>
+            <div className="bg-blue-50 rounded p-2 border border-blue-200">
+              <p className="text-xs font-bold text-blue-700 mb-1">Michael Arias — Zona Norte (5 PDV)</p>
+              <p className="text-xs text-gray-600 leading-relaxed">Market Toberín · Engativá Centro · Floresta · Suba · Cabaña</p>
+            </div>
+            <div className="bg-indigo-50 rounded p-2 border border-indigo-200">
+              <p className="text-xs font-bold text-indigo-700 mb-1">Julián Mora — Casanare (4 PDV)</p>
+              <p className="text-xs text-gray-600 leading-relaxed">Yopal Alcaraván · Yopal Garcero · Yopal Canaguaro · Yopal Aguazul</p>
+            </div>
+            <div className="bg-green-50 rounded p-2 border border-green-200">
+              <p className="text-xs font-bold text-green-700 mb-1">John Ramírez — Boyacá (2 PDV)</p>
+              <p className="text-xs text-gray-600 leading-relaxed">Tunja · Sogamoso</p>
+            </div>
+            <div className="bg-amber-50 rounded p-2 border border-amber-200">
+              <p className="text-xs font-bold text-amber-700 mb-1">Otros (3 PDV)</p>
+              <p className="text-xs text-gray-600 leading-relaxed">Chiquinquirá (Adriana) · Visión Colombia (Belisario Eguis) · Central de Carnes Guadalupe (Iván Romero)</p>
             </div>
           </div>
           <Info className="w-4 h-4 text-purple-500 animate-pulse mt-2" />

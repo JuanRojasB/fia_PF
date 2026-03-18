@@ -365,14 +365,14 @@ class DashboardRepository extends IDashboardRepository {
 
     const coordinadores = [
       {
-        nombre: 'Elmira Gonzalez',
+        nombre: 'Elmira González',
         cantidad_pdv: 7,
-        ubicaciones: ['6 puntos en el sur de Bogotá', '1 punto en Fusagasugá']
+        ubicaciones: ['20 de Julio', 'Abastos', 'Kennedy', 'Santa Rita', 'Pradera', 'Soacha', 'Fusagasugá']
       },
       {
         nombre: 'Michael Arias',
         cantidad_pdv: 5,
-        ubicaciones: ['5 puntos en el Norte de Bogotá']
+        ubicaciones: ['Market Toberín', 'Engativá Centro', 'Floresta', 'Suba', 'Cabaña']
       },
       {
         nombre: 'Adriana',
@@ -380,19 +380,19 @@ class DashboardRepository extends IDashboardRepository {
         ubicaciones: ['Chiquinquirá']
       },
       {
-        nombre: 'John Ramirez',
+        nombre: 'John Ramírez',
         cantidad_pdv: 2,
         ubicaciones: ['Tunja', 'Sogamoso']
       },
       {
         nombre: 'Julián Mora',
         cantidad_pdv: 5,
-        ubicaciones: ['4 locales en Yopal', '1 local en Aguazul']
+        ubicaciones: ['Yopal Alcaraván', 'Yopal Garcero', 'Yopal Canaguaro', 'Yopal Aguazul', 'Morichal']
       },
       {
-        nombre: 'Ivan Romero',
+        nombre: 'Iván Romero',
         cantidad_pdv: 1,
-        ubicaciones: ['Central de carnes del frigorífico de Guadalupe']
+        ubicaciones: ['Central de Carnes Guadalupe']
       },
       {
         nombre: 'Belisario Eguis',

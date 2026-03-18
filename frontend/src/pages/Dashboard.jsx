@@ -45,9 +45,9 @@ export default function Dashboard() {
     'comercial': ['comercial-estructura-equipo', 'comercial-resumen', 'comercial-ventas-compania', 'comercial-pollo-entero', 'comercial-productos', 'comercial-asadero', 'comercial-institucional', 'comercial-huevo', 'logistica-merma'],
     'logistica': ['logistica-consolidado', 'logistica-sede1', 'logistica-sede2', 'logistica-sede3'],
     'operaciones': ['operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura'],
-    'marketing': ['marketing-indicadores', 'marketing-detalle'],
+    'marketing': ['marketing-indicadores'],
     'humana': ['humana-nomina', 'humana-rotacion', 'humana-causas', 'humana-smlv'],
-    'gerencia-estrategica': ['gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'gerencia-estrategica-vigia'],
+    'gerencia-estrategica': ['gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion'],
   }), []);
 
   // Nombres amigables de secciones principales
@@ -93,7 +93,7 @@ export default function Dashboard() {
     'gerencia-estrategica-ambiental':    'gerencia-estrategica',
     'gerencia-estrategica-sgc':          'gerencia-estrategica',
     'gerencia-estrategica-satisfaccion': 'gerencia-estrategica',
-    'gerencia-estrategica-vigia':        'gerencia-estrategica',
+  };
     'operaciones': 'operaciones',
     'operaciones-tpm': 'operaciones',
     'operaciones-ot': 'operaciones',
@@ -135,11 +135,10 @@ export default function Dashboard() {
     'presupuesto-2025': 'presupuesto-2025',
     'gerencia': 'gerencia',
     'marketing-indicadores': 'marketing-general',
-    'marketing-detalle': 'marketing-general'
   };
 
   // Dashboards que no requieren datos del servidor
-  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo', 'operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura', 'gerencia-estrategica', 'gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'gerencia-estrategica-vigia', 'compras'];
+  const noDataRequired = ['bienvenida', 'situacion-juridica', 'situacion-economica', 'contexto-mundial', 'entorno-socioeconomico', 'encasetamiento-colombia', 'negocio-marcha', 'bienvenida-principal', 'agradecimientos', 'comercial-estructura-equipo', 'operaciones-tpm', 'operaciones-ot', 'operaciones-vehiculos', 'operaciones-arquitectura', 'gerencia-estrategica', 'gerencia-estrategica-calidad', 'gerencia-estrategica-compras', 'gerencia-estrategica-bienestar', 'gerencia-estrategica-hseq', 'gerencia-estrategica-ambiental', 'gerencia-estrategica-sgc', 'gerencia-estrategica-satisfaccion', 'compras'];
 
   // Función para cambiar de sección que actualiza tanto el estado como la URL
   const handleSectionChange = useCallback((newSection) => {
@@ -201,7 +200,6 @@ export default function Dashboard() {
     'logistica-sede2',
     'logistica-sede3',
     'marketing-indicadores',
-    'marketing-detalle',
     'gerencia-estrategica-calidad',
     'gerencia-estrategica-compras',
     'gerencia-estrategica-bienestar',
@@ -209,7 +207,6 @@ export default function Dashboard() {
     'gerencia-estrategica-ambiental',
     'gerencia-estrategica-sgc',
     'gerencia-estrategica-satisfaccion',
-    'gerencia-estrategica-vigia',
     'humana-nomina',
     'humana-rotacion',
     'humana-causas',

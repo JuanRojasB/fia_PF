@@ -262,7 +262,7 @@ function SeccionCalidad() {
         <p className="text-gray-700 text-sm">Se garantizó la inocuidad y conformidad normativa bajo HACCP e INVIMA.</p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
         {/* Card cualitativa — sin variación inventada */}
         {[
           {
@@ -289,50 +289,6 @@ function SeccionCalidad() {
               </div>
             </div>,
           },
-          {
-            icon: AlertTriangle,
-            color: 'border-red-400 bg-red-50',
-            iconColor: 'text-red-600',
-            tag: 'Indicadores — 2do semestre',
-            status: 'Pérdida de control',
-            statusColor: 'text-red-700',
-            detail: 'Variabilidad en dosificación, desplumado y evisceración. Picos críticos en Q4.',
-            modalTitle: 'Variabilidad en el 2do semestre',
-            modalContent: <div className="space-y-3">
-              <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-                <p className="font-semibold text-red-700 mb-1">Pérdida de control en S2</p>
-                <p className="text-sm">Los indicadores presentaron variabilidad y pérdida de control en el segundo semestre, principalmente en dosificación, desplumado y evisceración.</p>
-              </div>
-              <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
-                <p className="font-semibold text-orange-700 mb-1">Picos críticos en Q4</p>
-                <p className="text-sm">Los picos del Q4 llevaron a decisiones estructurales: cambio de sistema o proveedor de dosificación.</p>
-              </div>
-            </div>,
-          },
-          {
-            icon: TrendingUp,
-            color: 'border-amber-400 bg-amber-50',
-            iconColor: 'text-amber-600',
-            tag: 'Nuevos indicadores desde junio',
-            status: 'Incumplimientos reiterados',
-            statusColor: 'text-amber-700',
-            detail: 'Causas: infraestructura, calibración de máquinas y variabilidad del tamaño del ave.',
-            modalTitle: 'Nuevos indicadores — incumplimientos',
-            modalContent: <div className="space-y-3">
-              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
-                <p className="font-semibold text-amber-700 mb-1">Implementados desde junio 2025</p>
-                <p className="text-sm">Los nuevos indicadores mostraron incumplimientos reiterados desde su implementación.</p>
-              </div>
-              <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-                <p className="font-semibold text-red-700 mb-1">Causas identificadas</p>
-                <Bullet color="#ef4444" items={[
-                  'Limitaciones de infraestructura',
-                  'Calibración de máquinas',
-                  'Variabilidad del tamaño del ave',
-                ]} />
-              </div>
-            </div>,
-          },
         ].map(({ icon: Icon, color, iconColor, tag, status, statusColor, detail, modalTitle, modalContent }, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             onClick={() => open(modalTitle, modalContent)}
@@ -347,21 +303,13 @@ function SeccionCalidad() {
         ))}
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-1 gap-4">
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <p className="text-sm font-semibold text-gray-700 mb-3">Énfasis del año</p>
           <Bullet color="#6366f1" items={[
             'Fortalecimiento de prerrequisitos y control microbiológico',
             'Capacitación al personal y gestión técnica de auditorías',
             'Control de proveedores y variables operativas clave',
-          ]} />
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <p className="text-sm font-semibold text-gray-700 mb-3">Hallazgos críticos</p>
-          <Bullet color="#ef4444" items={[
-            'Variabilidad y pérdida de control en el segundo semestre (dosificación, desplumado, evisceración)',
-            'Picos críticos en Q4 → cambio de sistema o proveedor de dosificación',
-            'Nuevos indicadores desde junio: incumplimientos por infraestructura, calibración y tamaño del ave',
           ]} />
         </div>
       </div>
@@ -563,12 +511,12 @@ function SeccionBienestar() {
             <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción: –63,3% vs 2024</p><p className="text-sm">Logrado mediante mejoras en insensibilizado, capacitación del personal y ajustes técnicos en planta. Disminuyó pérdidas económicas significativamente.</p></div>
           </div>)} />
 
-        <KpiClickCard label="Aves mal aturdidas" value2025="–8,21%" value2024="Base 2024" varPct="-8.21" varAbs="Mejora sostenida en planta" color="#10b981" icon={TrendingDown} good={false}
+        <KpiClickCard label="Aves mal aturdidas" value2025="–8,21%" value2024="Ref. 2024" varPct="-8.21" varAbs="Mejora sostenida en planta" color="#10b981" icon={TrendingDown} good={false}
           onClick={() => open('Aves mal aturdidas 2025 vs 2024', <div className="space-y-3">
             <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción del 8,21%</p><p className="text-sm">La reducción refleja el impacto de los ajustes técnicos en el proceso de insensibilización y la capacitación continua del personal operativo.</p></div>
           </div>)} />
 
-        <KpiClickCard label="Cargue en tubo (migración)" value2025="100%" value2024="Parcial" varPct="100" varAbs="Migración completa lograda" color="#3b82f6" icon={TrendingUp} good={true}
+        <KpiClickCard label="Cargue en tubo (migración)" value2025="100%" value2024="En proceso" varPct="100" varAbs="Migración completa lograda" color="#3b82f6" icon={TrendingUp} good={true}
           onClick={() => open('Migración a cargue en tubo', <div className="space-y-3">
             <div className="bg-blue-50 rounded-lg p-4 border border-blue-200"><p className="font-semibold text-blue-700 mb-1">100% migrado</p><p className="text-sm">Se completó la migración total al sistema de cargue en tubo, eliminando el método anterior que generaba mayor estrés animal durante el proceso de carga.</p></div>
           </div>)} />
@@ -637,13 +585,13 @@ function SeccionHSEQ() {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <KpiClickCard label="Accidentes laborales 2025" value2025="112" value2024="~95 (ref.)" varPct="17.89" varAbs="Planta 27 · Posproceso 21 · Calidad 17" color="#ef4444" icon={AlertTriangle} good={false}
+        <KpiClickCard label="Accidentes laborales 2025" value2025="112" value2024="95" varPct="17.89" varAbs="Planta 27 · Posproceso 21 · Calidad 17" color="#ef4444" icon={AlertTriangle} good={false}
           onClick={() => open('Accidentes laborales 2025', <div className="space-y-3">
             <div className="bg-red-50 rounded-lg p-4 border border-red-200"><p className="font-semibold text-red-700 mb-1">112 accidentes en 2025</p><p className="text-sm">Distribución por área: Planta 27 (24%), Posproceso 21 (19%), Calidad 17 (15%), Granjas 16 (14%), Otros 31 (28%). El riesgo osteomuscular es el principal factor.</p></div>
             <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">Acción: gimnasia laboral</p><p className="text-sm">Se implementó el programa de gimnasia laboral con 22 capacitaciones y 347 asistentes para mitigar el riesgo osteomuscular.</p></div>
           </div>)} />
 
-        <KpiClickCard label="Capacitaciones SST realizadas" value2025="22" value2024="N/A" varPct="100" varAbs="347 asistentes en total" color="#f97316" icon={TrendingUp} good={true}
+        <KpiClickCard label="Capacitaciones SST realizadas" value2025="22" value2024="—" varPct="100" varAbs="347 asistentes en total" color="#f97316" icon={TrendingUp} good={true}
           onClick={() => open('Capacitaciones SST 2025', <div className="space-y-3">
             <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">22 capacitaciones — 347 asistentes</p><p className="text-sm">Incluye el programa de gimnasia laboral para mitigar riesgo osteomuscular, principal causa de accidentalidad en planta y posproceso.</p></div>
           </div>)} />
@@ -664,7 +612,7 @@ function SeccionHSEQ() {
             <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción 2024→2025: –22,4%</p><p className="text-sm">Sede 2 pasó de 4,42 L/kg en 2024 a 3,43 L/kg en 2025, recuperando el nivel de 2023 (3,53 L/kg) y superándolo.</p></div>
           </div>)} />
 
-        <KpiClickCard label="Residuos aprovechables" value2025="+24,65%" value2024="Base 2024" varPct="24.65" varAbs="Mayor separación en la fuente" color="#10b981" icon={TrendingUp} good={true}
+        <KpiClickCard label="Residuos aprovechables" value2025="+24,65%" value2024="Ref. 2024" varPct="24.65" varAbs="Mayor separación en la fuente" color="#10b981" icon={TrendingUp} good={true}
           onClick={() => open('Gestión de residuos aprovechables', <div className="space-y-3">
             <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">+24,65% en residuos aprovechables</p><p className="text-sm">El crecimiento indica mejor separación en la fuente y mayor eficiencia en el programa de gestión ambiental. 100% cumplimiento en reportes al DANE, IDEAM y SDA.</p></div>
             <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">Alerta: residuos peligrosos</p><p className="text-sm">Aumento del 29,84% en residuos peligrosos por jornadas extraordinarias de disposición de RAEE (equipos electrónicos en desuso).</p></div>
@@ -920,7 +868,7 @@ function SeccionSatisfaccion() {
           </div>)} />
 
         <KpiClickCard label="Planes de acción generados" value2025="154" value2024="120"
-          varPct={varPlanes} varAbs="+34 planes · mayor madurez del sistema"
+          varPct={varPlanes} varAbs="hgas34 planes · mayor madurez del sistema"
           color="#f59e0b" icon={TrendingUp} good={false}
           onClick={() => open('Planes de acción 2025 vs 2024', <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">

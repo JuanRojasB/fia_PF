@@ -50,12 +50,12 @@ export default function ComercialPDVDashboard({ data }) {
               <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
                 <p className="font-semibold mb-2">Distribución:</p>
                 <ul className="text-sm space-y-1 list-disc list-inside">
-                  <li>7 PDV — Elmira Gonzalez (6 sur de Bogotá, 1 Fusagasugá)</li>
-                  <li>5 PDV — Michael Arias (Norte de Bogotá)</li>
-                  <li>5 PDV — Julián Mora (4 Yopal, 1 Aguazul)</li>
-                  <li>2 PDV — John Ramirez (Tunja, Sogamoso)</li>
+                  <li>7 PDV — Elmira González (20 de Julio, Abastos, Kennedy, Santa Rita, Pradera, Soacha, Fusagasugá)</li>
+                  <li>5 PDV — Michael Arias (Market Toberín, Engativá Centro, Floresta, Suba, Cabaña)</li>
+                  <li>5 PDV — Julián Mora (Yopal Alcaraván, Yopal Garcero, Yopal Canaguaro, Yopal Aguazul, Morichal)</li>
+                  <li>2 PDV — John Ramírez (Tunja, Sogamoso)</li>
                   <li>1 PDV — Adriana (Chiquinquirá)</li>
-                  <li>1 PDV — Ivan Romero (Frigorífico Guadalupe)</li>
+                  <li>1 PDV — Iván Romero (Central de Carnes Guadalupe)</li>
                   <li>1 PDV — Belisario Eguis (Visión Colombia)</li>
                 </ul>
               </div>
