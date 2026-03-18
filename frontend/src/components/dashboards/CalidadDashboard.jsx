@@ -691,13 +691,13 @@ function SeccionAmbiental() {
             <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción 2024→2025: –22,4%</p><p className="text-sm">Sede 2 pasó de 4,42 L/kg en 2024 a 3,43 L/kg en 2025, recuperando y superando el nivel de 2023 (3,53 L/kg).</p></div>
           </div>)} />
 
-        <KpiClickCard label="Residuos aprovechables" value2025="+24,65%" value2024="Base 2024"
+        <KpiClickCard label="Residuos aprovechables" value2025="+24,65%" value2024="Ref. 2024"
           varPct="24.65" varAbs="Mayor separación en la fuente" color="#10b981" icon={TrendingUp} good={true}
           onClick={() => open('Residuos aprovechables 2025 vs 2024', <div className="space-y-3">
             <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">+24,65% en residuos aprovechables</p><p className="text-sm">Indica mejor separación en la fuente y mayor eficiencia en el programa de gestión ambiental. 100% cumplimiento en reportes al DANE, IDEAM y SDA.</p></div>
           </div>)} />
 
-        <KpiClickCard label="Residuos peligrosos (RAEE)" value2025="+29,84%" value2024="Base 2024"
+        <KpiClickCard label="Residuos peligrosos (RAEE)" value2025="+29,84%" value2024="Ref. 2024"
           varPct="29.84" varAbs="Jornadas extraordinarias RAEE" color="#f97316" icon={AlertTriangle} good={false}
           onClick={() => open('Residuos peligrosos RAEE', <div className="space-y-3">
             <div className="bg-orange-50 rounded-lg p-4 border border-orange-200"><p className="font-semibold text-orange-700 mb-1">+29,84% — jornadas extraordinarias</p><p className="text-sm">El aumento se explica por jornadas extraordinarias de disposición de RAEE (equipos electrónicos en desuso). No refleja deterioro operativo sino una gestión activa de pasivos ambientales.</p></div>
@@ -706,7 +706,7 @@ function SeccionAmbiental() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <KpiClickCard label="Canastillas rotas" value2025="–20,02%" value2024="Base 2024"
+        <KpiClickCard label="Canastillas rotas" value2025="–20,02%" value2024="Ref. 2024"
           varPct="-20.02" varAbs="Reducción de pérdidas en logística" color="#10b981" icon={TrendingDown} good={false}
           onClick={() => open('Canastillas rotas 2025 vs 2024', <div className="space-y-3">
             <div className="bg-green-50 rounded-lg p-4 border border-green-200"><p className="font-semibold text-green-700 mb-1">Reducción del 20,02%</p><p className="text-sm">La reducción en canastillas rotas refleja mejoras en el manejo logístico y el cuidado de activos durante el transporte y proceso de beneficio.</p></div>
@@ -902,7 +902,7 @@ function SeccionSatisfaccion() {
             </div>
           </div>)} />
 
-        <KpiClickCard label="No Conformidades detectadas" value2025="+34,78%" value2024="Base 2024"
+        <KpiClickCard label="No Conformidades detectadas" value2025="+34,78%" value2024="Ref. 2024"
           varPct="34.78" varAbs="Mayor detección interna"
           color="#ef4444" icon={AlertTriangle} good={false}
           onClick={() => open('No Conformidades 2025 vs 2024', <div className="space-y-3">

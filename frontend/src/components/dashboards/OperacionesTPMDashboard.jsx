@@ -223,43 +223,6 @@ export default function OperacionesTPMDashboard({ data }) {
         </CollapsibleTable>
       </motion.div>
 
-      {/* Equipos Ofensores */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-        className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-red-500/30">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-900">Equipos Críticos — 104,30 hrs de Paro</h3>
-            <p className="text-sm text-gray-600 mt-1">Top 5 equipos con mayor impacto en producción 2025</p>
-          </div>
-          <Info className="w-6 h-6 text-gray-600" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {[
-            { label: 'Línea de Descargue', hrs: '17,32 hrs', eventos: '22 eventos', pct: '17% del tiempo', color: 'red', nivel: 'CRÍTICO' },
-            { label: 'Zona Máquinas y Calderas', hrs: '14,15 hrs', eventos: '23 eventos', pct: '14% del tiempo', color: 'orange', nivel: 'MUY ALTO' },
-            { label: 'Transferidor', hrs: '10,47 hrs', eventos: '42 eventos', pct: 'Frecuencia alta', color: 'yellow', nivel: 'ALARMANTE' },
-            { label: 'Línea Selección Linco', hrs: '9,70 hrs', eventos: '17 eventos', pct: '9% del tiempo', color: 'blue', nivel: 'ALTO' },
-            { label: 'Desplumadora #1 (ITA)', hrs: '6,78 hrs', eventos: '20 eventos', pct: '7% del tiempo', color: 'purple', nivel: 'MOD-ALTO' },
-          ].map((eq, idx) => (
-            <div key={idx} className={`bg-${eq.color}-50 rounded-xl p-4 border-2 border-${eq.color}-500/30`}>
-              <div className="flex items-center justify-between mb-2">
-                <Wrench className={`w-5 h-5 text-${eq.color}-600`} />
-                <span className={`text-xs text-${eq.color}-600 font-bold`}>{eq.nivel}</span>
-              </div>
-              <h4 className="text-sm font-bold text-gray-900 mb-2">{eq.label}</h4>
-              <div className="text-2xl font-bold text-gray-900 mb-1">{eq.hrs}</div>
-              <div className="text-xs text-gray-600">{eq.eventos}</div>
-              <div className={`text-xs text-${eq.color}-400 mt-1`}>{eq.pct}</div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 bg-amber-50 rounded-lg p-3 border border-amber-300">
-          <p className="text-sm text-gray-700">
-            <span className="font-semibold">Acciones tomadas:</span> Línea de Descargue — overhaul mecánico y eléctrico con buenos resultados hasta la fecha. Calderas — estabilizada aplicando mantenimiento preventivo e inspecciones periódicas. Transferidor — fue puntual luego del cambio de la línea de descargue; falló menos pero las reparaciones fueron más largas. Linco — se cambió cadena y accesorios importantes. Desplumadora #1 (ITA) — priorizar inspecciones y recambios más frecuentes en bocines y dedos.
-          </p>
-        </div>
-      </motion.div>
-
       {/* Modal */}
       {createPortal(
         <AnimatePresence>
