@@ -199,7 +199,7 @@ export default function MarketingDetalleDashboard({ data }) {
             <p className="mb-3">Métricas ponderadas: <strong>CTR (70%)</strong> y <strong>CPC (30%)</strong>. Acumulado 2025: <strong>82.76%</strong> de efectividad. CTR promedio: <strong>2.7%</strong> (meta 3%). CPC promedio: <strong>$248</strong> (meta $300).</p>
             <div className="bg-green-50 rounded-lg p-3 border border-green-200 mb-3">
               <p className="font-semibold text-green-900 mb-2">Crecimiento de Seguidores</p>
-              <p className="text-sm">• Enero 2024: 4,175 seguidores</p>
+              <p className="text-sm">• Enero 2025: 4,175 seguidores</p>
               <p className="text-sm">• Diciembre 2025: 10,610 seguidores</p>
               <p className="text-sm">• Incremento: <strong>+154%</strong></p>
             </div>

@@ -6,8 +6,7 @@ import { Truck, TrendingUp, Building, X, Info, Users, Package, DollarSign, Trend
 import CollapsibleTable from '../CollapsibleTable';
 import CollapsibleChart from '../CollapsibleChart';
 import KpiCard from '../KpiCard';
-import { formatCurrencyFull } from './CustomTooltip';
-import { formatCOPShort } from '../../utils/formatCurrency';
+import { formatMM } from '../../utils/formatCurrency';
 
 export default function GestionLogisticaDashboard({ data }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,7 +26,7 @@ export default function GestionLogisticaDashboard({ data }) {
   }
 
   // Abreviado para KPIs: $1.234M / $1.23B
-  const formatCurrency = formatCOPShort;
+  const formatCurrency = formatMM;
   const _fmtOld = (value) => {
     if (!value || isNaN(value)) return '$0';
     const v = parseFloat(value);
@@ -154,11 +153,11 @@ export default function GestionLogisticaDashboard({ data }) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                   <p className="text-xs text-gray-600 mb-1">Total 2024</p>
-                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(total2024)}</p>
+                  <p className="text-lg font-bold text-gray-900">{formatMM(total2024)}</p>
                 </div>
                 <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
                   <p className="text-xs text-purple-600 font-semibold mb-1">Total 2025</p>
-                  <p className="text-lg font-bold text-purple-700">{formatCurrencyFull(total2025)}</p>
+                  <p className="text-lg font-bold text-purple-700">{formatMM(total2025)}</p>
                 </div>
               </div>
               <div className={`rounded-lg p-4 border ${parseFloat(variacionTotal) <= 0 ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
@@ -168,9 +167,9 @@ export default function GestionLogisticaDashboard({ data }) {
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
                 <p className="text-sm font-semibold text-blue-800 mb-2">Por sede:</p>
                 <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• Sede 1: {formatCurrencyFull(sedesData[0]?.total2025 || 0)} ({sedesData[0]?.variacion || 0}%)</li>
-                  <li>• Sede 2: {formatCurrencyFull(sedesData[1]?.total2025 || 0)} ({sedesData[1]?.variacion || 0}%)</li>
-                  <li>• Sede 3: {formatCurrencyFull(sedesData[2]?.total2025 || 0)} ({sedesData[2]?.variacion || 0}%)</li>
+                  <li>• Sede 1: {formatMM(sedesData[0]?.total2025 || 0)} ({sedesData[0]?.variacion || 0}%)</li>
+                  <li>• Sede 2: {formatMM(sedesData[1]?.total2025 || 0)} ({sedesData[1]?.variacion || 0}%)</li>
+                  <li>• Sede 3: {formatMM(sedesData[2]?.total2025 || 0)} ({sedesData[2]?.variacion || 0}%)</li>
                 </ul>
               </div>
             </div>
@@ -181,12 +180,12 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Total Gastos Logísticos 2025 (3 Sedes)</span>
             <DollarSign className="w-6 h-6 text-purple-400" />
           </div>
-          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(total2025)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatMM(total2025)}</div>
           <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2024)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(total2025)}</span></div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatMM(total2024)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatMM(total2025)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {variacionTotal > 0 ? '+' : ''}{variacionTotal}%</div>
-            <div className={`text-xs font-semibold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull(total2025 - total2024)}</div>
+            <div className={`text-xs font-semibold ${parseFloat(variacionTotal) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatMM(total2025 - total2024)}</div>
           </div>
         </motion.div>
 
@@ -200,11 +199,11 @@ export default function GestionLogisticaDashboard({ data }) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                   <p className="text-xs text-gray-600 mb-1">2024</p>
-                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(sedesData[0]?.total2024 || 0)}</p>
+                  <p className="text-lg font-bold text-gray-900">{formatMM(sedesData[0]?.total2024 || 0)}</p>
                 </div>
                 <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
                   <p className="text-xs text-blue-600 font-semibold mb-1">2025</p>
-                  <p className="text-lg font-bold text-blue-700">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</p>
+                  <p className="text-lg font-bold text-blue-700">{formatMM(sedesData[0]?.total2025 || 0)}</p>
                 </div>
               </div>
               <div className={`rounded-lg p-4 border ${parseFloat(sedesData[0]?.variacion || 0) <= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}>
@@ -223,12 +222,12 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 1 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-blue-400" />
           </div>
-          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatMM(sedesData[0]?.total2025 || 0)}</div>
           <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[0]?.total2024 || 0)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[0]?.total2025 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatMM(sedesData[0]?.total2024 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatMM(sedesData[0]?.total2025 || 0)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(sedesData[0]?.variacion || 0) >= 0 ? '+' : ''}{sedesData[0]?.variacion || 0}%</div>
-            <div className={`text-xs font-semibold ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull((sedesData[0]?.total2025 || 0) - (sedesData[0]?.total2024 || 0))}</div>
+            <div className={`text-xs font-semibold ${parseFloat(sedesData[0]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatMM((sedesData[0]?.total2025 || 0) - (sedesData[0]?.total2024 || 0))}</div>
           </div>
         </motion.div>
 
@@ -242,11 +241,11 @@ export default function GestionLogisticaDashboard({ data }) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                   <p className="text-xs text-gray-600 mb-1">2024</p>
-                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(sedesData[1]?.total2024 || 0)}</p>
+                  <p className="text-lg font-bold text-gray-900">{formatMM(sedesData[1]?.total2024 || 0)}</p>
                 </div>
                 <div className="bg-green-50 rounded-lg p-3 border border-green-200">
                   <p className="text-xs text-green-600 font-semibold mb-1">2025</p>
-                  <p className="text-lg font-bold text-green-700">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</p>
+                  <p className="text-lg font-bold text-green-700">{formatMM(sedesData[1]?.total2025 || 0)}</p>
                 </div>
               </div>
               <div className={`rounded-lg p-4 border ${parseFloat(sedesData[1]?.variacion || 0) <= 0 ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
@@ -265,12 +264,12 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 2 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-green-400" />
           </div>
-          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatMM(sedesData[1]?.total2025 || 0)}</div>
           <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[1]?.total2024 || 0)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[1]?.total2025 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatMM(sedesData[1]?.total2024 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatMM(sedesData[1]?.total2025 || 0)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(sedesData[1]?.variacion || 0) >= 0 ? '+' : ''}{sedesData[1]?.variacion || 0}%</div>
-            <div className={`text-xs font-semibold ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull((sedesData[1]?.total2025 || 0) - (sedesData[1]?.total2024 || 0))}</div>
+            <div className={`text-xs font-semibold ${parseFloat(sedesData[1]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatMM((sedesData[1]?.total2025 || 0) - (sedesData[1]?.total2024 || 0))}</div>
           </div>
         </motion.div>
 
@@ -284,11 +283,11 @@ export default function GestionLogisticaDashboard({ data }) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                   <p className="text-xs text-gray-600 mb-1">2024</p>
-                  <p className="text-lg font-bold text-gray-900">{formatCurrencyFull(sedesData[2]?.total2024 || 0)}</p>
+                  <p className="text-lg font-bold text-gray-900">{formatMM(sedesData[2]?.total2024 || 0)}</p>
                 </div>
                 <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
                   <p className="text-xs text-orange-600 font-semibold mb-1">2025</p>
-                  <p className="text-lg font-bold text-orange-700">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</p>
+                  <p className="text-lg font-bold text-orange-700">{formatMM(sedesData[2]?.total2025 || 0)}</p>
                 </div>
               </div>
               <div className={`rounded-lg p-4 border ${parseFloat(sedesData[2]?.variacion || 0) <= 0 ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
@@ -307,12 +306,12 @@ export default function GestionLogisticaDashboard({ data }) {
             <span className="text-gray-600 text-sm font-medium">Sede 3 - Gastos Logísticos 2025 vs 2024</span>
             <Building className="w-6 h-6 text-orange-400" />
           </div>
-          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</div>
+          <div className="text-xl font-bold text-gray-900 mb-1 break-all">{formatMM(sedesData[2]?.total2025 || 0)}</div>
           <div className="border-t border-gray-200 pt-2 mt-2 space-y-0.5">
-            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[2]?.total2024 || 0)}</span></div>
-            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatCurrencyFull(sedesData[2]?.total2025 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{formatMM(sedesData[2]?.total2024 || 0)}</span></div>
+            <div className="text-xs text-gray-500">2025: <span className="font-semibold text-gray-700">{formatMM(sedesData[2]?.total2025 || 0)}</span></div>
             <div className={`text-sm font-bold ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Var: {parseFloat(sedesData[2]?.variacion || 0) >= 0 ? '+' : ''}{sedesData[2]?.variacion || 0}%</div>
-            <div className={`text-xs font-semibold ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatCurrencyFull((sedesData[2]?.total2025 || 0) - (sedesData[2]?.total2024 || 0))}</div>
+            <div className={`text-xs font-semibold ${parseFloat(sedesData[2]?.variacion || 0) >= 0 ? 'text-red-600' : 'text-green-600'}`}>Dif: {formatMM((sedesData[2]?.total2025 || 0) - (sedesData[2]?.total2024 || 0))}</div>
           </div>
         </motion.div>
       </div>
@@ -323,12 +322,12 @@ export default function GestionLogisticaDashboard({ data }) {
         defaultOpen={false}
         totalRow={[
           { label: 'TOTAL GASTOS LOGÍSTICOS 2024 VS 2025' },
-          { label: '$ 14.984.636.000', color: 'text-blue-600' },
-          { label: '$ 15.339.066.000', color: 'text-blue-600' },
+          { label: formatMM(14984636000), color: 'text-blue-600' },
+          { label: formatMM(15339066000), color: 'text-blue-600' },
           { label: '2,37%', color: 'text-red-500', badge: true, badgeColor: 'bg-red-500', badgeIcon: '↑' },
-          { label: '$ 354.430.000', color: 'text-red-500' },
+          { label: formatMM(354430000), color: 'text-red-500' },
           { label: '8,6%', color: 'text-gray-600' },
-          { label: '$ 1.386.360.636', color: 'text-gray-600' },
+          { label: formatMM(1386360636), color: 'text-gray-600' },
         ]}
       >
         <div className="space-y-4">
@@ -365,8 +364,8 @@ export default function GestionLogisticaDashboard({ data }) {
                 ].map((row, i) => (
                   <tr key={i} className="border-b border-gray-200 hover:bg-blue-50 transition-colors">
                     <td className="py-2.5 px-4 text-gray-900">{row.concepto}</td>
-                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-700">$ {row.t2024.toLocaleString('es-CO')}</td>
-                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-700">$ {row.t2025.toLocaleString('es-CO')}</td>
+                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-700">{formatMM(row.t2024)}</td>
+                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-700">{formatMM(row.t2025)}</td>
                     <td className="py-2.5 px-4 text-right">
                       <span className={`inline-flex items-center gap-1 font-bold ${row.var < 0 ? 'text-green-600' : 'text-red-600'}`}>
                         <span className={`w-4 h-4 rounded-full text-white text-xs flex items-center justify-center ${row.var < 0 ? 'bg-green-500' : 'bg-red-500'}`}>
@@ -376,25 +375,25 @@ export default function GestionLogisticaDashboard({ data }) {
                       </span>
                     </td>
                     <td className={`py-2.5 px-4 text-right tabular-nums font-semibold ${row.dif < 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      $ {Math.abs(row.dif).toLocaleString('es-CO')}
+                      {formatMM(Math.abs(row.dif))}
                     </td>
                     <td className="py-2.5 px-4 text-right tabular-nums text-gray-600">{row.pct}%</td>
-                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-600">$ {row.inc.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="py-2.5 px-4 text-right tabular-nums text-gray-600">{formatMM(row.inc)}</td>
                   </tr>
                 ))}
                 <tr className="bg-blue-50 border-t-2 border-blue-400 font-bold">
                   <td className="py-3 px-4 text-blue-900">Total Gastos Logísticos 2024 vs 2025</td>
-                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 14.984.636.000</td>
-                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 15.339.066.000</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">{formatMM(14984636000)}</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">{formatMM(15339066000)}</td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1 font-bold text-red-600">
                       <span className="w-4 h-4 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">↑</span>
                       2,37%
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-right tabular-nums text-red-600">$ 354.430.000</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-red-600">{formatMM(354430000)}</td>
                   <td className="py-3 px-4 text-right tabular-nums text-blue-900">8,6%</td>
-                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">$ 1.386.360.636</td>
+                  <td className="py-3 px-4 text-right tabular-nums text-blue-900">{formatMM(1386360636)}</td>
                 </tr>
               </tbody>
             </table>

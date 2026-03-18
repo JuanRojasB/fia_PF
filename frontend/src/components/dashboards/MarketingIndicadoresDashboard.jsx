@@ -248,7 +248,7 @@ export default function MarketingIndicadoresDashboard({ data }) {
               </tr>
               <tr className="border-b border-gray-200 hover:bg-gray-50">
                 <td className="py-3 px-4 text-gray-900 font-medium">Cumplimiento Presupuesto</td>
-                <td className="py-3 px-4 text-center text-blue-700 font-bold">$4.016.000.000 / $480.000.000 (83.7%)</td>
+                <td className="py-3 px-4 text-center text-blue-700 font-bold">$401.661.665 / $480.000.000 (83.7%)</td>
                 <td className="py-3 px-4 text-center text-gray-700">100% ($480.000.000)</td>
                 <td className="py-3 px-4 text-center">
                   <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
