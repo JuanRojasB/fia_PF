@@ -109,8 +109,6 @@ export default function DashboardRenderer({ type, data, onNavigate }) {
       return <OperacionesArquitecturaDashboard data={data} />;
     case 'planta-beneficio':
       return <PlantaBeneficioDashboard data={data} />;
-    case 'tecnologias-informacion':
-      return <TecnologiasInformacionDashboard data={data} />;
     case 'cartera':
       return <CarteraDashboard data={data} />;
     case 'comercial-resumen':

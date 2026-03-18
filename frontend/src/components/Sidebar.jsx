@@ -205,12 +205,6 @@ export default memo(function Sidebar({ activeSection, setActiveSection, onLogout
       type: 'single'
     },
     { 
-      id: 'tecnologias-informacion', 
-      label: 'Tecnologías de la Información', 
-      icon: Monitor,
-      type: 'single'
-    },
-    { 
       id: 'sagrilaft', 
       label: 'Análisis y Evaluación Sistema SAGRILAFT', 
       icon: Shield,
