@@ -174,7 +174,6 @@ export default function Presupuesto2025Dashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">10.05%</span></div>
             <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">{variablesMacro.mortalidad_2025}%</span></div>
             <div className="text-sm font-bold text-green-600 mt-1">Var: -{variablesMacro.reduccion_mortalidad}pp</div>
-            <div className="text-xs font-semibold text-green-600">Dif: -1.02pp</div>
           </div>
         </motion.div>
 
@@ -209,7 +208,6 @@ export default function Presupuesto2025Dashboard({ data }) {
             <div className="text-xs text-gray-500">2024: <span className="font-semibold text-gray-700">{variablesMacro.inflacion_2024}%</span></div>
             <div className="text-xs text-gray-500 mt-0.5">2025: <span className="font-semibold text-gray-700">{variablesMacro.inflacion_2025}%</span></div>
             <div className="text-sm font-bold text-green-600 mt-1">Var: -0.1pp</div>
-            <div className="text-xs font-semibold text-green-600">Dif: Similar a 2024</div>
           </div>
         </motion.div>
       </div>
