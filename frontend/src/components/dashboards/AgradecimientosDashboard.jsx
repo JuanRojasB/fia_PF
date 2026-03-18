@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { QRCodeSVG } from 'qrcode.react';
 import polloLogo from '../../assets/pollo_fiesta_FIA.png';
 
 // ── Confetti particle ──────────────────────────────────────────────────────────
@@ -251,6 +252,34 @@ export default function AgradecimientosDashboard() {
                 <p className="text-xl font-black text-gray-900 tracking-wide">JOHN HENRY RESTREPO MELO</p>
                 <p className="text-amber-600 font-semibold mt-1">Gerente General</p>
                 <p className="text-gray-400 text-sm mt-1">Pollo Fiesta S.A. — 2025</p>
+
+                {/* QR Code */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 2.2, type: 'spring', stiffness: 200 }}
+                  className="mt-8 flex flex-col items-center gap-3"
+                >
+                  <div className="p-3 bg-white rounded-2xl shadow-lg border-2 border-amber-300">
+                    <QRCodeSVG
+                      value="https://asamblea-2025pf.up.railway.app"
+                      size={140}
+                      bgColor="#ffffff"
+                      fgColor="#1c1917"
+                      level="M"
+                      imageSettings={{
+                        src: polloLogo,
+                        x: undefined,
+                        y: undefined,
+                        height: 28,
+                        width: 28,
+                        excavate: true,
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500 font-medium tracking-wide">Escanea para visitar la plataforma</p>
+                  <p className="text-xs text-amber-600 font-semibold">asamblea-2025pf.up.railway.app</p>
+                </motion.div>
               </motion.div>
             </div>
           </motion.div>
