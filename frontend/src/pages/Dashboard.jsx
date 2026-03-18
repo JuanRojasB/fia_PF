@@ -93,7 +93,6 @@ export default function Dashboard() {
     'gerencia-estrategica-ambiental':    'gerencia-estrategica',
     'gerencia-estrategica-sgc':          'gerencia-estrategica',
     'gerencia-estrategica-satisfaccion': 'gerencia-estrategica',
-  };
     'operaciones': 'operaciones',
     'operaciones-tpm': 'operaciones',
     'operaciones-ot': 'operaciones',
