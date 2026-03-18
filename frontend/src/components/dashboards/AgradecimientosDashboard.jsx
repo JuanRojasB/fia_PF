@@ -129,8 +129,8 @@ export default function AgradecimientosDashboard() {
               src={polloLogo}
               alt="Pollo Fiesta"
               initial={{ scale: 0, rotate: -20, opacity: 0 }}
-              animate={{ scale: 1, rotate: 0, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 14, delay: 0.1 }}
+              animate={{ scale: 1, rotate: [null, 360], opacity: 1 }}
+              transition={{ scale: { type: 'spring', stiffness: 200, damping: 14, delay: 0.1 }, opacity: { delay: 0.1 }, rotate: { delay: 0.6, duration: 8, repeat: Infinity, ease: 'linear' } }}
               className="w-32 h-32 object-contain relative z-10 drop-shadow-2xl"
             />
             <motion.p

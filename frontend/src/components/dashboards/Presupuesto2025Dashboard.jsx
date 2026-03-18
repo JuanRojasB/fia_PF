@@ -86,9 +86,9 @@ export default function Presupuesto2025Dashboard({ data }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="bg-white/95 backdrop-blur-xl rounded-xl p-6 border-4 border-green-500/30 hover:border-green-500 transition-all cursor-pointer"
-          onClick={() => openModal('Crecimiento Ventas Presupuesto 2025 vs 2024',
+          onClick={() => openModal('Crecimiento Unidades',
             <div className="text-gray-700 space-y-4">
-              <p className="mb-3">El crecimiento de <strong className="text-green-600">{variablesMacro.crecimiento}%</strong> en ventas presupuestadas para 2025 marca una recuperación importante.</p>
+              <p className="mb-3">El crecimiento de <strong className="text-green-600">{variablesMacro.crecimiento}%</strong> en unidades presupuestadas para 2025 marca una recuperación importante.</p>
               <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
                 <p className="text-sm font-semibold text-blue-800 mb-2">Contexto Macroeconómico:</p>
                 <p className="text-sm">La inflación estuvo muy similar año 2024 (<strong>5.2%</strong>), respecto al 2025 (<strong>5.1%</strong>) lo que ayudó con el crecimiento del <strong className="text-green-600">5.4%</strong>.</p>
